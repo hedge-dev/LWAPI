@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ReferencedObject.h"
-
 namespace app::fnd
 {
 	class RefByHandleObject;

@@ -1,9 +1,5 @@
 #pragma once
 
-#include <cslib/utils.h>
-#include <cslib/IAllocator.h>
-#include <Hedgehog/Base/System/ReferencedObject.h>
-
 namespace app
 {
 	class GameObject;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <type_traits>
-
 namespace app::fnd
 {
 	typedef size_t UpdatingPhase;

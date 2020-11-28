@@ -1,18 +1,5 @@
 #pragma once
 
-#include "GOComponent.h"
-#include <System/GameDocument.h>
-#include <System/Messages.h>
-
-#include <System/ObjectSystem/GameObjectSystem.h>
-#include <Hedgehog/Base/System/RefCountObject.h>
-#include <Hedgehog/Base/Universe/hhLeafActor.h>
-#include <Hedgehog/Base/System/Property.h>
-
-#include <cslib/LinkList.h>
-#include <cslib/MoveArray.h>
-#include <cslib/IAllocator.h>
-
 namespace app
 {
 	class GameObject : public hh::base::CRefCountObject, fnd::CLeafActor

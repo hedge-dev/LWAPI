@@ -1,12 +1,9 @@
 #pragma once
-#include <Hedgehog/Base/System/ReferencedObject.h>
-#include <System/ObjectSystem/SetObjectListener.h>
-#include <System/GameObject.h>
-
-#include <cslib/math.h>
 
 namespace app
 {
+	class CSetAdapter;
+	
 	class CSetObjectListener : public GameObject
 	{
 	public:

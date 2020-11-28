@@ -1,10 +1,5 @@
 #pragma once
 
-#include <Hedgehog/Base/System/RefByHandleObject.h>
-#include <Hedgehog/Base/Universe/hhMessage.h>
-
-#include "cslib/LinkList.h"
-
 namespace app
 {
 	class GameObject;

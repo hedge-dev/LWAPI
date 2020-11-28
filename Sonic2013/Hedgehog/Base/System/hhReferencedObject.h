@@ -1,6 +1,4 @@
 #pragma once
-#include <Hedgehog/Base/System/BaseObject.h>
-#include <cslib/IAllocator.h>
 
 namespace app::fnd
 {

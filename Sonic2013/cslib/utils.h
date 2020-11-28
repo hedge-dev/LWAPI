@@ -1,7 +1,10 @@
 #pragma once
 
 #include <Windows.h>
+#include <WinBase.h>
+#include <type_traits>
 
+#define CHAR_BIT 8
 const HMODULE MODULE_HANDLE = GetModuleHandle(NULL);
 #define BASE_ADDRESS (int)GetModuleHandle(NULL)
 

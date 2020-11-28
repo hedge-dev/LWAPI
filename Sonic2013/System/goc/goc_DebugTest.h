@@ -1,7 +1,5 @@
 #pragma once
 
-#include <System/GOComponent.h>
-
 namespace app::debug
 {
 	class GOCDebugTest : public fnd::GOComponent
