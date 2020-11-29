@@ -24,7 +24,7 @@ namespace app
 		public:
 			GOComponent()
 			{
-				GameObjectSystem::GetSingleton()->handleManager->AddObject(*this);
+				
 			}
 			
 			virtual const char* GetFamilyID() = 0;

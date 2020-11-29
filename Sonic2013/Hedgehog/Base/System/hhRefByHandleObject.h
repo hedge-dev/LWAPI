@@ -15,5 +15,16 @@ namespace app::fnd
 	private:
 		size_t handle{};
 		HandleTableEntry* entry{};
+
+	public:
+		~RefByHandleObject() override
+		{
+			GameObjectSystem::GetSingleton()->handleManager->RemoveObject(*this);
+		}
+		
+		RefByHandleObject()
+		{
+			GameObjectSystem::GetSingleton()->handleManager->AddObject(*this);
+		}
 	};
 }

@@ -6,6 +6,8 @@
 
 #define CONCAT2(x, y) x##y
 #define CHAR_BIT 8
+#define FORCE_RET __asm ret
+
 const HMODULE MODULE_HANDLE = GetModuleHandle(NULL);
 #define BASE_ADDRESS (size_t)MODULE_HANDLE(NULL)
 

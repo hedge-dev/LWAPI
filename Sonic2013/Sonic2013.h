@@ -12,7 +12,6 @@
 #include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
-#include "Hedgehog/Base/System/hhRefByHandleObject.h"
 #include "Hedgehog/Base/System/hhProperty.h"
 
 // Hedgehog Universe Library
@@ -23,8 +22,12 @@
 // System
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
+#include "Hedgehog/Base/System/hhRefByHandleObject.h"
 #include "System/Messages.h"
 #include "System/GOComponent.h"
 #include "System/GameObject.h"
 #include "System/ObjectSystem/SetObjectListener.h"
 #include "System/ObjectSystem/SetAdapter.h"
+
+// Components
+#include "System/goc/goc_Transform.h"
