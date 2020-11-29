@@ -22,6 +22,11 @@ namespace app
 			csl::ut::LinkListNode audibleComponentNode;
 			
 		public:
+			GOComponent()
+			{
+				GameObjectSystem::GetSingleton()->handleManager->AddObject(*this);
+			}
+			
 			virtual const char* GetFamilyID() = 0;
 			virtual void Update(UpdatingPhase phase, const SUpdateInfo& updateInfo)
 			{

@@ -38,7 +38,7 @@ namespace app
 		void Kill();
 		GameObject()
 		{
-			(*GameObjectSystem::ms_ppGameObjectSystem)->AddObject(this);
+			GameObjectSystem::GetSingleton()->AddObject(this);
 		}
 
 		~GameObject() override

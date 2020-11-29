@@ -9,15 +9,23 @@ namespace app
 		size_t handle{};
 		GameObject* object{};
 	};
-	
-	class GameObjectSystem : fnd::ReferencedObject
+
+	class GameObjectSystem : public fnd::ReferencedObject
 	{
 	private:
 		csl::fnd::IAllocator* pooledAllocator{};
+		INSERT_PADDING(0x110);
 		
 	public:
-		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0xFD3FC4);
+		fnd::HandleManagerBase* handleManager;
+		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0x00FD3FC4);
 		inline static FUNCTION_PTR(void, __thiscall, fp_GameObjectSystemAddObject, ASLR(0x0049D9C0), GameObjectSystem* This, GameObject* object);
+
+		GameObjectSystem()
+		{
+			ASSERT_OFFSETOF(GameObjectSystem, pooledAllocator, 12);
+			ASSERT_OFFSETOF(GameObjectSystem, handleManager, 0x120);
+		}
 		
 		void AddObject(GameObject* object)
 		{
@@ -27,6 +35,11 @@ namespace app
 		csl::fnd::IAllocator* getPooledAllocator() const
 		{
 			return pooledAllocator;
+		}
+
+		inline static GameObjectSystem* GetSingleton()
+		{
+			return *ms_ppGameObjectSystem;
 		}
 	};
 }

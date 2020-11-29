@@ -4,9 +4,14 @@
 #include <WinBase.h>
 #include <type_traits>
 
+#define CONCAT2(x, y) x##y
 #define CHAR_BIT 8
 const HMODULE MODULE_HANDLE = GetModuleHandle(NULL);
-#define BASE_ADDRESS (int)GetModuleHandle(NULL)
+#define BASE_ADDRESS (size_t)MODULE_HANDLE(NULL)
+
+#define INSERT_PADDING(length) char CONCAT2(pad, __LINE__)[length]
+#define ASSERT(condition, message) static_assert(condition, message)
+#define ASSERT_OFFSETOF(type, field, offset) ASSERT(offsetof(type, field) == offset, "offsetof("#type"::"#field") != "#offset)
 
 #define ASLR(address) \
 	((unsigned int)MODULE_HANDLE + (unsigned int)address - 0x400000)

@@ -11,6 +11,7 @@
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
+#include "Hedgehog/Base/System/hhHandleManagerBase.h"
 #include "Hedgehog/Base/System/hhRefByHandleObject.h"
 #include "Hedgehog/Base/System/hhProperty.h"
 
