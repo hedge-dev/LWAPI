@@ -18,14 +18,14 @@ namespace app::fnd
 			if (id > 1)
 			{
 				if (id == 3)
-					Update(*static_cast<SUpdateInfo*>(data));
+					Update(reinterpret_cast<SUpdateInfo&>(data));
 
 				return true;
 			}
 
 			if (enabled)
 			{
-				return ProcessMessage(*static_cast<Message*>(data));
+				return ProcessMessage(reinterpret_cast<Message&>(data));
 			}
 			
 			return false;

@@ -32,7 +32,7 @@ namespace app
 			fp_GameObjectSystemAddObject(this, object);
 		}
 
-		csl::fnd::IAllocator* getPooledAllocator() const
+		csl::fnd::IAllocator* GetPooledAllocator() const
 		{
 			return pooledAllocator;
 		}

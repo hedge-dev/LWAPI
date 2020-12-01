@@ -10,10 +10,10 @@ namespace app
 		GameDocument* document{};
 		size_t objectHandle{};
 		GameObjectTableEntry* objectEntry{};
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ (*GameObjectSystem::ms_ppGameObjectSystem)->getPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
 		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
-		csl::fnd::IAllocator* objectAllocator{ (*GameObjectSystem::ms_ppGameObjectSystem)->getPooledAllocator() };
-		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ (*GameObjectSystem::ms_ppGameObjectSystem)->getPooledAllocator() };
+		csl::fnd::IAllocator* objectAllocator{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
 		unsigned int componentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> visualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
 		csl::ut::LinkList<fnd::GOComponent> physicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
@@ -95,9 +95,9 @@ namespace app
 				auto* component = visualComponents.get(visualComponents.begin());
 
 				if (updateFlags)
-					Update(*static_cast<fnd::SUpdateInfo*>(data));
+					Update(reinterpret_cast<fnd::SUpdateInfo&>(data));
 
-				UpdateComponents(visualComponents, *static_cast<fnd::SUpdateInfo*>(data), 0);
+				UpdateComponents(visualComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 0);
 
 				return true;
 			}
@@ -108,9 +108,9 @@ namespace app
 					return true;
 
 				if (updateFlags)
-					UpdatePhase(*static_cast<fnd::SUpdateInfo*>(data), 1);
+					UpdatePhase(reinterpret_cast<fnd::SUpdateInfo&>(data), 1);
 
-				UpdateComponents(physicsComponents, *static_cast<fnd::SUpdateInfo*>(data), 1);
+				UpdateComponents(physicsComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 1);
 
 				return true;
 			}
@@ -121,9 +121,9 @@ namespace app
 					return true;
 
 				if (updateFlags)
-					UpdatePhase(*static_cast<fnd::SUpdateInfo*>(data), 2);
+					UpdatePhase(reinterpret_cast<fnd::SUpdateInfo&>(data), 2);
 
-				UpdateComponents(audibleComponents, *static_cast<fnd::SUpdateInfo*>(data), 2);
+				UpdateComponents(audibleComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 2);
 
 				return true;
 			}
@@ -135,6 +135,9 @@ namespace app
 
 		bool ProcessMessage(fnd::Message& msg) override
 		{
+			if (PreProcessMessage(msg))
+				return true;
+			
 			if (msg.IsOfType<xgame::MsgKill>())
 			{
 				Kill();
@@ -146,12 +149,12 @@ namespace app
 		
 		void* operator new (size_t size)
 		{
-			return (*GameObjectSystem::ms_ppGameObjectSystem)->getPooledAllocator()->Alloc(size, 16);
+			return (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator()->Alloc(size, 16);
 		}
 
 		void operator delete (void* loc)
 		{
-			(*GameObjectSystem::ms_ppGameObjectSystem)->getPooledAllocator()->Free(loc);
+			(*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator()->Free(loc);
 		}
 
 		bool AddComponent(fnd::GOComponent* component)

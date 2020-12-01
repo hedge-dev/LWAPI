@@ -28,6 +28,7 @@
 #include "System/GameObject.h"
 #include "System/ObjectSystem/SetObjectListener.h"
 #include "System/ObjectSystem/SetAdapter.h"
+#include "System/GameService.h"
 
 // Components
 #include "System/goc/goc_Transform.h"
