@@ -23,10 +23,11 @@ namespace app::fnd
 	{
 	protected:
 		GameDocument* document{};
-		const char* serviceName{};
+		GameServiceClass* serviceClass{};
 		void* unk1{};
 		void* unk2{};
-		
+		unsigned int flags{};
+
 	public:
 		virtual void ResolveAccessibleService(GameDocument& document) {}
 		virtual void Load() {}
