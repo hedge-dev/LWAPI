@@ -172,6 +172,17 @@ namespace app
 
 			return true;
 		}
+
+		fnd::GOComponent* GetComponent(const char* name)
+		{
+			for (auto* it = components.begin(); it != components.end(); it++)
+			{
+				if ((*it)->GetFamilyID() == name)
+					return *it;
+			}
+
+			return nullptr;
+		}
 	};
 
 	inline void GameObject::Kill()

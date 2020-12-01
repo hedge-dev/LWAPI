@@ -1,10 +1,13 @@
 #pragma once
 
-struct alignas(16) Vector3
+namespace csl::math 
 {
-	float x;
-	float y;
-	float z;
+	struct alignas(16) Vector3
+	{
+		float x;
+		float y;
+		float z;
 
-	Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z){}
-};
+		Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
+	};
+}

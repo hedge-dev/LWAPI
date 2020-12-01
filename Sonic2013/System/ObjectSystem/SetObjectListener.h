@@ -32,7 +32,7 @@ namespace app
 			return -1.0;
 		}
 
-		virtual Vector3 GetAdsorbPathOffset()
+		virtual csl::math::Vector3 GetAdsorbPathOffset()
 		{
 			return { 0, 0, 0 };
 		}
