@@ -10,10 +10,10 @@ namespace app
 		GameDocument* document{};
 		size_t objectHandle{};
 		GameObjectTableEntry* objectEntry{};
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ (GameObjectSystem::GetSingleton()->GetPooledAllocator() };
 		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
 		csl::fnd::IAllocator* objectAllocator{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
-		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ GameObjectSystem::GetSingleton()->GetPooledAllocator() };
 		unsigned int componentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> visualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
 		csl::ut::LinkList<fnd::GOComponent> physicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
@@ -151,12 +151,12 @@ namespace app
 		
 		void* operator new (size_t size)
 		{
-			return (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator()->Alloc(size, 16);
+			return GameObjectSystem::GetSingleton()->GetPooledAllocator()->Alloc(size, 16);
 		}
 
 		void operator delete (void* loc)
 		{
-			(*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator()->Free(loc);
+			GameObjectSystem::GetSingleton()->GetPooledAllocator()->Free(loc);
 		}
 
 		bool AddComponent(fnd::GOComponent* component)

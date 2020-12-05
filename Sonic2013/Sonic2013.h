@@ -8,6 +8,7 @@
 #include "cslib/LinkList.h"
 
 // Hedgehog Library
+#include "Hedgehog/Base/System/hhAllocator.h"
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
