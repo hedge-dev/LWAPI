@@ -173,7 +173,7 @@ namespace app
 			return true;
 		}
 
-		fnd::GOComponent* GetComponent(const char* name)
+		fnd::GOComponent* GetComponent(const char* name) const
 		{
 			for (auto* it = components.begin(); it != components.end(); it++)
 			{

@@ -6,6 +6,20 @@ namespace app
 	
 	namespace fnd
 	{
+		class GOComponent;
+		typedef GOComponent* initializeComponent(csl::fnd::IAllocator& allocator);
+		
+		class GOComponentClass
+		{
+			const char* name;
+			unsigned int unk1;
+			const char* familyID;
+			size_t size;
+			initializeComponent* initializer;
+			unsigned short unk2;
+			size_t unk3;
+		};
+
 		class GOComponent : public RefByHandleObject
 		{
 			friend GameObject;
