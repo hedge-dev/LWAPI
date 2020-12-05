@@ -2,15 +2,14 @@
 
 namespace app
 {
-	class GameObject;
-	
 	namespace fnd
 	{
 		class GOComponent;
-		typedef GOComponent* initializeComponent(csl::fnd::IAllocator& allocator);
+		typedef GOComponent* initializeComponent(csl::fnd::IAllocator* allocator);
 		
 		class GOComponentClass
 		{
+		public:
 			const char* name;
 			unsigned int unk1;
 			const char* familyID;
@@ -61,6 +60,16 @@ namespace app
 			{
 				activeObject = object;
 			}
+
+			static GOComponent* Create(GameObject* obj, GOComponentClass* cls);
 		};
 	}
+}
+
+#include "GameObject.h"
+inline app::fnd::GOComponent* app::fnd::GOComponent::Create(GameObject* obj, GOComponentClass* cls)
+{
+	GOComponent* component = cls->initializer(GameObject::GetAllocator());
+	obj->AddComponent(component);
+	return component;
 }

@@ -2,7 +2,7 @@
 
 namespace app
 {
-	struct CSetAdapter
+	class CSetAdapter
 	{
 
 	};

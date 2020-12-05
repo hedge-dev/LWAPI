@@ -36,6 +36,8 @@ namespace app
 
 	public:
 		void Kill();
+		static csl::fnd::IAllocator* GetAllocator();
+		
 		GameObject()
 		{
 			GameObjectSystem::GetSingleton()->AddObject(this);
@@ -192,5 +194,10 @@ namespace app
 			statusFlags |= 1;
 			enabled = false;
 		}
+	}
+
+	inline csl::fnd::IAllocator* GameObject::GetAllocator()
+	{
+		return GameObjectSystem::GetSingleton()->GetPooledAllocator();
 	}
 }
