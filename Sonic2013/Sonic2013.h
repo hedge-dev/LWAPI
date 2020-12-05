@@ -19,6 +19,9 @@
 #include "Hedgehog/Base/Universe/hhActor.h"
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 
+#include "Hedgehog/Pack/System/hhPackFile.h"
+#include "Hedgehog/Graphics/hhModel.h"
+
 // System
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
@@ -32,3 +35,4 @@
 
 // Components
 #include "System/goc/goc_Transform.h"
+#include "System/goc/goc_VisualModel.h"

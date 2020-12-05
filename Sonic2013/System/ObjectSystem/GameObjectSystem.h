@@ -19,7 +19,7 @@ namespace app
 	public:
 		fnd::HandleManagerBase* handleManager;
 		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0x00FD3FC4);
-		inline static FUNCTION_PTR(void, __thiscall, fp_GameObjectSystemAddObject, ASLR(0x0049D9C0), GameObjectSystem* This, GameObject* object);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddObject, ASLR(0x0049D9C0), GameObjectSystem* This, GameObject* object);
 
 		GameObjectSystem()
 		{
@@ -29,7 +29,7 @@ namespace app
 		
 		void AddObject(GameObject* object)
 		{
-			fp_GameObjectSystemAddObject(this, object);
+			ms_fpAddObject(this, object);
 		}
 
 		csl::fnd::IAllocator* GetPooledAllocator() const

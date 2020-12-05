@@ -8,7 +8,7 @@ namespace app
 	{
 	public:
 		inline static GameDocument** ms_ppGameDocument = (GameDocument**)ASLR(0xFEFEF4);
-		inline static FUNCTION_PTR(void, __thiscall, fp_GameDocumentAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
 
 	private:
 		void* gameMode{};
@@ -19,7 +19,12 @@ namespace app
 	public:
 		void AddGameObject(GameObject* object)
 		{
-			fp_GameDocumentAddGameObject(this, object);
+			ms_fpAddGameObject(this, object);
+		}
+
+		inline static GameDocument* GetSingleton() 
+		{
+			return *ms_ppGameDocument;
 		}
 	};
 }

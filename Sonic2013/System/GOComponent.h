@@ -62,7 +62,7 @@ namespace app
 			}
 
 			template <typename  T>
-			static GOComponent* Create(GameObject* obj);
+			static T* Create(GameObject& obj);
 			static void BeginSetup(GameObject& obj);
 			static void EndSetup(GameObject& obj);
 		};
@@ -71,12 +71,12 @@ namespace app
 
 #include "GameObject.h"
 template <typename T>
-inline app::fnd::GOComponent* app::fnd::GOComponent::Create(GameObject* obj)
+inline T* app::fnd::GOComponent::Create(GameObject& obj)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
 	GOComponent* component = T::staticClass()->initializer(GameObject::GetAllocator());
-	obj->AddComponent(component);
-	return component;
+	obj.AddComponent(component);
+	return reinterpret_cast<T*>(component);
 }
 
 inline void app::fnd::GOComponent::BeginSetup(GameObject& obj)

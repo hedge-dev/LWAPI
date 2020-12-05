@@ -51,7 +51,7 @@ namespace app
 			}
 		}
 
-		virtual void AddCallback(GameDocument* document)
+		virtual void AddCallback(GameDocument& document)
 		{
 
 		}
