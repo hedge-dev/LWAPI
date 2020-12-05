@@ -1,6 +1,7 @@
 #pragma once
 
 // C Standard Library
+#include "cslib/Bitset.h"
 #include "cslib/utils.h"
 #include "cslib/math.h"
 #include "cslib/IAllocator.h"
