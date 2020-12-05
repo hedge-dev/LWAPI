@@ -61,15 +61,38 @@ namespace app
 				activeObject = object;
 			}
 
-			static GOComponent* Create(GameObject* obj, GOComponentClass* cls);
+			template <typename  T>
+			static GOComponent* Create(GameObject* obj);
+			static void BeginSetup(GameObject& obj);
+			static void EndSetup(GameObject& obj);
 		};
 	}
 }
 
 #include "GameObject.h"
-inline app::fnd::GOComponent* app::fnd::GOComponent::Create(GameObject* obj, GOComponentClass* cls)
+template <typename T>
+inline app::fnd::GOComponent* app::fnd::GOComponent::Create(GameObject* obj)
 {
-	GOComponent* component = cls->initializer(GameObject::GetAllocator());
+	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
+	GOComponent* component = T::staticClass()->initializer(GameObject::GetAllocator());
 	obj->AddComponent(component);
 	return component;
+}
+
+inline void app::fnd::GOComponent::BeginSetup(GameObject& obj)
+{
+	auto& components = obj.GetComponents();
+	for (auto* it = components.begin(); it != components.end(); it++)
+	{
+		(*it)->OnGOCEvent(0, obj, nullptr);
+	}
+}
+
+inline void app::fnd::GOComponent::EndSetup(GameObject& obj)
+{
+	auto& components = obj.GetComponents();
+	for (auto* it = components.begin(); it != components.end(); it++)
+	{
+		(*it)->OnGOCEvent(1, obj, nullptr);
+	}
 }

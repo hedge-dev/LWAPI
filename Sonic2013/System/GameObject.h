@@ -185,6 +185,11 @@ namespace app
 
 			return nullptr;
 		}
+
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents()
+		{
+			return components;
+		}
 	};
 
 	inline void GameObject::Kill()
