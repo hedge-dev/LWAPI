@@ -10,7 +10,7 @@ namespace app
 		GameDocument* document{};
 		size_t objectHandle{};
 		GameObjectTableEntry* objectEntry{};
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ (GameObjectSystem::GetSingleton()->GetPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ GameObjectSystem::GetSingleton()->GetPooledAllocator() };
 		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
 		csl::fnd::IAllocator* objectAllocator{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
 		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ GameObjectSystem::GetSingleton()->GetPooledAllocator() };
