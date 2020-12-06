@@ -34,6 +34,7 @@
 #include "System/ObjectSystem/SetObjectListener.h"
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/GameService.h"
+#include "System/ObjInfo.h"
 
 // Components
 #include "System/goc/goc_Transform.h"
