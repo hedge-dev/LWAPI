@@ -5,7 +5,7 @@ namespace hh::base
 	class CRefCountObject
 	{
 	private:
-		size_t refCount{ 1 };
+		size_t refCount{};
 
 	public:
 		virtual ~CRefCountObject() = default;
