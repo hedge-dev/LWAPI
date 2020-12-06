@@ -41,9 +41,12 @@ namespace app::fnd
 
 		void Release()
 		{
-			if (refCount && !--refCount)
+			if (objectSize)
 			{
-				delete this;
+				if (refCount-- == 1)
+				{
+					delete this;
+				}
 			}
 		}
 	};

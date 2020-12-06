@@ -2,18 +2,21 @@
 
 namespace app
 {
-	class GameObject : public hh::base::CRefCountObject, fnd::CLeafActor
+	class GameObject : public hh::base::CRefCountObject, public fnd::CLeafActor
 	{
+	public:
+		static csl::fnd::IAllocator* GetAllocator();
+		
 	protected:
 		char statusFlags{ 0 };
 		char category{ 6 };
 		GameDocument* document{};
 		size_t objectHandle{};
 		GameObjectTableEntry* objectEntry{};
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ GameObjectSystem::GetSingleton()->GetPooledAllocator() };
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ GetAllocator() };
 		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
-		csl::fnd::IAllocator* objectAllocator{ (*GameObjectSystem::ms_ppGameObjectSystem)->GetPooledAllocator() };
-		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ GameObjectSystem::GetSingleton()->GetPooledAllocator() };
+		csl::fnd::IAllocator* objectAllocator{ GetAllocator() };
+		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ GetAllocator() };
 		unsigned int componentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> visualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
 		csl::ut::LinkList<fnd::GOComponent> physicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
@@ -36,7 +39,6 @@ namespace app
 
 	public:
 		void Kill();
-		static csl::fnd::IAllocator* GetAllocator();
 		
 		GameObject()
 		{
@@ -45,6 +47,7 @@ namespace app
 
 		~GameObject() override
 		{
+			GameObjectSystem::GetSingleton()->RemoveObject(this);
 			for (auto* it = components.begin(); it != components.end(); it++)
 			{
 				(*it)->Release();
@@ -97,9 +100,9 @@ namespace app
 				auto* component = visualComponents.get(visualComponents.begin());
 
 				if (updateFlags)
-					Update(reinterpret_cast<fnd::SUpdateInfo&>(data));
+					Update(*reinterpret_cast<fnd::SUpdateInfo*>(data));
 
-				UpdateComponents(visualComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 0);
+				UpdateComponents(visualComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 0);
 
 				return true;
 			}
@@ -110,9 +113,9 @@ namespace app
 					return true;
 
 				if (updateFlags)
-					UpdatePhase(reinterpret_cast<fnd::SUpdateInfo&>(data), 1);
+					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
 
-				UpdateComponents(physicsComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 1);
+				UpdateComponents(physicsComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
 
 				return true;
 			}
@@ -123,9 +126,9 @@ namespace app
 					return true;
 
 				if (updateFlags)
-					UpdatePhase(reinterpret_cast<fnd::SUpdateInfo&>(data), 2);
+					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
 
-				UpdateComponents(audibleComponents, reinterpret_cast<fnd::SUpdateInfo&>(data), 2);
+				UpdateComponents(audibleComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
 
 				return true;
 			}
@@ -151,12 +154,12 @@ namespace app
 		
 		void* operator new (size_t size)
 		{
-			return GameObjectSystem::GetSingleton()->GetPooledAllocator()->Alloc(size, 16);
+			return GetAllocator()->Alloc(size, 16);
 		}
 
 		void operator delete (void* loc)
 		{
-			GameObjectSystem::GetSingleton()->GetPooledAllocator()->Free(loc);
+			GetAllocator()->Free(loc);
 		}
 
 		bool AddComponent(fnd::GOComponent* component)

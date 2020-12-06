@@ -17,9 +17,6 @@ namespace app::fnd
 		{
 			GameObjectSystem::GetSingleton()->handleManager->RemoveObject(*this);
 			ms_fpCtor(this);
-
-			// The game's constructor sets the reference count to zero which causes the object to die prematurely if its on the heap
-			AddRef();
 		}
 
 		~GOCTransform() override

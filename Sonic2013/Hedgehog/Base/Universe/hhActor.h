@@ -17,8 +17,8 @@ namespace app::fnd
 		unsigned int actorID{};
 		void* messageManager{};
 		void* unk1{};
-		unsigned short flags{ 0 };
-		char updateFlags{ 1 };
+		unsigned short updateFlags{ 0 };
+		char flags{ 1 };
 		bool enabled{ true };
 		unsigned int allowedMessageMask{ static_cast<unsigned>(-1) };
 		void* unk2{};
@@ -43,5 +43,14 @@ namespace app::fnd
 		}
 
 		virtual bool ActorProc(int id, void* data) = 0;
+
+		void SetUpdateFlag(unsigned short flag, bool value)
+		{
+			char temp = 1 << flag;
+			if (value)
+				updateFlags |= temp;
+			else
+				updateFlags &= ~temp;
+		}
 	};
 }

@@ -15,7 +15,7 @@ namespace app
 	public:
 		inline static GameDocument** ms_ppGameDocument = reinterpret_cast<GameDocument**>(ASLR(0xFEFEF4));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
-		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B3C0), const GameDocument* This, fnd::GameServiceClass* cls);
+		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B2E0), const GameDocument* This, const fnd::GameServiceClass& cls);
 
 	private:
 		void* gameMode{};
@@ -29,7 +29,7 @@ namespace app
 			ms_fpAddGameObject(this, object);
 		}
 
-		fnd::GameService* GetServiceByClass(fnd::GameServiceClass* cls) const
+		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls) const
 		{
 			return ms_fpGetServiceByClass(this, cls);
 		}
@@ -40,7 +40,7 @@ namespace app
 			return reinterpret_cast<T*>(GetServiceByClass(T::staticClass()));
 		}
 
-		inline static GameDocument* GetSingleton() 
+		inline static GameDocument* GetSingleton()
 		{
 			return *ms_ppGameDocument;
 		}

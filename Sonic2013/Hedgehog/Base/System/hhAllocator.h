@@ -1,14 +1,14 @@
 #pragma once
 
-static inline FUNCTION_PTR(void*, __cdecl, fp_HH_ALLOC, ASLR(0x00C1B130), size_t size);
-static inline FUNCTION_PTR(void, __cdecl, fp_HH_FREE, ASLR(0x00C1B330), void* mem);
+static inline FUNCTION_PTR(void*, __cdecl, ms_fpHH_ALLOC, ASLR(0x00C1B130), size_t size);
+static inline FUNCTION_PTR(void, __cdecl, ms_fpHH_FREE, ASLR(0x00C1B330), void* mem);
 
 static void* __HH_ALLOC(size_t size)
 {
-	return fp_HH_ALLOC(size);
+	return ms_fpHH_ALLOC(size);
 }
 
 static void __HH_FREE(void* mem)
 {
-	fp_HH_FREE(mem);
+	ms_fpHH_FREE(mem);
 }
