@@ -39,3 +39,6 @@
 // Components
 #include "System/goc/goc_Transform.h"
 #include "System/goc/goc_VisualModel.h"
+
+// Services
+#include "System/Services/service_ObjInfoContainer.h"
