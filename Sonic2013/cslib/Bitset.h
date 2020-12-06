@@ -25,7 +25,7 @@ namespace csl::ut
 		
 		bool test(T bit)
 		{
-			return dummy & (1 << bit) != 0;
+			return dummy & (1 << bit);
 		}
 
 		operator T() const { return dummy; }

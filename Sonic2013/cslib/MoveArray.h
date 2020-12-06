@@ -15,7 +15,7 @@ namespace csl
 
 			bool isInplace()
 			{
-				return maxLength & (1u << ((sizeof(size_t) * CHAR_BIT) - 1)) == 1;
+				return maxLength & (1u << ((sizeof(size_t) * CHAR_BIT) - 1));
 			}
 			
 			void reserve(size_t len)
