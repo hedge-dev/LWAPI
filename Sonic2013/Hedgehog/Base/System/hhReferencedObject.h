@@ -27,7 +27,7 @@ namespace app::fnd
 			{
 				object->allocator = allocator;
 				object->objectSize = size;
-				object->refCount = 1;
+				object->refCount = 0;
 			}
 
 			return object;

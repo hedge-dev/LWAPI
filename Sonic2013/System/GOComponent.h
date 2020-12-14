@@ -33,9 +33,14 @@ namespace app
 			csl::ut::LinkListNode visualComponentNode;
 			csl::ut::LinkListNode physicsComponentNode;
 			csl::ut::LinkListNode audibleComponentNode;
+
+			GOComponent(bool skip) : RefByHandleObject(skip)
+			{
+				
+			}
 			
 		public:
-			GOComponent()
+			GOComponent() : RefByHandleObject()
 			{
 				
 			}
@@ -75,6 +80,10 @@ inline T* app::fnd::GOComponent::Create(GameObject& obj)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
 	GOComponent* component = T::staticClass()->initializer(GameObject::GetAllocator());
+
+	if (!component)
+		return nullptr;
+	
 	obj.AddComponent(component);
 	return reinterpret_cast<T*>(component);
 }

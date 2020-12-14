@@ -182,7 +182,8 @@ namespace app
 		{
 			for (auto* it = components.begin(); it != components.end(); it++)
 			{
-				if ((*it)->GetFamilyID() == name)
+				auto* family = (*it)->GetFamilyID();
+				if (family == name)
 					return *it;
 			}
 

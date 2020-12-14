@@ -26,5 +26,11 @@ namespace app::fnd
 		{
 			GameObjectSystem::GetSingleton()->handleManager->AddObject(*this);
 		}
+
+	protected:
+		RefByHandleObject(bool skip)
+		{
+			
+		}
 	};
 }
