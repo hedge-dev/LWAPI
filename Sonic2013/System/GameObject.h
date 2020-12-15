@@ -190,6 +190,12 @@ namespace app
 			return nullptr;
 		}
 
+		template<typename T>
+		T* GetComponent()
+		{
+			return (T*)GetComponent(T::staticClass()->familyID);
+		}
+		
 		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents()
 		{
 			return components;
