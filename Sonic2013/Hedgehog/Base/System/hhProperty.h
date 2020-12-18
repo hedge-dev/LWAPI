@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class PropertyValue
+	class Property
 	{
 	private:
 		unsigned int propertyID{};
@@ -11,10 +11,10 @@ namespace app::fnd
 		unsigned int unk2{};
 
 	public:
-		PropertyValue(unsigned int id) : propertyID(id) {}
+		Property(unsigned int id) : propertyID(id) {}
 
-		PropertyValue(unsigned int id, unsigned int value_) : propertyID(id), value(value_) {}
+		Property(unsigned int id, unsigned int value_) : propertyID(id), value(value_) {}
 
-		PropertyValue(unsigned int id, unsigned int value_, unsigned int a3) : propertyID(id), value(value_), unk1(a3) {}
+		Property(unsigned int id, unsigned int value_, unsigned int a3) : propertyID(id), value(value_), unk1(a3) {}
 	};
 }

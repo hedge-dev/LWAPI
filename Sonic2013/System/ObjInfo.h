@@ -21,11 +21,11 @@ namespace app
 		csl::ut::Bitset<unsigned int> status{};
 
 	public:
-		virtual void Load(CObjInfoFileLoader* loader) {}
+		virtual void Load(CObjInfoFileLoader& loader) {}
 		virtual void Initialize(GameDocument& document) {}
 		virtual void Finalize() {}
 		virtual const char* GetInfoName() = 0;
-		virtual void RegisterCallback(CObjInfoContainer* container) {}
+		virtual void RegisterCallback(CObjInfoContainer& container) {}
 		virtual void InitializeExtra(GameDocument& document) {}
 	};
 }

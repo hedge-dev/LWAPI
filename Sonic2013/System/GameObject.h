@@ -10,13 +10,13 @@ namespace app
 	protected:
 		char statusFlags{ 0 };
 		char category{ 6 };
-		GameDocument* document{};
+		GameDocument* ownerDocument{};
 		size_t objectHandle{};
 		GameObjectTableEntry* objectEntry{};
 		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ GetAllocator() };
 		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
 		csl::fnd::IAllocator* objectAllocator{ GetAllocator() };
-		csl::ut::InplaceMoveArray<fnd::PropertyValue, 2> properties{ GetAllocator() };
+		csl::ut::InplaceMoveArray<fnd::Property, 2> properties{ GetAllocator() };
 		unsigned int componentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> visualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
 		csl::ut::LinkList<fnd::GOComponent> physicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
@@ -59,7 +59,7 @@ namespace app
 
 		}
 
-		virtual void RemoveCallback(GameDocument* document)
+		virtual void RemoveCallback(GameDocument& document)
 		{
 
 		}

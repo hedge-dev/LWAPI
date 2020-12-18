@@ -39,6 +39,10 @@
 // Components
 #include "System/goc/goc_Transform.h"
 #include "System/goc/goc_VisualModel.h"
+#include "System/goc/goc_EnemyTarget.h"
 
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
+
+// Objects
+#include "System/GameObject3D.h"
