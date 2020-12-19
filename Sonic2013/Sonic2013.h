@@ -31,7 +31,6 @@
 #include "System/Messages.h"
 #include "System/GOComponent.h"
 #include "System/GameObject.h"
-#include "System/ObjectSystem/SetObjectListener.h"
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/GameService.h"
 #include "System/ObjInfo.h"
@@ -43,6 +42,10 @@
 
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
+#include "System/Services/service_LevelInfo.h"
 
 // Objects
 #include "System/GameObject3D.h"
+
+// SetData
+#include "System/SetObject/SetObjectListener.h"

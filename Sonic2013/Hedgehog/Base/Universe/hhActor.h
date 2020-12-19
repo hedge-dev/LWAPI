@@ -21,7 +21,7 @@ namespace app::fnd
 		char flags{ 1 };
 		bool enabled{ true };
 		unsigned int allowedMessageMask{ static_cast<unsigned>(-1) };
-		void* unk2{};
+		bool isDeactivated{};
 
 	public:
 		virtual ~CActor() = default;

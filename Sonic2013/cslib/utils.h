@@ -4,6 +4,8 @@
 #include <WinBase.h>
 #include <type_traits>
 
+typedef unsigned int uint;
+
 #define _CONCATX(x, y) x##y
 #define _CONCAT(x, y)  _CONCATX(x, y)
 

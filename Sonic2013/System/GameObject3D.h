@@ -21,7 +21,23 @@ namespace app
 			if (PreProcessMessage(msg))
 				return true;
 
-
+			if (msg.IsOfType<xgame::MsgGetPosition>())
+			{
+				auto& msgPos = reinterpret_cast<xgame::MsgGetPosition&>(msg);
+				const auto& pos = transform.GetLocalPosition();
+				msgPos.SetPosition(pos);
+			}
+			else if (msg.IsOfType<xgame::MsgGetRotation>())
+			{
+				auto& msgRot = reinterpret_cast<xgame::MsgGetRotation&>(msg);
+				const auto& rot = transform.GetLocalRotation();
+				msgRot.SetRotation(rot);
+			}
+			else if (msg.IsOfType<xgame::MsgDeactivate>())
+			{
+				isDeactivated = true;
+				Kill();
+			}
 			
 			return GameObject::ProcessMessage(msg);
 		}

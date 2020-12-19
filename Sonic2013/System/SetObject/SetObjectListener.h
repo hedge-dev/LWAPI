@@ -4,7 +4,7 @@ namespace app
 {
 	class CSetAdapter;
 	
-	class CSetObjectListener : public GameObject
+	class CSetObjectListener : public GameObject3D
 	{
 	public:
 		virtual void OnInitializedSetObject()
@@ -19,7 +19,7 @@ namespace app
 		
 		virtual void OnSetEditorParamChanged(CSetAdapter& adapter)
 		{
-			
+
 		}
 		
 		virtual unsigned int GetAdsorbGuidePathID()
