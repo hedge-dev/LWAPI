@@ -9,14 +9,6 @@ namespace app::fnd
 		unsigned short refCount;
 		csl::fnd::IAllocator* allocator;
 
-		void operator delete(void* loc)
-		{
-			auto* object = static_cast<ReferencedObject*>(loc);
-
-			if (object->allocator)
-				object->allocator->Free(object);
-		}
-
 	public:
 		~ReferencedObject() override = default;
 
@@ -31,6 +23,14 @@ namespace app::fnd
 			}
 
 			return object;
+		}
+
+		void operator delete(void* loc)
+		{
+			auto* object = static_cast<ReferencedObject*>(loc);
+
+			if (object->allocator)
+				object->allocator->Free(object);
 		}
 
 		void AddRef()

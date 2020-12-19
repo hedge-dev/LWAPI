@@ -2,7 +2,7 @@
 
 namespace app
 {
-	class alignas(16) GameObject3D : GameObject
+	class alignas(16) GameObject3D : public GameObject
 	{
 		fnd::GOCTransform transform;
 		INSERT_PADDING(100); // WHAT AND WHY
@@ -13,7 +13,6 @@ namespace app
 	public:
 		GameObject3D() : GameObject()
 		{
-			transform = fnd::GOCTransform();
 			AddComponent(pTransform);
 		}
 

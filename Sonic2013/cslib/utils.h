@@ -10,7 +10,9 @@
 #define CONCAT2(x, y) _CONCAT(x, y)
 
 #define CHAR_BIT 8
-#define FORCE_RET __asm ret
+#define FORCE_RET __asm mov esp, ebp \
+	__asm pop ebp \
+	__asm retn \
 
 #define INSERT_PADDING(length) char CONCAT2(pad, __LINE__)[length]
 
