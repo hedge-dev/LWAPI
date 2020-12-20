@@ -1,4 +1,5 @@
 #pragma once
+#undef SendMessage
 
 namespace app::fnd
 {
@@ -14,8 +15,8 @@ namespace app::fnd
 	class CActor
 	{
 	protected:
-		unsigned int actorID{};
-		void* messageManager{};
+		uint actorID{};
+		MessageManager* messageManager{};
 		void* unk1{};
 		unsigned short updateFlags{ 0 };
 		char flags{ 1 };
@@ -23,6 +24,12 @@ namespace app::fnd
 		unsigned int allowedMessageMask{ static_cast<unsigned>(-1) };
 		bool isDeactivated{};
 
+		void MessageSetup(uint to, fnd::Message& msg)
+		{
+			msg.receiver = to;
+			msg.sender = actorID;
+		}
+		
 	public:
 		virtual ~CActor() = default;
 		virtual void ForEach(CActorTraverser& traverser) = 0;
@@ -51,6 +58,63 @@ namespace app::fnd
 				updateFlags |= temp;
 			else
 				updateFlags &= ~temp;
+		}
+		
+		bool SendMessageImm(uint to, fnd::Message& msg)
+		{
+			if (msg.mask & allowedMessageMask)
+			{
+				MessageSetup(to, msg);
+				CActor* actor = messageManager->GetActor(to);
+				
+				if (!actor)
+					return false;
+
+				return actor->ActorProc(0, &msg);
+			}
+			return false;
+		}
+
+		bool BroadcastMessageImm(uint group, fnd::Message& msg)
+		{
+			if (msg.mask & allowedMessageMask)
+			{
+				MessageSetup(group, msg);
+
+				CActor* actor = messageManager->GetActor(group);
+
+				if (!actor)
+					return false;
+
+				return actor->ActorProc(1, &msg);
+			}
+			
+			return false;
+		}
+		
+		bool SendMessage(fnd::Message& msg)
+		{
+			if (allowedMessageMask & msg.mask)
+			{
+				return ActorProc(0, &msg);
+			}
+
+			return false;
+		}
+
+		void SendMessage(uint to, fnd::Message& msg)
+		{
+			if (allowedMessageMask & msg.mask)
+			{
+				messageManager->AddMessage(msg);
+			}
+		}
+
+		void BroadcastMessage(uint group, fnd::Message& msg)
+		{
+			MessageSetup(group, msg);
+			msg.broadcasted = true;
+			messageManager->AddMessage(msg);
 		}
 	};
 }

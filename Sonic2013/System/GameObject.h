@@ -200,6 +200,15 @@ namespace app
 		{
 			return components;
 		}
+
+		bool BroadcastMessageImmToGroup(uint group, fnd::Message& msg)
+		{
+			uint groupActor = ownerDocument->GetGroupActorID(group);
+			if (!groupActor)
+				return false;
+
+			BroadcastMessageImm(groupActor, msg);
+		}
 	};
 
 	inline void GameObject::Kill()

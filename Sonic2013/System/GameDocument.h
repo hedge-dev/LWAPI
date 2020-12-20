@@ -24,6 +24,14 @@ namespace app
 		float time{};
 
 	public:
+
+		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
+
+		uint GetGroupActorID(uint group)
+		{
+			return ms_fpGetGroupActorID(this, group);
+		}
+
 		void AddGameObject(GameObject* object)
 		{
 			ms_fpAddGameObject(this, object);

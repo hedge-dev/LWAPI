@@ -5,6 +5,7 @@
 #include <type_traits>
 
 typedef unsigned int uint;
+typedef unsigned short ushort;
 
 #define _CONCATX(x, y) x##y
 #define _CONCAT(x, y)  _CONCATX(x, y)

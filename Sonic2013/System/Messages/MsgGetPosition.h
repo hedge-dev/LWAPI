@@ -17,5 +17,12 @@ namespace app::xgame
 
 		[[nodiscard]] const csl::math::Vector3& GetPosition() const { return position; }
 		void SetPosition(const csl::math::Vector3& pos) { position = pos; }
+
+		Message* Clone() override
+		{
+			auto* msg = new MsgGetPosition();
+			msg->SetPosition(msg->GetPosition());
+			return msg;
+		}
 	};
 }

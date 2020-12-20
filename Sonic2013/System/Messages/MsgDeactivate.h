@@ -11,5 +11,10 @@ namespace app::xgame
 		{
 			
 		}
+
+		Message* Clone() override
+		{
+			return new MsgDeactivate();
+		}
 	};
 }

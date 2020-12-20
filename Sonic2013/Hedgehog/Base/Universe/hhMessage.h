@@ -7,21 +7,22 @@ namespace app::fnd
 	struct SUpdateInfo
 	{
 		float deltaTime;
-		unsigned int frame;
+		uint frame;
 	};
 
 	class Message
 	{
 	protected:
-		unsigned int id;
+		uint id;
 
 	public:
-		unsigned int sender;
-		unsigned int receiver;
-		unsigned short unk1;
-		unsigned int mask;
+		uint sender;
+		uint receiver;
+		char unk1;
+		bool broadcasted;
+		uint mask;
 		
-		Message(unsigned int id_)
+		Message(uint id_)
 		{
 			id = id_;
 		}

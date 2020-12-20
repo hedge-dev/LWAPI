@@ -18,6 +18,7 @@
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
+#include "Hedgehog/Base/Universe/hhMessageManager.h"
 #include "Hedgehog/Base/Universe/hhActor.h"
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 

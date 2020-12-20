@@ -17,5 +17,12 @@ namespace app::xgame
 
 		const csl::math::Quaternion& GetRotation() const { return rotation; }
 		void SetRotation(const csl::math::Quaternion& rot) { rotation = rot; }
+
+		Message* Clone() override
+		{
+			auto* msg = new MsgGetRotation();
+			msg->SetRotation(GetRotation());
+			return msg;
+		}
 	};
 }
