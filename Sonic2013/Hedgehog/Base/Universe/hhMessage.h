@@ -20,7 +20,7 @@ namespace app::fnd
 		uint receiver;
 		char unk1;
 		bool broadcasted;
-		uint mask;
+		uint mask{ (uint)-1 };
 		
 		Message(uint id_)
 		{

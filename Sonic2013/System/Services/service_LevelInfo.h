@@ -9,6 +9,12 @@ namespace app
 
 
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetPlayerInfo, ASLR(0x009125A0), void* This, uint playerNum);
+		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID, ASLR(0x00912550), const void* This, const uint playerNo);
+
+		[[nodiscard]] uint GetPlayerID(const uint playerNo) const
+		{
+			return ms_fpGetPlayerID(this, playerNo);
+		}
 
 		void* GetPlayerInfo(uint playerNum)
 		{
