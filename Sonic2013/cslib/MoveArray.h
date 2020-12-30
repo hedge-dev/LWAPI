@@ -17,7 +17,8 @@ namespace csl
 			{
 				return maxLength & (1u << ((sizeof(size_t) * CHAR_BIT) - 1));
 			}
-			
+
+		public:
 			void reserve(size_t len)
 			{
 				// We already have enough reserved, return
@@ -43,6 +44,7 @@ namespace csl
 				buffer = static_cast<T*>(newBuffer);
 			}
 
+		protected:
 			T* get(size_t i) const
 			{
 				if (!buffer)
