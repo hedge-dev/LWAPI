@@ -31,7 +31,18 @@ namespace app::fnd
 		}
 		
 	public:
-		virtual ~CActor() = default;
+		void RemoveFromAllParents()
+		{
+			if (parent)
+				parent->ActorProc(2, this);
+		}
+		
+		virtual ~CActor()
+		{
+			RemoveFromAllParents();
+			csl::ut::Singleton<MessageManager>::GetInstance()->Remove(this);
+		}
+		
 		virtual void ForEach(CActorTraverser& traverser) = 0;
 
 		virtual bool PreProcessMessage(Message& msg)
