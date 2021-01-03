@@ -40,7 +40,7 @@ namespace app::fnd
 		virtual ~CActor()
 		{
 			RemoveFromAllParents();
-			csl::ut::Singleton<MessageManager>::GetInstance()->Remove(this);
+			csl::fnd::Singleton<MessageManager>::GetInstance()->Remove(this);
 		}
 		
 		virtual void ForEach(CActorTraverser& traverser) = 0;

@@ -10,7 +10,7 @@ namespace app
 		GameObject* object{};
 	};
 
-	class GameObjectSystem : public fnd::ReferencedObject, csl::ut::Singleton<GameObjectSystem>
+	class GameObjectSystem : public fnd::ReferencedObject, csl::fnd::Singleton<GameObjectSystem>
 	{
 	private:
 		csl::fnd::IAllocator* pooledAllocator{};
@@ -45,7 +45,7 @@ namespace app
 	};
 }
 
-namespace csl::ut 
+namespace csl::fnd
 {
 	inline app::GameObjectSystem** Singleton<app::GameObjectSystem>::instance = reinterpret_cast<
 		app::GameObjectSystem**>(ASLR(0x00FD3FC4));

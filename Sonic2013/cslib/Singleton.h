@@ -1,6 +1,6 @@
 #pragma once
 
-namespace csl::ut
+namespace csl::fnd
 {
 	template<typename T>
 	class Singleton

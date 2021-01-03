@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class GameServiceTypeRegistry : public ReferencedObject, csl::ut::Singleton<GameServiceTypeRegistry>
+	class GameServiceTypeRegistry : public ReferencedObject, csl::fnd::Singleton<GameServiceTypeRegistry>
 	{
 	protected:
 		csl::ut::MoveArray<GameServiceClass*> classes{ allocator };
@@ -24,7 +24,7 @@ namespace app::fnd
 	};
 }
 
-namespace csl::ut
+namespace csl::fnd
 {
 	inline app::fnd::GameServiceTypeRegistry** Singleton<app::fnd::GameServiceTypeRegistry>::instance = reinterpret_cast<
 		app::fnd::GameServiceTypeRegistry**>(ASLR(0x00FD4318));
