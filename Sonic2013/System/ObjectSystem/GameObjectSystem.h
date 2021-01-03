@@ -10,7 +10,7 @@ namespace app
 		GameObject* object{};
 	};
 
-	class GameObjectSystem : public fnd::ReferencedObject
+	class GameObjectSystem : public fnd::ReferencedObject, csl::ut::Singleton<GameObjectSystem>
 	{
 	private:
 		csl::fnd::IAllocator* pooledAllocator{};
@@ -42,10 +42,11 @@ namespace app
 		{
 			return pooledAllocator;
 		}
-
-		inline static GameObjectSystem* GetSingleton()
-		{
-			return *ms_ppGameObjectSystem;
-		}
 	};
+}
+
+namespace csl::ut 
+{
+	inline app::GameObjectSystem** Singleton<app::GameObjectSystem>::instance = reinterpret_cast<
+		app::GameObjectSystem**>(ASLR(0x00FD3FC4));
 }

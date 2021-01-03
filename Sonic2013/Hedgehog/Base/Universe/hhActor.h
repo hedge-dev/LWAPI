@@ -17,7 +17,7 @@ namespace app::fnd
 	protected:
 		uint actorID{};
 		MessageManager* messageManager{};
-		void* unk1{};
+		CActor* parent{};
 		unsigned short updateFlags{ 0 };
 		char flags{ 1 };
 		bool enabled{ true };

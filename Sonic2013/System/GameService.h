@@ -17,6 +17,11 @@ namespace app::fnd
 		{
 			
 		}
+
+		[[nodiscard]] const char* GetName() const
+		{
+			return name;
+		}
 	};
 
 	class GameService : public ReferencedObject, public CLeafActor

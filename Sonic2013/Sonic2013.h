@@ -7,6 +7,7 @@
 #include "cslib/IAllocator.h"
 #include "cslib/MoveArray.h"
 #include "cslib/LinkList.h"
+#include "cslib/Singleton.h"
 
 // Hedgehog Library
 #include "Hedgehog/Base/System/hhAllocator.h"
@@ -44,6 +45,7 @@
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
 #include "System/Services/service_LevelInfo.h"
+#include "System/Services/service_GameServiceTypeRegistry.h"
 
 // Objects
 #include "System/GameObject3D.h"

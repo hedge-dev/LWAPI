@@ -42,12 +42,12 @@ namespace app
 		
 		GameObject()
 		{
-			GameObjectSystem::GetSingleton()->AddObject(this);
+			csl::ut::Singleton<GameObjectSystem>::GetInstance()->AddObject(this);
 		}
 
 		~GameObject() override
 		{
-			GameObjectSystem::GetSingleton()->RemoveObject(this);
+			csl::ut::Singleton<GameObjectSystem>::GetInstance()->RemoveObject(this);
 			for (auto* it = components.begin(); it != components.end(); it++)
 			{
 				(*it)->Release();
@@ -222,6 +222,6 @@ namespace app
 
 	inline csl::fnd::IAllocator* GameObject::GetAllocator()
 	{
-		return GameObjectSystem::GetSingleton()->GetPooledAllocator();
+		return csl::ut::Singleton<GameObjectSystem>::GetInstance()->GetPooledAllocator();
 	}
 }
