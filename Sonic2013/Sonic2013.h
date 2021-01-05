@@ -1,13 +1,13 @@
 #pragma once
 
 // C Standard Library
-#include "cslib/Bitset.h"
-#include "cslib/utils.h"
-#include "cslib/math.h"
-#include "cslib/IAllocator.h"
-#include "cslib/MoveArray.h"
-#include "cslib/LinkList.h"
-#include "cslib/Singleton.h"
+#include "cslib/utilities/Bitset.h"
+#include "cslib/utilities/utils.h"
+#include "cslib/math/math.h"
+#include "cslib/foundation/IAllocator.h"
+#include "cslib/utilities/MoveArray.h"
+#include "cslib/utilities/LinkList.h"
+#include "cslib/foundation/Singleton.h"
 
 // Hedgehog Library
 #include "Hedgehog/Base/System/hhAllocator.h"
