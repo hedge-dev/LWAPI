@@ -1,4 +1,5 @@
 #pragma once
+#pragma push_macro("SendMessage")
 #undef SendMessage
 
 namespace app::fnd
@@ -129,3 +130,5 @@ namespace app::fnd
 		}
 	};
 }
+
+#pragma pop_macro("SendMessage")

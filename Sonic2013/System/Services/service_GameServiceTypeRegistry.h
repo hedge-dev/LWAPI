@@ -5,10 +5,10 @@ namespace app::fnd
 	class GameServiceTypeRegistry : public ReferencedObject, csl::fnd::Singleton<GameServiceTypeRegistry>
 	{
 	protected:
-		csl::ut::MoveArray<GameServiceClass*> classes{ allocator };
+		csl::ut::MoveArray<const GameServiceClass*> classes{ allocator };
 		
 	public:
-		[[nodiscard]] GameServiceClass* GetClassByName(const char* name) const
+		[[nodiscard]] const GameServiceClass* GetClassByName(const char* name) const
 		{
 			for (auto** it = classes.begin(); it != classes.end(); it++)
 			{

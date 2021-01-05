@@ -1,4 +1,6 @@
 #pragma once
+#pragma push_macro("CreateService")
+#undef CreateService
 
 namespace app
 {
@@ -16,6 +18,8 @@ namespace app
 		inline static GameDocument** ms_ppGameDocument = reinterpret_cast<GameDocument**>(ASLR(0xFEFEF4));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
 		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B2E0), const GameDocument* This, const fnd::GameServiceClass& cls);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), void* This, fnd::GameService* service);
+
 
 	private:
 		void* gameMode{};
@@ -37,6 +41,19 @@ namespace app
 			ms_fpAddGameObject(this, object);
 		}
 
+		void AddService(fnd::GameService* service)
+		{
+			ms_fpAddService(this, service);
+		}
+
+		fnd::GameService* CreateService(const fnd::GameServiceClass& cls, csl::fnd::IAllocator* allocator = nullptr);
+
+		template<typename T>
+		T* CreateService(csl::fnd::IAllocator* allocator = nullptr)
+		{
+			return reinterpret_cast<T*>(CreateService(T::staticClass(), allocator));
+		}
+		
 		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls) const
 		{
 			return ms_fpGetServiceByClass(this, cls);
@@ -54,3 +71,18 @@ namespace app
 		}
 	};
 }
+
+#include "GameService.h"
+
+inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameServiceClass& cls, csl::fnd::IAllocator* allocator)
+{
+	if (!allocator)
+		allocator = this->allocator;
+	
+	auto* service = cls.Construct(allocator);
+	AddService(service);
+
+	return service;
+}
+
+#pragma pop_macro("CreateService")

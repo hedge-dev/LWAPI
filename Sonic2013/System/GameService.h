@@ -3,8 +3,9 @@
 namespace app::fnd
 {
 	class GameService;
-	typedef GameService* initializeService(csl::fnd::IAllocator& allocator);
+	typedef GameService* initializeService(csl::fnd::IAllocator* allocator);
 	typedef void RflClass;
+	typedef uint ServiceType;
 	
 	class GameServiceClass
 	{
@@ -22,23 +23,39 @@ namespace app::fnd
 		{
 			return name;
 		}
+
+		[[nodiscard]] GameService* Construct(csl::fnd::IAllocator* allocator) const;
 	};
 
 	class GameService : public ReferencedObject, public CLeafActor
 	{
+		friend GameServiceClass;
+
 	protected:
 		GameDocument* document{};
-		GameServiceClass* serviceClass{};
+		const GameServiceClass* serviceClass{};
 		void* unk1{};
 		void* unk2{};
 		unsigned int flags{};
+
+		GameService(ServiceType serviceType)
+		{
+			if (serviceType)
+			{
+				flags = serviceType > 2 ? 0 : serviceType;
+			}
+			else
+			{
+				flags = 0x2000;
+			}
+		}
 
 	public:
 		virtual void ResolveAccessibleService(GameDocument& document) {}
 		virtual void Load() {}
 		virtual void EndLoad() {}
-		virtual void PrepareToStartGame() {}
-		virtual void StartGame() {}
+		virtual void PrepareToStartGame(bool a1) {}
+		virtual void StartGame(bool a1) {}
 		virtual void InitByScript(void* script) {}
 		virtual void OnAddedToGame() {}
 		virtual void OnRemovedFromGame() {}
@@ -53,4 +70,12 @@ namespace app::fnd
 			return true;
 		}
 	};
+
+	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* allocator) const
+	{
+		GameService* service = serviceInitializer(allocator);
+		service->serviceClass = this;
+
+		return service;
+	}
 }
