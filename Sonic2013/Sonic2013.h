@@ -5,8 +5,10 @@
 #include "cslib/utilities/utils.h"
 #include "cslib/math/math.h"
 #include "cslib/foundation/IAllocator.h"
-#include "cslib/utilities/MoveArray.h"
-#include "cslib/utilities/LinkList.h"
+#include "cslib/utilities/collections/MoveArray.h"
+#include "cslib/utilities/collections/InplaceMoveArray.h"
+#include "cslib/utilities/collections/ObjectMoveArray.h"
+#include "cslib/utilities/collections/LinkList.h"
 #include "cslib/foundation/Singleton.h"
 
 // Hedgehog Library
