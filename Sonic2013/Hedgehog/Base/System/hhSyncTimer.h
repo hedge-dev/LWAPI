@@ -2,7 +2,7 @@
 
 namespace app
 {
-	class SyncTimer : public fnd::ReferencedObject, csl::fnd::Singleton<SyncTimer>
+	class SyncTimer : public fnd::ReferencedObject, csl::fnd::SingletonPointer<SyncTimer>
 	{
 	public:
         inline static FUNCTION_PTR(void, __thiscall, ms_fpReset, ASLR(0x004ACC70), void* This);
@@ -32,7 +32,4 @@ namespace app
 	};
 }
 
-namespace csl::fnd
-{
-	inline app::SyncTimer** Singleton<app::SyncTimer>::instance = reinterpret_cast<app::SyncTimer**>(ASLR(0x00FD7338));
-}
+inline DEFINE_SINGLETONPTR(app::SyncTimer, ASLR(0x00FD7338));

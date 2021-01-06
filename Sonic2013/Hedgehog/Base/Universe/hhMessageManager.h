@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class CActor;
 	
-	class MessageManager : ReferencedObject, csl::fnd::Singleton<MessageManager>
+	class MessageManager : ReferencedObject, csl::fnd::SingletonPointer<MessageManager>
 	{
 	public:
 		inline static FUNCTION_PTR(CActor*, __thiscall, ms_fpGetActor, ASLR(0x0049A950), const void* This, uint id);
@@ -35,7 +35,5 @@ namespace app::fnd
 	};
 }
 
-namespace csl::fnd
-{
-	inline app::fnd::MessageManager** Singleton<app::fnd::MessageManager>::instance = reinterpret_cast<app::fnd::MessageManager**>(0x00FD4300);
-}
+
+DEFINE_SINGLETONPTR(app::fnd::MessageManager, ASLR(0x00FD4300));

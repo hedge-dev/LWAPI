@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class GameServiceTypeRegistry : public ReferencedObject, csl::fnd::Singleton<GameServiceTypeRegistry>
+	class GameServiceTypeRegistry : public ReferencedObject, csl::fnd::SingletonPointer<GameServiceTypeRegistry>
 	{
 	protected:
 		csl::ut::MoveArray<const GameServiceClass*> classes{ allocator };
@@ -24,8 +24,5 @@ namespace app::fnd
 	};
 }
 
-namespace csl::fnd
-{
-	inline app::fnd::GameServiceTypeRegistry** Singleton<app::fnd::GameServiceTypeRegistry>::instance = reinterpret_cast<
-		app::fnd::GameServiceTypeRegistry**>(ASLR(0x00FD4318));
-}
+
+DEFINE_SINGLETONPTR(app::fnd::GameServiceTypeRegistry, ASLR(0x00FD4318));
