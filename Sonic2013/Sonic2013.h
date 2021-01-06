@@ -18,6 +18,8 @@
 #include "Hedgehog/Base/System/hhRefCountObject.h"
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
 #include "Hedgehog/Base/System/hhProperty.h"
+#include "Hedgehog/Base/System/hhSyncTimer.h"
+#include "Hedgehog/Base/System/hhApplication.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
@@ -29,6 +31,7 @@
 #include "Hedgehog/Graphics/hhModel.h"
 
 // System
+#include "System/ApplicationWin.h"
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
 #include "Hedgehog/Base/System/hhRefByHandleObject.h"
@@ -41,6 +44,7 @@
 
 // Components
 #include "System/goc/goc_Transform.h"
+#include "System/goc/goc_Visual.h"
 #include "System/goc/goc_VisualModel.h"
 #include "System/goc/goc_EnemyTarget.h"
 

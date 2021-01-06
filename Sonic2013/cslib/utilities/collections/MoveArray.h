@@ -59,6 +59,11 @@ namespace csl
 				
 			}
 
+			MoveArray(size_t capacity, fnd::IAllocator* allocator_) : MoveArray(allocator_)
+			{
+				reserve(capacity);
+			}
+			
 			~MoveArray()
 			{
 				if (allocator && !isInplace())
