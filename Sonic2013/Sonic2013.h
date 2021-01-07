@@ -31,6 +31,7 @@
 #include "Hedgehog/Graphics/hhModel.h"
 
 // System
+#include "System/GlobalAllocator.h"
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
 #include "System/GameDocument.h"
