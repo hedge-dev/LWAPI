@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class ReferencedObject : BaseObject
+	class ReferencedObject : public BaseObject
 	{
 	protected:
 		unsigned short objectSize;
