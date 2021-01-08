@@ -3,6 +3,7 @@
 // C Standard Library
 #include "cslib/utilities/Bitset.h"
 #include "cslib/utilities/utils.h"
+#include "cslib/utilities/detail/RuntimeTypeInfo.h"
 #include "cslib/math/math.h"
 #include "cslib/foundation/IAllocator.h"
 #include "cslib/utilities/collections/MoveArray.h"
@@ -19,6 +20,8 @@
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
 #include "Hedgehog/Base/System/hhProperty.h"
 #include "Hedgehog/Base/System/hhSyncTimer.h"
+#include "Hedgehog/Base/System/hhDevicePlatformBase.h"
+#include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
 
 // Hedgehog Universe Library
@@ -34,6 +37,7 @@
 #include "System/GlobalAllocator.h"
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
+#include "System/DeviceWin.h"
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
 #include "Hedgehog/Base/System/hhRefByHandleObject.h"

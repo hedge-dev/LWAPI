@@ -19,6 +19,40 @@ namespace csl
 			}
 
 		public:
+			void change_allocator(fnd::IAllocator* new_allocator)
+			{
+				if (!new_allocator)
+				{
+					return;
+				}
+
+				if (isInplace())
+				{
+					allocator = new_allocator;
+					return;
+				}
+				
+				if (allocator == new_allocator)
+				{
+					return;
+				}
+				
+				// Make a new buffer
+				void* new_buffer = new_allocator->Alloc(maxLength * sizeof(T), 16);
+
+				// Copy buffers
+				memcpy(new_buffer, buffer, sizeof(T) * length);
+
+				// Free our old buffer
+				if (allocator && !isInplace())
+				{
+					allocator->Free(buffer);
+				}
+
+				allocator = new_allocator;
+				buffer = static_cast<T*>(new_buffer);
+			}
+			
 			void reserve(size_t len)
 			{
 				// We already have enough reserved, return
@@ -69,6 +103,10 @@ namespace csl
 				if (allocator && !isInplace())
 					allocator->Free(buffer);
 			}
+
+			T* begin() const { return get(0); }
+
+			T* end() const { return get(length); }
 			
 			void push_back(T item)
 			{
@@ -81,14 +119,16 @@ namespace csl
 				buffer[length - 1] = item;
 			}
 
+			void remove(uint i)
+			{
+				buffer[i] = buffer[i + 1];
+				length--;
+			}
+			
 			T operator[] (size_t i) const
 			{
-				return *buffer[i];
+				return *get(i);
 			}
-
-			T* begin() const { return get(0); }
-
-			T* end() const { return get(length); }
 			
 			size_t size() const
 			{
