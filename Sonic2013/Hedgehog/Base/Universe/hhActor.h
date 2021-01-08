@@ -108,6 +108,7 @@ namespace app::fnd
 		{
 			if (allowedMessageMask & msg.mask)
 			{
+				MessageSetup(actorID, msg);
 				return ActorProc(0, &msg);
 			}
 
@@ -118,6 +119,7 @@ namespace app::fnd
 		{
 			if (allowedMessageMask & msg.mask)
 			{
+				MessageSetup(to, msg);
 				messageManager->AddMessage(msg);
 			}
 		}
