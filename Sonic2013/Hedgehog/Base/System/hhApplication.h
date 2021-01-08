@@ -1,12 +1,11 @@
 #pragma once
 
-class IDirect3D9Ex;
-class IDirect3DDevice9Ex;
+#include <d3d9.h>
 
 namespace app
 {
 	class SyncTimer;
-	
+
 	class Application
 	{
 	protected:
@@ -19,11 +18,11 @@ namespace app
 		virtual void ShutdownMain() = 0;
 		virtual void RunCore(SyncTimer* timer) = 0;
 
-		INSERT_PADDING(0x90){};
+		INSERT_PADDING(0x90) {};
 		IDirect3D9Ex* d3d{};
 		IDirect3DDevice9Ex* d3dDevice{};
-		INSERT_PADDING(0x2C){};
-		
+		INSERT_PADDING(0x2C) {};
+
 		Application()
 		{
 			ASSERT_OFFSETOF(Application, d3d, 0x94);
