@@ -14,20 +14,20 @@ namespace app::fnd
 		{
 			if (id < 0)
 				return false;
-			
+
 			if (id > 1)
 			{
 				if (id == 3)
-					Update(reinterpret_cast<SUpdateInfo&>(data));
+					Update(*static_cast<SUpdateInfo*>(data));
 
 				return true;
 			}
 
 			if (enabled)
 			{
-				return ProcessMessage(reinterpret_cast<Message&>(data));
+				return ProcessMessage(*static_cast<Message*>(data));
 			}
-			
+
 			return false;
 		}
 	};
