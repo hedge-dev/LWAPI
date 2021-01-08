@@ -19,7 +19,9 @@ namespace app::xgame
 
 		Message* Clone() override
 		{
-			return new MsgNotifyObjectEvent(eventType);
+			auto* msg = new MsgNotifyObjectEvent(*this);
+			msg->eventType = eventType;
+			return msg;
 		}
 
 		[[nodiscard]] EEventType GetEventType() const
