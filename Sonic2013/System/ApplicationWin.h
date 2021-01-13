@@ -7,7 +7,7 @@ namespace app
 	protected:
 		inline static ApplicationWin** ms_ppApplicationWin = reinterpret_cast<ApplicationWin**>(ASLR(0x00FD3CA8));
 
-		INSERT_PADDING(28) {};
+		INSERT_PADDING(4) {};
 		uint windowHandle{};
 
 		ApplicationWin() : Application()

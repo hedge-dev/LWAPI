@@ -2,14 +2,17 @@
 
 // C Standard Library
 #include "cslib/utilities/Bitset.h"
+#include "cslib/utilities/Enum.h"
 #include "cslib/utilities/utils.h"
 #include "cslib/utilities/detail/RuntimeTypeInfo.h"
 #include "cslib/math/math.h"
 #include "cslib/foundation/IAllocator.h"
+#include "cslib/utilities/collections/Array.h"
 #include "cslib/utilities/collections/MoveArray.h"
 #include "cslib/utilities/collections/InplaceMoveArray.h"
 #include "cslib/utilities/collections/ObjectMoveArray.h"
 #include "cslib/utilities/collections/LinkList.h"
+#include "cslib/utilities/VariableString.h"
 #include "cslib/foundation/Singleton.h"
 
 // Hedgehog Library
@@ -29,6 +32,12 @@
 #include "Hedgehog/Base/Universe/hhMessageManager.h"
 #include "Hedgehog/Base/Universe/hhActor.h"
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
+
+// Hedgehog Reflection Library
+#include "Hedgehog/Reflection/hhRflCustomAttribute.h"
+#include "Hedgehog/Reflection/hhRflClassMember.h"
+#include "Hedgehog/Reflection/hhRflClassEnum.h"
+#include "Hedgehog/Reflection/hhRflClass.h"
 
 #include "Hedgehog/Pack/System/hhPackFile.h"
 #include "Hedgehog/Graphics/hhModel.h"

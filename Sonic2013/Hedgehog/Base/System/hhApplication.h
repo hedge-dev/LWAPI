@@ -21,7 +21,7 @@ namespace app
 		INSERT_PADDING(0x90) {};
 		IDirect3D9Ex* d3d{};
 		IDirect3DDevice9Ex* d3dDevice{};
-		INSERT_PADDING(0x2C) {};
+		INSERT_PADDING(0x44) {};
 
 		Application()
 		{

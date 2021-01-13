@@ -46,6 +46,12 @@ namespace csl::math
 		}
 	};
 
+	class alignas(16) Matrix44 
+	{
+	public:
+		Vector4 columns[4];
+	};
+
 	class Constants
 	{
 	public:

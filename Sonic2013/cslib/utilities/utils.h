@@ -4,8 +4,17 @@
 #include <WinBase.h>
 #include <type_traits>
 
-typedef unsigned int uint;
+typedef signed char sint8;
+typedef unsigned char uint8;
+typedef signed short sint16;
+typedef unsigned short uint16;
+typedef signed int sint32;
+typedef unsigned int uint32;
+typedef signed long long sint64;
+typedef unsigned long long uint64;
+
 typedef unsigned short ushort;
+typedef unsigned int uint;
 
 #define _CONCATX(x, y) x##y
 #define _CONCAT(x, y)  _CONCATX(x, y)

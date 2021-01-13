@@ -4,7 +4,6 @@ namespace app::fnd
 {
 	class GameService;
 	typedef GameService* initializeService(csl::fnd::IAllocator* allocator);
-	typedef void RflClass;
 	typedef uint ServiceType;
 	
 	class GameServiceClass

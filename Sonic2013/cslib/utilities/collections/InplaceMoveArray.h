@@ -11,9 +11,9 @@ namespace csl::ut
 	public:
 		constexpr InplaceMoveArray(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
 		{
-			this->maxLength = Bsz;
-			this->maxLength |= 1u << ((sizeof(size_t) * CHAR_BIT) - 1);
-			this->buffer = (T*)reserved;
+			this->m_capacity = Bsz;
+			this->m_capacity |= 1u << ((sizeof(size_t) * CHAR_BIT) - 1);
+			this->p_buffer = (T*)reserved;
 		}
 	};
 }

@@ -5,17 +5,14 @@ namespace csl
 	namespace ut
 	{
 		template<typename T>
-		class MoveArray
+		class MoveArray : public Array<T>
 		{
 		protected:
-			T* buffer{};
-			size_t length{};
-			size_t maxLength{};
-			fnd::IAllocator* allocator{};
+			fnd::IAllocator* p_allocator{};
 
 			bool isInplace()
 			{
-				return maxLength & (1u << ((sizeof(size_t) * CHAR_BIT) - 1));
+				return this->m_capacity & (1u << ((sizeof(size_t) * CHAR_BIT) - 1));
 			}
 
 		public:
@@ -28,67 +25,58 @@ namespace csl
 
 				if (isInplace())
 				{
-					allocator = new_allocator;
+					p_allocator = new_allocator;
 					return;
 				}
 				
-				if (allocator == new_allocator)
+				if (p_allocator == new_allocator)
 				{
 					return;
 				}
 				
-				// Make a new buffer
-				void* new_buffer = new_allocator->Alloc(maxLength * sizeof(T), 16);
+				// Make a new p_buffer
+				void* new_buffer = new_allocator->Alloc(this->m_capacity * sizeof(T), 16);
 
 				// Copy buffers
-				memcpy(new_buffer, buffer, sizeof(T) * length);
+				memcpy(new_buffer, this->p_buffer, sizeof(T) * this->m_length);
 
-				// Free our old buffer
-				if (allocator && !isInplace())
+				// Free our old p_buffer
+				if (p_allocator && !isInplace())
 				{
-					allocator->Free(buffer);
+					p_allocator->Free(this->p_buffer);
 				}
 
-				allocator = new_allocator;
-				buffer = static_cast<T*>(new_buffer);
+				p_allocator = new_allocator;
+				this->p_buffer = static_cast<T*>(new_buffer);
 			}
 			
 			void reserve(size_t len)
 			{
 				// We already have enough reserved, return
-				if (len <= maxLength)
+				if (len <= this->m_capacity)
 					return;
 
-				// Allocate a new buffer with the appropriate reserved storage
-				void* newBuffer = allocator->Alloc(sizeof(T) * len, 16);
+				// Allocate a new p_buffer with the appropriate reserved storage
+				void* new_buffer = p_allocator->Alloc(sizeof(T) * len, 16);
 
-				if (buffer)
+				if (this->p_buffer)
 				{
-					memcpy(newBuffer, buffer, sizeof(T) * length);
+					memcpy(new_buffer, this->p_buffer, sizeof(T) * this->m_length);
 				}
 
-				// Free our old buffer
+				// Free our old p_buffer
 				if (!isInplace())
 				{
-					allocator->Free(buffer);
+					p_allocator->Free(this->p_buffer);
 				}
 
-				// Assign our new buffer and set the new maxLength
-				maxLength = len;
-				buffer = static_cast<T*>(newBuffer);
-			}
-
-		protected:
-			T* get(size_t i) const
-			{
-				if (!buffer)
-					return nullptr;
-
-				return &buffer[i];
+				// Assign our new p_buffer and set the new m_capacity
+				this->m_capacity = len;
+				this->p_buffer = static_cast<T*>(new_buffer);
 			}
 			
 		public:
-			MoveArray(fnd::IAllocator* allocator_) : allocator(allocator_)
+			MoveArray(fnd::IAllocator* allocator_) : p_allocator(allocator_)
 			{
 				
 			}
@@ -100,44 +88,30 @@ namespace csl
 			
 			~MoveArray()
 			{
-				if (allocator && !isInplace())
-					allocator->Free(buffer);
+				if (p_allocator && !isInplace())
+					p_allocator->Free(this->p_buffer);
 			}
-
-			T* begin() const { return get(0); }
-
-			T* end() const { return get(length); }
 			
 			void push_back(T item)
 			{
-				length++;
-				if (length > maxLength)
+				this->m_length++;
+				if (this->m_length > this->m_capacity)
 				{
-					reserve(length * 2);
+					reserve(this->m_length * 2);
 				}
 
-				buffer[length - 1] = item;
+				this->p_buffer[this->m_length - 1] = item;
 			}
 
 			void remove(uint i)
 			{
-				buffer[i] = buffer[i + 1];
-				length--;
+				this->p_buffer[i] = this->p_buffer[i + 1];
+				this->m_length--;
 			}
 			
 			T operator[] (size_t i) const
 			{
-				return *get(i);
-			}
-			
-			size_t size() const
-			{
-				return length;
-			}
-
-			size_t capacity() const
-			{
-				return maxLength & ~(1u << ((sizeof(size_t) * CHAR_BIT) - 1));
+				return *this->get(i);
 			}
 		};
 	}
