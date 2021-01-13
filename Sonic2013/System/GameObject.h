@@ -8,19 +8,19 @@ namespace app
 		static csl::fnd::IAllocator* GetAllocator();
 		
 	protected:
-		char statusFlags{ 0 };
-		char category{ 6 };
-		GameDocument* ownerDocument{};
-		size_t objectHandle{};
-		GameObjectTableEntry* objectEntry{};
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> components{ GetAllocator() };
-		void* name{}; // Maybe a csl::ut::VariableString, I have no clue. This is always zero from my research.
-		csl::fnd::IAllocator* objectAllocator{ GetAllocator() };
-		csl::ut::InplaceMoveArray<fnd::Property, 2> properties{ GetAllocator() };
-		unsigned int componentFlags{};
-		csl::ut::LinkList<fnd::GOComponent> visualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
-		csl::ut::LinkList<fnd::GOComponent> physicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
-		csl::ut::LinkList<fnd::GOComponent> audibleComponents{ offsetof(fnd::GOComponent, audibleComponentNode) };
+		csl::ut::Bitset<char> m_StatusFlags{ };
+		char m_Category{ 6 };
+		GameDocument* m_pOwnerDocument{};
+		size_t m_ObjectHandle{};
+		GameObjectTableEntry* m_pObjectEntry{};
+		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> m_Components{ GetAllocator() };
+		csl::ut::VariableString* m_pName{};
+		csl::fnd::IAllocator* m_pObjectAllocator{ GetAllocator() };
+		csl::ut::InplaceMoveArray<fnd::Property, 2> m_Properties{ GetAllocator() };
+		unsigned int m_ComponentFlags{};
+		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
+		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
+		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ offsetof(fnd::GOComponent, audibleComponentNode) };
 
 
 		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& comps, const fnd::SUpdateInfo& update_info, fnd::UpdatingPhase phase)
@@ -48,7 +48,7 @@ namespace app
 		~GameObject() override
 		{
 			csl::fnd::Singleton<GameObjectSystem>::GetInstance()->RemoveObject(this);
-			for (auto* it = components.begin(); it != components.end(); it++)
+			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
 			{
 				(*it)->Release();
 			}
@@ -76,14 +76,14 @@ namespace app
 			case 0:
 			case 1:
 			{
-				if (!enabled)
+				if (!m_Enabled)
 					return false;
 
 				auto* msg = static_cast<fnd::Message*>(data);
 
-				if (allowedMessageMask & msg->mask)
+				if (m_AllowedMessageFlags & msg->mask)
 				{
-					for (auto** it = components.begin(); it != components.end(); it++)
+					for (auto** it = m_Components.begin(); it != m_Components.end(); it++)
 					{
 						(*it)->ProcessMessage(*msg);
 					}
@@ -94,41 +94,41 @@ namespace app
 
 			case 3:
 			{
-				if (statusFlags & 2)
+				if (m_StatusFlags.test(1))
 					return true;
 
-				auto* component = visualComponents.get(visualComponents.begin());
+				auto* component = m_VisualComponents.get(m_VisualComponents.begin());
 
-				if (updateFlags)
+				if (m_updateFlags)
 					Update(*reinterpret_cast<fnd::SUpdateInfo*>(data));
 
-				UpdateComponents(visualComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 0);
+				UpdateComponents(m_VisualComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 0);
 
 				return true;
 			}
 
 			case 4:
 			{
-				if (statusFlags & 2)
+				if (m_StatusFlags.test(1))
 					return true;
 
-				if (updateFlags)
+				if (m_updateFlags)
 					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
 
-				UpdateComponents(physicsComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
+				UpdateComponents(m_PhysicsComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
 
 				return true;
 			}
 
 			case 5:
 			{
-				if (statusFlags & 2)
+				if (m_StatusFlags.test(1))
 					return true;
 
-				if (updateFlags)
+				if (m_updateFlags)
 					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
 
-				UpdateComponents(audibleComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
+				UpdateComponents(m_AudibleComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
 
 				return true;
 			}
@@ -164,23 +164,23 @@ namespace app
 
 		bool AddComponent(fnd::GOComponent* component)
 		{
-			for (auto* it = components.begin(); it != components.end(); it++)
+			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
 			{
 				if ((*it)->GetFamilyID() == component->GetFamilyID())
 					return false;
 			}
 
-			components.push_back(component);
+			m_Components.push_back(component);
 			component->AddRef();
 			component->SetGameObject(this);
-			componentFlags |= component->componentStats;
+			m_ComponentFlags |= component->componentStats;
 
 			return true;
 		}
 
 		fnd::GOComponent* GetComponent(const char* name) const
 		{
-			for (auto* it = components.begin(); it != components.end(); it++)
+			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
 			{
 				auto* family = (*it)->GetFamilyID();
 				if (family == name)
@@ -198,12 +198,12 @@ namespace app
 		
 		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents()
 		{
-			return components;
+			return m_Components;
 		}
 
 		bool BroadcastMessageImmToGroup(uint group, fnd::Message& msg)
 		{
-			uint groupActor = ownerDocument->GetGroupActorID(group);
+			uint groupActor = m_pOwnerDocument->GetGroupActorID(group);
 			if (!groupActor)
 				return false;
 
@@ -213,10 +213,10 @@ namespace app
 
 	inline void GameObject::Kill()
 	{
-		if (!(statusFlags & 1))
+		if (!m_StatusFlags.test(0))
 		{
-			statusFlags |= 1;
-			enabled = false;
+			m_StatusFlags.set(0);
+			m_Enabled = false;
 		}
 	}
 

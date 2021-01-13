@@ -16,26 +16,26 @@ namespace app::fnd
 	class CActor
 	{
 	protected:
-		uint actorID{};
-		MessageManager* messageManager{};
-		CActor* parent{};
-		unsigned short updateFlags{ 0 };
-		char flags{ 1 };
-		bool enabled{ true };
-		unsigned int allowedMessageMask{ static_cast<unsigned>(-1) };
+		uint m_ActorID{};
+		MessageManager* m_pMessageManager{};
+		CActor* m_pParent{};
+		csl::ut::Bitset<uint16> m_updateFlags {};
+		char m_Flags{ 1 };
+		bool m_Enabled{ true };
+		unsigned int m_AllowedMessageFlags{ static_cast<unsigned>(-1) };
 		bool isDeactivated{};
 
 		void MessageSetup(uint to, fnd::Message& msg)
 		{
 			msg.receiver = to;
-			msg.sender = actorID;
+			msg.sender = m_ActorID;
 		}
 		
 	public:
 		void RemoveFromAllParents()
 		{
-			if (parent)
-				parent->ActorProc(2, this);
+			if (m_pParent)
+				m_pParent->ActorProc(2, this);
 		}
 		
 		virtual ~CActor()
@@ -63,21 +63,22 @@ namespace app::fnd
 
 		virtual bool ActorProc(int id, void* data) = 0;
 
-		void SetUpdateFlag(unsigned short flag, bool value)
+		void SetUpdateFlag(uint16 flag, bool value)
 		{
-			char temp = 1 << flag;
-			if (value)
-				updateFlags |= temp;
-			else
-				updateFlags &= ~temp;
+			m_updateFlags.set(flag, value);
+		}
+
+		bool GetUpdateFlag(uint16 flag)
+		{
+			return m_updateFlags.test(flag);
 		}
 		
 		bool SendMessageImm(uint to, fnd::Message& msg)
 		{
-			if (msg.mask & allowedMessageMask)
+			if (msg.mask & m_AllowedMessageFlags)
 			{
 				MessageSetup(to, msg);
-				CActor* actor = messageManager->GetActor(to);
+				CActor* actor = m_pMessageManager->GetActor(to);
 				
 				if (!actor)
 					return false;
@@ -89,11 +90,11 @@ namespace app::fnd
 
 		bool BroadcastMessageImm(uint group, fnd::Message& msg)
 		{
-			if (msg.mask & allowedMessageMask)
+			if (msg.mask & m_AllowedMessageFlags)
 			{
 				MessageSetup(group, msg);
 
-				CActor* actor = messageManager->GetActor(group);
+				CActor* actor = m_pMessageManager->GetActor(group);
 
 				if (!actor)
 					return false;
@@ -106,9 +107,9 @@ namespace app::fnd
 		
 		bool SendMessage(fnd::Message& msg)
 		{
-			if (allowedMessageMask & msg.mask)
+			if (m_AllowedMessageFlags & msg.mask)
 			{
-				MessageSetup(actorID, msg);
+				MessageSetup(m_ActorID, msg);
 				return ActorProc(0, &msg);
 			}
 
@@ -117,10 +118,10 @@ namespace app::fnd
 
 		void SendMessage(uint to, fnd::Message& msg)
 		{
-			if (allowedMessageMask & msg.mask)
+			if (m_AllowedMessageFlags & msg.mask)
 			{
 				MessageSetup(to, msg);
-				messageManager->AddMessage(msg);
+				m_pMessageManager->AddMessage(msg);
 			}
 		}
 
@@ -128,7 +129,7 @@ namespace app::fnd
 		{
 			MessageSetup(group, msg);
 			msg.broadcasted = true;
-			messageManager->AddMessage(msg);
+			m_pMessageManager->AddMessage(msg);
 		}
 	};
 }

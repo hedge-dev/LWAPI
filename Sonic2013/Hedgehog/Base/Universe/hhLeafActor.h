@@ -23,7 +23,7 @@ namespace app::fnd
 				return true;
 			}
 
-			if (enabled)
+			if (m_Enabled)
 			{
 				return ProcessMessage(*static_cast<Message*>(data));
 			}
