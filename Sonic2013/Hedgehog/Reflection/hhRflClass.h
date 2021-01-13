@@ -7,38 +7,38 @@ namespace app::fnd
 	class RflClass
 	{
 	protected:
-		const char* p_name{};
-		const RflClass* m_baseClass{};
-		const size_t m_classSize{};
-		const RflClassEnum* p_enums{};
-		const size_t m_enumCount{};
-		const RflClassMember* p_members{};
-		const size_t m_memberCount{};
-		const RflCustomAttributes* p_attributes{};
+		const char* m_pName{};
+		const RflClass* m_pBaseClass{};
+		const size_t m_ClassSize{};
+		const RflClassEnum* m_pEnums{};
+		const size_t m_EnumCount{};
+		const RflClassMember* m_pMembers{};
+		const size_t m_MemberCount{};
+		const RflCustomAttributes* m_pAttributes{};
 
 	public:
 		[[nodiscard]] const char* GetName() const
 		{
-			return p_name;
+			return m_pName;
 		}
 
 		[[nodiscard]] const RflClass* GetBaseType() const
 		{
-			return m_baseClass;
+			return m_pBaseClass;
 		}
 
 		[[nodiscard]] size_t GetSizeInBytes() const
 		{
-			return m_classSize;
+			return m_ClassSize;
 		}
 		
 		[[nodiscard]] size_t GetNumMembers() const
 		{
-			size_t count = m_memberCount;
+			size_t count = m_MemberCount;
 
-			for (const RflClass* base = m_baseClass; base != nullptr; base = base->m_baseClass)
+			for (const RflClass* base = m_pBaseClass; base != nullptr; base = base->m_pBaseClass)
 			{
-				count += base->m_memberCount;
+				count += base->m_MemberCount;
 			}
 			
 			return count;
@@ -58,16 +58,16 @@ namespace app::fnd
 
 			while(true)
 			{
-				j += cls->m_memberCount;
+				j += cls->m_MemberCount;
 				if (j >= 0)
 					break;
 
-				cls = cls->m_baseClass;
+				cls = cls->m_pBaseClass;
 				if (!cls)
-					return cls->p_members;
+					return cls->m_pMembers;
 			}
 			
-			return &cls->p_members[j];
+			return &cls->m_pMembers[j];
 		}
 
 		[[nodiscard]] const RflClassMember* GetMemberByName(const char* name) const
@@ -86,12 +86,12 @@ namespace app::fnd
 
 		[[nodiscard]] size_t GetDeclaredMemberIndexByName(const char* name) const
 		{
-			if (m_memberCount <= 0)
+			if (m_MemberCount <= 0)
 				return -1;
 
-			for (size_t i = 0; i < m_memberCount; i++)
+			for (size_t i = 0; i < m_MemberCount; i++)
 			{
-				const auto* memberName = p_members[i].GetName();
+				const auto* memberName = m_pMembers[i].GetName();
 				if (memberName == name || !strcmp(memberName, name))
 				{
 					return i;
@@ -108,15 +108,15 @@ namespace app::fnd
 			if (i == static_cast<size_t>(-1))
 				return nullptr;
 
-			return &p_members[i];
+			return &m_pMembers[i];
 		}
 		
 		[[nodiscard]] const RflCustomAttribute* GetAttribute(const char* name) const
 		{
-			if (!p_attributes)
+			if (!m_pAttributes)
 				return nullptr;
 
-			return p_attributes->GetAttribute(name);
+			return m_pAttributes->GetAttribute(name);
 		}
 	};
 }

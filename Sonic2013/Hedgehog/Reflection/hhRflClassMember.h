@@ -41,69 +41,69 @@ namespace app::fnd
 
 		struct Metadata
 		{
-			Type m_type;
-			const char* p_name;
-			uint8 m_byteSize;
-			uint8 m_alignment;
+			Type m_Type;
+			const char* m_pName;
+			uint8 m_ByteSize;
+			uint8 m_ByteAlignment;
 		};
 
 		static const Metadata ms_typeMetadata[];
 		
 	protected:
-		const char* p_name{};
-		RflClass* p_struct{};
-		RflClassEnum* p_enum{};
-		Enum<Type, uint8> m_type{};
-		Enum<Type, uint8> m_underlyingType{};
-		uint16 m_arrayLength{};
-		Bitset<uint16> m_flags{};
-		uint16 m_memberOffset{};
-		RflCustomAttributes* p_attributes{};
+		const char* m_pName{};
+		RflClass* m_pStruct{};
+		RflClassEnum* m_pEnum{};
+		Enum<Type, uint8> m_Type{};
+		Enum<Type, uint8> m_UnderlyingType{};
+		uint16 m_ArrayLength{};
+		Bitset<uint16> m_Flags{};
+		uint16 m_MemberOffset{};
+		RflCustomAttributes* m_pAttributes{};
 
 	public:
 		[[nodiscard]] const char* GetName() const
 		{
-			return p_name;
+			return m_pName;
 		}
 
 		[[nodiscard]] const RflClass* GetClass() const
 		{
-			return p_struct;
+			return m_pStruct;
 		}
 		
 		[[nodiscard]] const RflClass* GetStructClass() const
 		{
-			return p_struct;
+			return m_pStruct;
 		}
 
 		[[nodiscard]] const RflClassEnum* GetEnumClass() const
 		{
-			return p_enum;
+			return m_pEnum;
 		}
 
 		[[nodiscard]] size_t GetCstyleArraySize() const
 		{
-			return m_arrayLength;
+			return m_ArrayLength;
 		}
 
 		[[nodiscard]] const RflCustomAttribute* GetAttribute(const char* name) const
 		{
-			return p_attributes->GetAttribute(name);
+			return m_pAttributes->GetAttribute(name);
 		}
 
 		[[nodiscard]] Type GetType() const
 		{
-			return m_type;
+			return m_Type;
 		}
 
 		[[nodiscard]] Type GetSubType() const
 		{
-			return m_underlyingType;
+			return m_UnderlyingType;
 		}
 
 		[[nodiscard]] size_t GetByteOffset() const
 		{
-			return m_memberOffset;
+			return m_MemberOffset;
 		}
 		
 		[[nodiscard]] size_t GetSizeInBytes() const;
@@ -154,8 +154,8 @@ namespace app::fnd
 
 inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 {
-	const uint8 type = m_type;
-	const uint8 underlyingType = m_underlyingType;
+	const uint8 type = m_Type;
+	const uint8 underlyingType = m_UnderlyingType;
 	
 	switch (type)
 	{
@@ -168,12 +168,12 @@ inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 		if (underlyingType == TYPE_STRUCT)
 			underlyingSize = GetStructClass()->GetSizeInBytes();
 		else
-			underlyingSize = ms_typeMetadata[underlyingType].m_byteSize;
+			underlyingSize = ms_typeMetadata[underlyingType].m_ByteSize;
 
 		if (GetCstyleArraySize())
-			return ms_typeMetadata[underlyingType].m_byteSize * underlyingSize * GetCstyleArraySize();
+			return ms_typeMetadata[underlyingType].m_ByteSize * underlyingSize * GetCstyleArraySize();
 			
-		return ms_typeMetadata[underlyingType].m_byteSize * underlyingSize;
+		return ms_typeMetadata[underlyingType].m_ByteSize * underlyingSize;
 	}
 
 	case TYPE_STRUCT:
@@ -181,9 +181,9 @@ inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 
 	case TYPE_ENUM:
 	case TYPE_FLAGS:
-		return ms_typeMetadata[underlyingType].m_byteSize;
+		return ms_typeMetadata[underlyingType].m_ByteSize;
 		
 	default:
-		return ms_typeMetadata[type].m_byteSize;
+		return ms_typeMetadata[type].m_ByteSize;
 	}
 }
