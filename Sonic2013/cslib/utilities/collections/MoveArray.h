@@ -23,7 +23,7 @@ namespace csl
 					return;
 				}
 
-				if (isInplace())
+				if (isInplace() || !this->p_buffer)
 				{
 					p_allocator = new_allocator;
 					return;
@@ -76,6 +76,11 @@ namespace csl
 			}
 			
 		public:
+			MoveArray()
+			{
+				
+			}
+			
 			MoveArray(fnd::IAllocator* allocator_) : p_allocator(allocator_)
 			{
 				

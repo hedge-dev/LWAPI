@@ -26,12 +26,14 @@
 #include "Hedgehog/Base/System/hhDevicePlatformBase.h"
 #include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
+#include "System/GlobalAllocator.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
 #include "Hedgehog/Base/Universe/hhMessageManager.h"
 #include "Hedgehog/Base/Universe/hhActor.h"
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
+#include "Hedgehog/Base/Universe/hhBranchActor.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhRflCustomAttribute.h"
@@ -43,7 +45,6 @@
 #include "Hedgehog/Graphics/hhModel.h"
 
 // System
-#include "System/GlobalAllocator.h"
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
 #include "System/DeviceWin.h"
