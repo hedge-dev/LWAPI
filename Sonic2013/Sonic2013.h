@@ -1,19 +1,19 @@
 #pragma once
 
-// C Standard Library
-#include "cslib/utilities/Bitset.h"
-#include "cslib/utilities/Enum.h"
-#include "cslib/utilities/utils.h"
-#include "cslib/utilities/detail/RuntimeTypeInfo.h"
-#include "cslib/math/math.h"
-#include "cslib/foundation/IAllocator.h"
-#include "cslib/utilities/collections/Array.h"
-#include "cslib/utilities/collections/MoveArray.h"
-#include "cslib/utilities/collections/InplaceMoveArray.h"
-#include "cslib/utilities/collections/ObjectMoveArray.h"
-#include "cslib/utilities/collections/LinkList.h"
-#include "cslib/utilities/VariableString.h"
-#include "cslib/foundation/Singleton.h"
+// C Sonicteam Library
+#include "Sonicteam/utilities/Bitset.h"
+#include "Sonicteam/utilities/Enum.h"
+#include "Sonicteam/utilities/utils.h"
+#include "Sonicteam/utilities/detail/RuntimeTypeInfo.h"
+#include "Sonicteam/math/math.h"
+#include "Sonicteam/System/IAllocator.h"
+#include "Sonicteam/utilities/collections/Array.h"
+#include "Sonicteam/utilities/collections/MoveArray.h"
+#include "Sonicteam/utilities/collections/InplaceMoveArray.h"
+#include "Sonicteam/utilities/collections/ObjectMoveArray.h"
+#include "Sonicteam/utilities/collections/LinkList.h"
+#include "Sonicteam/utilities/VariableString.h"
+#include "Sonicteam/System/Singleton.h"
 
 // Hedgehog Library
 #include "Hedgehog/Base/System/hhAllocator.h"

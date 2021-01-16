@@ -13,7 +13,7 @@ namespace app::fnd
 		{
 			for (auto& m_PhasedActor : m_PhasedActors)
 			{
-				m_PhasedActor.change_allocator(game::GlobalAllocator::GetSingletonAllocator());
+				m_PhasedActor = csl::ut::MoveArray<CActor*>(game::GlobalAllocator::GetSingletonAllocator());
 			}
 		}
 	};
