@@ -1,19 +1,27 @@
 #pragma once
 
-// C Sonicteam Library
+// Common Sonicteam Library
 #include "Sonicteam/utilities/Bitset.h"
 #include "Sonicteam/utilities/Enum.h"
 #include "Sonicteam/utilities/utils.h"
+#include "Sonicteam/utilities/NonCopyable.h"
 #include "Sonicteam/utilities/detail/RuntimeTypeInfo.h"
 #include "Sonicteam/math/math.h"
 #include "Sonicteam/System/IAllocator.h"
+#include "Sonicteam/System/Singleton.h"
 #include "Sonicteam/utilities/collections/Array.h"
 #include "Sonicteam/utilities/collections/MoveArray.h"
 #include "Sonicteam/utilities/collections/InplaceMoveArray.h"
 #include "Sonicteam/utilities/collections/ObjectMoveArray.h"
 #include "Sonicteam/utilities/collections/LinkList.h"
 #include "Sonicteam/utilities/VariableString.h"
-#include "Sonicteam/System/Singleton.h"
+#include "Sonicteam/utilities/Point.h"
+#include "Sonicteam/utilities/Size.h"
+#include "Sonicteam/utilities/Rectangle.h"
+#include "Sonicteam/utilities/Color.h"
+
+// gindows
+#include "gindows/gindows.h"
 
 // Hedgehog Library
 #include "Hedgehog/Base/System/hhAllocator.h"
