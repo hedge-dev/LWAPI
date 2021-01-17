@@ -2,6 +2,18 @@
 
 namespace gindows
 {
+	inline static csl::fnd::IAllocator** ms_ppGindowsAllocator = reinterpret_cast<csl::fnd::IAllocator**>(ASLR(0x00FF00A8));
+
+	static csl::fnd::IAllocator* GetMemoryAllocator()
+	{
+		return *ms_ppGindowsAllocator;
+	}
+
+	static void SetMemoryAllocator(csl::fnd::IAllocator* pAllocator)
+	{
+		*ms_ppGindowsAllocator = pAllocator;
+	}
+	
 	// One day
 	typedef uint PrimType;
 	typedef uint IconKind;
