@@ -1,4 +1,5 @@
 #pragma once
+#include "Control.h"
 
 namespace gindows
 {

@@ -18,7 +18,7 @@ namespace gindows::device
 		virtual void DrawRectangle(const csl::ut::Rectangle2<int>& rect, csl::ut::Color8& color) = 0;
 		virtual void DrawRectangle(const csl::ut::Rectangle2<int>& rect, csl::ut::Color8& color1, csl::ut::Color8& color2, csl::ut::Color8& color3, csl::ut::Color8& color4) = 0;
 		virtual void DrawLine(const csl::ut::Point2<int>& from, const csl::ut::Point2<int>& to, const csl::ut::Color8& color) = 0;
-		virtual void DrawString(const Font* font, const csl::ut::Rectangle2<int>& rect, 
+		virtual void DrawString(void* a1, const Font* font, const csl::ut::Rectangle2<int>& rect,
 			const csl::ut::Point2<int>& p1, const csl::ut::Point2<int>& p2, const csl::ut::Color8& color, const char* text) = 0;
 
 		virtual void DrawPrimitive(PrimType type, const PrimitiveVertex* a2, int a3)

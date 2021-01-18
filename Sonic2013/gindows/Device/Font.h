@@ -10,6 +10,6 @@ namespace gindows::device
 			
 		}
 		
-		virtual csl::ut::Size2<int> GetSize() = 0;
+		[[nodiscard]] virtual csl::ut::Size2<int> GetSize() const = 0;
 	};
 }
