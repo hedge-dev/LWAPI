@@ -2,6 +2,8 @@
 
 namespace gindows
 {
+	class Canvas;
+	
 	struct EventArgs
 	{
 		void* m_Unk1;
@@ -21,5 +23,10 @@ namespace gindows
 	struct KeyPressEventArgs : EventArgs
 	{
 		// TODO
+	};
+
+	struct RenderEventArgs : EventArgs
+	{
+		Canvas* m_pRenderCanvas;
 	};
 }

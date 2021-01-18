@@ -19,7 +19,6 @@ namespace gindows
 	typedef uint IconKind;
 	typedef uint MouseCursorType;
 	typedef void PrimitiveVertex;
-	typedef void Desktop;
 }
 
 #include "Object.h"
@@ -32,7 +31,7 @@ namespace gindows
 #include "Device/Graphics.h"
 
 #include "EventArgs.h"
+#include "Canvas.h"
 #include "Control.h"
-#include "WindowManager.h"
-#include "ManagerImpl.h"
+#include "Desktop.h"
 #include "Manager.h"

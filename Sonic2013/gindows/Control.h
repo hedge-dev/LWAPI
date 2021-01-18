@@ -3,6 +3,11 @@ namespace gindows
 {
 	class Control : Object
 	{
+	protected:
+		INSERT_PADDING(0x108){};
+		Canvas m_Canvas{};
+		INSERT_PADDING(0x44){};
+		
 	public:
 		virtual void Add(Control* pControl) = 0;
 		virtual void Remove(Control* pControl) = 0;
@@ -33,5 +38,10 @@ namespace gindows
 		virtual void OnUpdate() = 0;
 		virtual void GetClientOffsetInflate(csl::ut::Point2<int>*, csl::ut::Size2<int>*) const = 0;
 		virtual bool ControlProc(int param, EventArgs& args) = 0;
+
+		Canvas& GetCanvas()
+		{
+			return m_Canvas;
+		}
 	};
 }

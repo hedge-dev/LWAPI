@@ -1,7 +1,11 @@
 #pragma once
+#include "ManagerImpl.h"
+#include "WindowManager.h"
 
 namespace gindows
 {
+	class Desktop;
+	
 	class Manager : Object, csl::ut::NonCopyable
 	{
 	private:
@@ -33,32 +37,37 @@ namespace gindows
 			return m_pImpl->GetGraphicsPointer();
 		}
 
+		[[nodiscard]] Desktop* GetDesktopPointer() const
+		{
+			return m_pImpl->GetDesktopPointer();
+		}
+		
 		[[nodiscard]] device::DeviceMouse* GetMousePointer() const
 		{
 			return m_pImpl->GetMousePointer();
 		}
 		
-		[[nodiscard]] const csl::ut::Color8* GetDefaultBackColorPointer() const
+		[[nodiscard]] csl::ut::Color8* GetDefaultBackColorPointer() const
 		{
 			return m_pImpl->GetDefaultBackColorPointer();
 		}
 
-		[[nodiscard]] const csl::ut::Color8* GetDefaultForeColorPointer() const
+		[[nodiscard]] csl::ut::Color8* GetDefaultForeColorPointer() const
 		{
 			return m_pImpl->GetDefaultBackColorPointer();
 		}
 
-		[[nodiscard]] const csl::ut::Color8* GetSelectCaptionColorL() const
+		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorL() const
 		{
 			return m_pImpl->GetSelectCaptionColorL();
 		}
 
-		[[nodiscard]] const csl::ut::Color8* GetSelectCaptionColorR() const
+		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorR() const
 		{
 			return m_pImpl->GetSelectCaptionColorR();
 		}
 
-		[[nodiscard]] const csl::ut::Color8* GetUnselectCaptionColor() const
+		[[nodiscard]] csl::ut::Color8* GetUnselectCaptionColor() const
 		{
 			return m_pImpl->GetUnselectCaptionColor();
 		}
