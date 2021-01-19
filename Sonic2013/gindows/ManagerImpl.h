@@ -1,9 +1,9 @@
 #pragma once
-#include "Control.h"
 
 namespace gindows
 {
 	class Desktop;
+	class Control;
 	
 	class ManagerImpl : Object
 	{
