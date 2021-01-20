@@ -1,11 +1,10 @@
 #pragma once
 #include "ManagerImpl.h"
 #include "WindowManager.h"
+#include "Desktop.h"
 
 namespace gindows
 {
-	class Desktop;
-	
 	class Manager : Object, csl::ut::NonCopyable
 	{
 	private:
@@ -26,48 +25,53 @@ namespace gindows
 		{
 			return *ms_ppInstance;
 		}
+
+		[[nodiscard]] WindowManager* GetWindowManager()
+		{
+			return m_pWindowManager;
+		}
 		
-		[[nodiscard]] device::Font* GetDefaultFontPointer() const
+		[[nodiscard]] device::Font* GetDefaultFontPointer()
 		{
 			return m_pImpl->GetDefaultFontPointer();
 		}
 
-		[[nodiscard]] device::Graphics* GetGraphicsPointer() const
+		[[nodiscard]] device::Graphics* GetGraphicsPointer()
 		{
 			return m_pImpl->GetGraphicsPointer();
 		}
 
-		[[nodiscard]] Desktop* GetDesktopPointer() const
+		[[nodiscard]] Desktop* GetDesktopPointer()
 		{
 			return m_pImpl->GetDesktopPointer();
 		}
 		
-		[[nodiscard]] device::DeviceMouse* GetMousePointer() const
+		[[nodiscard]] device::DeviceMouse* GetMousePointer()
 		{
 			return m_pImpl->GetMousePointer();
 		}
 		
-		[[nodiscard]] csl::ut::Color8* GetDefaultBackColorPointer() const
+		[[nodiscard]] csl::ut::Color8* GetDefaultBackColorPointer()
 		{
 			return m_pImpl->GetDefaultBackColorPointer();
 		}
 
-		[[nodiscard]] csl::ut::Color8* GetDefaultForeColorPointer() const
+		[[nodiscard]] csl::ut::Color8* GetDefaultForeColorPointer()
 		{
 			return m_pImpl->GetDefaultBackColorPointer();
 		}
 
-		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorL() const
+		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorL()
 		{
 			return m_pImpl->GetSelectCaptionColorL();
 		}
 
-		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorR() const
+		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorR()
 		{
 			return m_pImpl->GetSelectCaptionColorR();
 		}
 
-		[[nodiscard]] csl::ut::Color8* GetUnselectCaptionColor() const
+		[[nodiscard]] csl::ut::Color8* GetUnselectCaptionColor()
 		{
 			return m_pImpl->GetUnselectCaptionColor();
 		}
@@ -90,6 +94,17 @@ namespace gindows
 		void SetDefaultFontIndex(size_t idx) const
 		{
 			m_pImpl->SetDefaultFontIndex(idx);
+		}
+
+		void Render()
+		{
+			GetGraphicsPointer()->BeginDraw();
+
+			GetDesktopPointer()->Render();
+			if (GetMousePointer())
+				GetMousePointer()->Draw();
+			
+			GetGraphicsPointer()->EndDraw();
 		}
 	};
 }
