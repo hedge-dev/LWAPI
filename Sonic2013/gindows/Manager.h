@@ -75,6 +75,16 @@ namespace gindows
 		{
 			return m_pImpl->GetUnselectCaptionColor();
 		}
+
+		[[nodiscard]] Control* GetFocusControl()
+		{
+			return m_pImpl->GetFocusControl();
+		}
+
+		[[nodiscard]] Control* FindControl(const csl::ut::Point2<int>& point)
+		{
+			return GetDesktopPointer()->FindControl(point);
+		}
 		
 		void SetFont(uint id, device::Font* pFont) const
 		{
@@ -96,6 +106,31 @@ namespace gindows
 			m_pImpl->SetDefaultFontIndex(idx);
 		}
 
+		void SetFocusControl(Control* pControl)
+		{
+			if (GetFocusControl() == pControl)
+				return;
+			
+			if (!pControl)
+			{
+				if (GetFocusControl())
+				{
+					GetFocusControl()->OnLostFocus();
+				}
+				m_pImpl->SetFocusControl(pControl);
+				
+				return;
+			}
+
+			if (GetFocusControl())
+			{
+				GetFocusControl()->OnLostFocus();
+			}
+			
+			m_pImpl->SetFocusControl(pControl);
+			pControl->OnGotFocus();
+		}
+		
 		void Render()
 		{
 			GetGraphicsPointer()->BeginDraw();

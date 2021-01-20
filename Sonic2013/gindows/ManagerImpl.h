@@ -20,7 +20,8 @@ namespace gindows
 		Font* m_pFonts[16]{};
 		Control* m_pFocusedControl{};
 		Control* m_pControlBelowMouse{}; // Maybe
-		INSERT_PADDING(16){}; // One day
+		INSERT_PADDING(12){}; // One day
+		float m_TimeElapsed{};
 		float m_MouseClickInterval{};
 
 	public:
@@ -68,6 +69,11 @@ namespace gindows
 		{
 			return &m_UnSelectCaptionColor;
 		}
+
+		[[nodiscard]] Control* GetFocusControl()
+		{
+			return m_pFocusedControl;
+		}
 		
 		void SetFont(size_t idx, Font* pFont)
 		{
@@ -96,6 +102,11 @@ namespace gindows
 		void SetMouse(DeviceMouse* pMouse)
 		{
 			m_pMouse = pMouse;
+		}
+
+		void SetFocusControl(Control* pControl)
+		{
+			m_pFocusedControl = pControl;
 		}
 	};
 }

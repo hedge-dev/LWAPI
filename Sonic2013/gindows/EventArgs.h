@@ -6,8 +6,8 @@ namespace gindows
 	
 	struct EventArgs
 	{
-		void* m_Unk1; // Sender?
-		bool m_Handled;
+		void* m_Unk1{}; // Sender?
+		bool m_Handled{};
 	};
 
 	struct MouseEventArgs : EventArgs
@@ -17,15 +17,13 @@ namespace gindows
 
 	struct KeyEventArgs : EventArgs
 	{
-		// TODO
 		ushort m_KeyCode{};
-		// 3 bools go here
-		// then a pointer to itself???
+		bool modifiers[3]{}; // Not sure
 	};
 
 	struct KeyPressEventArgs : EventArgs
 	{
-		// TODO
+		char m_Key{};
 	};
 
 	struct RenderEventArgs : EventArgs
