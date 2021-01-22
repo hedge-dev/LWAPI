@@ -96,6 +96,11 @@ namespace csl
 				if (p_allocator && !isInplace())
 					p_allocator->Free(this->p_buffer);
 			}
+
+			csl::fnd::IAllocator* get_allocator()
+			{
+				return p_allocator;
+			}
 			
 			void push_back(T item)
 			{
@@ -115,6 +120,11 @@ namespace csl
 			}
 			
 			T operator[] (size_t i) const
+			{
+				return *this->get(i);
+			}
+
+			T& operator[] (size_t i)
 			{
 				return *this->get(i);
 			}

@@ -8,14 +8,14 @@ static void* __HH_ALLOC(size_t size)
 	return ms_fpHH_ALLOC(size);
 }
 
-inline void* operator new(size_t size)
-{
-	return __HH_ALLOC(size);
-}
-
 static void __HH_FREE(void* mem)
 {
 	ms_fpHH_FREE(mem);
+}
+
+inline void* operator new(size_t size)
+{
+	return __HH_ALLOC(size);
 }
 
 inline void operator delete(void* mem)

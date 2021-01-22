@@ -7,6 +7,7 @@
 #include "Sonicteam/utilities/NonCopyable.h"
 #include "Sonicteam/utilities/detail/RuntimeTypeInfo.h"
 #include "Sonicteam/math/math.h"
+#include "Sonicteam/System/Mutex.h"
 #include "Sonicteam/System/IAllocator.h"
 #include "Sonicteam/System/Singleton.h"
 #include "Sonicteam/utilities/collections/Array.h"
@@ -19,6 +20,9 @@
 #include "Sonicteam/utilities/Size.h"
 #include "Sonicteam/utilities/Rectangle.h"
 #include "Sonicteam/utilities/Color.h"
+
+// Dummy standard library
+#include "std-dummy/std-dummy.h"
 
 // gindows
 #include "gindows/gindows.h"
@@ -35,6 +39,9 @@
 #include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
 #include "System/GlobalAllocator.h"
+
+// Hedgehog Utility Library
+#include "Hedgehog/Base/Utility/hhScopedPointer.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
@@ -65,6 +72,17 @@
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/GameService.h"
 #include "System/ObjInfo.h"
+
+// System Font
+#include "System/Font/Font.h"
+#include "System/Font/FontText.h"
+#include "System/Font/FontManager.h"
+
+// System Debug
+#include "System/Debug/Object.h"
+#include "System/Debug/Menu/MenuItem.h"
+#include "System/Debug/Menu/Menu.h"
+#include "System/Debug/Menu/MenuManager.h"
 
 // Components
 #include "System/goc/goc_Transform.h"

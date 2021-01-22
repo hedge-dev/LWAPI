@@ -2,6 +2,29 @@
 
 namespace csl::math 
 {
+	class Vector2
+	{
+	public:
+		static const Vector2* Zero;
+		float x, y;
+
+		Vector2() : x(0), y(0) {}
+		Vector2(float _x, float _y) : x(_x), y(_y) {}
+
+		float GetX() const { return x; }
+		float GetY() const { return y; }
+
+		Vector2 operator +(const Vector2& v2) const
+		{
+			return Vector2{ GetX() + v2.GetX(), GetY() + v2.GetY() };
+		}
+
+		Vector2 operator -(const Vector2& v2) const
+		{
+			return Vector2{ GetX() - v2.GetX(), GetY() - v2.GetY() };
+		}
+	};
+	
 	class alignas(16) Vector3
 	{
 	public:
@@ -55,10 +78,12 @@ namespace csl::math
 	class Constants
 	{
 	public:
+		inline static const Vector2 Vector2Zero{ 0, 0 };
 		inline static const Vector3 Vector3Zero{ 0, 0, 0 };
 		inline static const Quaternion QuaternionIdentity{ 0, 0, 0, 1 };
 	};
 
+	inline const Vector2* Vector2::Zero = &Constants::Vector2Zero;
 	inline const Vector3* Vector3::Zero = &Constants::Vector3Zero;
 	inline const Quaternion* Quaternion::Identity = &Constants::QuaternionIdentity;
 }
