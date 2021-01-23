@@ -49,5 +49,10 @@ namespace app::fnd
 				}
 			}
 		}
+
+		csl::fnd::IAllocator* GetAllocator()
+		{
+			return allocator;
+		}
 	};
 }

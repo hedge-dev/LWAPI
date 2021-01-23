@@ -2,7 +2,7 @@
 
 namespace gindows::device
 {
-	class DeviceMouse : RenderBase
+	class DeviceMouse : public RenderBase
 	{
 	public:
 		DeviceMouse(RenderState* pRenderState) : RenderBase(pRenderState)

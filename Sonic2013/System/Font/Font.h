@@ -9,7 +9,7 @@ namespace app::font
 	public:
 		virtual bool IsInit() = 0;
 		virtual void SetTextColor(uint color) = 0;
-		virtual void SetTextSize(csl::math::Vector2& size) = 0;
+		virtual void SetTextSize(const csl::math::Vector2& size) = 0;
 		virtual csl::math::Vector2* GetFontSize(csl::math::Vector2* pSize) = 0;
 		virtual void Begin() {}
 		virtual void End() {}

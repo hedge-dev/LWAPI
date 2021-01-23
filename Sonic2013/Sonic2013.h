@@ -1,25 +1,27 @@
 #pragma once
 
 // Common Sonicteam Library
-#include "Sonicteam/utilities/Bitset.h"
-#include "Sonicteam/utilities/Enum.h"
-#include "Sonicteam/utilities/utils.h"
-#include "Sonicteam/utilities/NonCopyable.h"
-#include "Sonicteam/utilities/detail/RuntimeTypeInfo.h"
+#include "Sonicteam/Utility/Bitset.h"
+#include "Sonicteam/Utility/Enum.h"
+#include "Sonicteam/Utility/utils.h"
+#include "Sonicteam/Utility/NonCopyable.h"
+#include "Sonicteam/Utility/detail/RuntimeTypeInfo.h"
 #include "Sonicteam/math/math.h"
 #include "Sonicteam/System/Mutex.h"
 #include "Sonicteam/System/IAllocator.h"
 #include "Sonicteam/System/Singleton.h"
-#include "Sonicteam/utilities/collections/Array.h"
-#include "Sonicteam/utilities/collections/MoveArray.h"
-#include "Sonicteam/utilities/collections/InplaceMoveArray.h"
-#include "Sonicteam/utilities/collections/ObjectMoveArray.h"
-#include "Sonicteam/utilities/collections/LinkList.h"
-#include "Sonicteam/utilities/VariableString.h"
-#include "Sonicteam/utilities/Point.h"
-#include "Sonicteam/utilities/Size.h"
-#include "Sonicteam/utilities/Rectangle.h"
-#include "Sonicteam/utilities/Color.h"
+#include "Sonicteam/Utility/collections/Array.h"
+#include "Sonicteam/Utility/collections/MoveArray.h"
+#include "Sonicteam/Utility/collections/InplaceMoveArray.h"
+#include "Sonicteam/Utility/collections/ObjectMoveArray.h"
+#include "Sonicteam/Utility/collections/FixedArray.h"
+#include "Sonicteam/Utility/collections/LinkList.h"
+#include "Sonicteam/Utility/VariableString.h"
+#include "Sonicteam/Utility/FixedString.h"
+#include "Sonicteam/Utility/Point.h"
+#include "Sonicteam/Utility/Size.h"
+#include "Sonicteam/Utility/Rectangle.h"
+#include "Sonicteam/Utility/Color.h"
 
 // Dummy standard library
 #include "std-dummy/std-dummy.h"
@@ -63,6 +65,7 @@
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
 #include "System/DeviceWin.h"
+#include "System/Game.h"
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
 #include "Hedgehog/Base/System/hhRefByHandleObject.h"
@@ -100,3 +103,8 @@
 
 // SetData
 #include "System/SetObject/SetObjectListener.h"
+
+// Stage Data
+#include "System/Stage/World.h"
+#include "System/Stage/StageData.h"
+#include "System/Stage/StageInfo.h"
