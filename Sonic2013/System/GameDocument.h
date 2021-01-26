@@ -77,7 +77,7 @@ namespace app
 inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameServiceClass& cls, csl::fnd::IAllocator* allocator)
 {
 	if (!allocator)
-		allocator = this->allocator;
+		allocator = GetAllocator();
 	
 	auto* service = cls.Construct(allocator);
 	AddService(service);

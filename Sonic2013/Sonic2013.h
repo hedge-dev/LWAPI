@@ -22,6 +22,7 @@
 #include "Sonicteam/Utility/Size.h"
 #include "Sonicteam/Utility/Rectangle.h"
 #include "Sonicteam/Utility/Color.h"
+#include "Sonicteam/System/ComPtr.h"
 
 // Dummy standard library
 #include "std-dummy/std-dummy.h"
@@ -33,6 +34,7 @@
 #include "Hedgehog/Base/System/hhAllocator.h"
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
+#include "Hedgehog/Base/System/hhThreadSafeReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
 #include "Hedgehog/Base/System/hhProperty.h"
@@ -61,10 +63,14 @@
 #include "Hedgehog/Pack/System/hhPackFile.h"
 #include "Hedgehog/Graphics/hhModel.h"
 
+// System Game
+#include "System/Game/LuaScript.h"
+
 // System
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
 #include "System/DeviceWin.h"
+#include "System/GameSequence.h"
 #include "System/Game.h"
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
@@ -75,6 +81,8 @@
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/GameService.h"
 #include "System/ObjInfo.h"
+#include "System/FileLoader.h"
+#include "System/ResourceManager.h"
 
 // System Font
 #include "System/Font/Font.h"

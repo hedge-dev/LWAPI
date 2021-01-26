@@ -40,5 +40,15 @@ namespace app::fnd
 			static_assert(std::is_base_of<Message, T>(), "Type must be base of app::fnd::Message");
 			return id == T::MessageID;
 		}
+
+		inline void* operator new(size_t size)
+		{
+			return __HH_ALLOC(size);
+		}
+
+		inline void operator delete(void* mem)
+		{
+			__HH_FREE(mem);
+		}
 	};
 }

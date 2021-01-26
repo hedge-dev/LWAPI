@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class RefByHandleObject;
 	
-	class HandleManagerBase : ReferencedObject
+	class HandleManagerBase : public ReferencedObject
 	{
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddObject, ASLR(0x00499B80), HandleManagerBase* This, RefByHandleObject& object);

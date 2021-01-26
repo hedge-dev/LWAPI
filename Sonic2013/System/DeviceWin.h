@@ -18,33 +18,34 @@ namespace app::hid
 		{
 			return &devices;
 		}
+
 		
-		void AddDevice(DevicePlatformBase* device)
-		{
-			devices.change_allocator(allocator);
+		//void AddDevice(DevicePlatformBase* device)
+		//{
+		//	devices.change_allocator(GetAllocator());
 
-			device->AddRef();
-			devices.push_back(device);
-		}
+		//	device->AddRef();
+		//	devices.push_back(device);
+		//}
 
-		void RemoveDevice(const DevicePlatformBase* device)
-		{
-			uint index = -1;
+		//void RemoveDevice(const DevicePlatformBase* device)
+		//{
+		//	uint index = -1;
 
-			for (int i = 0; i < devices.size(); i++)
-			{
-				if (devices[i] == device)
-				{
-					index = i;
-					break;
-				}
-			}
-			
-			if (index == (uint)-1)
-				return;
+		//	for (int i = 0; i < devices.size(); i++)
+		//	{
+		//		if (devices[i] == device)
+		//		{
+		//			index = i;
+		//			break;
+		//		}
+		//	}
+		//	
+		//	if (index == (uint)-1)
+		//		return;
 
-			devices.remove(index);
-		}
+		//	devices.remove(index);
+		//}
 	};
 }
 

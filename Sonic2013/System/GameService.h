@@ -3,7 +3,7 @@
 namespace app::fnd
 {
 	class GameService;
-	typedef GameService* initializeService(csl::fnd::IAllocator* allocator);
+	typedef GameService* __cdecl initializeService(csl::fnd::IAllocator* allocator);
 	typedef uint ServiceType;
 	
 	class GameServiceClass
@@ -55,7 +55,7 @@ namespace app::fnd
 		virtual void EndLoad() {}
 		virtual void PrepareToStartGame(bool a1) {}
 		virtual void StartGame(bool a1) {}
-		virtual void InitByScript(void* script) {}
+		virtual void InitByScript(app::game::LuaScript& script) {}
 		virtual void OnAddedToGame() {}
 		virtual void OnRemovedFromGame() {}
 		virtual void UpdateFinal(SUpdateInfo& updatdeInfo) {}
