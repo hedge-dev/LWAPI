@@ -3,10 +3,10 @@
 namespace csl::ut
 {
 	template <typename T>
-	class ObjectMoveArray : public MoveArray<const T*>
+	class ObjectMoveArray : public MoveArray<T*>
 	{
 	public:
-		ObjectMoveArray(fnd::IAllocator* allocator_) : MoveArray<const T*>(allocator_)
+		ObjectMoveArray(fnd::IAllocator* allocator_) : MoveArray<T*>(allocator_)
 		{
 			
 		}
