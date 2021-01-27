@@ -38,8 +38,11 @@ typedef unsigned int uint;
 #define BASE_ADDRESS 0x400000
 
 #ifdef BASE_ADDRESS
-const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
+namespace csl::ut
+{
+	const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
+}
 
 #define ASLR(address) \
-    ((size_t)MODULE_HANDLE + (size_t)address - (size_t)BASE_ADDRESS)
+    ((size_t)csl::ut::MODULE_HANDLE + (size_t)address - (size_t)BASE_ADDRESS)
 #endif
