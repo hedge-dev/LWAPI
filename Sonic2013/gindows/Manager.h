@@ -46,7 +46,7 @@ namespace gindows
 			return m_pImpl->GetDesktopPointer();
 		}
 		
-		[[nodiscard]] device::DeviceMouse* GetMousePointer()
+		[[nodiscard]] device::Mouse* GetMousePointer()
 		{
 			return m_pImpl->GetMousePointer();
 		}
@@ -96,7 +96,7 @@ namespace gindows
 			m_pImpl->SetGraphics(pGraphics);
 		}
 
-		void SetMouse(device::DeviceMouse* pMouse) const
+		void SetMouse(device::Mouse* pMouse) const
 		{
 			m_pImpl->SetMouse(pMouse);
 		}

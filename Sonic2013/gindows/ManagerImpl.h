@@ -14,7 +14,7 @@ namespace gindows
 		csl::ut::Color8 m_SelectCaptionColorL{ 0xFF, 0xB4, 0x64, 0x50 };
 		csl::ut::Color8 m_SelectCaptionColorR{ 0xFF, 0xC8, 0xA0, 0xA0 };
 		csl::ut::Color8 m_UnSelectCaptionColor{ 0xFF, 0x50, 0x50, 0x50 };
-		DeviceMouse* m_pMouse{};
+		Mouse* m_pMouse{};
 		Graphics* m_pGraphics{};
 		Desktop* m_pDesktop{};
 		Font* m_pFonts[16]{};
@@ -40,7 +40,7 @@ namespace gindows
 			return m_pDesktop;
 		}
 		
-		[[nodiscard]] DeviceMouse* GetMousePointer() const
+		[[nodiscard]] Mouse* GetMousePointer() const
 		{
 			return m_pMouse;
 		}
@@ -99,7 +99,7 @@ namespace gindows
 			m_pGraphics = pGraphics;
 		}
 
-		void SetMouse(DeviceMouse* pMouse)
+		void SetMouse(Mouse* pMouse)
 		{
 			m_pMouse = pMouse;
 		}

@@ -24,7 +24,7 @@ namespace app
 		INSERT_PADDING(44);
 		CGame* m_pGame;
 		void* m_pUnk1;
-		csl::ut::FixedString<16> m_StdId;
+		csl::ut::FixedString<16> m_StgId;
 		INSERT_PADDING(36);
 		DevData* m_pDevData;
 		

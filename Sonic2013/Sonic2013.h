@@ -39,6 +39,7 @@
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
 #include "Hedgehog/Base/System/hhProperty.h"
 #include "Hedgehog/Base/System/hhSyncTimer.h"
+#include "Hedgehog/Base/System/hhPadData.h"
 #include "Hedgehog/Base/System/hhDevicePlatformBase.h"
 #include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
@@ -83,6 +84,7 @@
 #include "System/ObjInfo.h"
 #include "System/FileLoader.h"
 #include "System/ResourceManager.h"
+#include "System/DeviceManager.h"
 
 // System Font
 #include "System/Font/Font.h"

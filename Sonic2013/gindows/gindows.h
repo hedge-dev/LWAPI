@@ -26,9 +26,14 @@ namespace gindows
 #include "Device/RenderState.h"
 #include "Device/RenderBase.h"
 #include "Device/RenderDevice.h"
-#include "Device/DeviceMouse.h"
 #include "Device/Font.h"
 #include "Device/Graphics.h"
+
+#include "Pad.h"
+#include "Mouse.h"
+#include "Keys.h"
+#include "Keyboard.h"
+#include "KeyboardPad.h"
 
 #include "EventArgs.h"
 #include "Canvas.h"

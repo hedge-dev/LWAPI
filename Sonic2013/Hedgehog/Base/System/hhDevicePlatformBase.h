@@ -2,7 +2,6 @@
 
 namespace app::hid
 {
-	typedef void ResDeviceData;
 	typedef void ResSendDeviceData;
 
 	class DevicePlatformBase : public fnd::ReferencedObject

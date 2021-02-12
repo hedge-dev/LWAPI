@@ -22,7 +22,7 @@ namespace app::fnd
 
 			return object;
 		}
-
+		
 		void operator delete(void* loc)
 		{
 			auto* object = static_cast<ReferencedObject*>(loc);
