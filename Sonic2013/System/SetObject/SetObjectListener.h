@@ -6,7 +6,32 @@ namespace app
 	
 	class CSetObjectListener : public GameObject3D
 	{
+	protected:
+		void* m_pSetObjectManager{};
+		CSetAdapter* m_pAdapter{};
+		INSERT_PADDING(8){};
+		CMyActivationHandle m_ActivationHandle{};
+		INSERT_PADDING(20){};
+		
 	public:
+		CSetObjectListener()
+		{
+			m_ActivationHandle.SetOwner(this);
+		}
+
+		bool ProcessMessage(fnd::Message& msg) override
+		{
+			if (PreProcessMessage(msg))
+				return true;
+
+			if (msg.IsOfType<SetEd::MsgUpdateSetEditor>() || msg.IsOfType<SetEd::MsgSetObjectEdited>())
+			{
+				return true;
+			}
+
+			return GameObject3D::ProcessMessage(msg);
+		}
+		
 		virtual void OnInitializedSetObject()
 		{
 			

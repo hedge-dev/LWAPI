@@ -27,6 +27,11 @@ namespace app::fnd
 			id = id_;
 		}
 
+		uint GetType() const
+		{
+			return id;
+		}
+		
 		virtual Message* Clone()
 		{
 			return new Message(id);

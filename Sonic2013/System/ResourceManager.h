@@ -33,7 +33,7 @@ namespace app::fnd
 	};
 
 	template<typename T>
-	class ResCommon
+	class CResCommon
 	{
 	protected:
 		T* m_pRes{};
@@ -49,19 +49,9 @@ namespace app::fnd
 			return m_pRes != nullptr;
 		}
 
-		const char* GetName() const
+		T* operator->()
 		{
-			return m_pRes->GetName();
-		}
-
-		const void* GetAddress() const
-		{
-			return m_pRes->GetAddress();
-		}
-
-		size_t GetSize() const
-		{
-			return m_pRes->GetSize();
+			return m_pRes;
 		}
 	};
 
@@ -100,7 +90,7 @@ namespace app::fnd
 		}
 
 		template<typename T>
-		ResCommon<T> Get(const char* pName)
+		CResCommon<T> Get(const char* pName)
 		{
 			return ResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
 		}

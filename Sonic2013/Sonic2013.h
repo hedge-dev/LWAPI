@@ -43,6 +43,7 @@
 #include "Hedgehog/Base/System/hhDevicePlatformBase.h"
 #include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
+#include "Hedgehog/Base/System/hhActivationHandle.h"
 #include "System/GlobalAllocator.h"
 
 // Hedgehog Utility Library
@@ -79,7 +80,6 @@
 #include "System/Messages.h"
 #include "System/GOComponent.h"
 #include "System/GameObject.h"
-#include "System/ObjectSystem/SetAdapter.h"
 #include "System/GameService.h"
 #include "System/ObjInfo.h"
 #include "System/FileLoader.h"
@@ -112,7 +112,11 @@
 #include "System/GameObject3D.h"
 
 // SetData
+#include "System/SetObject/MyActivationHandle.h"
+#include "System/SetObject/Object.h"
+#include "System/SetObject/SetAdapter.h"
 #include "System/SetObject/SetObjectListener.h"
+
 
 // Stage Data
 #include "System/Stage/World.h"

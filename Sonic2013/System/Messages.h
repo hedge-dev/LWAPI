@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Messages/MsgSetEditor.h"
 #include "Messages/MsgNotifyObjectEvent.h"
 #include "Messages/MsgGetPosition.h"
 #include "Messages/MsgGetRotation.h"
