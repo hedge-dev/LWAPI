@@ -12,9 +12,9 @@ namespace csl
 
 			bool isInplace()
 			{
-				return this->m_capacity & (1u << ((sizeof(size_t) * CHAR_BIT) - 1));
+				return this->m_capacity & csl::ut::SIGN_BIT;
 			}
-
+			
 		public:
 			void change_allocator(fnd::IAllocator* new_allocator)
 			{
@@ -35,7 +35,7 @@ namespace csl
 				}
 				
 				// Make a new p_buffer
-				void* new_buffer = new_allocator->Alloc(this->m_capacity * sizeof(T), 16);
+				void* new_buffer = new_allocator->Alloc(this->capacity() * sizeof(T), 16);
 
 				// Copy buffers
 				memcpy(new_buffer, this->p_buffer, sizeof(T) * this->m_length);
@@ -53,7 +53,7 @@ namespace csl
 			void reserve(size_t len)
 			{
 				// We already have enough reserved, return
-				if (len <= this->m_capacity)
+				if (len <= this->capacity())
 					return;
 
 				// Allocate a new p_buffer with the appropriate reserved storage
@@ -105,7 +105,7 @@ namespace csl
 			void push_back(T item)
 			{
 				this->m_length++;
-				if (this->m_length > this->m_capacity)
+				if (this->m_length > this->capacity())
 				{
 					reserve(this->m_length * 2);
 				}
@@ -115,8 +115,40 @@ namespace csl
 
 			void remove(uint i)
 			{
+				if (i > this->m_length)
+					return;
+				
 				this->p_buffer[i] = this->p_buffer[i + 1];
 				this->m_length--;
+			}
+
+			bool empty()
+			{
+				return this->m_length == 0;
+			}
+			
+			void clear()
+			{
+				if (!empty())
+					this->m_length = 0;
+			}
+			
+			void swap(MoveArray& rArray)
+			{
+				auto* tempBuffer = this->p_buffer;
+				auto tempLen = this->m_length;
+				auto tempCap = this->m_capacity;
+				auto* tempAllocator = this->p_allocator;
+				
+				this->p_buffer = rArray.p_buffer;
+				this->m_length = rArray.m_length;
+				this->m_capacity = rArray.m_capacity;
+				this->p_allocator = rArray.p_allocator;
+
+				rArray.p_buffer = tempBuffer;
+				rArray.m_length = tempLen;
+				rArray.m_capacity = tempCap;
+				rArray.p_allocator = tempAllocator;
 			}
 			
 			T operator[] (size_t i) const

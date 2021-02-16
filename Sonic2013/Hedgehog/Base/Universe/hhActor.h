@@ -15,6 +15,8 @@ namespace app::fnd
 
 	class CActor
 	{
+		friend MessageManager;
+		
 	protected:
 		uint m_ActorID{};
 		MessageManager* m_pMessageManager{};
@@ -27,8 +29,8 @@ namespace app::fnd
 
 		void MessageSetup(uint to, fnd::Message& msg)
 		{
-			msg.receiver = to;
-			msg.sender = m_ActorID;
+			msg.m_Receiver = to;
+			msg.m_Sender = m_ActorID;
 		}
 		
 	public:
@@ -128,7 +130,7 @@ namespace app::fnd
 		void BroadcastMessage(uint group, fnd::Message& msg)
 		{
 			MessageSetup(group, msg);
-			msg.broadcasted = true;
+			msg.m_Broadcasted = true;
 			m_pMessageManager->AddMessage(msg);
 		}
 	};

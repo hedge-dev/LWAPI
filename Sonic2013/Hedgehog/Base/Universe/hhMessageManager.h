@@ -6,33 +6,100 @@ namespace app::fnd
 	
 	class MessageManager : ReferencedObject, csl::fnd::SingletonPointer<MessageManager>
 	{
+	protected:
+		size_t m_NextID;
+		csl::ut::PointerMap<size_t, CActor*> m_Actors{ GetAllocator() };
+		csl::ut::MoveArray<Message*> m_Messages{ GetAllocator() };
+		csl::ut::MoveArray<Message*> m_ExecutingMessages{ GetAllocator() };
+		void* m_Unk1;
+		
+		size_t GenerateID()
+		{
+			return m_NextID++;
+		}
+		
 	public:
 		inline static FUNCTION_PTR(CActor*, __thiscall, ms_fpGetActor, ASLR(0x0049A950), const void* This, uint id);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x0049A8E0), void* This, CActor* actor);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemove, ASLR(0x0049A910), void* This, CActor* actor);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddMessage, ASLR(0x0049A680), void* This, Message& msg);
-
+		
+		MessageManager()
+		{
+			m_Actors.reserve(1024);
+			m_Messages.reserve(512);
+			m_ExecutingMessages.reserve(512);
+		}
+		
 		void AddMessage(Message& msg)
 		{
-			return ms_fpAddMessage(this, msg);
+			auto* pMsg = msg.Clone();
+
+			if (pMsg)
+				m_Messages.push_back(pMsg);
 		}
 
+		void Update();
 		
-		void Add(CActor* actor)
-		{
-			return ms_fpAdd(this, actor);
-		}
+		void Add(CActor* actor);
 
-		void Remove(CActor* actor)
-		{
-			return ms_fpRemove(this, actor);
-		}
+		void Remove(CActor* actor);
 		
 		[[nodiscard]] CActor* GetActor(uint id) const
 		{
-			return ms_fpGetActor(this, id);
+			auto result = m_Actors.find(id);
+
+			if (result != m_Actors.end())
+			{
+				return result.get();
+			}
+
+			return nullptr;
 		}
 	};
+}
+
+#include "hhActor.h"
+inline void app::fnd::MessageManager::Add(CActor* actor)
+{
+	if (!actor)
+		return;
+
+	actor->m_ActorID = GenerateID();
+	actor->m_pMessageManager = this;
+	m_Actors.insert(actor->m_ActorID, actor);
+}
+
+
+inline void app::fnd::MessageManager::Remove(CActor* actor)
+{
+	if (!actor)
+		return;
+
+	m_Actors.erase(actor->m_ActorID);
+	actor->m_ActorID = 0;
+	actor->m_pMessageManager = nullptr;
+}
+
+inline void app::fnd::MessageManager::Update()
+{
+	if (m_Messages.empty())
+		return;
+
+	m_ExecutingMessages.swap(m_Messages);
+	
+	for (Message* msg : m_ExecutingMessages)
+	{
+		CActor* pActor = GetActor(msg->m_Receiver);
+		if (pActor)
+		{
+			pActor->ActorProc(msg->m_Broadcasted != false, msg);
+		}
+
+		delete msg;
+	}
+
+	m_ExecutingMessages.clear();
 }
 
 

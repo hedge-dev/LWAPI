@@ -39,7 +39,7 @@ namespace app::fnd
 		T* m_pRes{};
 
 	public:
-		ResCommon(T* pRes) : m_pRes(pRes)
+		CResCommon(T* pRes) : m_pRes(pRes)
 		{
 
 		}
@@ -49,7 +49,22 @@ namespace app::fnd
 			return m_pRes != nullptr;
 		}
 
-		T* operator->()
+		const char* GetName() const
+		{
+			return m_pRes->GetName();
+		}
+
+		const void* GetAddress() const
+		{
+			return m_pRes->GetAddress();
+		}
+
+		size_t GetSize() const
+		{
+			return m_pRes->GetSize();
+		}
+		
+		T* operator->() const
 		{
 			return m_pRes;
 		}
@@ -92,7 +107,7 @@ namespace app::fnd
 		template<typename T>
 		CResCommon<T> Get(const char* pName)
 		{
-			return ResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
+			return CResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
 		}
 
 		void RegisterList(const ResourceCustomInfo** ppList)

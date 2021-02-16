@@ -10,7 +10,7 @@ namespace app
 	protected:
 		CSetAdapterMgr* m_pAdapterManager;
 		CSetObjectListener* m_pListener;
-		CResObject* m_pObject;
+		SetEd::CResObject* m_pObject;
 		void* m_Unk1;
 		uint m_StatusFlags;
 		float m_RetireTime;

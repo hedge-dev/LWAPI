@@ -29,7 +29,7 @@ namespace csl::ut
 
 		[[nodiscard]] size_t capacity() const
 		{
-			return this->m_capacity & ~(1u << ((sizeof(size_t) * CHAR_BIT) - 1));
+			return this->m_capacity & ~csl::ut::SIGN_BIT;
 		}
 	};
 }
