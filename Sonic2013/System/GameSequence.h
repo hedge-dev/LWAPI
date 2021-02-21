@@ -26,15 +26,15 @@ namespace app
 		CGame* m_pGame;
 		void* m_pUnk1;
 		csl::ut::FixedString<16> m_StgId;
-		INSERT_PADDING(36);
+		
+	public:
+		void* m_pNextSequence;
+		void* m_Unk2;
+		void* m_Unk3;
+		INSERT_PADDING(24);
 		DevData* m_pDevData;
 		
 	public:
-		CGameSequence()
-		{
-			
-		}
-
 		DevData* GetDevData() const
 		{
 			return m_pDevData;

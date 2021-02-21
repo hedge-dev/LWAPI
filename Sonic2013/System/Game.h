@@ -34,4 +34,35 @@ namespace app
 			PHANTOM_MAX
 		};
 	};
+
+	class GameBase : fnd::ReferencedObject
+	{
+	public:
+		virtual void Config(Application& rApp){}
+		virtual void OnSetup(Application& rApp){}
+		virtual void OnShutdown(Application& rApp){}
+		virtual void Tick(Application& rApp){}
+		virtual void Draw(Application& rApp){}
+	};
+	
+	class CGame : public GameBase, public fnd::CBranchActor
+	{
+	protected:
+		void* m_Unk1;
+		CGameSequence* m_pSequence;
+		void* m_Unk2;
+		void* m_Unk3;
+		float m_AspectRatio{ 1.7777778f };
+		
+	public:
+		CGameSequence* GetSequence() const
+		{
+			return m_pSequence;
+		}
+
+		float GetAspectRatio() const
+		{
+			return m_AspectRatio;
+		}
+	};
 }
