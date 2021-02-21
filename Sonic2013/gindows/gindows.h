@@ -13,6 +13,20 @@ namespace gindows
 	{
 		*ms_ppGindowsAllocator = pAllocator;
 	}
+
+	class DelegateAllocator
+	{
+	public:
+		void* Alloc(size_t size, int alignment)
+		{
+			return GetMemoryAllocator()->Alloc(size, alignment);
+		}
+
+		void Free(void* loc)
+		{
+			return GetMemoryAllocator()->Free(loc);
+		}
+	};
 	
 	// One day
 	typedef uint PrimType;

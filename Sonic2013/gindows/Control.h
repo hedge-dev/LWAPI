@@ -3,8 +3,12 @@ namespace gindows
 {
 	class Control : Object
 	{
+	public:
+		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnDestroy;
+		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
+
 	protected:
-		INSERT_PADDING(0x108){};
+		INSERT_PADDING(0xF0){};
 		Canvas m_Canvas{};
 		INSERT_PADDING(0x44){};
 		

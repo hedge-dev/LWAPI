@@ -7,11 +7,11 @@ namespace app::fnd
 	class MessageManager : ReferencedObject, csl::fnd::SingletonPointer<MessageManager>
 	{
 	protected:
-		size_t m_NextID;
+		size_t m_NextID{};
 		csl::ut::PointerMap<size_t, CActor*> m_Actors{ GetAllocator() };
 		csl::ut::MoveArray<Message*> m_Messages{ GetAllocator() };
 		csl::ut::MoveArray<Message*> m_ExecutingMessages{ GetAllocator() };
-		void* m_Unk1;
+		void* m_Unk1{};
 		
 		size_t GenerateID()
 		{
@@ -19,11 +19,6 @@ namespace app::fnd
 		}
 		
 	public:
-		inline static FUNCTION_PTR(CActor*, __thiscall, ms_fpGetActor, ASLR(0x0049A950), const void* This, uint id);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x0049A8E0), void* This, CActor* actor);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemove, ASLR(0x0049A910), void* This, CActor* actor);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddMessage, ASLR(0x0049A680), void* This, Message& msg);
-		
 		MessageManager()
 		{
 			m_Actors.reserve(1024);

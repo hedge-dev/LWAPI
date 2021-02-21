@@ -11,10 +11,24 @@ namespace app::fnd
 	public:
 		CBranchActor()
 		{
-			for (auto& m_PhasedActor : m_PhasedActors)
+			for (size_t i = 0; i < 3; i++)
 			{
-				m_PhasedActor = csl::ut::MoveArray<CActor*>(game::GlobalAllocator::GetSingletonAllocator());
+				m_PhasedActors[i] = csl::ut::MoveArray<CActor*>(1024, game::GlobalAllocator::GetSingletonAllocator());
 			}
+		}
+
+		size_t ForEach(CActorTraverser& traverser) override
+		{
+			auto count = traverser.Callback(*this);
+			if (count)
+				return count == 1;
+
+			for (auto& pActor : m_ChildActors)
+			{
+				pActor->ForEach(traverser);
+			}
+			
+			return 1;
 		}
 	};
 }

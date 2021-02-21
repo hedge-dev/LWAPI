@@ -10,7 +10,7 @@ namespace app::fnd
 	class CActorTraverser : public ReferencedObject
 	{
 	public:
-		virtual bool Callback(CActor& actor) = 0;
+		virtual size_t Callback(CActor& actor) = 0;
 	};
 
 	class CActor
@@ -46,7 +46,7 @@ namespace app::fnd
 			csl::fnd::Singleton<MessageManager>::GetInstance()->Remove(this);
 		}
 		
-		virtual void ForEach(CActorTraverser& traverser) = 0;
+		virtual size_t ForEach(CActorTraverser& traverser) = 0;
 
 		virtual bool PreProcessMessage(Message& msg)
 		{

@@ -5,6 +5,7 @@ namespace app
 	class CGame;
 	enum RcType;
 
+	// Size is actually 272 bytes
 	class CGameSequence : public fnd::ReferencedObject
 	{
 	public:
@@ -31,7 +32,7 @@ namespace app
 	public:
 		CGameSequence()
 		{
-			sizeof(CGameSequence);
+			
 		}
 
 		DevData* GetDevData() const
