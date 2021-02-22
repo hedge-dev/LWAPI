@@ -41,6 +41,11 @@ namespace app::font
 			return m_BasePos;
 		}
 
+		[[nodiscard]] const csl::math::Vector2& GetSize() const
+		{
+			return m_Size;
+		}
+		
 		[[nodiscard]] bool IsEnabled() const
 		{
 			return m_Enabled;

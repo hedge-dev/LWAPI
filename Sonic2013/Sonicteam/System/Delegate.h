@@ -2,6 +2,20 @@
 
 namespace csl::fnd
 {
+	class DelegateAllocator : csl::fnd::IAllocator
+	{
+	public:
+		void* Alloc(size_t size, int alignment) override
+		{
+			return operator new(size);
+		}
+
+		void Free(void* loc) override
+		{
+			return operator delete(loc);
+		}
+	};
+	
 	template<typename Ret, typename Alloc>
 	class Delegate;
 	
@@ -124,6 +138,11 @@ namespace csl::fnd
 		{
 			Remove(rFunction);
 			return *this;
+		}
+
+		void operator()(Args... args)
+		{
+			Invoke(args...);
 		}
 	};
 }
