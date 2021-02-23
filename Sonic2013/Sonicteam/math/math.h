@@ -34,7 +34,7 @@ namespace csl::math
 		Vector3() : x(0), y(0), z(0) {}
 		Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 	};
-
+	
 	class Angle3
 	{
 	public:
@@ -81,6 +81,28 @@ namespace csl::math
 		Vector4 columns[4];
 	};
 
+	class Transform
+	{
+	public:
+		Vector3 m_Position;
+		Quaternion m_Rotation;
+		Vector3 m_Scale;
+		bool m_IsDirty;
+	};
+
+	class CalculatedTransform
+	{
+	public:
+		Matrix34 m_Mtx;
+		Vector4 m_Unk1[2];
+		size_t m_Flags;
+
+		Vector4* GetTranslation(Vector4* vec = nullptr) const
+		{
+			return m_Mtx.GetTransVector(vec);
+		}
+	};
+	
 	class Constants
 	{
 	public:
@@ -88,7 +110,7 @@ namespace csl::math
 		inline static const Vector3 Vector3Zero{ 0, 0, 0 };
 		inline static const Quaternion QuaternionIdentity{ 0, 0, 0, 1 };
 	};
-
+	
 	inline const Vector2* Vector2::Zero = &Constants::Vector2Zero;
 	inline const Vector3* Vector3::Zero = &Constants::Vector3Zero;
 	inline const Quaternion* Quaternion::Identity = &Constants::QuaternionIdentity;

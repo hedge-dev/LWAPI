@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class GOCVisual : GOComponent
+	class GOCVisual : public GOComponent
 	{
 		typedef char VisualType;
 		

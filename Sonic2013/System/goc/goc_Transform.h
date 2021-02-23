@@ -7,10 +7,12 @@ namespace app::fnd
 	class GOCTransform : public GOComponent
 	{
 	private:
-		INSERT_PADDING(36);
-		Vector3 position;
-		Quaternion rotation;
-		INSERT_PADDING(0x160);
+		csl::ut::LinkListNode m_ChildNode;
+		INSERT_PADDING(12);
+		csl::ut::LinkList<GOCTransform> m_Children{ offsetof(GOCTransform, m_ChildNode) };
+		csl::math::Transform m_Transform;
+		app::fnd::HFrame m_Frame; // app::fnd::BranchHFrame
+		INSERT_PADDING(14);
 		
 	public:
 		inline static const char* ms_pGOCTransformFamilyID = (const char*)ASLR(0x00D60B44);
@@ -26,8 +28,8 @@ namespace app::fnd
 		
 		GOCTransform() : GOComponent(true)
 		{
-			ASSERT_OFFSETOF(GOCTransform, position, 0x60);
-			ASSERT_OFFSETOF(GOCTransform, rotation, 0x70);
+			ASSERT_OFFSETOF(GOCTransform, m_Transform, 0x60);
+			ASSERT_OFFSETOF(GOCTransform, m_Frame, 0xA0);
 			
 			ms_fpCtor(this);
 		}
@@ -55,17 +57,27 @@ namespace app::fnd
 
 		const Vector3& GetLocalPosition() const
 		{
-			return position;
+			return m_Transform.m_Position;
 		}
 
 		const Quaternion& GetLocalRotation() const
 		{
-			return rotation;
+			return m_Transform.m_Rotation;
 		}
 		
 		const char* GetFamilyID() override
 		{
 			return ms_pGOCTransformFamilyID;
+		}
+
+		void AddListener(HFrameListener* pListener) 
+		{
+			m_Frame.AddHFrameListener(pListener);
+		}
+
+		void RemoveListener(HFrameListener* pListener)
+		{
+			m_Frame.RemoveHFrameListener(pListener);
 		}
 
 		inline static GOComponentClass* staticClass()

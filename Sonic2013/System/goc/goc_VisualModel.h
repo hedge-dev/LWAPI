@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class GOCVisualModel : GOCVisual
+	class GOCVisualModel : public GOCVisualTransformed
 	{
 	public:
 		class Description
@@ -26,7 +26,8 @@ namespace app::fnd
 		};
 
 	private:
-		INSERT_PADDING(0x100);
+		INSERT_PADDING(128);
+		
 	public:
 		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, Description& description);

@@ -8,7 +8,7 @@ namespace hh::base
 		size_t m_RefCount{};
 
 	public:
-		virtual ~CRefCountObject();
+		virtual ~CRefCountObject() = default;
 
 		inline void* operator new(size_t size)
 		{

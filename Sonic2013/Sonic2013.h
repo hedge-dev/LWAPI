@@ -48,6 +48,7 @@
 #include "Hedgehog/Base/System/hhDeviceBase.h"
 #include "Hedgehog/Base/System/hhApplication.h"
 #include "Hedgehog/Base/System/hhActivationHandle.h"
+#include "Hedgehog/Base/System/hhFrame.h"
 #include "System/GlobalAllocator.h"
 
 // Hedgehog Utility Library
@@ -104,6 +105,7 @@
 // Components
 #include "System/goc/goc_Transform.h"
 #include "System/goc/goc_Visual.h"
+#include "System/goc/goc_VisualTransformed.h"
 #include "System/goc/goc_VisualModel.h"
 #include "System/goc/goc_EnemyTarget.h"
 
