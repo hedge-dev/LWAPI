@@ -58,7 +58,7 @@ namespace gindows
 
 		[[nodiscard]] csl::ut::Color8* GetDefaultForeColorPointer()
 		{
-			return m_pImpl->GetDefaultBackColorPointer();
+			return m_pImpl->GetDefaultForeColorPointer();
 		}
 
 		[[nodiscard]] csl::ut::Color8* GetSelectCaptionColorL()
