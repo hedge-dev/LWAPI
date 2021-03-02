@@ -13,7 +13,8 @@ namespace app::fnd
 		virtual size_t Callback(CActor& actor) = 0;
 	};
 
-	class CActor
+	// CActor : boost::noncopyable
+	class CActor : public csl::ut::NonCopyable
 	{
 		friend MessageManager;
 		

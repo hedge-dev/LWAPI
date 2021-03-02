@@ -2,7 +2,7 @@
 
 namespace app
 {
-	class CLevelInfo : fnd::GameService
+	class CLevelInfo : public fnd::GameService
 	{
 	public:
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFD1C));
