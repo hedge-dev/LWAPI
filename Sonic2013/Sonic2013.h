@@ -107,6 +107,7 @@
 #include "System/goc/goc_Visual.h"
 #include "System/goc/goc_VisualTransformed.h"
 #include "System/goc/goc_VisualModel.h"
+#include "System/goc/goc_Collider.h"
 #include "System/goc/goc_EnemyTarget.h"
 
 // Services
