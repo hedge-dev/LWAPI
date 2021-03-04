@@ -4,6 +4,9 @@ namespace app
 {
 	class CObjInfoContainer : fnd::GameService
 	{
+	protected:
+		csl::ut::StringMap<CObjInfo*> m_Infos{ GetAllocator() };
+		
 	public:
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEF2B0));
 		inline static FUNCTION_PTR(CObjInfo*, __thiscall, ms_fpGetInfo, ASLR(0x008405C0), const CObjInfoContainer* This, const char* name);
@@ -15,14 +18,38 @@ namespace app
 			return *ms_pStaticClass;
 		}
 
-		CObjInfo* GetInfo(const char* name) const
+		const csl::ut::StringMap<CObjInfo*>& Infos() const
 		{
-			return ms_fpGetInfo(this, name);
+			return m_Infos;
+		}
+		
+		bool IsRegister(const char* pName) const
+		{
+			const auto result = m_Infos.find(pName);
+
+			return result != m_Infos.end();
+		}
+		
+		CObjInfo* GetInfo(const char* pName) const
+		{
+			return ms_fpGetInfo(this, pName);
 		}
 
-		bool Register(const char* name, CObjInfo* info)
+		bool Register(const char* pName, CObjInfo* pInfo)
 		{
-			return ms_fpRegister(this, name, info);
+			if (!pInfo)
+				return false;
+			
+			if (IsRegister(pName))
+			{
+				delete pInfo;
+				return false;
+			}
+
+			m_Infos.insert(pName, pInfo);
+			pInfo->AddRef();
+			pInfo->RegisterCallback(*this);
+			return true;
 		}
 
 		void LoadRequestAll() const

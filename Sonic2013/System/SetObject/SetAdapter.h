@@ -20,5 +20,15 @@ namespace app
 		{
 			m_pListener = pListener;
 		}
+
+		uint GetStatusFlags() const
+		{
+			return m_StatusFlags;
+		}
+		
+		void SetStatusFlags(uint flag)
+		{
+			m_StatusFlags |= flag;
+		}
 	};
 }

@@ -49,6 +49,7 @@ namespace app::fnd
 		
 		virtual size_t ForEach(CActorTraverser& traverser) = 0;
 
+	protected:
 		virtual bool PreProcessMessage(Message& msg)
 		{
 			return false;
@@ -66,6 +67,12 @@ namespace app::fnd
 
 		virtual bool ActorProc(int id, void* data) = 0;
 
+	public:
+		size_t GetID() const
+		{
+			return m_ActorID;
+		}
+		
 		void SetUpdateFlag(uint16 flag, bool value)
 		{
 			m_updateFlags.set(flag, value);

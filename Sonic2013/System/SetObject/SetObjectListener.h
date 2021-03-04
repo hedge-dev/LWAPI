@@ -13,7 +13,7 @@ namespace app
 		CMyActivationHandle m_ActivationHandle{};
 		INSERT_PADDING(20){};
 		
-	public:
+	protected:
 		CSetObjectListener()
 		{
 			m_ActivationHandle.SetOwner(this);
@@ -46,7 +46,8 @@ namespace app
 		{
 
 		}
-		
+
+	public:
 		virtual unsigned int GetAdsorbGuidePathID()
 		{
 			return 0;
@@ -66,6 +67,12 @@ namespace app
 		virtual void SetAppearance(float opacity) // not sure if this is opacity
 		{
 			
+		}
+		
+		void SetStatusRetire()
+		{
+			if (m_pAdapter)
+				m_pAdapter->SetStatusFlags(2);
 		}
 	};
 }

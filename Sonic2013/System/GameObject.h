@@ -54,6 +54,16 @@ namespace app
 			}
 		}
 
+		void SetObjectCategory(size_t category)
+		{
+			m_Category = category;
+		}
+
+		size_t GetObjectCategory() const
+		{
+			return m_Category;
+		}
+		
 		virtual void AddCallback(GameDocument& document)
 		{
 

@@ -34,6 +34,11 @@ namespace app::fnd
 				m_Messages.push_back(pMsg);
 		}
 
+		const csl::ut::PointerMap<size_t, CActor*>& Actors() const
+		{
+			return m_Actors;
+		}
+		
 		void Update();
 		
 		void Add(CActor* actor);
@@ -42,12 +47,10 @@ namespace app::fnd
 		
 		[[nodiscard]] CActor* GetActor(uint id) const
 		{
-			auto result = m_Actors.find(id);
+			const auto result = m_Actors.find(id);
 
 			if (result != m_Actors.end())
-			{
-				return result.get();
-			}
+				return result;
 
 			return nullptr;
 		}

@@ -62,7 +62,7 @@ namespace csl::ut
 				{
 					const Elem* pElem = &oldElements[i];
 
-					if (pElem->m_Key != INVALID_KEY)
+					if (pElem->m_Hash != INVALID_KEY)
 					{
 						Insert(pElem->m_Key, pElem->m_Value);
 					}
@@ -110,7 +110,7 @@ namespace csl::ut
 			size_t idx = hash & m_CapacityMax;
 			Elem* pElem = &m_pElements[idx];
 
-			if (pElem->m_Key == INVALID_KEY)
+			if (pElem->m_Hash == INVALID_KEY)
 			{
 				pElem->m_Hash = hash;
 				pElem->m_Key = key;
@@ -124,7 +124,7 @@ namespace csl::ut
 					idx = m_CapacityMax & (idx + 1);
 					pElem = &m_pElements[idx];
 
-					if (pElem->m_Key == INVALID_KEY)
+					if (pElem->m_Hash == INVALID_KEY)
 					{
 						pElem->m_Hash = hash;
 						pElem->m_Key = key;
@@ -136,6 +136,28 @@ namespace csl::ut
 			}
 		}
 
+		size_t GetBegin() const
+		{
+			for (size_t i = 0; i < m_CapacityMax; i++)
+			{
+				if (m_pElements[i].m_Hash != INVALID_KEY)
+					return i;
+			}
+			
+			return m_CapacityMax + 1;
+		}
+
+		size_t GetNext(size_t idx) const
+		{
+			for (size_t i = idx + 1; i < m_CapacityMax; i++)
+			{
+				if (m_pElements[i].m_Hash != INVALID_KEY)
+					return i;
+			}
+
+			return m_CapacityMax + 1;
+		}
+		
 	public:
 		struct iterator
 		{
@@ -157,14 +179,16 @@ namespace csl::ut
 			if (!m_pElements)
 				return end();
 
-			const size_t hash = const_cast<TOp&>(m_Operation).hash(key);
+			TOp& op = const_cast<TOp&>(m_Operation);
+			
+			const size_t hash = op.hash(key);
 			size_t idx = hash & m_CapacityMax;
 			const Elem* pElem = &m_pElements[idx];
 			
-			if (pElem->m_Key == INVALID_KEY)
+			if (pElem->m_Hash == INVALID_KEY)
 				return end();
 			
-			while (pElem->m_Hash != hash || pElem->m_Key != key)
+			while (pElem->m_Hash != hash || !op.compare(key, pElem->m_Key))
 			{
 				idx = m_CapacityMax & (idx + 1);
 				pElem = &m_pElements[idx];
@@ -176,11 +200,21 @@ namespace csl::ut
 			return iterator{ this, idx };
 		}
 
+		size_t GetKey(iterator iter) const
+		{
+			return iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Key;
+		}
+		
 		size_t GetValue(iterator iter) const
 		{
 			return iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Value;
 		}
 
+		size_t* GetValuePtr(iterator iter) const
+		{
+			return &iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Value;
+		}
+		
 		void Erase(size_t key)
 		{
 			auto result = Find(key);
