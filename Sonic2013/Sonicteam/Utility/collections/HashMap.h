@@ -21,7 +21,7 @@ namespace csl::ut
 		size_t m_CapacityMax;
 		fnd::IAllocator* m_pAllocator;
 		TOp m_Operation{};
-
+		
 	protected:
 		size_t CalcResize(size_t capacity)
 		{
@@ -39,6 +39,14 @@ namespace csl::ut
 			return static_cast<Elem*>(m_pAllocator->Alloc(sizeof(Elem), alignof(Elem)));
 		}
 
+		void ReleaseMemory()
+		{
+			if (!(m_Capacity & csl::ut::SIGN_BIT) && m_pAllocator && m_pElements)
+			{
+				m_pAllocator->Free(m_pElements);
+			}
+		}
+		
 		size_t GetCapacity()
 		{
 			return m_Capacity & ~csl::ut::SIGN_BIT;
@@ -90,7 +98,11 @@ namespace csl::ut
 		{
 			Reserve(capacity);
 		}
-
+		~HashMap()
+		{
+			ReleaseMemory();
+		}
+		
 	protected:
 		void Insert(size_t key, size_t value)
 		{
