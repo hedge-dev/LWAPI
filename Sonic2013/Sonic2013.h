@@ -62,6 +62,11 @@
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 #include "Hedgehog/Base/Universe/hhBranchActor.h"
 
+// Hedgehog Animation Library
+#include "Hedgehog/Animation/hhAnimationObject.h"
+#include "Hedgehog/Animation/hhSkeletonControl.h"
+#include "Hedgehog/Animation/hhSkeletonBlender.h"
+
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhRflCustomAttribute.h"
 #include "Hedgehog/Reflection/hhRflClassMember.h"
@@ -70,6 +75,7 @@
 
 #include "Hedgehog/Pack/System/hhPackFile.h"
 #include "Hedgehog/Graphics/hhModel.h"
+#include "Hedgehog/Graphics/hhAnimSkeleton.h"
 
 // System Game
 #include "System/Game/LuaScript.h"
@@ -109,6 +115,9 @@
 #include "System/goc/goc_VisualTransformed.h"
 #include "System/goc/goc_VisualModel.h"
 #include "System/goc/goc_Collider.h"
+#include "System/goc/goc_Animation.h"
+#include "System/goc/goc_AnimationSingle.h"
+#include "System/goc/goc_AnimationSimple.h"
 #include "System/goc/goc_EnemyTarget.h"
 
 // Services

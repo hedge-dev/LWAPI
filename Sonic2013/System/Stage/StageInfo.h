@@ -16,8 +16,8 @@ namespace app::StageInfo
 		};
 
 		csl::fnd::IAllocator* m_pAllocator{};
-		csl::ut::ObjectMoveArray<SStageData> m_Stages{ m_pAllocator };
-		csl::ut::ObjectMoveArray<WorldNode> m_Worlds[2];
+		csl::ut::ObjectMoveArray<SStageData*> m_Stages{ m_pAllocator };
+		csl::ut::ObjectMoveArray<WorldNode*> m_Worlds[2];
 		SZoneInfo m_Zones[19];
 		csl::ut::MoveArray<const char*> m_Unk1{ m_pAllocator }; // Levels?
 
@@ -33,7 +33,7 @@ namespace app::StageInfo
 
 			rScript.ForEach(pCat, [](const char* node, game::LuaScript& script, void* pCtx)
 				{
-					auto* pWorlds = static_cast<csl::ut::ObjectMoveArray<WorldNode>*>(pCtx);
+					auto* pWorlds = static_cast<csl::ut::ObjectMoveArray<WorldNode*>*>(pCtx);
 					auto* world = new(pWorlds->get_allocator()) WorldNode();
 
 					const char* title{};
