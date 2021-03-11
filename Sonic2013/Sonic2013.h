@@ -73,9 +73,11 @@
 #include "Hedgehog/Reflection/hhRflClassEnum.h"
 #include "Hedgehog/Reflection/hhRflClass.h"
 
+#include "Hedgehog/Resource/hhResCommon.h"
+#include "Hedgehog/Pack/System/hhPackFileHeader.h"
 #include "Hedgehog/Pack/System/hhPackFile.h"
-#include "Hedgehog/Graphics/hhModel.h"
-#include "Hedgehog/Graphics/hhAnimSkeleton.h"
+#include "Hedgehog/Resource/hhResourceTypeInfo.h"
+#include "Hedgehog/Resource/hhResourceReflections.h"
 
 // System Game
 #include "System/Game/LuaScript.h"
@@ -139,3 +141,6 @@
 #include "System/Stage/World.h"
 #include "System/Stage/StageData.h"
 #include "System/Stage/StageInfo.h"
+
+// Utilities
+#include "System/Utility/ObjUtil.h"

@@ -13,7 +13,7 @@ namespace app::fnd
 		class Description
 		{
 		public:
-			hh::gfx::ResModel* model;
+			hh::gfx::res::ResModel* model;
 			void* skeleton{};
 			int field_08{}; // some kind of flags
 			void* field_0C{};

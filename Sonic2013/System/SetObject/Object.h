@@ -13,7 +13,7 @@ namespace app::SetEd
 		void* m_Unk3;
 	};
 
-	class CResObject : public fnd::CResCommon<CResObjectData>
+	class CResObject : public fnd::ResCommon<CResObjectData>
 	{
 		
 	};

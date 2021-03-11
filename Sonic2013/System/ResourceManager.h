@@ -2,74 +2,6 @@
 
 namespace app::fnd
 {
-	class ResRawData
-	{
-		const char* m_pName{};
-		void* m_pData{};
-		void* m_pAddress{};
-		size_t m_DataSize{};
-		size_t m_pUnk1{}; // Alignment?
-
-	public:
-		const char* GetName() const
-		{
-			return m_pName;
-		}
-
-		void* GetData()
-		{
-			return m_pData;
-		}
-
-		const void* GetAddress() const
-		{
-			return m_pAddress;
-		}
-
-		size_t GetSize() const
-		{
-			return m_DataSize;
-		}
-	};
-
-	template<typename T>
-	class CResCommon
-	{
-	protected:
-		T* m_pRes{};
-
-	public:
-		CResCommon(T* pRes) : m_pRes(pRes)
-		{
-
-		}
-
-		bool IsValid() const
-		{
-			return m_pRes != nullptr;
-		}
-
-		const char* GetName() const
-		{
-			return m_pRes->GetName();
-		}
-
-		const void* GetAddress() const
-		{
-			return m_pRes->GetAddress();
-		}
-
-		size_t GetSize() const
-		{
-			return m_pRes->GetSize();
-		}
-		
-		T* operator->() const
-		{
-			return m_pRes;
-		}
-	};
-
 	struct ResourceArgsData;
 	class ResourceManager;
 
@@ -105,9 +37,9 @@ namespace app::fnd
 		}
 
 		template<typename T>
-		CResCommon<T> Get(const char* pName)
+		ResCommon<T> Get(const char* pName)
 		{
-			return CResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
+			return ResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
 		}
 
 		void RegisterList(const ResourceCustomInfo** ppList)
