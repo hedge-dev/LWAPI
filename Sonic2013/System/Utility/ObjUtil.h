@@ -11,7 +11,7 @@ namespace app
 			if (!data.IsValid())
 				return hh::ut::PackFile(nullptr);
 
-			auto pack = hh::ut::PackFile(data->GetAddress());
+			const auto pack = hh::ut::PackFile(data->GetAddress());
 			return hh::ut::PackFile(pack);
 		}
 	};

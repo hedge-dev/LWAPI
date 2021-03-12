@@ -8,7 +8,12 @@ namespace app::animation
 
 namespace app::game
 {
-	typedef uint PlayPolicy;
+	enum class PlayPolicy
+	{
+		Once,
+		Loop
+	};
+	
 	class AnimationControl;
 	class AnimationControlBase
 	{
@@ -57,6 +62,7 @@ namespace app::game
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleaup, ASLR(0x004B3CC0), GOCAnimationSimple*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B3C80), GOCAnimationSimple*, const Description&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x004B3E50), GOCAnimationSimple*, const char*, hh::gfx::res::ResAnimSkeleton*, PlayPolicy);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x004B3A80), GOCAnimationSimple*, const char*);
 		
 		void Cleanup()
 		{
@@ -144,6 +150,14 @@ namespace app::game
 				return m_pCurrentAnimation->GetName();
 			
 			return nullptr;
+		}
+
+		bool IsFinished() const
+		{
+			if (!m_pCurrentAnimation)
+				return false;
+
+			return m_pCurrentAnimation->GetFrame() >= m_pCurrentAnimation->GetEndFrame();
 		}
 	};
 }

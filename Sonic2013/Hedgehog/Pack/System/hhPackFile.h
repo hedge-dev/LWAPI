@@ -11,6 +11,7 @@ namespace hh::ut
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResource, ASLR(0x00C191E0), PackFile*, const ResourceTypeInfo&, const char*, uint*);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResourceByIndex, ASLR(0x00C19230), PackFile*, const ResourceTypeInfo&, size_t, uint*);
 		inline static FUNCTION_PTR(size_t, __thiscall, ms_fpGetResourceCount, ASLR(0x00C192C0), const PackFile*, const ResourceTypeInfo&);
+		inline static FUNCTION_PTR(const char*, __thiscall, ms_fpGetResourceIDName, ASLR(0x00C19280), const PackFile*, const ResourceTypeInfo&, size_t);
 		
 	public:
 		bool IsValidHeader() const
@@ -46,6 +47,11 @@ namespace hh::ut
 			return ms_fpGetResourceCount(this, info);
 		}
 
+		const char* GetResourceIDName(const ResourceTypeInfo& info, size_t index) const
+		{
+			return ms_fpGetResourceIDName(this, info, index);
+		}
+		
 		template<typename T>
 		T* Get(const char* pName, uint* a2)
 		{
@@ -59,9 +65,15 @@ namespace hh::ut
 		}
 
 		template<typename T>
-		size_t GetCount()
+		size_t GetCount() const
 		{
 			return GetResourceCount(T::staticTypeInfo());
+		}
+
+		template<typename T>
+		const char* GetIDName(size_t index) const
+		{
+			return GetResourceIDName(T::staticTypeInfo(), index);
 		}
 	};
 }
