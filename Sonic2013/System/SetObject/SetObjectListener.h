@@ -13,12 +13,13 @@ namespace app
 		CMyActivationHandle m_ActivationHandle{};
 		INSERT_PADDING(20){};
 		
-	protected:
+	public:
 		CSetObjectListener()
 		{
 			m_ActivationHandle.SetOwner(this);
 		}
 
+	protected:
 		bool ProcessMessage(fnd::Message& msg) override
 		{
 			if (PreProcessMessage(msg))

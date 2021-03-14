@@ -4,7 +4,7 @@
 
 namespace app
 {
-	class CMyActivationHandle : public CActivationHandle
+	class alignas(16) CMyActivationHandle : public CActivationHandle
 	{
 	protected:
 		GameObject* m_pOwner{};
