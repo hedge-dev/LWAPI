@@ -133,6 +133,12 @@ namespace app::game
 		{
 			m_rpCharAnimation->RegisterCallback(id, pCallback);
 		}
+
+		void ExitLoop()
+		{
+			if (m_rpCharAnimation)
+				m_rpCharAnimation->ExitLoop();
+		}
 		
 		const char* GetAnimation() const
 		{

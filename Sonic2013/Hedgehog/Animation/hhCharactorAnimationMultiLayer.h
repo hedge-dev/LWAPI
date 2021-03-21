@@ -68,6 +68,11 @@ namespace app::animation
 			pClip->SetValue(AnimationNode::eSetEvent_Speed, speed);
 		}
 
+		void ExitLoop(size_t layer)
+		{
+			m_Layers[layer].ExitLoop();
+		}
+		
 		const char* GetCurrentAnimationName(size_t layer) const
 		{
 			auto* pClip = GetCurrentAnimationClip(layer);

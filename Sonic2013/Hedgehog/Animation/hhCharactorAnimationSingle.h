@@ -34,6 +34,11 @@ namespace app::animation
 		{
 			return m_PlaybackFlags.test(2);
 		}
+
+		void ExitLoop()
+		{
+			m_PlaybackFlags.set(0);
+		}
 	};
 	
 	class CharactorAnimationSingle : public CharactorAnimation
@@ -95,6 +100,11 @@ namespace app::animation
 				return;
 			
 			pClip->SetValue(AnimationNode::eSetEvent_Speed, speed);
+		}
+
+		void ExitLoop()
+		{
+			m_Transition.ExitLoop();
 		}
 		
 		const char* GetCurrentAnimationName() const
