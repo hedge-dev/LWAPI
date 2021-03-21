@@ -19,16 +19,10 @@ namespace app::fnd
 	public:
 		~RefByHandleObject() override
 		{
-			csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->RemoveObject(*this);
+			
 		}
 		
 		RefByHandleObject()
-		{
-			csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->AddObject(*this);
-		}
-
-	protected:
-		RefByHandleObject(bool skip)
 		{
 			
 		}

@@ -54,6 +54,7 @@
 
 // Hedgehog Utility Library
 #include "Hedgehog/Base/Utility/hhScopedPointer.h"
+#include "Hedgehog/Base/Utility/hhReferencePointer.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
@@ -62,22 +63,38 @@
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 #include "Hedgehog/Base/Universe/hhBranchActor.h"
 
+// Hedgehog Resource Library
+#include "Hedgehog/Resource/hhResCommon.h"
+#include "Hedgehog/Pack/System/hhPackFileHeader.h"
+#include "Hedgehog/Pack/System/hhPackFile.h"
+#include "Hedgehog/Resource/hhResourceTypeInfo.h"
+#include "Hedgehog/Resource/hhResourceReflections.h"
+
 // Hedgehog Animation Library
-#include "Hedgehog/Animation/hhAnimationObject.h"
+#include "Hedgehog/Animation/Base/hhAnimationObject.h"
+#include "Hedgehog/Animation/Base/hhAnimationNode.h"
+#include "Hedgehog/Animation/Base/hhAnimationClip.h"
+#include "Hedgehog/Animation/Base/hhAnimationListener.h"
+#include "Hedgehog/Animation/Resource/hhCharAnimScript.h"
+#include "Hedgehog/Animation/Base/hhAnimationCallback.h"
+#include "Hedgehog/Animation/Resource/hhAnimationResContainer.h"
+#include "Hedgehog/Animation/hhAnimationManager.h"
 #include "Hedgehog/Animation/hhSkeletonControl.h"
 #include "Hedgehog/Animation/hhSkeletonBlender.h"
+#include "Hedgehog/Animation/hhComplexBlender.h"
+#include "Hedgehog/Animation/hhComplexImpl.h"
+#include "Hedgehog/Animation/hhAnimationComplex.h"
+#include "Hedgehog/Animation/hhSimpleBlender.h"
+#include "Hedgehog/Animation/hhCallbackExecutioner.h"
+#include "Hedgehog/Animation/hhAnimationNodeManager.h"
+#include "Hedgehog/Animation/hhCharactorAnimation.h"
+#include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhRflCustomAttribute.h"
 #include "Hedgehog/Reflection/hhRflClassMember.h"
 #include "Hedgehog/Reflection/hhRflClassEnum.h"
 #include "Hedgehog/Reflection/hhRflClass.h"
-
-#include "Hedgehog/Resource/hhResCommon.h"
-#include "Hedgehog/Pack/System/hhPackFileHeader.h"
-#include "Hedgehog/Pack/System/hhPackFile.h"
-#include "Hedgehog/Resource/hhResourceTypeInfo.h"
-#include "Hedgehog/Resource/hhResourceReflections.h"
 
 // System Game
 #include "System/Game/LuaScript.h"
@@ -120,6 +137,7 @@
 #include "System/goc/goc_Animation.h"
 #include "System/goc/goc_AnimationSingle.h"
 #include "System/goc/goc_AnimationSimple.h"
+#include "System/goc/goc_AnimationScript.h"
 #include "System/goc/goc_EnemyTarget.h"
 
 // Services

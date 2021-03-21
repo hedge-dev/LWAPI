@@ -43,7 +43,7 @@ namespace csl::ut
 				reset(bit);
 		}
 		
-		bool test(T bit)
+		bool test(T bit) const
 		{
 			return m_dummy & (1 << bit);
 		}

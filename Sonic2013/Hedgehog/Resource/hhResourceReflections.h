@@ -56,15 +56,6 @@ namespace app
 		static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
 	};
 
-	class ResCharAnimScript
-	{
-	private:
-		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00F60FC8));
-
-	public:
-		static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
-	};
-
 	class ResSurfRideProject
 	{
 	private:

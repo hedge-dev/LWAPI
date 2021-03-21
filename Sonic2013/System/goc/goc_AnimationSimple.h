@@ -144,6 +144,14 @@ namespace app::game
 			return 0;
 		}
 
+		float GetEndFrame() const
+		{
+			if (m_pCurrentAnimation)
+				return m_pCurrentAnimation->GetEndFrame();
+
+			return 0;
+		}
+
 		const char* GetAnimation() const
 		{
 			if (m_pCurrentAnimation)

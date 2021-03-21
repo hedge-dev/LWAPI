@@ -4,12 +4,23 @@ namespace app::fnd
 {
 	class ReferencedObject : public BaseObject
 	{
-	protected:
+	private:
 		unsigned short m_ObjectSize;
 		unsigned short m_RefCount;
 		csl::fnd::IAllocator* m_pAllocator;
 
+	protected:
+		size_t GetSize()
+		{
+			return m_ObjectSize;
+		}
+		
 	public:
+		ReferencedObject()
+		{
+			
+		}
+		
 		void* operator new (size_t size, csl::fnd::IAllocator* allocator) {
 			auto* object = static_cast<ReferencedObject*>(allocator->Alloc(size, 32));
 

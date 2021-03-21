@@ -34,7 +34,7 @@ namespace app
 			csl::ut::LinkListNode physicsComponentNode;
 			csl::ut::LinkListNode audibleComponentNode;
 
-			GOComponent(bool skip) : RefByHandleObject(skip)
+			GOComponent(bool skip) : RefByHandleObject()
 			{
 				
 			}
@@ -42,7 +42,12 @@ namespace app
 		public:
 			GOComponent() : RefByHandleObject()
 			{
-				
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->AddObject(*this);
+			}
+
+			~GOComponent()
+			{
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->RemoveObject(*this);
 			}
 			
 			virtual const char* GetFamilyID() = 0;
@@ -66,6 +71,11 @@ namespace app
 				activeObject = object;
 			}
 
+			GameObject* GetGameObject() const
+			{
+				return activeObject;
+			}
+			
 			template <typename  T>
 			static T* Create(GameObject& obj);
 			template <typename  T>

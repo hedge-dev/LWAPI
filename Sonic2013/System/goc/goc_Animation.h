@@ -7,10 +7,21 @@ namespace app
 		class GOCAnimation : public fnd::GOComponent
 		{
 		protected:
-			typedef uint EventType;
+			enum EventType
+			{
+				EventType_Cleanup,
+				EventType_SetAnimation,
+				EventType_GoToEnd,
+			};
 
 		protected:
 			virtual void OnGOCAnimationEvent(EventType eType, const void* data) = 0;
+
+		public:
+			void SetAnimation(const char* pName)
+			{
+				OnGOCAnimationEvent(EventType_SetAnimation, pName);
+			}
 		};
 	}
 }

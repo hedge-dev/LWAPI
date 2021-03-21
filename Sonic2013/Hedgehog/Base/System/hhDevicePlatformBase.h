@@ -6,13 +6,10 @@ namespace app::hid
 
 	class DevicePlatformBase : public fnd::ReferencedObject
 	{
-		inline static csl::ut::detail::RuntimeTypeInfo rtti;
+		DEFINE_RTTI;
 
 	public:
-		[[nodiscard]] virtual const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const
-		{
-			return &rtti;
-		}
+		virtual DEFINE_RTTI_GETTER;
 
 		virtual void Poll(float time)
 		{

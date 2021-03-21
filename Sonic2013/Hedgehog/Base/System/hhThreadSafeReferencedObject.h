@@ -10,13 +10,13 @@ namespace app::fnd
 	public:
 		void AddRef()
 		{
-			if (m_ObjectSize)
+			if (GetSize())
 				InterlockedIncrement(&m_SafeRefCount);
 		}
 
 		void Release()
 		{
-			if (m_ObjectSize)
+			if (GetSize())
 			{
 				if (!InterlockedDecrement(&m_SafeRefCount))
 				{

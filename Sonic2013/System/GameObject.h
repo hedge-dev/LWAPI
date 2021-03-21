@@ -22,7 +22,6 @@ namespace app
 		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
 		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ offsetof(fnd::GOComponent, audibleComponentNode) };
 
-
 		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& comps, const fnd::SUpdateInfo& update_info, fnd::UpdatingPhase phase)
 		{
 			if (!comps.size())

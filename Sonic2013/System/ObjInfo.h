@@ -12,7 +12,7 @@ namespace app
 	class CObjInfoFileLoader
 	{
 	public:
-		virtual void Load(const char* name) = 0;
+		virtual void Load(const char* name, int a2) = 0;
 		virtual void LoadEx(const char* name, const fnd::FileLoaderParam& params) = 0;
 	};
 	
