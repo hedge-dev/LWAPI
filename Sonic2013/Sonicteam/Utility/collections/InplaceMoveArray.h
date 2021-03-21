@@ -12,7 +12,7 @@ namespace csl::ut
 		constexpr InplaceMoveArray(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
 		{
 			this->m_capacity = Bsz;
-			this->m_capacity |= 1u << ((sizeof(size_t) * CHAR_BIT) - 1);
+			this->m_capacity |= SIGN_BIT;
 			this->p_buffer = (T*)reserved;
 		}
 	};

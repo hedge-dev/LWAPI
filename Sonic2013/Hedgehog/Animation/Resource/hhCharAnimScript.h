@@ -28,7 +28,7 @@ namespace app::animation
 		eInterpolateMode_StopPlay,
 		eInterpolateMode_StopStop,
 		eInterpolateMode_FinishStop,
-		eInterpolateMode_Playplay,
+		eInterpolateMode_PlayPlay,
 		eInterpolateMode_PlayStop,
 		eInterpolateMode_FinishPlay,
 		eInterpolateMode_Synchronize,
@@ -132,7 +132,7 @@ namespace app::animation
 	struct TriggerInfo
 	{
 		float m_Frame;
-		uint m_Unk1; // Type?
+		uint m_ID;
 		ETriggerValueType m_ValueType;
 		CallbackParam m_Value;
 	};
@@ -201,7 +201,7 @@ namespace app::animation
 		const char* m_pSignature;
 		const char* m_pVersion;
 	public:
-		ushort m_Unk1;  // Layer count?
+		ushort m_LayerCount;
 		ushort m_TriggerCount;
 		AnimationDefArray* m_pAnimations;
 		TransitionTable* m_pTransitions;

@@ -41,7 +41,7 @@ typedef unsigned int uint;
 namespace csl::ut
 {
 	const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
-	constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
+	static constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
 }
 
 #define ASLR(address) \

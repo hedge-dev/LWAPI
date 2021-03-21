@@ -24,9 +24,6 @@ namespace app::game
 
 		void AddListener(animation::AnimationListener* pListener)
 		{
-			//FUNCTION_PTR(void, __thiscall, pAddListener, ASLR(0x004B3FA0), void*, void*);
-			//pAddListener(this, pListener);
-			//return;
 			m_pListener = pListener;
 			csl::fnd::Singleton<animation::AnimationManager>::GetInstance()->AddListener(*pListener, GetGameObject()->GetObjectCategory());
 		}

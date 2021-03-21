@@ -16,6 +16,7 @@
 #include "Sonicteam/Utility/collections/MoveArray.h"
 #include "Sonicteam/Utility/collections/InplaceMoveArray.h"
 #include "Sonicteam/Utility/collections/ObjectMoveArray.h"
+#include "Sonicteam/Utility/collections/InplaceObjectMoveArray.h"
 #include "Sonicteam/Utility/collections/FixedArray.h"
 #include "Sonicteam/Utility/collections/LinkList.h"
 #include "Sonicteam/Utility/collections/HashMap.h"
@@ -89,6 +90,7 @@
 #include "Hedgehog/Animation/hhAnimationNodeManager.h"
 #include "Hedgehog/Animation/hhCharactorAnimation.h"
 #include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
+#include "Hedgehog/Animation/hhCharactorAnimationMultiLayer.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhRflCustomAttribute.h"
@@ -138,6 +140,7 @@
 #include "System/goc/goc_AnimationSingle.h"
 #include "System/goc/goc_AnimationSimple.h"
 #include "System/goc/goc_AnimationScript.h"
+#include "System/goc/goc_AnimationScriptLayer.h"
 #include "System/goc/goc_EnemyTarget.h"
 
 // Services

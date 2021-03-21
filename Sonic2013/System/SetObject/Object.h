@@ -7,7 +7,7 @@ namespace app::SetEd
 	{
 		uint m_ObjectID;
 		void* m_Unk1;
-		Vector3 m_Position;
+		csl::math::Vector3 m_Position;
 		void* m_Unk2;
 		uint m_ParentID;
 		void* m_Unk3;

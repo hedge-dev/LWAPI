@@ -5,7 +5,7 @@ namespace app::animation
 	class AnimationResContainer;
 	class AnimationClip;
 	
-	class CharactorAnimation : fnd::ReferencedObject
+	class CharactorAnimation : public fnd::ReferencedObject
 	{
 	protected:
 		AnimationNodeManager m_NodeManager{ *GetAllocator() };

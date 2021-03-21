@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace csl::math;
-
 namespace app::fnd
 {
 	class GOCTransform : public GOComponent
@@ -18,10 +16,10 @@ namespace app::fnd
 		inline static const char* ms_pGOCTransformFamilyID = (const char*)ASLR(0x00D60B44);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x00494600), GOCTransform* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x00494750), GOCTransform* This);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalTranslation, ASLR(0x00494440), GOCTransform* This, const Vector3& translation);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalRotation, ASLR(0x00494470), GOCTransform* This, const Quaternion& rotation);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalTranslation, ASLR(0x00494440), GOCTransform* This, const csl::math::Vector3& translation);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalRotation, ASLR(0x00494470), GOCTransform* This, const csl::math::Quaternion& rotation);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalTranslationAndRotation, ASLR(0x004944A0), 
-			GOCTransform* This, const Vector3& translation, const Quaternion& rotation);
+			GOCTransform* This, const csl::math::Vector3& translation, const csl::math::Quaternion& rotation);
 
 		
 		static GOComponentClass ms_GOCTransformStaticClass;
@@ -40,27 +38,27 @@ namespace app::fnd
 			FORCE_RET
 		}
 
-		void SetLocalTranslation(const Vector3& translation)
+		void SetLocalTranslation(const csl::math::Vector3& translation)
 		{
 			ms_fpSetLocalTranslation(this, translation);
 		}
 
-		void SetLocalRotation(const Quaternion& rotation)
+		void SetLocalRotation(const csl::math::Quaternion& rotation)
 		{
 			ms_fpSetLocalRotation(this, rotation);
 		}
 
-		void SetLocalTranslationAndRotation(const Vector3& translation, const Quaternion& rotation)
+		void SetLocalTranslationAndRotation(const csl::math::Vector3& translation, const csl::math::Quaternion& rotation)
 		{
 			ms_fpSetLocalTranslationAndRotation(this, translation, rotation);
 		}
 
-		const Vector3& GetLocalPosition() const
+		const csl::math::Vector3& GetLocalPosition() const
 		{
 			return m_Transform.m_Position;
 		}
 
-		const Quaternion& GetLocalRotation() const
+		const csl::math::Quaternion& GetLocalRotation() const
 		{
 			return m_Transform.m_Rotation;
 		}
