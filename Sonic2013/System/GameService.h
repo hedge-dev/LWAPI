@@ -13,7 +13,7 @@ namespace app::fnd
 		RflClass* rflClass;
 
 	public:
-		GameServiceClass(const char* nam, initializeService* initializer, RflClass* cls = nullptr) : name(nam), serviceInitializer(initializer), rflClass(cls)
+		GameServiceClass(const char* nam, initializeService& initializer, RflClass* cls = nullptr) : name(nam), serviceInitializer(&initializer), rflClass(cls)
 		{
 			
 		}

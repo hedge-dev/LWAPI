@@ -10,7 +10,7 @@ namespace app
 	protected:
 		CSetAdapterMgr* m_pAdapterManager;
 		CSetObjectListener* m_pListener;
-		SetEd::CResObject* m_pObject;
+		SetEd::CResObject m_pObject;
 		void* m_Unk1;
 		uint m_StatusFlags;
 		float m_RetireTime;
@@ -31,7 +31,7 @@ namespace app
 			m_StatusFlags |= flag;
 		}
 
-		SetEd::CResObject* GetObjectResource() const
+		const SetEd::CResObject& GetObjectResource() const
 		{
 			return m_pObject;
 		}
