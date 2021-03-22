@@ -30,5 +30,10 @@ namespace app
 		{
 			m_StatusFlags |= flag;
 		}
+
+		SetEd::CResObject* GetObjectResource() const
+		{
+			return m_pObject;
+		}
 	};
 }

@@ -75,5 +75,10 @@ namespace app
 			if (m_pAdapter)
 				m_pAdapter->SetStatusFlags(2);
 		}
+
+		CSetAdapter* GetAdapter() const
+		{
+			return m_pAdapter;
+		}
 	};
 }
