@@ -141,6 +141,7 @@
 #include "System/goc/goc_AnimationSimple.h"
 #include "System/goc/goc_AnimationScript.h"
 #include "System/goc/goc_AnimationScriptLayer.h"
+#include "System/goc/goc_AnimationContainer.h"
 #include "System/goc/goc_EnemyTarget.h"
 
 // Services
