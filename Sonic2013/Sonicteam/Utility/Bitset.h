@@ -15,22 +15,22 @@ namespace csl::ut
 
 		Bitset(T value) : m_dummy(value){}
 		
-		void reset()
+		constexpr void reset()
 		{
 			m_dummy = T();
 		}
 
-		void reset(T bit)
+		constexpr void reset(T bit)
 		{
 			m_dummy &= ~(1 << bit);
 		}
 
-		void flip(T bit)
+		constexpr void flip(T bit)
 		{
 			m_dummy ^= 1 << bit;
 		}
 		
-		void set(T bit)
+		constexpr void set(T bit)
 		{
 			m_dummy |= 1 << bit;
 		}
@@ -43,7 +43,7 @@ namespace csl::ut
 				reset(bit);
 		}
 		
-		bool test(T bit) const
+		constexpr bool test(T bit) const
 		{
 			return m_dummy & (1 << bit);
 		}

@@ -200,7 +200,7 @@ namespace app
 		}
 
 		template<typename T>
-		T* GetComponent()
+		T* GetComponent() const
 		{
 			return (T*)GetComponent(T::staticClass()->familyID);
 		}

@@ -35,7 +35,7 @@ namespace app::fnd
 		
 	public:
 		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, Description& description);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, const Description& description);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAttachAnimation, ASLR(0x004951B0), GOCVisualModel*, game::GOCAnimationSingle*);
 		
 		static GOComponentClass* staticClass()
@@ -43,7 +43,7 @@ namespace app::fnd
 			return ms_pGOCVisualModelStaticClass;
 		}
 
-		bool Setup(Description& description)
+		bool Setup(const Description& description)
 		{
 			return ms_fpSetup(this, description);
 		}
