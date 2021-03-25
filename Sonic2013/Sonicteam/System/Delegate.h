@@ -16,7 +16,7 @@ namespace csl::fnd
 		}
 	};
 	
-	template<typename Args, typename Alloc>
+	template<typename Args, typename Alloc = DelegateAllocator>
 	class Delegate;
 	
 	template<typename Alloc, typename... Args>
