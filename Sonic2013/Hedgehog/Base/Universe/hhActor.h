@@ -44,7 +44,8 @@ namespace app::fnd
 		virtual ~CActor()
 		{
 			RemoveFromAllParents();
-			csl::fnd::Singleton<MessageManager>::GetInstance()->Remove(this);
+			if (m_pMessageManager)
+				m_pMessageManager->Remove(this);
 		}
 		
 		virtual size_t ForEach(CActorTraverser& traverser) = 0;

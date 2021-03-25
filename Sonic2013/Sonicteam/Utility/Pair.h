@@ -2,17 +2,17 @@
 
 namespace csl::ut
 {
-	template<typename TKey, typename Tx, typename Ty>
-	struct Pair
+	template<typename TKey, typename Tx>
+	class Pair
 	{
+	public:
 		TKey key;
 		Tx x;
-		Ty y;
 	};
 
-	template<typename TKey, typename Tx, typename Ty>
-	inline static Pair<TKey, Tx, Ty> MakePair(TKey key, Tx x, Ty y)
+	template<typename TKey, typename Tx>
+	inline static Pair<TKey, Tx> MakePair(TKey key, Tx x)
 	{
-		return Pair<TKey, Tx, Ty>{key, x, y};
+		return Pair<TKey, Tx>{key, x};
 	}
 }

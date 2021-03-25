@@ -2,7 +2,7 @@
 #include "synchapi.h"
 
 namespace csl::fnd
-{
+{	
 	class Mutex
 	{
 		CRITICAL_SECTION m_CriticalSection;
@@ -26,6 +26,22 @@ namespace csl::fnd
 		void Unlock()
 		{
 			LeaveCriticalSection(&m_CriticalSection);
+		}
+	};
+
+	class MutexLock
+	{
+		Mutex* m_pMutex;
+
+	public:
+		MutexLock(Mutex& rMutex) : m_pMutex(&rMutex)
+		{
+			m_pMutex->Lock();
+		}
+
+		~MutexLock()
+		{
+			m_pMutex->Unlock();
 		}
 	};
 }

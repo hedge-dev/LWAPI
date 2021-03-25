@@ -16,14 +16,12 @@ namespace csl::fnd
 		}
 	};
 	
-	template<typename Ret, typename Alloc>
+	template<typename Args, typename Alloc>
 	class Delegate;
 	
 	template<typename Alloc, typename... Args>
 	class Delegate<void(Args...), Alloc>
 	{
-		typedef void function(Args...);
-		
 	protected:
 		class DelegateFunctorBase
 		{
@@ -33,17 +31,19 @@ namespace csl::fnd
 			virtual ~DelegateFunctorBase() = default;
 			virtual void Invoke(Args... args) = 0;
 		};
-
-		// This is a custom class, it shouldn't be used a reference for LW's DelegateFunctor
+		
+		template<typename TInstance>
 		class DelegateFunctor : public DelegateFunctorBase
 		{
 		public:
-			void* m_pInstance;
-			function* m_pFunction{};
+			typedef void (TInstance::*MemFunc)(Args...);
+
+			TInstance* m_pInstance;
+			MemFunc m_pMemFunc{};
 			
 			virtual void Invoke(Args... args) override
 			{
-				m_pFunction(args...);
+				(m_pInstance->*m_pMemFunc)(args...);
 			}
 		};
 		
@@ -62,7 +62,7 @@ namespace csl::fnd
 			{
 				pLastFunctor = pCurFunctor->m_PrevFunctor;
 				
-				delete pCurFunctor;
+				pCurFunctor->~DelegateFunctorBase();
 				m_Allocator.Free(pCurFunctor);
 				
 				pCurFunctor = pLastFunctor;
@@ -86,26 +86,29 @@ namespace csl::fnd
 			FreeFunctorList(m_pFunctor);
 		}
 
-		void Connect(function& pFunction)
+		template<class TInstance>
+		void Connect(TInstance* pInst, typename DelegateFunctor<TInstance>::MemFunc pFunc)
 		{
-			void* pMem = m_Allocator.Alloc(sizeof(DelegateFunctor), alignof(DelegateFunctor));
-			DelegateFunctor* pFunctor = new(pMem) DelegateFunctor();
-			pFunctor->m_pFunction = &pFunction;
+			void* pMem = m_Allocator.Alloc(sizeof(DelegateFunctor<TInstance>), alignof(DelegateFunctor<TInstance>));
+			DelegateFunctor<TInstance>* pFunctor = new(pMem) DelegateFunctor<TInstance>();
+			pFunctor->m_pInstance = pInst;
+			pFunctor->m_pMemFunc = pFunc;
 			pFunctor->m_PrevFunctor = m_pFunctor;
 			
 			m_pFunctor = pFunctor;
 		}
 
-		void Remove(function& pFunction)
+		template<class TInstance>
+		void Remove(TInstance* pInst, typename DelegateFunctor<TInstance>::MemFunc pFunc)
 		{
-			DelegateFunctor* pCurFunctor = reinterpret_cast<DelegateFunctor*>(m_pFunctor);
-			DelegateFunctor* pNextFunctor = nullptr;
+			DelegateFunctor<TInstance>* pCurFunctor = reinterpret_cast<DelegateFunctor<TInstance>*>(m_pFunctor);
+			DelegateFunctor<TInstance>* pNextFunctor = nullptr;
 			
 			while (pCurFunctor)
 			{
-				pNextFunctor = reinterpret_cast<DelegateFunctor*>(pCurFunctor->m_PrevFunctor);
+				pNextFunctor = reinterpret_cast<DelegateFunctor<TInstance>*>(pCurFunctor->m_PrevFunctor);
 
-				if (pCurFunctor->m_pFunction == &pFunction)
+				if (pCurFunctor->m_pMemFunc == pFunc && pCurFunctor->m_pInstance == pInst)
 				{
 					pCurFunctor->~DelegateFunctor();
 					m_Allocator.Free(pCurFunctor);
@@ -128,15 +131,17 @@ namespace csl::fnd
 			}
 		}
 
-		Delegate& operator+=(function& rFunction)
+		template<class T>
+		Delegate& operator+=(ut::Pair<T*, typename DelegateFunctor<T>::MemFunc> item)
 		{
-			Connect(rFunction);
+			Connect(item.key, item.x);
 			return *this;
 		}
 
-		Delegate& operator-=(function& rFunction)
+		template<class T>
+		Delegate& operator-=(ut::Pair<T*, typename DelegateFunctor<T>::MemFunc> item)
 		{
-			Remove(rFunction);
+			Remove(item.key, item.x);
 			return *this;
 		}
 
