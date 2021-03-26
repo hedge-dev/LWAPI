@@ -24,6 +24,7 @@ namespace app::ut
 
 	public:
 		RefPtr() {}
+		
 		RefPtr(T* pObj)
 		{
 			swap(pObj);

@@ -15,16 +15,5 @@ namespace csl::ut
 			this->m_capacity |= SIGN_BIT;
 			this->p_buffer = (T*)reserved;
 		}
-
-		size_t find(const T& item) const
-		{
-			for (size_t i = 0; i < this->m_length; i++)
-			{
-				if (*this->get(i) == item)
-					return i;
-			}
-
-			return -1;
-		}
 	};
 }

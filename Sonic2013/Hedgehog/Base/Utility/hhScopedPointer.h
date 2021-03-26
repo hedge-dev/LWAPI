@@ -52,5 +52,16 @@ namespace app::ut
 		{
 			return *get();
 		}
+
+		ScopedPtr& operator=(T* ptr)
+		{
+			reset(ptr);
+			return *this;
+		}
+
+		operator bool() const
+		{
+			return m_pX != 0;
+		}
 	};
 }

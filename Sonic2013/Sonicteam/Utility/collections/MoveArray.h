@@ -150,6 +150,17 @@ namespace csl
 				rArray.m_capacity = tempCap;
 				rArray.p_allocator = tempAllocator;
 			}
+
+			size_t find(const T& item) const
+			{
+				for (size_t i = 0; i < this->m_length; i++)
+				{
+					if (*this->get(i) == item)
+						return i;
+				}
+
+				return -1;
+			}
 			
 			T operator[] (size_t i) const
 			{
