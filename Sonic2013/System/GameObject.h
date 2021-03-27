@@ -2,8 +2,12 @@
 
 namespace app
 {
+	class GameObjectHandleBase;
+	
 	class GameObject : public hh::base::CRefCountObject, public fnd::CLeafActor
 	{
+		friend GameObjectHandleBase;
+		
 	public:
 		static csl::fnd::IAllocator* GetAllocator();
 		
@@ -38,6 +42,10 @@ namespace app
 
 	public:
 		void Kill();
+		bool IsKilled() const
+		{
+			return m_StatusFlags.test(0);
+		}
 		
 		GameObject()
 		{

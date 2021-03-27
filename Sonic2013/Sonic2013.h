@@ -113,6 +113,7 @@
 #include "System/Messages.h"
 #include "System/GOComponent.h"
 #include "System/GameObject.h"
+#include "System/GameObjectHandle.h"
 #include "System/GameService.h"
 #include "System/ObjInfo.h"
 #include "System/FileLoader.h"
