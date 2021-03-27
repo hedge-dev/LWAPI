@@ -1,71 +1,108 @@
 #pragma once
 
+// We use Eigen as our math library, this file is basically a stub
+#include "Eigen/Eigen"
+
 namespace csl::math 
 {
-	class Vector2
+	class Vector2 : public Eigen::Vector2f
 	{
 	public:
 		static const Vector2* Zero;
-		float x, y;
-
-		Vector2() : x(0), y(0) {}
-		Vector2(float _x, float _y) : x(_x), y(_y) {}
-
-		float GetX() const { return x; }
-		float GetY() const { return y; }
-
-		Vector2 operator +(const Vector2& v2) const
+		
+		Vector2() : Eigen::Vector2f()
 		{
-			return Vector2{ GetX() + v2.GetX(), GetY() + v2.GetY() };
+
+		}
+		
+		Vector2(float x, float y) : Eigen::Vector2f(x, y)
+		{
+
 		}
 
-		Vector2 operator -(const Vector2& v2) const
-		{
-			return Vector2{ GetX() - v2.GetX(), GetY() - v2.GetY() };
-		}
+		float GetX() const { return x(); }
+		float GetY() const { return y(); }
 	};
-	
-	class alignas(16) Vector3
+
+	class alignas(16) Vector3 : public Eigen::Vector3f
 	{
 	public:
 		static const Vector3* Zero;
-		float x, y, z;
+		
+		Vector3() : Eigen::Vector3f()
+		{
 
-		Vector3() : x(0), y(0), z(0) {}
-		Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
-	};
-	
-	class Angle3
-	{
-	public:
-		float x, y, z;
-	};
-	
-	class alignas(16) Vector4 
-	{
-	public:
-		float x, y, z, w;
+		}
+		
+		Vector3(float x, float y, float z) : Eigen::Vector3f(x, y, z)
+		{
+			
+		}
+
+		float GetX() const { return x(); }
+		float GetY() const { return y(); }
+		float GetZ() const { return z(); }
 	};
 
-	class alignas(16) Quaternion
+	class alignas(16) Vector4 : public Eigen::Vector4f
+	{
+	public:
+		Vector4() : Eigen::Vector4f()
+		{
+			
+		}
+		
+		Vector4(float x, float y, float z, float w) : Eigen::Vector4f(x, y, z, w)
+		{
+
+		}
+
+		float GetX() const { return x(); }
+		float GetY() const { return y(); }
+		float GetZ() const { return z(); }
+		float GetW() const { return w(); }
+	};
+	
+	class Angle3 : public Eigen::Vector3f
+	{
+	public:
+		Angle3() : Eigen::Vector3f()
+		{
+			
+		}
+		
+		Angle3(float x, float y, float z) : Eigen::Vector3f(x, y, z)
+		{
+
+		}
+	};
+
+	class alignas(16) Quaternion : public Eigen::Quaternionf
 	{
 	public:
 		static const Quaternion* Identity;
-		float x, y, z, w;
+		
+		Quaternion() : Eigen::Quaternionf()
+		{
+			
+		}
+		
+		Quaternion(float x, float y, float z, float w) : Eigen::Quaternionf(w, x, y, z)
+		{
+
+		}
 	};
 
-	class alignas(16) Matrix34 
+	class alignas(16) Matrix34 : public Eigen::Matrix<float, 3, 4>
 	{
-	private:
-		Vector4 columns[3];
-
 	public:
 		Vector4* GetColumn(uint column, Vector4* vec = nullptr) const 
 		{
 			if (!vec)
 				vec = new Vector4();
 
-			*vec = columns[column];
+			auto colum = col(column);
+			*vec = Vector4{ colum[0], colum[1], colum[2], colum[3] };
 			return vec;
 		}
 
@@ -75,10 +112,9 @@ namespace csl::math
 		}
 	};
 
-	class alignas(16) Matrix44 
+	class alignas(16) Matrix44 : public Eigen::Matrix4f
 	{
-	public:
-		Vector4 columns[4];
+		
 	};
 
 	class Transform
@@ -102,7 +138,7 @@ namespace csl::math
 			return m_Mtx.GetTransVector(vec);
 		}
 	};
-	
+
 	class Constants
 	{
 	public:
@@ -110,7 +146,7 @@ namespace csl::math
 		inline static const Vector3 Vector3Zero{ 0, 0, 0 };
 		inline static const Quaternion QuaternionIdentity{ 0, 0, 0, 1 };
 	};
-	
+
 	inline const Vector2* Vector2::Zero = &Constants::Vector2Zero;
 	inline const Vector3* Vector3::Zero = &Constants::Vector3Zero;
 	inline const Quaternion* Quaternion::Identity = &Constants::QuaternionIdentity;

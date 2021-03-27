@@ -137,7 +137,7 @@ namespace app::font
 				for (auto& param : m_Params)
 				{
 					csl::math::Vector2 drawPos = param.m_Position;
-					drawPos = drawPos + GetBasePos();
+					drawPos += GetBasePos();
 
 					pFont->SetTextColor(param.m_Color);
 					pFont->SetTextSize(param.m_Size);
