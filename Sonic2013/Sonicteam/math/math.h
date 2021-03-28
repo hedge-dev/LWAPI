@@ -91,6 +91,16 @@ namespace csl::math
 		{
 
 		}
+
+		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
+		{
+			return lhs.isApprox(rhs);
+		}
+
+		friend bool operator!=(const Quaternion& lhs, const Quaternion& rhs)
+		{
+			return !lhs.isApprox(rhs);
+		}
 	};
 
 	class alignas(16) Matrix34 : public Eigen::Matrix<float, 3, 4>

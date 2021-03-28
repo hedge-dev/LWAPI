@@ -97,5 +97,10 @@ namespace app
 		{
 			return Get();
 		}
+
+		T* operator->() const
+		{
+			return reinterpret_cast<T*>(Get());
+		}
 	};
 }
