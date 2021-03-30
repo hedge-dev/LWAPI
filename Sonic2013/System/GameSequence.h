@@ -25,9 +25,9 @@ namespace app
 		INSERT_PADDING(44);
 		CGame* m_pGame;
 		void* m_pUnk1;
-		csl::ut::FixedString<16> m_StgId;
 		
 	public:
+		csl::ut::FixedString<16> m_StgId;
 		void* m_pNextSequence;
 		void* m_Unk2;
 		void* m_Unk3;
@@ -35,6 +35,8 @@ namespace app
 		DevData* m_pDevData;
 		
 	public:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSeqGotoStage, ASLR(0x009116B0), CGameSequence*);
+		
 		DevData* GetDevData() const
 		{
 			return m_pDevData;
@@ -43,6 +45,11 @@ namespace app
 		void SetDevData(DevData* pDevData)
 		{
 			m_pDevData = pDevData;
+		}
+
+		void SeqGotoStage()
+		{
+			ms_fpSeqGotoStage(this);
 		}
 	};
 
