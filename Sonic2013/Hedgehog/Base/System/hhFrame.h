@@ -37,9 +37,9 @@ namespace app::fnd
 			return ms_fpRemoveHFrameListener(this, pListener);
 		}
 
-		csl::math::Vector4* GetLocalTranslation(csl::math::Vector4* pResult) const
+		csl::math::Vector3 GetLocalTranslation() const
 		{
-			return m_Transform.GetTranslation(pResult);
+			return m_Transform.GetTranslation();
 		}
 
 		void SetTranslation(csl::math::Vector3& rTranslation)

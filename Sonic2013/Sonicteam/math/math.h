@@ -77,6 +77,20 @@ namespace csl::math
 		}
 	};
 
+	class alignas(16) Matrix34 : public Eigen::Matrix4f
+	{
+	public:
+		Vector4& GetColumn(uint column) const
+		{
+			return *(Vector4*)col(column).data();
+		}
+
+		Vector3& GetTransVector() const
+		{
+			return reinterpret_cast<Vector3&>(GetColumn(3));
+		}
+	};
+	
 	class alignas(16) Quaternion : public Eigen::Quaternionf
 	{
 	public:
@@ -86,12 +100,17 @@ namespace csl::math
 		{
 			
 		}
+
+		Quaternion(const Matrix34& matrix) : Eigen::Quaternionf(matrix.topLeftCorner<3, 3>())
+		{
+			
+		}
 		
 		Quaternion(float x, float y, float z, float w) : Eigen::Quaternionf(w, x, y, z)
 		{
 
 		}
-
+		
 		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
 		{
 			return lhs.isApprox(rhs);
@@ -100,25 +119,6 @@ namespace csl::math
 		friend bool operator!=(const Quaternion& lhs, const Quaternion& rhs)
 		{
 			return !lhs.isApprox(rhs);
-		}
-	};
-
-	class alignas(16) Matrix34 : public Eigen::Matrix<float, 3, 4>
-	{
-	public:
-		Vector4* GetColumn(uint column, Vector4* vec = nullptr) const 
-		{
-			if (!vec)
-				vec = new Vector4();
-
-			auto colum = col(column);
-			*vec = Vector4{ colum[0], colum[1], colum[2], colum[3] };
-			return vec;
-		}
-
-		Vector4* GetTransVector(Vector4* vec = nullptr) const 
-		{
-			return GetColumn(3, vec);
 		}
 	};
 
@@ -140,12 +140,12 @@ namespace csl::math
 	{
 	public:
 		Matrix34 m_Mtx;
-		Vector4 m_Unk1[2];
+		Vector3 m_Unk;
 		size_t m_Flags;
 
-		Vector4* GetTranslation(Vector4* vec = nullptr) const
+		Vector3 GetTranslation() const
 		{
-			return m_Mtx.GetTransVector(vec);
+			return m_Mtx.GetTransVector();
 		}
 	};
 
