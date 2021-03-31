@@ -37,19 +37,7 @@ namespace app
 
 		bool Register(const char* pName, CObjInfo* pInfo)
 		{
-			if (!pInfo)
-				return false;
-			
-			if (IsRegister(pName))
-			{
-				delete pInfo;
-				return false;
-			}
-
-			m_Infos.insert(pName, pInfo);
-			pInfo->AddRef();
-			pInfo->RegisterCallback(*this);
-			return true;
+			return ms_fpRegister(this, pName, pInfo);
 		}
 
 		void LoadRequestAll() const
