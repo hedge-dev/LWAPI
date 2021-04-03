@@ -6,3 +6,5 @@
 #include "Messages/MsgGetRotation.h"
 #include "Messages/MsgDeactivate.h"
 #include "Messages/MsgKill.h"
+#include "Messages/MsgDamageBase.h"
+#include "Messages/MsgDamage.h"

@@ -11,7 +11,7 @@ namespace csl::ut
 		{
 			
 		}
-
+		
 		void push_back(T& item)
 		{
 			this->m_length++;
@@ -34,6 +34,49 @@ namespace csl::ut
 				this->p_buffer[i] = this->p_buffer[i + 1];
 
 			this->m_length--;
+		}
+
+		void clear()
+		{
+			for (auto& item : *this)
+			{
+				item.~T();
+			}
+
+			this->m_length = 0;
+		}
+
+		void resize(size_t num)
+		{
+			if (num < this->size())
+			{
+				for (size_t i = num; i < this->size(); i++)
+				{
+					(*this)[i].~T();
+				}
+				
+				this->m_length = num;
+				return;
+			}
+			else if (num > this->size())
+			{
+				this->reserve(num);
+
+				for (size_t i = this->size(); i < num; i++)
+				{
+					(*this)[i] = T{};
+				}
+
+				this->m_length = num;
+			}
+		}
+
+		~ObjectMoveArray()
+		{
+			for (auto& item : *this)
+			{
+				item.~T();
+			}
 		}
 	};
 }

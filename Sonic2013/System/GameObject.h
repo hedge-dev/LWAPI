@@ -213,11 +213,16 @@ namespace app
 			return (T*)GetComponent(T::staticClass()->familyID);
 		}
 		
-		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents()
+		const csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents() const
 		{
 			return m_Components;
 		}
 
+		GameDocument* GetDocument() const
+		{
+			return m_pOwnerDocument;
+		}
+		
 		bool BroadcastMessageImmToGroup(uint group, fnd::Message& msg)
 		{
 			uint groupActor = m_pOwnerDocument->GetGroupActorID(group);

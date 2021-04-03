@@ -12,7 +12,6 @@ namespace app
 
 	namespace animation
 	{
-		class ResCharAnim;
 		struct MirrorBindData
 		{
 			void* m_Unk1;

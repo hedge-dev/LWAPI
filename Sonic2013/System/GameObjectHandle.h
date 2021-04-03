@@ -55,7 +55,7 @@ namespace app
 			return IsValid();
 		}
 
-		bool operator==(GameObject* pObj) const
+		bool operator==(const GameObject* pObj) const
 		{
 			if (!IsValid())
 				return false;
@@ -63,12 +63,12 @@ namespace app
 			return pObj->m_ObjectHandle == m_ObjectHandle;
 		}
 
-		bool operator!=(GameObject* pObj) const
+		bool operator!=(const GameObject* pObj) const
 		{
 			return !operator==(pObj);
 		}
 
-		GameObjectHandleBase& operator=(GameObject* pObj)
+		GameObjectHandleBase& operator=(const GameObject* pObj)
 		{
 			Set(pObj);
 			return *this;
@@ -100,7 +100,7 @@ namespace app
 
 		T* operator->() const
 		{
-			return reinterpret_cast<T*>(Get());
+			return Get();
 		}
 	};
 }

@@ -6,7 +6,12 @@ namespace app::animation
 	class AnimationClip;
 	class AnimationSimple;
 	class AnimationComplex;
-	class ExternalAnimation;
+
+	class ExternalAnimtion : public fnd::ReferencedObject
+	{
+	public:
+		INSERT_PADDING(28);
+	};
 	
 	class AnimationNodeManager
 	{
@@ -17,7 +22,7 @@ namespace app::animation
 		csl::ut::ObjectMoveArray<AnimationComplex> m_ComplexAnimations;
 		CharactorAnimation* m_pOwner{};
 		csl::fnd::IAllocator* m_pAllocator{};
-		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimation>> m_ExternalAnimations;
+		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimtion>> m_ExternalAnimations;
 		
 	public:
 		AnimationNodeManager(csl::fnd::IAllocator& rAlloc) : m_Animations(&rAlloc), m_SimpleAnimations(&rAlloc),

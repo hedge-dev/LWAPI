@@ -42,7 +42,9 @@
 #include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhThreadSafeReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
+#include "Hedgehog/Base/System/hhRefByHandleObject.h"
 #include "Hedgehog/Base/System/hhHandleManagerBase.h"
+#include "Hedgehog/Base/System/hhHandle.h"
 #include "Hedgehog/Base/System/hhProperty.h"
 #include "Hedgehog/Base/System/hhSyncTimer.h"
 #include "Hedgehog/Base/System/hhPadData.h"
@@ -84,6 +86,7 @@
 #include "Hedgehog/Animation/hhSkeletonBlender.h"
 #include "Hedgehog/Animation/hhComplexBlender.h"
 #include "Hedgehog/Animation/hhComplexImpl.h"
+#include "Hedgehog/Animation/hhAnimationSimple.h"
 #include "Hedgehog/Animation/hhAnimationComplex.h"
 #include "Hedgehog/Animation/hhSimpleBlender.h"
 #include "Hedgehog/Animation/hhCallbackExecutioner.h"
@@ -109,7 +112,6 @@
 #include "System/Game.h"
 #include "System/GameDocument.h"
 #include "System/ObjectSystem/GameObjectSystem.h"
-#include "Hedgehog/Base/System/hhRefByHandleObject.h"
 #include "System/Messages.h"
 #include "System/GOComponent.h"
 #include "System/GameObject.h"
@@ -159,7 +161,7 @@
 #include "System/SetObject/Object.h"
 #include "System/SetObject/SetAdapter.h"
 #include "System/SetObject/SetObjectListener.h"
-
+#include "System/SetObject/service_SetObjectManager.h"
 
 // Stage Data
 #include "System/Stage/World.h"

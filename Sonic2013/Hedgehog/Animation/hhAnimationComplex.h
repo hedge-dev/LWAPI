@@ -13,7 +13,7 @@ namespace app::animation
 		ut::RefPtr<ComplexImpl> m_pImpl{};
 
 	protected:
-		csl::ut::ObjectMoveArray<ut::RefPtr<AnimationSimple>> m_Animations{ nullptr };
+		csl::ut::ObjectMoveArray<AnimationSimple> m_Animations{ nullptr };
 		csl::ut::LinkList<AnimationClip> m_Clips{ 12 };
 		float m_Weight{ 1 };
 		

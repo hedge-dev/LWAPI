@@ -14,5 +14,19 @@ namespace app
 			const auto pack = hh::ut::PackFile(data->GetAddress());
 			return hh::ut::PackFile(pack);
 		}
+
+		static void SendMessageImmToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
+		{
+			auto* pDocument = rObj.GetDocument();
+			auto* pSetMgr = pDocument->GetService<CSetObjectManager>();
+			pSetMgr->SendObjectMessageImm(id, rMsg, rObj.GetID(), create);
+		}
+
+		static void SendMessageToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
+		{
+			auto* pDocument = rObj.GetDocument();
+			auto* pSetMgr = pDocument->GetService<CSetObjectManager>();
+			pSetMgr->SendObjectMessage(id, rMsg, rObj.GetID(), create);
+		}
 	};
 }

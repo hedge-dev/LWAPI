@@ -6,15 +6,18 @@ namespace app::fnd
 	
 	struct HandleTableEntry
 	{
-		size_t handle{};
-		RefByHandleObject* object{};
+		size_t m_Handle{};
+		RefByHandleObject* m_pObject{};
 	};
-	
+
+	class HandleBase;
 	class RefByHandleObject : public ReferencedObject
 	{
-	private:
-		size_t handle{};
-		HandleTableEntry* entry{};
+		friend HandleBase;
+		
+	protected:
+		size_t m_Handle{};
+		HandleTableEntry* m_pHandleEntry{};
 
 	public:
 		~RefByHandleObject() override

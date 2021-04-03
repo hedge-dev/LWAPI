@@ -218,4 +218,9 @@ namespace app
 	public:
 		static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
 	};
+
+	class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
+	{
+		
+	};
 }
