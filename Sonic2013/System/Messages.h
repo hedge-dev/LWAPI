@@ -8,3 +8,4 @@
 #include "Messages/MsgKill.h"
 #include "Messages/MsgDamageBase.h"
 #include "Messages/MsgDamage.h"
+#include "Messages/MsgKick.h"
