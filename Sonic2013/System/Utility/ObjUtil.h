@@ -38,7 +38,6 @@ namespace app
 				return nullptr;
 			}
 
-			setObj->AddRef();
 			return setObj->GetNthObject(0);
 		}
 	};
