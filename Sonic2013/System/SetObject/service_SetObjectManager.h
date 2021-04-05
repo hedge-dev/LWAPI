@@ -10,7 +10,7 @@ namespace app
 	protected:
 		INSERT_PADDING(1076){};
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
-		inline static FUNCTION_PTR(CSetObjectListener*, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, size_t);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, app::ut::RefPtr<CSetObject>&, size_t);
 
 		void SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
 		{
@@ -23,9 +23,9 @@ namespace app
 			return *ms_pStaticClass;
 		}
 
-		CSetObjectListener* GetSetObjectFromUniqID(size_t id)
+		void GetSetObjectFromUniqID(app::ut::RefPtr<CSetObject>& outObj, size_t id)
 		{
-			return ms_fpGetSetObjectFromUniqID(this, id);
+			ms_fpGetSetObjectFromUniqID(this, outObj, id);
 		}
 		
 		void SendObjectMessage(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)

@@ -22,6 +22,8 @@ namespace csl::ut
 
 		[[nodiscard]] T* end() const { return get(this->m_length); }
 
+		[[nodiscard]] T front() const { return *get(0); }
+		
 		[[nodiscard]] size_t size() const
 		{
 			return this->m_length;

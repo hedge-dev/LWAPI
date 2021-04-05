@@ -10,8 +10,16 @@ namespace app
 
 		void Set(const GameObject* pObj)
 		{
-			m_pEntry = pObj->m_pObjectEntry;
-			m_ObjectHandle = pObj->m_ObjectHandle;
+			if (pObj)
+			{
+				m_pEntry = pObj->m_pObjectEntry;
+				m_ObjectHandle = pObj->m_ObjectHandle;
+			}
+			else
+			{
+				m_ObjectHandle = 0;
+				m_pEntry = nullptr;
+			}
 		}
 		
 	public:

@@ -29,11 +29,11 @@ namespace app::game
 		ushort m_Flags{};
 		uint m_Unk2{};
 		uint m_Unk3{};
-		uint m_Unk4{};
+		uint m_ShapeID{};
 		fnd::HFrame* m_pParent{};
+		uint m_Unk4{};
 		uint m_Unk5{};
 		uint m_Unk6{};
-		uint m_Unk7{};
 		csl::math::Vector3 m_Position{ 0,0,0 };
 		csl::math::Quaternion m_Rotation{ 0,0,0,1 };
 
@@ -58,15 +58,15 @@ namespace app::game
 
 	public:
 		char m_MotionType{};
+		size_t m_Unk7{};
 		size_t m_Unk8{};
-		size_t m_Unk9{};
 	};
 
 	class ColliSphereShapeCInfo : public ColliShapeCInfo
 	{
 	public:
 		float m_Radius{};
-		size_t m_Unk10{};
+		size_t m_Unk9{};
 
 		ColliSphereShapeCInfo()
 		{
@@ -123,11 +123,11 @@ namespace app::game
 	class alignas(16) CharacterRigidBodyCinfo : public CollisionObjCinfo
 	{
 	public:
-		float m_Unk8;
-		float m_Unk9;
-		float m_Unk10{ 0.78539819f };
-		float m_Unk11{ 1000.0f };
-		float m_Unk12{ 1 };
+		float m_Unk7{};
+		float m_Unk8{};
+		float m_Unk9{ 0.78539819f };
+		float m_Unk10{ 1000.0f };
+		float m_Unk11{ 1 };
 	};
 	
 	class GOCColliderListener
@@ -138,6 +138,79 @@ namespace app::game
 		virtual void OnStay(void* rStayTrigger) {}
 		virtual void OnLeave(void* rLeaveEventCollision) {}
 	};
+
+	class GOCCollider;
+	class GOCPhysics;
+	class PhysicsWorld;
+	struct PhysicsContactPoint;
+	struct PhysicsOverlapOutput;
+	
+	class ColliShapeBase : public fnd::RefByHandleObject, fnd::HFrameListener
+	{
+	protected:
+		GOCCollider* m_pOwner;
+		GameObject* m_pObj;
+		fnd::HFrame* m_pFrame{};
+		csl::math::Matrix34 m_UnkMtx{};
+		csl::math::Matrix34 m_Transform{};
+		void* m_Unk1{};
+		void* m_Unk2{};
+		size_t m_Unk3{}; // Unk3 from CollisionObjCinfo
+		size_t m_ID{};
+		csl::ut::Enum<CollisionShapeType::ShapeType, char> m_Type{};
+		char m_MotionType{ 2 };
+		csl::ut::Bitset<char> m_Status{};
+		
+	public:
+		typedef size_t ShapeEventType;
+		
+		virtual bool GetClosestPoint(const ColliShapeBase& rShape, PhysicsContactPoint* pOutPoint) const = 0;
+		virtual bool GetClosestPointSphere(const void* rSphere, PhysicsContactPoint* pOutPoint) const
+		{
+			ASSERT_OFFSETOF(ColliShapeBase, m_Unk1, 176);
+			ASSERT_OFFSETOF(ColliShapeBase, m_Unk2, 180);
+			ASSERT_OFFSETOF(ColliShapeBase, m_Unk3, 184);
+			return false;
+		}
+
+		virtual bool TestOverlap(const ColliShapeBase& rShape, csl::ut::MoveArray<PhysicsOverlapOutput>* pOut)
+		{
+			return false;
+		}
+
+		bool InitPlatformInstance(GOCCollider& collider)
+		{
+			return false;
+		}
+
+		bool InitPlatformInstancePhysics(GOCPhysics& physics)
+		{
+			return false;
+		}
+
+		void DestroyPlatformInstance()
+		{
+			
+		}
+
+		void OnShapeEvent(ShapeEventType event)
+		{
+			
+		}
+
+		size_t GetID() const
+		{
+			return m_ID;
+		}
+
+		void SetEnable(bool enable)
+		{
+			m_Status.set(0, enable);
+			OnShapeEvent(0);
+		}
+	};
+
+	class ColliShape : public ColliShapeBase {};
 	
 	class GOCCollider : public fnd::GOComponent
 	{
@@ -149,10 +222,10 @@ namespace app::game
 		
 	protected:
 		// app::game::ColliShape
-		csl::ut::MoveArray<void*> m_Shapes{GetAllocator()};
+		csl::ut::MoveArray<ColliShape*> m_Shapes{GetAllocator()};
 		csl::ut::MoveArray<GOCColliderListener*> m_Listeners{GetAllocator()};
 		fnd::HFrame* m_pFrame{};
-		void* m_Unk2{};
+		PhysicsWorld* m_pPhysicsWorld{};
 
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateShape, ASLR(0x004B6C50), GOCCollider* pThis, const ColliShapeCInfo& rInfo);
@@ -179,6 +252,30 @@ namespace app::game
 		void CreateCharacterRigidBody(const CharacterRigidBodyCinfo& rInfo)
 		{
 			ms_fpCreateCharacterRigidBody(this, rInfo);
+		}
+
+		ColliShape* GetShape() const
+		{
+			return m_Shapes.front();
+		}
+
+		ColliShape* FindColliShape(size_t id) const
+		{
+			for (auto& shape : m_Shapes)
+			{
+				if (shape->GetID() == id)
+					return shape;
+			}
+
+			return nullptr;
+		}
+
+		void SetEnable(bool enable)
+		{
+			for (auto& shape : m_Shapes)
+			{
+				shape->SetEnable(enable);
+			}
 		}
 	};
 }

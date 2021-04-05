@@ -28,5 +28,18 @@ namespace app
 			auto* pSetMgr = pDocument->GetService<CSetObjectManager>();
 			pSetMgr->SendObjectMessage(id, rMsg, rObj.GetID(), create);
 		}
+
+		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id)
+		{
+			ut::RefPtr<CSetObject> setObj{};
+			pSetMan->GetSetObjectFromUniqID(setObj, id);
+			if (!setObj)
+			{
+				return nullptr;
+			}
+
+			setObj->AddRef();
+			return setObj->GetNthObject(0);
+		}
 	};
 }
