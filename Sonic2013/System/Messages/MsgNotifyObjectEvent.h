@@ -4,6 +4,7 @@ namespace app::xgame
 {
 	class MsgNotifyObjectEvent : public fnd::Message
 	{
+	public:
 		typedef uint EEventType;
 
 	private:
