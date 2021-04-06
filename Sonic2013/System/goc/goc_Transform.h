@@ -35,7 +35,6 @@ namespace app::fnd
 		~GOCTransform() override
 		{
 			ms_fpDtor(this);
-			FORCE_RET
 		}
 
 		void SetLocalTranslation(const csl::math::Vector3& translation)

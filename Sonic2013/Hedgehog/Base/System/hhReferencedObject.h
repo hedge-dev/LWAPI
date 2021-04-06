@@ -33,6 +33,11 @@ namespace app::fnd
 
 			return object;
 		}
+
+		void* operator new(size_t size, void* placement)
+		{
+			return placement;
+		}
 		
 		void operator delete(void* loc)
 		{
