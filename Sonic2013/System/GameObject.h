@@ -22,21 +22,18 @@ namespace app
 		csl::fnd::IAllocator* m_pObjectAllocator{ GetAllocator() };
 		csl::ut::InplaceMoveArray<fnd::Property, 2> m_Properties{ GetAllocator() };
 		unsigned int m_ComponentFlags{};
-		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ offsetof(fnd::GOComponent, visualComponentNode) };
-		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ offsetof(fnd::GOComponent, physicsComponentNode) };
-		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ offsetof(fnd::GOComponent, audibleComponentNode) };
+		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ &fnd::GOComponent::visualComponentNode };
+		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ &fnd::GOComponent::physicsComponentNode };
+		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ &fnd::GOComponent::audibleComponentNode };
 
 		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& comps, const fnd::SUpdateInfo& update_info, fnd::UpdatingPhase phase)
 		{
 			if (!comps.size())
 				return;
 
-			auto* it = comps.begin();
-
-			for (auto i = 0; i < comps.size(); i++)
+			for (auto component : comps)
 			{
-				comps.get(it)->Update(phase, update_info);
-				it = (*it)++;
+				component->Update(phase, update_info);
 			}
 		}
 
@@ -113,8 +110,6 @@ namespace app
 			{
 				if (m_StatusFlags.test(1))
 					return true;
-
-				auto* component = m_VisualComponents.get(m_VisualComponents.begin());
 
 				if (m_updateFlags)
 					Update(*reinterpret_cast<fnd::SUpdateInfo*>(data));

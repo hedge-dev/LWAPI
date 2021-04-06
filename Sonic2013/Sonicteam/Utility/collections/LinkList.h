@@ -2,56 +2,110 @@
 
 namespace csl::ut
 {
-	class LinkListNode
+	template<class T>
+	class LinkList : detail::LinkListImpl
 	{
-		LinkListNode* next{ reinterpret_cast<LinkListNode*>(&previous) };
-		LinkListNode* previous{ reinterpret_cast<LinkListNode*>(&next) };
-
 	public:
-		LinkListNode* operator++(int) const
-		{
-			return next;
-		}
-
-		LinkListNode* operator--(int) const
-		{
-			return previous;
-		}
-	};
-	
-	template<typename T>
-	class LinkList
-	{
-		friend LinkListNode;
+		template<class T>
 		class iterator
 		{
 			friend LinkList;
-			LinkListNode* first{ reinterpret_cast<LinkListNode*>(&last) };
-			LinkListNode* last { reinterpret_cast<LinkListNode*>(&first) };
+			
+		protected:
+			const LinkListNode* m_pCurNode{};
+			size_t m_NodeOffset;
+
+		public:
+			iterator(const LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
+			{
+				
+			}
+			
+			T* operator->()
+			{
+				return reinterpret_cast<T*>(reinterpret_cast<size_t>(m_pCurNode) - m_NodeOffset);
+			}
+
+			T* operator*()
+			{
+				return operator->();
+			}
+			
+			friend bool operator==(const iterator& lhs, const iterator& rhs)
+			{
+				return lhs.m_pCurNode == rhs.m_pCurNode;
+			}
+
+			friend bool operator!=(const iterator& lhs, const iterator& rhs)
+			{
+				return lhs.m_pCurNode != rhs.m_pCurNode;
+			}
+
+			iterator& operator++()
+			{
+				m_pCurNode = m_pCurNode->m_pNext;
+				return *this;
+			}
+
+			iterator& operator--()
+			{
+				m_pCurNode = m_pCurNode->m_pPrev;
+				return *this;
+			}
 		};
 		
-		size_t count{};
-		size_t nodeOffset{};
-		iterator root{};
-
-	public:
-		LinkList(size_t node_offset) : nodeOffset(node_offset)
+		LinkList()
 		{
 			
 		}
 
-		[[nodiscard]] LinkListNode* begin() const { return root.first; }
-		[[nodiscard]] LinkListNode* end() const { return root.last; }
-
-		[[nodiscard]] size_t size() const { return count; }
-
-		[[nodiscard]]
-		T* get(LinkListNode* node) const
+		LinkList(size_t nodeOffset)
 		{
-			if (!node)
-				return nullptr;
-
-			return reinterpret_cast<T*>(reinterpret_cast<char*>(node) - nodeOffset);
+			m_NodeOffset = nodeOffset;
 		}
+
+		LinkList(LinkListNode(T::*nodeOffset))
+		{
+			m_NodeOffset = reinterpret_cast<size_t>(*reinterpret_cast<size_t**>(&nodeOffset));
+		}
+
+	private:
+		LinkListNode* GetNode(T* pItem)
+		{
+			return reinterpret_cast<LinkListNode*>(reinterpret_cast<size_t>(pItem) + m_NodeOffset);
+		}
+		
+	public:
+		void push_back(T* pItem)
+		{
+			LinkListImpl::insert({ m_pEnd, m_NodeOffset }, GetNode(pItem));
+		}
+
+		void erase(T* pItem)
+		{
+			LinkListImpl::erase(GetNode(pItem));
+		}
+
+		void erase(iterator<T> start, iterator<T> finish)
+		{
+			LinkListNode* pCurNode = start.m_pCurNode;
+			while (pCurNode != finish.m_pCurNode)
+			{
+				pCurNode = LinkListImpl::erase(pCurNode);
+			}
+		}
+
+		void clear()
+		{
+			erase(begin(), end());
+		}
+		
+		[[nodiscard]] iterator<T> begin() const { return iterator<T>(m_pEnd, m_NodeOffset); }
+		[[nodiscard]] iterator<T> end() const
+		{
+			return iterator<T>(const_cast<LinkListNode*>(reinterpret_cast<const LinkListNode*>(&m_pEnd)), m_NodeOffset);
+		}
+
+		[[nodiscard]] size_t size() const { return m_Count; }
 	};
 }

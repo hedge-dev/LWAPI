@@ -6,8 +6,8 @@ namespace gindows
 	{
 	protected:
 		csl::ut::Bitset<uint> m_Flags{};
-		csl::ut::LinkList<void*> m_Forms{ 604 };
-		csl::ut::LinkList<void*> m_Forms2{ 612 };
+		//csl::ut::LinkList<void*> m_Forms{ 604 };
+		//csl::ut::LinkList<void*> m_Forms2{ 612 };
 		Control* m_pUnk1;
 		INSERT_PADDING(16){};
 

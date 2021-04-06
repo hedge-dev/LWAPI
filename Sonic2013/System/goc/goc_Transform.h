@@ -7,7 +7,7 @@ namespace app::fnd
 	private:
 		csl::ut::LinkListNode m_ChildNode;
 		INSERT_PADDING(12);
-		csl::ut::LinkList<GOCTransform> m_Children{ offsetof(GOCTransform, m_ChildNode) };
+		csl::ut::LinkList<GOCTransform> m_Children{ &GOCTransform::m_ChildNode };
 		csl::math::Transform m_Transform;
 		app::fnd::HFrame m_Frame; // app::fnd::BranchHFrame
 		INSERT_PADDING(14);

@@ -7,6 +7,7 @@
 #include "Sonicteam/Utility/NonCopyable.h"
 #include "Sonicteam/Utility/Pair.h"
 #include "Sonicteam/Utility/detail/RuntimeTypeInfo.h"
+#include "Sonicteam/Utility/detail/LinkListImpl.h"
 #include "Sonicteam/math/math.h"
 #include "Sonicteam/System/Mutex.h"
 #include "Sonicteam/System/IAllocator.h"

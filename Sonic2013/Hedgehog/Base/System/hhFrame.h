@@ -17,7 +17,7 @@ namespace app::fnd
 		csl::ut::LinkListNode m_Child;
 		HFrame* m_pParent;
 		INSERT_PADDING(12);
-		csl::ut::LinkList<HFrame> m_Children{ offsetof(HFrame, m_Child) };
+		csl::ut::LinkList<HFrame> m_Children{ &HFrame::m_Child };
 		csl::ut::InplaceMoveArray<HFrameListener*, 10> m_Listeners{ GetAllocator() };
 		csl::math::CalculatedTransform m_Unk1;
 		csl::math::CalculatedTransform m_Transform;
