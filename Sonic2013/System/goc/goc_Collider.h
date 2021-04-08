@@ -41,13 +41,13 @@ namespace app::game
 		void SetLocalPosition(const csl::math::Vector3& rPos)
 		{
 			m_Position = rPos;
-			m_Flags |= 1;
+			m_Unk1 |= 1;
 		}
 
 		void SetLocalRotation(const csl::math::Quaternion& rRot)
 		{
 			m_Rotation = rRot;
-			m_Flags |= 2;
+			m_Unk1 |= 2;
 		}
 	};
 
@@ -237,7 +237,7 @@ namespace app::game
 			return ms_pStaticClass;
 		}
 
-		void Setup(Description& rDesc)
+		void Setup(const Description& rDesc)
 		{
 			m_Shapes.change_allocator(GetAllocator());
 			m_Shapes.clear();

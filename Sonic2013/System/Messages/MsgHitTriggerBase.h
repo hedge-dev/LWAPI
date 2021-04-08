@@ -10,11 +10,11 @@ namespace app::xgame
 	class MsgHitTriggerBase : public fnd::Message
 	{
 	public:
-		game::ColliShape* m_pShape1{}; // Sender?
-		game::ColliShape* m_pShape2{};
+		game::ColliShape* m_pSelf{};
+		game::ColliShape* m_pOther{};
 		uint m_Sender{};
 		
-		MsgHitTriggerBase(uint id, game::ColliShape* pShape1, game::ColliShape* pShape2) : fnd::Message(id), m_pShape1(pShape1), m_pShape2(pShape2)
+		MsgHitTriggerBase(uint id, game::ColliShape* pSelf, game::ColliShape* pOther) : fnd::Message(id), m_pSelf(pSelf), m_pOther(pOther)
 		{
 			
 		}
