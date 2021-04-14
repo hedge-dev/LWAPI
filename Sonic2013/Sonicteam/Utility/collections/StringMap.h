@@ -123,5 +123,10 @@ namespace csl::ut
 			auto result = Find(keyCast(key));
 			return iterator(this, result.m_CurIdx);
 		}
+
+		iterator operator[](const char* key) const
+		{
+			return find(key);
+		}
 	};
 }

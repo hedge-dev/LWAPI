@@ -12,11 +12,11 @@ namespace csl::ut
 			friend LinkList;
 			
 		protected:
-			const LinkListNode* m_pCurNode{};
+			LinkListNode* m_pCurNode{};
 			size_t m_NodeOffset;
 
 		public:
-			iterator(const LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
+			iterator(LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
 			{
 				
 			}
@@ -43,13 +43,61 @@ namespace csl::ut
 
 			iterator& operator++()
 			{
-				m_pCurNode = m_pCurNode->m_pNext;
+				m_pCurNode = m_pCurNode->m_pPrev;
 				return *this;
 			}
 
 			iterator& operator--()
 			{
+				m_pCurNode = m_pCurNode->m_pNext;
+				return *this;
+			}
+		};
+
+		template<class T>
+		class const_iterator
+		{
+			friend LinkList;
+
+		protected:
+			const LinkListNode* m_pCurNode{};
+			size_t m_NodeOffset;
+
+		public:
+			const_iterator(const LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
+			{
+
+			}
+
+			T* operator->()
+			{
+				return reinterpret_cast<T*>(reinterpret_cast<size_t>(m_pCurNode) - m_NodeOffset);
+			}
+
+			T* operator*()
+			{
+				return operator->();
+			}
+
+			friend bool operator==(const const_iterator& lhs, const const_iterator& rhs)
+			{
+				return lhs.m_pCurNode == rhs.m_pCurNode;
+			}
+
+			friend bool operator!=(const const_iterator& lhs, const const_iterator& rhs)
+			{
+				return lhs.m_pCurNode != rhs.m_pCurNode;
+			}
+
+			const_iterator& operator++()
+			{
 				m_pCurNode = m_pCurNode->m_pPrev;
+				return *this;
+			}
+
+			const_iterator& operator--()
+			{
+				m_pCurNode = m_pCurNode->m_pNext;
 				return *this;
 			}
 		};
@@ -99,13 +147,24 @@ namespace csl::ut
 		{
 			erase(begin(), end());
 		}
-		
-		[[nodiscard]] iterator<T> begin() const { return iterator<T>(m_pEnd, m_NodeOffset); }
-		[[nodiscard]] iterator<T> end() const
+
+		~LinkList()
 		{
-			return iterator<T>(const_cast<LinkListNode*>(reinterpret_cast<const LinkListNode*>(&m_pEnd)), m_NodeOffset);
+			clear();
+		}
+		
+		[[nodiscard]] iterator<T> begin() { return iterator<T>(m_pEnd, m_NodeOffset); }
+		[[nodiscard]] iterator<T> end()
+		{
+			return iterator<T>(reinterpret_cast<LinkListNode*>(&m_pEnd), m_NodeOffset);
 		}
 
+		[[nodiscard]] const_iterator<T> begin() const { return const_iterator<T>(m_pEnd, m_NodeOffset); }
+		[[nodiscard]] const_iterator<T> end() const
+		{
+			return const_iterator<T>(const_cast<LinkListNode*>(reinterpret_cast<const LinkListNode*>(&m_pEnd)), m_NodeOffset);
+		}
+		
 		[[nodiscard]] size_t size() const { return m_Count; }
 	};
 }

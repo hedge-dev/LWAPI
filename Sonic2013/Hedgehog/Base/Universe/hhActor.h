@@ -28,7 +28,7 @@ namespace app::fnd
 		unsigned int m_AllowedMessageFlags{ static_cast<unsigned>(-1) };
 		bool isDeactivated{};
 
-		void MessageSetup(uint to, fnd::Message& msg)
+		void MessageSetup(uint to, fnd::Message& msg) const
 		{
 			msg.m_Receiver = to;
 			msg.m_Sender = m_ActorID;
@@ -79,12 +79,12 @@ namespace app::fnd
 			m_updateFlags.set(flag, value);
 		}
 
-		bool GetUpdateFlag(uint16 flag)
+		bool GetUpdateFlag(uint16 flag) const
 		{
 			return m_updateFlags.test(flag);
 		}
 		
-		bool SendMessageImm(uint to, fnd::Message& msg)
+		bool SendMessageImm(uint to, fnd::Message& msg) const
 		{
 			if (msg.mask & m_AllowedMessageFlags)
 			{
@@ -99,7 +99,7 @@ namespace app::fnd
 			return false;
 		}
 
-		bool BroadcastMessageImm(uint group, fnd::Message& msg)
+		bool BroadcastMessageImm(uint group, fnd::Message& msg) const
 		{
 			if (msg.mask & m_AllowedMessageFlags)
 			{
@@ -127,7 +127,7 @@ namespace app::fnd
 			return false;
 		}
 
-		void SendMessage(uint to, fnd::Message& msg)
+		void SendMessage(uint to, fnd::Message& msg) const
 		{
 			if (m_AllowedMessageFlags & msg.mask)
 			{
@@ -136,7 +136,7 @@ namespace app::fnd
 			}
 		}
 
-		void BroadcastMessage(uint group, fnd::Message& msg)
+		void BroadcastMessage(uint group, fnd::Message& msg) const
 		{
 			MessageSetup(group, msg);
 			msg.m_Broadcasted = true;

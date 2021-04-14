@@ -104,6 +104,7 @@
 
 // System Game
 #include "System/Game/LuaScript.h"
+#include "System/Game/ActorGroupRegistry.h"
 
 // System
 #include "System/Singleton.h"
@@ -159,11 +160,15 @@
 #include "System/GameObject3D.h"
 
 // SetData
-#include "System/SetObject/MyActivationHandle.h"
-#include "System/SetObject/Object.h"
-#include "System/SetObject/SetAdapter.h"
-#include "System/SetObject/SetObjectListener.h"
-#include "System/SetObject/service_SetObjectManager.h"
+#include "System/ObjectSystem/Resource/Object.h"
+#include "System/ObjectSystem/Placement/WorldHandle.h"
+#include "System/ObjectSystem/Placement/Actor.h"
+#include "System/ObjectSystem/Placement/ActorPack.h"
+#include "System/ObjectSystem/MyActivationHandle.h"
+#include "System/ObjectSystem/SetAdapter.h"
+#include "System/ObjectSystem/Object.h"
+#include "System/ObjectSystem/Manager/SetObjectManager.h"
+#include "System/ObjectSystem/SetObjectListener.h"
 
 // Stage Data
 #include "System/Stage/World.h"

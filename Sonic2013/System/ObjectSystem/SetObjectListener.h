@@ -7,7 +7,7 @@ namespace app
 	class CSetObjectListener : public GameObject3D
 	{
 	protected:
-		void* m_pSetObjectManager{};
+		CSetObjectManager* m_pSetObjectManager{};
 		CSetAdapter* m_pAdapter{};
 		INSERT_PADDING(8){};
 		CMyActivationHandle m_ActivationHandle{};
@@ -19,6 +19,12 @@ namespace app
 			m_ActivationHandle.SetOwner(this);
 		}
 
+		~CSetObjectListener()
+		{
+			if (m_pSetObjectManager)
+				m_pSetObjectManager->RemoveListener(this);
+		}
+		
 	protected:
 		bool ProcessMessage(fnd::Message& msg) override
 		{
@@ -79,6 +85,14 @@ namespace app
 		CSetAdapter* GetAdapter() const
 		{
 			return m_pAdapter;
+		}
+
+		void TerminateImmediately()
+		{
+			if (m_pSetObjectManager)
+				m_pSetObjectManager->RemoveListener(this);
+
+			Kill();
 		}
 	};
 }

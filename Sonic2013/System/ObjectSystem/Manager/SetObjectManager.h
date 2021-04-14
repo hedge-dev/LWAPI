@@ -3,6 +3,7 @@
 namespace app
 {
 	typedef size_t CSetObjectID;
+	class CSetObjectListener;
 	
 	class CSetObjectManager : public fnd::GameService
 	{
@@ -11,6 +12,7 @@ namespace app
 		INSERT_PADDING(1076){};
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, app::ut::RefPtr<CSetObject>&, size_t);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveListener, ASLR(0x0084BA60), CSetObjectManager*, CSetObjectListener*);
 
 		void SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
 		{
@@ -36,6 +38,11 @@ namespace app
 		void SendObjectMessageImm(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)
 		{
 			SendObjectMessageImpl(id, rMsg, sender, create, true);
+		}
+
+		void RemoveListener(CSetObjectListener* pListener)
+		{
+			ms_fpRemoveListener(this, pListener);
 		}
 	};
 }

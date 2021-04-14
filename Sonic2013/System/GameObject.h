@@ -230,7 +230,7 @@ namespace app
 
 	inline void GameObject::Kill()
 	{
-		if (!m_StatusFlags.test(0))
+		if (!IsKilled())
 		{
 			m_StatusFlags.set(0);
 			m_Enabled = false;

@@ -29,7 +29,7 @@ namespace app
 			pSetMgr->SendObjectMessage(id, rMsg, rObj.GetID(), create);
 		}
 
-		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id)
+		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id, size_t unit)
 		{
 			ut::RefPtr<CSetObject> setObj{};
 			pSetMan->GetSetObjectFromUniqID(setObj, id);
@@ -38,7 +38,12 @@ namespace app
 				return nullptr;
 			}
 
-			return setObj->GetNthObject(0);
+			return setObj->GetNthObject(unit);
+		}
+
+		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id)
+		{
+			return GetGameObjectHandle(pSetMan, id, 0);
 		}
 	};
 }
