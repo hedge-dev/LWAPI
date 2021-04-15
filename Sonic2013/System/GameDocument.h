@@ -19,6 +19,7 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
 		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B2E0), const GameDocument* This, const fnd::GameServiceClass& cls);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), void* This, fnd::GameService* service);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), void* This);
 
 
 	private:
@@ -65,6 +66,11 @@ namespace app
 			return reinterpret_cast<T*>(GetServiceByClass(T::staticClass()));
 		}
 
+		void ShutdownPendingObjects()
+		{
+			ms_fpShutdownPendingObjects(this);
+		}
+		
 		inline static GameDocument* GetSingleton()
 		{
 			return *ms_ppGameDocument;

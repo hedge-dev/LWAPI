@@ -13,6 +13,9 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, app::ut::RefPtr<CSetObject>&, size_t);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveListener, ASLR(0x0084BA60), CSetObjectManager*, CSetObjectListener*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpKillAllObject, ASLR(0x0084BAF0), CSetObjectManager*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartUpLayerInfo, ASLR(0x0084C4B0), CSetObjectManager*, size_t difficulty);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadDatabase, ASLR(0x0084B910), CSetObjectManager*, size_t idx);
 
 		void SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
 		{
@@ -43,6 +46,21 @@ namespace app
 		void RemoveListener(CSetObjectListener* pListener)
 		{
 			ms_fpRemoveListener(this, pListener);
+		}
+
+		void KillAllObject()
+		{
+			ms_fpKillAllObject(this);
+		}
+
+		void StartUpLayerInfo(size_t difficulty)
+		{
+			ms_fpStartUpLayerInfo(this, difficulty);
+		}
+		
+		void LoadDatabase(size_t idx)
+		{
+			ms_fpLoadDatabase(this, idx);
 		}
 	};
 }
