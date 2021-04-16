@@ -46,6 +46,24 @@ namespace app
 			return m_pActor;
 		}
 
+		const char* GetName() const
+		{
+			return m_pObject.GetName();
+		}
+
+		void* GetData() const
+		{
+			if (m_pObject.IsValid())
+				return m_pObject.GetParamAddress();
+			
+			return nullptr;
+		}
+
+		const csl::math::Vector3& GetPosition(size_t unit) const
+		{
+			return m_pObject.GetUnit(unit).GetPosition();
+		}
+		
 		static CSetAdapter* GetPointerFromActor(const Gops::CActor* pActor)
 		{
 			return pActor->GetAdapter();

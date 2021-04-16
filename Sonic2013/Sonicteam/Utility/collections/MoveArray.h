@@ -162,7 +162,7 @@ namespace csl
 				return -1;
 			}
 			
-			T operator[] (size_t i) const
+			const T& operator[] (size_t i) const
 			{
 				return *this->get(i);
 			}

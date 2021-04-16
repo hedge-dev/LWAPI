@@ -33,8 +33,13 @@ namespace app::fnd
 		{
 			return m_pRes;
 		}
-
+		
 		const T& ref() const
+		{
+			return *m_pRes;
+		}
+
+		T& ref()
 		{
 			return *m_pRes;
 		}

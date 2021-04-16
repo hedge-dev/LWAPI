@@ -54,6 +54,7 @@
 #include "Hedgehog/Base/System/hhApplication.h"
 #include "Hedgehog/Base/System/hhActivationHandle.h"
 #include "Hedgehog/Base/System/hhFrame.h"
+#include "Hedgehog/Base/System/hhArray.h"
 #include "System/GlobalAllocator.h"
 
 // Hedgehog Utility Library
@@ -130,6 +131,7 @@
 #include "System/Font/FontManager.h"
 
 // System Debug
+#include "System/Debug/Allocator.h"
 #include "System/Debug/Object.h"
 #include "System/Debug/Menu/MenuItem.h"
 #include "System/Debug/Menu/Menu.h"
