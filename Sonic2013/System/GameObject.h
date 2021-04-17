@@ -256,6 +256,11 @@ namespace app
 			
 			return fnd::PropertyValue{};
 		}
+
+		const csl::ut::Array<fnd::Property>& GetProperties() const
+		{
+			return m_Properties;
+		}
 	};
 
 	inline void GameObject::Kill()

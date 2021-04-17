@@ -30,7 +30,7 @@ namespace app
 
 		void releaseMemory()
 		{
-			if (m_Capacity & csl::ut::SIGN_BIT)
+			if (!(m_Capacity & csl::ut::SIGN_BIT) && capacity())
 				releaseMemory(m_pBuffer);
 		}
 
