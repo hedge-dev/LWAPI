@@ -2,19 +2,55 @@
 
 namespace app::fnd
 {
+	struct alignas(8) PropertyValue
+	{
+		uint64 m_Data;
+
+		inline PropertyValue() { m_Data = 0; }
+		inline PropertyValue(const float f);
+		inline PropertyValue(const int i);
+		inline PropertyValue(void* p);
+		inline PropertyValue(uint64 i);
+
+		inline void setFloat(const float f);
+		inline void setInt(const int i);
+		inline void setPtr(void* p);
+		inline void setUint64(uint64 i);
+
+		inline float getFloat() const;
+		inline int getInt() const;
+		inline void* getPtr() const;
+		inline uint64 getUint64() const;
+	};
+	
 	class Property
 	{
-	private:
-		unsigned int propertyID{};
-		unsigned int value{};
-		unsigned int unk1{};
-		unsigned int unk2{};
-
 	public:
-		Property(unsigned int id) : propertyID(id) {}
+		uint m_Key{};
+		uint m_AlignmentPadding{};
+		PropertyValue m_Value{};
 
-		Property(unsigned int id, unsigned int value_) : propertyID(id), value(value_) {}
+		Property() {}
+		Property(uint key) : m_Key(key) { }
+		Property(uint key, PropertyValue value) : m_Key(key), m_Value(value) {}
 
-		Property(unsigned int id, unsigned int value_, unsigned int a3) : propertyID(id), value(value_), unk1(a3) {}
+		uint GetKey() const
+		{
+			return m_Key;
+		}
+
+		PropertyValue GetValue() const
+		{
+			return m_Value;
+		}
+
+		void SetValue(PropertyValue value)
+		{
+			m_Value = value;
+		}
+
+		static uint MapStringToKey(const char* pStr);
 	};
 }
+
+#include "hhProperty.inl"

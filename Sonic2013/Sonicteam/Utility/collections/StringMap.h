@@ -13,6 +13,9 @@ namespace csl::ut
 	public:
 		size_t hash(size_t key)
 		{
+			if (!key)
+				return 0;
+			
 			const char* pStr = reinterpret_cast<const char*>(key);
 			size_t hashResult{};
 

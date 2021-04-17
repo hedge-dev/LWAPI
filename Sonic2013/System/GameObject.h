@@ -226,6 +226,36 @@ namespace app
 
 			BroadcastMessageImm(groupActor, msg);
 		}
+
+		void AddProperty(uint key, fnd::PropertyValue value)
+		{
+			m_Properties.push_back(fnd::Property(key, value));
+		}
+
+		void SetProperty(uint key, fnd::PropertyValue value)
+		{
+			for (auto& prop : m_Properties)
+			{
+				if (prop.GetKey() == key)
+				{
+					prop.SetValue(value);
+					return;
+				}
+			}
+			
+			AddProperty(key, value);
+		}
+
+		fnd::PropertyValue GetProperty(uint key) const
+		{
+			for (auto& prop : m_Properties)
+			{
+				if (prop.GetKey() == key)
+					return prop.GetValue();
+			}
+			
+			return fnd::PropertyValue{};
+		}
 	};
 
 	inline void GameObject::Kill()
