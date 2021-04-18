@@ -107,7 +107,6 @@ namespace app
 		public:
 			CResClass GetClass() const
 			{
-				sizeof(SResObjectData);
 				return ref().m_Class;
 			}
 
@@ -138,7 +137,7 @@ namespace app
 
 			void* GetParamAddress() const
 			{
-				return ref().m_pParam;
+				return const_cast<void**>(&ref().m_pParam);
 			}
 		};
 	}

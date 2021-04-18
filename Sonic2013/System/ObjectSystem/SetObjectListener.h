@@ -11,7 +11,11 @@ namespace app
 		CSetAdapter* m_pAdapter{};
 		INSERT_PADDING(8){};
 		CMyActivationHandle m_ActivationHandle{};
-		INSERT_PADDING(20){};
+	public:
+		csl::ut::LinkListNode m_ListNode;
+		
+	protected:
+		INSERT_PADDING(12){};
 		
 	public:
 		CSetObjectListener()

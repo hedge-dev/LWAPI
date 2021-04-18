@@ -29,8 +29,12 @@ namespace app
 			pSetMgr->SendObjectMessage(id, rMsg, rObj.GetID(), create);
 		}
 
-		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id, size_t unit)
+		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(const GameDocument& rDoc, const CSetObjectID& id, size_t unit)
 		{
+			auto* pSetMan = rDoc.GetService<CSetObjectManager>();
+			if (!pSetMan)
+				return nullptr;
+			
 			ut::RefPtr<CSetObject> setObj{};
 			pSetMan->GetSetObjectFromUniqID(setObj, id);
 			if (!setObj)
@@ -41,9 +45,18 @@ namespace app
 			return setObj->GetNthObject(unit);
 		}
 
-		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(CSetObjectManager* pSetMan, const CSetObjectID& id)
+		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(const GameDocument& rDoc, const CSetObjectID& id)
 		{
-			return GetGameObjectHandle(pSetMan, id, 0);
+			return GetGameObjectHandle(rDoc, id, 0);
+		}
+
+		static GameObjectHandle<CSetObjectListener> CreateSetObject(const GameDocument& rDoc, const CSetObjectID& id)
+		{
+			auto* pObjMan = rDoc.GetService<CSetObjectManager>();
+			if (!pObjMan)
+				return nullptr;
+
+			return pObjMan->CreateObjectBySetObjectID(id);
 		}
 	};
 }

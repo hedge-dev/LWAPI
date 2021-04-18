@@ -3,7 +3,7 @@
 namespace app
 {
 	class CSetObjectListener;
-	typedef void CSetAdapterMgr;
+	class CSetAdapterMgr;
 	
 	class CSetAdapter
 	{
@@ -64,9 +64,9 @@ namespace app
 			return m_pObject.GetUnit(unit).GetPosition();
 		}
 		
-		static CSetAdapter* GetPointerFromActor(const Gops::CActor* pActor)
+		static CSetAdapter* GetPointerFromActor(const Gops::CActor& pActor)
 		{
-			return pActor->GetAdapter();
+			return pActor.GetAdapter();
 		}
 	};
 }

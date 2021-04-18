@@ -23,7 +23,7 @@ namespace app
 		{
 			for (auto actor : m_pPack->GetActors())
 			{
-				if (actor->GetUnitNum() == n)
+				if (actor.GetUnitNum() == n)
 					return CSetAdapter::GetPointerFromActor(actor)->GetListener();
 			}
 			

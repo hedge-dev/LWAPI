@@ -21,14 +21,14 @@ namespace csl::ut
 				
 			}
 			
-			T* operator->()
+			T* operator->() const
 			{
 				return reinterpret_cast<T*>(reinterpret_cast<size_t>(m_pCurNode) - m_NodeOffset);
 			}
 
-			T* operator*()
+			T& operator*() const
 			{
-				return operator->();
+				return *operator->();
 			}
 			
 			friend bool operator==(const iterator& lhs, const iterator& rhs)
@@ -52,6 +52,11 @@ namespace csl::ut
 				m_pCurNode = m_pCurNode->m_pNext;
 				return *this;
 			}
+
+			operator T* () const
+			{
+				return operator->();
+			}
 		};
 
 		template<class T>
@@ -69,14 +74,14 @@ namespace csl::ut
 
 			}
 
-			T* operator->()
+			T* operator->() const
 			{
 				return reinterpret_cast<T*>(reinterpret_cast<size_t>(m_pCurNode) - m_NodeOffset);
 			}
 
-			T* operator*()
+			T& operator*() const
 			{
-				return operator->();
+				return *operator->();
 			}
 
 			friend bool operator==(const const_iterator& lhs, const const_iterator& rhs)
@@ -100,7 +105,17 @@ namespace csl::ut
 				m_pCurNode = m_pCurNode->m_pNext;
 				return *this;
 			}
+
+			operator T*() const
+			{
+				return operator->();
+			}
 		};
+
+		void init(LinkListNode(T::* nodeOffset))
+		{
+			m_NodeOffset = reinterpret_cast<size_t>(*reinterpret_cast<size_t**>(&nodeOffset));
+		}
 		
 		LinkList()
 		{
@@ -114,7 +129,7 @@ namespace csl::ut
 
 		LinkList(LinkListNode(T::*nodeOffset))
 		{
-			m_NodeOffset = reinterpret_cast<size_t>(*reinterpret_cast<size_t**>(&nodeOffset));
+			init(nodeOffset);
 		}
 
 	private:
@@ -158,7 +173,6 @@ namespace csl::ut
 		{
 			return iterator<T>(reinterpret_cast<LinkListNode*>(&m_pEnd), m_NodeOffset);
 		}
-
 		[[nodiscard]] const_iterator<T> begin() const { return const_iterator<T>(m_pEnd, m_NodeOffset); }
 		[[nodiscard]] const_iterator<T> end() const
 		{
@@ -166,5 +180,13 @@ namespace csl::ut
 		}
 		
 		[[nodiscard]] size_t size() const { return m_Count; }
+
+		[[nodiscard]] T* front() const
+		{
+			if (!size())
+				return nullptr;
+			
+			return begin();
+		}
 	};
 }

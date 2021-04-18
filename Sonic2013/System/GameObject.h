@@ -31,9 +31,9 @@ namespace app
 			if (!comps.size())
 				return;
 
-			for (auto component : comps)
+			for (auto& component : comps)
 			{
-				component->Update(phase, update_info);
+				component.Update(phase, update_info);
 			}
 		}
 

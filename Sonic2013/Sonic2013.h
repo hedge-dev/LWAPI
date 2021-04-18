@@ -31,9 +31,6 @@
 #include "Sonicteam/Utility/Color.h"
 #include "Sonicteam/System/ComPtr.h"
 
-// Dummy standard library
-#include "std-dummy/std-dummy.h"
-
 // gindows
 #include "gindows/gindows.h"
 
@@ -103,6 +100,9 @@
 #include "Hedgehog/Reflection/hhRflClassEnum.h"
 #include "Hedgehog/Reflection/hhRflClass.h"
 
+// Dummy standard library
+#include "std-dummy/std-dummy.h"
+
 // System Game
 #include "System/Game/LuaScript.h"
 #include "System/Game/ActorGroupRegistry.h"
@@ -166,6 +166,7 @@
 #include "System/ObjectSystem/Placement/WorldHandle.h"
 #include "System/ObjectSystem/Placement/Actor.h"
 #include "System/ObjectSystem/Placement/ActorPack.h"
+#include "System/ObjectSystem/Placement/ActorManager.h"
 #include "System/ObjectSystem/MyActivationHandle.h"
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/ObjectSystem/Object.h"
