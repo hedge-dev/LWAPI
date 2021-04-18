@@ -142,7 +142,7 @@ namespace app
 
 		void LoadObjectResources()
 		{
-			auto* pResContainer = document->GetService<CObjInfoContainer>();
+			auto* pResContainer = m_pOwnerDocument->GetService<CObjInfoContainer>();
 			if (pResContainer)
 				pResContainer->LoadRequestAll();
 		}

@@ -8,19 +8,20 @@ namespace app::fnd
 	
 	class GameServiceClass
 	{
-		const char* name;
-		initializeService* serviceInitializer;
-		RflClass* rflClass;
+		const char* m_pName;
+		initializeService* m_pInitializer;
+		RflClass* m_pClass;
 
 	public:
-		GameServiceClass(const char* nam, initializeService& initializer, RflClass* cls = nullptr) : name(nam), serviceInitializer(&initializer), rflClass(cls)
+		GameServiceClass(const char* pName, initializeService& rInitializer, RflClass* pClass = nullptr) : m_pName(pName),
+			m_pInitializer(&rInitializer), m_pClass(pClass)
 		{
 			
 		}
 
 		[[nodiscard]] const char* GetName() const
 		{
-			return name;
+			return m_pName;
 		}
 
 		[[nodiscard]] GameService* Construct(csl::fnd::IAllocator* allocator) const;
@@ -31,21 +32,21 @@ namespace app::fnd
 		friend GameServiceClass;
 
 	protected:
-		GameDocument* document{};
-		const GameServiceClass* serviceClass{};
-		void* unk1{};
-		void* unk2{};
-		unsigned int flags{};
+		GameDocument* m_pOwnerDocument{};
+		const GameServiceClass* m_pClass{};
+		void* m_Unk1{};
+		void* m_Unk2{};
+		unsigned int m_Flags{};
 
 		GameService(ServiceType serviceType)
 		{
 			if (serviceType)
 			{
-				flags = serviceType > 2 ? 0 : serviceType;
+				m_Flags = serviceType > 2 ? 0 : serviceType;
 			}
 			else
 			{
-				flags = 0x2000;
+				m_Flags = 0x2000;
 			}
 		}
 
@@ -72,8 +73,8 @@ namespace app::fnd
 
 	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* allocator) const
 	{
-		GameService* service = serviceInitializer(allocator);
-		service->serviceClass = this;
+		GameService* service = m_pInitializer(allocator);
+		service->m_pClass = this;
 
 		return service;
 	}
