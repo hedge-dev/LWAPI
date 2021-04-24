@@ -51,14 +51,14 @@ namespace app::fnd
 		
 	protected:
 		const char* m_pName{};
-		RflClass* m_pStruct{};
+		RflClass* m_pClass{};
 		RflClassEnum* m_pEnum{};
 		Enum<Type, uint8> m_Type{};
-		Enum<Type, uint8> m_UnderlyingType{};
+		Enum<Type, uint8> m_SubType{};
 		uint16 m_ArrayLength{};
 		Bitset<uint16> m_Flags{};
-		uint16 m_MemberOffset{};
-		RflCustomAttributes* m_pAttributes{};
+		uint16 m_Offset{};
+		const RflCustomAttributes* m_pAttributes{};
 
 	public:
 		[[nodiscard]] const char* GetName() const
@@ -68,12 +68,12 @@ namespace app::fnd
 
 		[[nodiscard]] const RflClass* GetClass() const
 		{
-			return m_pStruct;
+			return m_pClass;
 		}
 		
 		[[nodiscard]] const RflClass* GetStructClass() const
 		{
-			return m_pStruct;
+			return m_pClass;
 		}
 
 		[[nodiscard]] const RflClassEnum* GetEnumClass() const
@@ -98,12 +98,12 @@ namespace app::fnd
 
 		[[nodiscard]] Type GetSubType() const
 		{
-			return m_UnderlyingType;
+			return m_SubType;
 		}
 
 		[[nodiscard]] size_t GetByteOffset() const
 		{
-			return m_MemberOffset;
+			return m_Offset;
 		}
 		
 		[[nodiscard]] size_t GetSizeInBytes() const;
@@ -155,7 +155,7 @@ namespace app::fnd
 inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 {
 	const uint8 type = m_Type;
-	const uint8 underlyingType = m_UnderlyingType;
+	const uint8 underlyingType = m_SubType;
 	
 	switch (type)
 	{
