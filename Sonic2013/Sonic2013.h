@@ -35,6 +35,16 @@
 #include "gindows/gindows.h"
 
 // Hedgehog Library
+#include"Hedgehog/Base/Types/hhBaseTypes.h"
+
+// Hedgehog Reflection Library
+#include "Hedgehog/Reflection/hhInternalClassMember.h"
+#include "Hedgehog/Reflection/hhRflCustomAttribute.h"
+#include "Hedgehog/Reflection/hhRflClassMember.h"
+#include "Hedgehog/Reflection/hhRflClassEnum.h"
+#include "Hedgehog/Reflection/hhRflClass.h"
+
+// Hedgehog Library
 #include "Hedgehog/Base/System/hhAllocator.h"
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
@@ -93,12 +103,6 @@
 #include "Hedgehog/Animation/hhCharactorAnimation.h"
 #include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
 #include "Hedgehog/Animation/hhCharactorAnimationMultiLayer.h"
-
-// Hedgehog Reflection Library
-#include "Hedgehog/Reflection/hhRflCustomAttribute.h"
-#include "Hedgehog/Reflection/hhRflClassMember.h"
-#include "Hedgehog/Reflection/hhRflClassEnum.h"
-#include "Hedgehog/Reflection/hhRflClass.h"
 
 // Dummy standard library
 #include "std-dummy/std-dummy.h"

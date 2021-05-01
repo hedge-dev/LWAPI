@@ -9,6 +9,8 @@ namespace app::fnd
 	
 	class RflClassMember
 	{
+		
+	public:
 		enum Type : char
 		{
 			TYPE_VOID,

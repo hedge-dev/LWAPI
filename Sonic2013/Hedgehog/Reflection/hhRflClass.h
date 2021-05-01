@@ -8,15 +8,34 @@ namespace app::fnd
 	{
 	protected:
 		const char* m_pName{};
-		const RflClass* m_pBaseClass{};
-		const size_t m_ClassSize{};
+		const RflClass* m_pParent{};
+		size_t m_ClassSize{};
 		const RflClassEnum* m_pEnums{};
-		const size_t m_EnumCount{};
+		size_t m_EnumCount{};
 		const RflClassMember* m_pMembers{};
-		const size_t m_MemberCount{};
+		size_t m_MemberCount{};
 		const RflCustomAttributes* m_pAttributes{};
 
 	public:
+		RflClass(const char* pName, 
+			const RflClass* pParent,
+			size_t objectSizeInBytes,
+			const RflClassEnum* pDeclaredEnums,
+			size_t declaredEnumsNum,
+			const RflClassMember* pDeclaredMembers,
+			size_t declaredMembersNum,
+			const RflCustomAttributes* pAttributes)
+		{
+			m_pName = pName;
+			m_pParent = pParent;
+			m_ClassSize = objectSizeInBytes;
+			m_pEnums = pDeclaredEnums;
+			m_EnumCount = declaredEnumsNum;
+			m_pMembers = pDeclaredMembers;
+			m_MemberCount = declaredMembersNum;
+			m_pAttributes = pAttributes;
+		}
+		
 		[[nodiscard]] const char* GetName() const
 		{
 			return m_pName;
@@ -24,7 +43,7 @@ namespace app::fnd
 
 		[[nodiscard]] const RflClass* GetBaseType() const
 		{
-			return m_pBaseClass;
+			return m_pParent;
 		}
 
 		[[nodiscard]] size_t GetSizeInBytes() const
@@ -36,7 +55,7 @@ namespace app::fnd
 		{
 			size_t count = m_MemberCount;
 
-			for (const RflClass* base = m_pBaseClass; base != nullptr; base = base->m_pBaseClass)
+			for (const RflClass* base = m_pParent; base != nullptr; base = base->m_pParent)
 			{
 				count += base->m_MemberCount;
 			}
@@ -62,7 +81,7 @@ namespace app::fnd
 				if (j >= 0)
 					break;
 
-				cls = cls->m_pBaseClass;
+				cls = cls->m_pParent;
 				if (!cls)
 					return cls->m_pMembers;
 			}
