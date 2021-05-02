@@ -31,6 +31,12 @@
 #include "Sonicteam/Utility/Color.h"
 #include "Sonicteam/System/ComPtr.h"
 
+// Include this early
+#include "Hedgehog/Base/System/hhAllocator.h"
+
+// Dummy standard library
+#include "std-dummy/std-dummy.h"
+
 // gindows
 #include "gindows/gindows.h"
 
@@ -45,7 +51,6 @@
 #include "Hedgehog/Reflection/hhRflClass.h"
 
 // Hedgehog Library
-#include "Hedgehog/Base/System/hhAllocator.h"
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhThreadSafeReferencedObject.h"
@@ -103,9 +108,6 @@
 #include "Hedgehog/Animation/hhCharactorAnimation.h"
 #include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
 #include "Hedgehog/Animation/hhCharactorAnimationMultiLayer.h"
-
-// Dummy standard library
-#include "std-dummy/std-dummy.h"
 
 // System Game
 #include "System/Game/LuaScript.h"

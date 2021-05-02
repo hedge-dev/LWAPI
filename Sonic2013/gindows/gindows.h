@@ -52,5 +52,6 @@ namespace gindows
 #include "EventArgs.h"
 #include "Canvas.h"
 #include "Control.h"
+#include "Form.h"
 #include "Desktop.h"
 #include "Manager.h"

@@ -1,15 +1,17 @@
 #pragma once
+#include "Form.h"
 
 namespace gindows
 {
-	class WindowManager : Object
+	class WindowManager : public Object
 	{
 	protected:
 		csl::ut::Bitset<uint> m_Flags{};
-		//csl::ut::LinkList<void*> m_Forms{ 604 };
-		//csl::ut::LinkList<void*> m_Forms2{ 612 };
-		Control* m_pUnk1;
-		INSERT_PADDING(16){};
+		csl::ut::LinkList<Form> m_Forms{ &Form::m_FormsNode };
+		csl::ut::LinkList<Form> m_Forms2{ &Form::m_ActiveFormsNode };
+		Control* m_pUnk1{};
+		Form* m_pActiveForm{};
+		INSERT_PADDING(8){};
 
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDraw, ASLR(0x0097A7B0), void* This);
