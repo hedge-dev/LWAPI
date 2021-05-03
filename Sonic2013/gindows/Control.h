@@ -1,12 +1,59 @@
 #pragma once
 namespace gindows
 {
-	class Control : Object
+	class Desktop;
+	class Control;
+	
+#define MEMBER_FUNC(TYPE, RET, NAME, ...) RET (__thiscall *fp##NAME)(TYPE* pThis, __VA_ARGS__)
+	struct ControlVftable
+	{
+		MEMBER_FUNC(Control, void, Dtor, size_t deleterFlags);
+		MEMBER_FUNC(Control, void, Add, Control* pControl);
+		MEMBER_FUNC(Control, void, Remove, Control* pControl);
+		MEMBER_FUNC(Control, void, SetContainsFocus, bool focused);
+		MEMBER_FUNC(Control, Control*, FindControl, const csl::ut::Point2<int>& point);
+		MEMBER_FUNC(Control, bool, GetControlArea, const csl::ut::Point2<int>& point);
+		MEMBER_FUNC(Control, void, Show);
+		MEMBER_FUNC(Control, void, Hide);
+		MEMBER_FUNC(Control, void, Render);
+		MEMBER_FUNC(Control, void, OnDestroy);
+		MEMBER_FUNC(Control, void, OnExecute, float a1); // delta?
+		MEMBER_FUNC(Control, void, OnRender);
+		MEMBER_FUNC(Control, void, OnLocationChanged);
+		MEMBER_FUNC(Control, void, OnSizeChanged);
+		MEMBER_FUNC(Control, void, OnGotFocus);
+		MEMBER_FUNC(Control, void, OnLostFocus);
+		MEMBER_FUNC(Control, void, OnClick);
+		MEMBER_FUNC(Control, void, OnMouseLeave);
+		MEMBER_FUNC(Control, void, OnMouseEnter);
+		MEMBER_FUNC(Control, void, OnMouseDown, MouseEventArgs& args);
+		MEMBER_FUNC(Control, void, OnMouseUp, MouseEventArgs& args);
+		MEMBER_FUNC(Control, void, OnMouseMove, MouseEventArgs& args);
+		MEMBER_FUNC(Control, void, OnMouseWheel, MouseEventArgs& args);
+		MEMBER_FUNC(Control, void, OnKeyDown, KeyEventArgs& args);
+		MEMBER_FUNC(Control, void, OnKeyUp, KeyEventArgs& args);
+		MEMBER_FUNC(Control, void, OnKeyPress, KeyPressEventArgs& args);
+		MEMBER_FUNC(Control, void, OnFont);
+		MEMBER_FUNC(Control, void, OnUpdate);
+		MEMBER_FUNC(const Control, void, GetClientOffsetInflate, csl::ut::Point2<int>*, csl::ut::Size2<int>*);
+		MEMBER_FUNC(Control, bool, ControlProc, int param, EventArgs& args);
+	};
+#undef MEMBER_FUNC
+	
+	class Control : public Object
 	{
 	public:
+		typedef size_t ControlDock;
+		
+		inline static const ControlVftable* ms_fpVftable = reinterpret_cast<const ControlVftable*>(ASLR(0x00E0D6B4));
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x009714A0), Control* pThis);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetSize, ASLR(0x0096FFD0), Control* pControl, const csl::ut::Size2<int>& size);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocation, ASLR(0x00971630), Control* pControl, const csl::ut::Point2<int>& point);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDock, ASLR(0x00971700), Control* pControl, ControlDock dock);
+		
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnDestroy;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnRender; // RenderEventArgs
+		csl::fnd::Delegate<void(Object*, RenderEventArgs&), DelegateAllocator> m_OnRender; // RenderEventArgs
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnLocationChanged;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnSizeChanged;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnGotFocus;
@@ -14,21 +61,23 @@ namespace gindows
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnClick;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseLeave;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseEnter;
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseDown; // MouseEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseUp; // MouseEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseMove; // MouseEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnMouseWheel; // MouseEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnKeyDown; // KeyEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnKeyUp; // KeyEventArgs
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnKeyPress; // KeyPressEventArgs
+		csl::fnd::Delegate<void(Object*, MouseEventArgs&), DelegateAllocator> m_OnMouseDown; // MouseEventArgs
+		csl::fnd::Delegate<void(Object*, MouseEventArgs&), DelegateAllocator> m_OnMouseUp; // MouseEventArgs
+		csl::fnd::Delegate<void(Object*, MouseEventArgs&), DelegateAllocator> m_OnMouseMove; // MouseEventArgs
+		csl::fnd::Delegate<void(Object*, MouseEventArgs&), DelegateAllocator> m_OnMouseWheel; // MouseEventArgs
+		csl::fnd::Delegate<void(Object*, KeyEventArgs&), DelegateAllocator> m_OnKeyDown; // KeyEventArgs
+		csl::fnd::Delegate<void(Object*, KeyEventArgs&), DelegateAllocator> m_OnKeyUp; // KeyEventArgs
+		csl::fnd::Delegate<void(Object*, KeyPressEventArgs&), DelegateAllocator> m_OnKeyPress; // KeyPressEventArgs
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnFont;
 		
 	protected:
 		csl::ut::Bitset<uint> m_Flags{};
-		void* m_pUnk1{};
+		Desktop* m_pDesktop{};
 		INSERT_PADDING(12){}; //std::list<gindows::Control>
-		std::dummy::string m_Name;
-		INSERT_PADDING(8){};
+		union
+		{
+			std::dummy::string m_Name;
+		};
 		Canvas m_Canvas{};
 
 	public:
@@ -45,41 +94,56 @@ namespace gindows
 		csl::ut::Point2<int> m_Unk9;
 		
 	public:
-		virtual void Add(Control* pControl) = 0;
-		virtual void Remove(Control* pControl) = 0;
-		virtual void SetContainsFocus(bool focused) = 0;
-		virtual Control* FindControl(const csl::ut::Point2<int>& point) = 0;
-		virtual bool GetControlArea(const csl::ut::Point2<int>& point) = 0;
-		virtual void Show() = 0;
-		virtual void Hide() = 0;
-		virtual void Render() = 0;
-		virtual void OnDestroy() = 0;
-		virtual void OnExecute(float a1) = 0; // delta?
-		virtual void OnRender() = 0;
-		virtual void OnLocationChanged() = 0;
-		virtual void OnSizeChanged() = 0;
-		virtual void OnGotFocus() = 0;
-		virtual void OnLostFocus() = 0;
-		virtual void OnClick() = 0;
-		virtual void OnMouseLeave() = 0;
-		virtual void OnMouseEnter() = 0;
-		virtual void OnMouseDown(MouseEventArgs& args) = 0;
-		virtual void OnMouseUp(MouseEventArgs& args) = 0;
-		virtual void OnMouseMove(MouseEventArgs& args) = 0;
-		virtual void OnMouseWheel(MouseEventArgs& args) = 0;
-		virtual void OnKeyDown(KeyEventArgs& args) = 0;
-		virtual void OnKeyUp(KeyEventArgs& args) = 0;
-		virtual void OnKeyPress(KeyPressEventArgs& args) = 0;
-		virtual void OnFont() = 0;
-		virtual void OnUpdate() = 0;
-		virtual void GetClientOffsetInflate(csl::ut::Point2<int>*, csl::ut::Size2<int>*) const = 0;
-		virtual bool ControlProc(int param, EventArgs& args) = 0;
-
 		Control()
 		{
-			ASSERT_OFFSETOF(Control, m_Canvas, 272);
-			ASSERT(sizeof(Control) == 564, "Control size not 564");
+			ms_fpCtor(this);
+			ASSERT_OFFSETOF(Control, m_Canvas, 268);
+			ASSERT(sizeof(Control) == 560, "Control size not 560");
 		}
+
+	protected:
+		Control(bool skipFp)
+		{
+			new (&m_Name) std::dummy::string();
+			m_Name._Mypad |= true;
+		}
+
+	public:
+		~Control()
+		{
+			if (!(m_Name._Mypad & 1))
+				ms_fpVftable->fpDtor(this, 0);
+		}
+		
+		virtual void Add(Control* pControl) { ms_fpVftable->fpAdd(this, pControl); }
+		virtual void Remove(Control* pControl) { ms_fpVftable->fpRemove(this, pControl); }
+		virtual void SetContainsFocus(bool focused) { ms_fpVftable->fpSetContainsFocus(this, focused); }
+		virtual Control* FindControl(const csl::ut::Point2<int>& point) { return ms_fpVftable->fpFindControl(this, point); }
+		virtual bool GetControlArea(const csl::ut::Point2<int>& point) { return ms_fpVftable->fpGetControlArea(this, point); }
+		virtual void Show() { m_Flags.reset(1); }
+		virtual void Hide() { m_Flags.set(1); }
+		virtual void Render() { ms_fpVftable->fpRender(this); }
+		virtual void OnDestroy() { EventArgs args{}; m_OnDestroy(this, args); }
+		virtual void OnExecute(float a1) { ms_fpVftable->fpOnExecute(this, a1); }
+		virtual void OnRender() { ms_fpVftable->fpOnRender(this); }
+		virtual void OnLocationChanged() { EventArgs args{}; m_OnLocationChanged(this, args); }
+		virtual void OnSizeChanged() { ms_fpVftable->fpOnSizeChanged(this); }
+		virtual void OnGotFocus() { EventArgs args{}; m_OnGotFocus(this, args); }
+		virtual void OnLostFocus() { EventArgs args{}; m_OnLostFocus(this, args); }
+		virtual void OnClick() { EventArgs args{}; m_OnClick(this, args); }
+		virtual void OnMouseLeave() { EventArgs args{}; m_OnMouseLeave(this, args); }
+		virtual void OnMouseEnter() { EventArgs args{}; m_OnMouseEnter(this, args); }
+		virtual void OnMouseDown(MouseEventArgs& args) { m_OnMouseDown(this, args); }
+		virtual void OnMouseUp(MouseEventArgs& args) { m_OnMouseUp(this, args); }
+		virtual void OnMouseMove(MouseEventArgs& args) { m_OnMouseMove(this, args); }
+		virtual void OnMouseWheel(MouseEventArgs& args) { m_OnMouseWheel(this, args); }
+		virtual void OnKeyDown(KeyEventArgs& args) { ms_fpVftable->fpOnKeyDown(this, args); }
+		virtual void OnKeyUp(KeyEventArgs& args) { ms_fpVftable->fpOnKeyUp(this, args); }
+		virtual void OnKeyPress(KeyPressEventArgs& args) { ms_fpVftable->fpOnKeyPress(this, args); }
+		virtual void OnFont() { ms_fpVftable->fpOnFont(this); }
+		virtual void OnUpdate() { ms_fpVftable->fpOnUpdate(this); }
+		virtual void GetClientOffsetInflate(csl::ut::Point2<int>* a1, csl::ut::Size2<int>* a2) const { ms_fpVftable->fpGetClientOffsetInflate(this, a1, a2); }
+		virtual bool ControlProc(int param, EventArgs& args) { return ms_fpVftable->fpControlProc(this, param, args); }
 		
 		const Canvas& GetCanvas() const { return m_Canvas; }
 		Canvas& GetCanvas() { return m_Canvas; }
@@ -97,6 +161,21 @@ namespace gindows
 		void SetIgnoreHide(bool ignore)
 		{
 			m_Flags.set(3, ignore);
+		}
+
+		void SetSize(const csl::ut::Size2<int>& size)
+		{
+			ms_fpSetSize(this, size);
+		}
+
+		void SetLocation(const csl::ut::Point2<int>& point)
+		{
+			ms_fpSetLocation(this, point);
+		}
+
+		void SetDock(ControlDock dock)
+		{
+			ms_fpSetDock(this, dock);
 		}
 		
 		const char* GetName() const

@@ -162,7 +162,7 @@ namespace std::dummy
         }
 
         basic_string() noexcept(is_nothrow_default_constructible_v<_Alty>) : _Mypair(_Zero_then_variadic_args_t{}) {
-            _Mypair._Myval2._Alloc_proxy(_GET_PROXY_ALLOCATOR(_Alty, _Getal()));
+            //_Mypair._Myval2._Alloc_proxy(_GET_PROXY_ALLOCATOR(_Alty, _Getal()));
             _Tidy_init();
         }
 
@@ -603,10 +603,10 @@ namespace std::dummy
         ~basic_string() noexcept {
             _Tidy_deallocate();
 #if _ITERATOR_DEBUG_LEVEL != 0
-            auto&& _Alproxy = static_cast<_Rebind_alloc_t<_Alty, _Container_proxy>>(_Getal());
-            const auto _To_delete = _Mypair._Myval2._Myproxy;
-            _Mypair._Myval2._Myproxy = nullptr;
-            _Delete_plain_internal(_Alproxy, _To_delete);
+            //auto&& _Alproxy = static_cast<_Rebind_alloc_t<_Alty, _Container_proxy>>(_Getal());
+            //const auto _To_delete = _Mypair._Myval2._Myproxy;
+            //_Mypair._Myval2._Myproxy = nullptr;
+            //_Delete_plain_internal(_Alproxy, _To_delete);
 #endif // _ITERATOR_DEBUG_LEVEL != 0
         }
 
@@ -2235,6 +2235,9 @@ namespace std::dummy
         }
 
         _Compressed_pair<_Alty, _Scary_val> _Mypair;
+
+	public:
+        _Elem _Mypad;
 	};
 
     using string = basic_string<char, char_traits<char>, allocator<char>>;

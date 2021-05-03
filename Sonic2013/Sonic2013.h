@@ -136,12 +136,19 @@
 #include "System/Font/FontText.h"
 #include "System/Font/FontManager.h"
 
+// System Development
+#include "System/Development/Variable.h"
+#include "System/Development/VariableGroup.h"
+#include "System/Development/VariableEditControl.h"
+#include "System/Development/ReflectionEditControl.h"
+
 // System Debug
 #include "System/Debug/Allocator.h"
 #include "System/Debug/Object.h"
 #include "System/Debug/Menu/MenuItem.h"
 #include "System/Debug/Menu/Menu.h"
 #include "System/Debug/Menu/MenuManager.h"
+#include "System/Debug/FormObject.h"
 
 // Components
 #include "System/goc/goc_Transform.h"
