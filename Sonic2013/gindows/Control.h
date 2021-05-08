@@ -50,6 +50,7 @@ namespace gindows
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetSize, ASLR(0x0096FFD0), Control* pControl, const csl::ut::Size2<int>& size);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocation, ASLR(0x00971630), Control* pControl, const csl::ut::Point2<int>& point);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDock, ASLR(0x00971700), Control* pControl, ControlDock dock);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFont, ASLR(0x0096FE80), Control* pControl, uint font);
 		
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnDestroy;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
@@ -76,7 +77,7 @@ namespace gindows
 		INSERT_PADDING(12){}; //std::list<gindows::Control>
 		union
 		{
-			std::dummy::string m_Name;
+			std::dummy::basic_string<char, std::char_traits<char>, Allocator<char>> m_Name;
 		};
 		Canvas m_Canvas{};
 
@@ -123,7 +124,12 @@ namespace gindows
 		virtual void Show() { m_Flags.reset(1); }
 		virtual void Hide() { m_Flags.set(1); }
 		virtual void Render() { ms_fpVftable->fpRender(this); }
-		virtual void OnDestroy() { EventArgs args{}; m_OnDestroy(this, args); }
+		virtual void OnDestroy()
+		{
+			EventArgs args{};
+			m_OnDestroy(this, args);
+		}
+		
 		virtual void OnExecute(float a1) { ms_fpVftable->fpOnExecute(this, a1); }
 		virtual void OnRender() { ms_fpVftable->fpOnRender(this); }
 		virtual void OnLocationChanged() { EventArgs args{}; m_OnLocationChanged(this, args); }
@@ -177,6 +183,11 @@ namespace gindows
 		{
 			ms_fpSetDock(this, dock);
 		}
+
+		void SetFont(uint font)
+		{
+			ms_fpSetFont(this, font);
+		}
 		
 		const char* GetName() const
 		{
@@ -187,5 +198,7 @@ namespace gindows
 		{
 			return !m_Flags.test(1);
 		}
+
+		void SetFocus();
 	};
 }

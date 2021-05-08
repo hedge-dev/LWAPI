@@ -35,6 +35,7 @@ namespace gindows
 	typedef void PrimitiveVertex;
 }
 
+#include "Allocator.h"
 #include "Object.h"
 
 #include "Device/RenderState.h"
@@ -55,3 +56,7 @@ namespace gindows
 #include "Form.h"
 #include "Desktop.h"
 #include "Manager.h"
+
+
+// Include code
+#include "Control.inl"

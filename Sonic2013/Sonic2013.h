@@ -42,6 +42,8 @@
 
 // Hedgehog Library
 #include"Hedgehog/Base/Types/hhBaseTypes.h"
+#include "Hedgehog/Base/System/hhBaseObject.h"
+#include "Hedgehog/Base/System/hhReferencedObject.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhInternalClassMember.h"
@@ -49,10 +51,14 @@
 #include "Hedgehog/Reflection/hhRflClassMember.h"
 #include "Hedgehog/Reflection/hhRflClassEnum.h"
 #include "Hedgehog/Reflection/hhRflClass.h"
+#include "Hedgehog/Reflection/hhRflTypeInfo.h"
+#include "Hedgehog/Reflection/hhRflTypeInfoRegistry.h"
+#include "Hedgehog/Reflection/hhRflClassNameRegistry.h"
+#include "Hedgehog/Reflection/hhDataResource.h"
+#include "Hedgehog/Reflection/hhDataValue.h"
+#include "Hedgehog/Reflection/hhVariantDataUtil.h"
 
 // Hedgehog Library
-#include "Hedgehog/Base/System/hhBaseObject.h"
-#include "Hedgehog/Base/System/hhReferencedObject.h"
 #include "Hedgehog/Base/System/hhThreadSafeReferencedObject.h"
 #include "Hedgehog/Base/System/hhRefCountObject.h"
 #include "Hedgehog/Base/System/hhRefByHandleObject.h"
@@ -149,6 +155,8 @@
 #include "System/Debug/Menu/Menu.h"
 #include "System/Debug/Menu/MenuManager.h"
 #include "System/Debug/FormObject.h"
+
+#include "System/Development/ReflectionEditWindow.h"
 
 // Components
 #include "System/goc/goc_Transform.h"

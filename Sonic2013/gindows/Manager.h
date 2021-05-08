@@ -5,7 +5,7 @@
 
 namespace gindows
 {
-	class Manager : Object, csl::ut::NonCopyable
+	class Manager : public Object, csl::ut::NonCopyable
 	{
 	private:
 		inline static Manager** ms_ppInstance = reinterpret_cast<Manager**>(ASLR(0x00FF00A4));

@@ -1,10 +1,5 @@
 #pragma once
 
-namespace app::fnd
-{
-	class DataResource;
-}
-
 namespace app::dev
 {
 	class CReflectionEditControl : public S13VariableEditControl
@@ -13,7 +8,7 @@ namespace app::dev
 		S13VariableGroup* m_pGroup{};
 		
 	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004591B0), CReflectionEditControl* pThis, fnd::DataResource* pResource);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004590A0), CReflectionEditControl* pThis, fnd::DataResource* pResource);
 		
 		CReflectionEditControl(fnd::DataResource* pResource)
 		{
@@ -29,6 +24,18 @@ namespace app::dev
 		void Setup(fnd::DataResource* pResource)
 		{
 			ms_fpSetup(this, pResource);
+		}
+
+		void Reset()
+		{
+			ClearGroup();
+			delete m_pGroup;
+
+			m_pGroup = S13VariableGroup::Create("Reflection Edit");
+			if (m_pGroup)
+			{
+				SetGroup(m_pGroup);
+			}
 		}
 	};
 }

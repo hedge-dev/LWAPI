@@ -33,13 +33,28 @@ namespace app::hid
     struct ResPadDeviceData
     {
         ButtonStates m_HeldButtons;
-        uint m_Unk1;
-        uint m_Unk2;
+        ButtonStates m_PressedButtons;
+        ButtonStates m_ReleasedButtones;
         csl::math::Vector2 m_LeftStick;
         csl::math::Vector2 m_RightStick;
         float m_LeftTrigger;
         float m_RightTrigger;
         INSERT_PADDING(28);
+
+    	bool IsButtonHeld(ButtonStates buttons) const
+    	{
+            return (m_HeldButtons & buttons) == buttons;
+    	}
+
+        bool IsButtonDown(ButtonStates buttons) const
+        {
+            return (m_PressedButtons & buttons) == buttons;
+        }
+
+        bool IsButtonUp(ButtonStates buttons) const
+        {
+            return (m_ReleasedButtones & buttons) == buttons;
+        }
     };
 
     struct ResGyroDeviceData

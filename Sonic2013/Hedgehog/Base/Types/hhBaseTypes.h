@@ -71,28 +71,17 @@ typedef unsigned int	hhUint32;
 	static const app::fnd::RflClass& staticClass(); \
 	struct DefaultStruct
 
-class hhBool
-{
-public:
-	typedef char CompileTimeTrueType;
-	typedef int CompileTimeFalseType;
-
-	HH_FORCE_INLINE hhBool() {}
-	HH_FORCE_INLINE hhBool(bool b) { m_Bool = static_cast<char>(b); }
-	HH_FORCE_INLINE operator bool() const { return m_Bool != 0; }
-	HH_FORCE_INLINE hhBool& operator=(bool b) { m_Bool = static_cast<char>(b); return *this; }
-	HH_FORCE_INLINE hhBool operator==(bool b) const { return (m_Bool != 0) == b; }
-	HH_FORCE_INLINE hhBool operator!=(bool b) const { return (m_Bool != 0) != b; }
-
-private:
-	char m_Bool;
-};
-
 namespace app
 {
 	namespace fnd
 	{
 		class RflClass;
+
+		struct Variant
+		{
+			void* m_pObject;
+			const RflClass* m_pClass;
+		};
 	}
 }
 

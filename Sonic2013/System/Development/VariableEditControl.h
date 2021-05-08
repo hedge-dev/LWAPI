@@ -26,6 +26,7 @@ namespace app::dev
 		inline static const gindows::ControlVftable* ms_fpVftable = reinterpret_cast<const gindows::ControlVftable*>(ASLR(0x00D5D954));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x00459FA0), S13VariableEditControl* pThis);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGroup, ASLR(0x00459E90), S13VariableEditControl* pThis, S13VariableGroup* pGroup);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpClearGroup, ASLR(0x00459800), S13VariableEditControl* pThis);
 		
 		S13VariableEditControl() : Control(true)
 		{
@@ -58,6 +59,11 @@ namespace app::dev
 		void SetGroup(S13VariableGroup* pGroup)
 		{
 			ms_fpSetGroup(this, pGroup);
+		}
+
+		void ClearGroup()
+		{
+			ms_fpClearGroup(this);
 		}
 
 		S13VariableGroup* GetGroup() const

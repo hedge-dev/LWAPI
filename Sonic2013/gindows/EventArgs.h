@@ -18,7 +18,9 @@ namespace gindows
 	struct KeyEventArgs : EventArgs
 	{
 		ushort m_KeyCode{};
-		bool modifiers[3]{}; // Not sure
+		char m_Unk2;
+		char m_Unk3;
+		char m_Unk4;
 	};
 
 	struct KeyPressEventArgs : EventArgs
