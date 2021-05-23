@@ -41,14 +41,14 @@ namespace gindows
 			return m_pImpl->GetGraphicsPointer();
 		}
 
-		[[nodiscard]] Desktop* GetDesktopPointer()
+		[[nodiscard]] Desktop* GetDesktop()
 		{
-			return m_pImpl->GetDesktopPointer();
+			return m_pImpl->GetDesktop();
 		}
 		
-		[[nodiscard]] device::Mouse* GetMousePointer()
+		[[nodiscard]] device::Mouse* GetMouse()
 		{
-			return m_pImpl->GetMousePointer();
+			return m_pImpl->GetMouse();
 		}
 		
 		[[nodiscard]] csl::ut::Color8* GetDefaultBackColorPointer()
@@ -83,7 +83,7 @@ namespace gindows
 
 		[[nodiscard]] Control* FindControl(const csl::ut::Point2<int>& point)
 		{
-			return GetDesktopPointer()->FindControl(point);
+			return GetDesktop()->FindControl(point);
 		}
 		
 		void SetFont(uint id, device::Font* pFont) const
@@ -135,11 +135,17 @@ namespace gindows
 		{
 			GetGraphicsPointer()->BeginDraw();
 
-			GetDesktopPointer()->Render();
-			if (GetMousePointer())
-				GetMousePointer()->Draw();
+			GetDesktop()->Render();
+			if (GetMouse())
+				GetMouse()->Draw();
 			
 			GetGraphicsPointer()->EndDraw();
+		}
+
+		void Execute(float delta)
+		{
+			GetDesktop()->OnExecute(delta);
+			m_pImpl->Execute(delta);
 		}
 	};
 }

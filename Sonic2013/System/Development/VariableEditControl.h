@@ -15,11 +15,11 @@ namespace app::dev
 	class S13VariableEditControl : public gindows::Control
 	{
 	public:
-		csl::fnd::Delegate<void (gindows::Object*, VariableChangedEventArgs&)> m_OnVariableChanged;
+		csl::fnd::Delegate<void (gindows::Object*, VariableChangedEventArgs&), gindows::DelegateAllocator> m_OnVariableChanged;
 
 	protected:
-		gindows::TreeView* m_pVariableTree{};
 		S13VariableGroup* m_pGroup{};
+		gindows::TreeView* m_pVariableTree{};
 		char m_Unk1;
 
 	public:

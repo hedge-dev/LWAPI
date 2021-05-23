@@ -12,7 +12,7 @@ namespace gindows
 
 	struct MouseEventArgs : EventArgs
 	{
-		// TODO
+		short m_Button{};
 	};
 
 	struct KeyEventArgs : EventArgs
@@ -28,6 +28,11 @@ namespace gindows
 		char m_Key{};
 	};
 
+	struct ExecuteEventArgs : EventArgs
+	{
+		float m_Delta;
+	};
+	
 	struct RenderEventArgs : EventArgs
 	{
 		Canvas* m_pRenderCanvas;

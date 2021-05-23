@@ -36,6 +36,12 @@ namespace gindows
 				ms_fpVftable->fpDtor(this, 0);
 		}
 
+		size_t GetControlArea(const csl::ut::Point2<int>& point) override
+		{
+			size_t type = ms_fpVftable->fpGetControlArea(this, point);
+			return type == 2 ? 16 : type;
+		}
+		
 		void OnRender() override
 		{
 			ms_fpVftable->fpOnRender(this);
@@ -51,6 +57,11 @@ namespace gindows
 			ms_fpVftable->fpOnMouseLeave(this);
 		}
 
+		void OnMouseEnter() override
+		{
+			ms_fpVftable->fpOnMouseEnter(this);
+		}
+		
 		void OnMouseDown(MouseEventArgs& args) override
 		{
 			ms_fpVftable->fpOnMouseDown(this, args);

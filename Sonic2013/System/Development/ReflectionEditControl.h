@@ -9,9 +9,12 @@ namespace app::dev
 		
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004590A0), CReflectionEditControl* pThis, fnd::DataResource* pResource);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetData, ASLR(0x00458FC0), CReflectionEditControl* pThis, const fnd::Variant& rData);
 		
 		CReflectionEditControl(fnd::DataResource* pResource)
 		{
+			ASSERT_OFFSETOF(CReflectionEditControl, m_pGroup, 584);
+			
 			m_pGroup = S13VariableGroup::Create("Reflection Edit");
 			if (m_pGroup)
 			{
@@ -26,6 +29,11 @@ namespace app::dev
 			ms_fpSetup(this, pResource);
 		}
 
+		void SetData(const fnd::Variant& rData)
+		{
+			ms_fpSetData(this, rData);
+		}
+		
 		void Reset()
 		{
 			ClearGroup();

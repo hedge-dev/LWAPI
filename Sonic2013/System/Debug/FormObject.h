@@ -12,7 +12,7 @@ namespace app::dbg
 			m_OnRender += csl::ut::MakePair(this, &FormObject::Draw);
 		}
 
-		virtual void Update(gindows::Object* pSender, gindows::EventArgs& args)
+		virtual void Update(gindows::Object* pSender, gindows::ExecuteEventArgs& args)
 		{
 			
 		}

@@ -93,6 +93,10 @@
 #include "Hedgehog/Resource/hhResourceTypeInfo.h"
 #include "Hedgehog/Resource/hhResourceReflections.h"
 
+// Hedgehog Graphics Library
+#include "Hedgehog/Graphics/Resource/hhFxSceneParmeters.h"
+#include "Hedgehog/Graphics/Manager/RenderManager.h"
+
 // Hedgehog Animation Library
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
 #include "Hedgehog/Animation/Base/hhAnimationNode.h"
@@ -177,6 +181,8 @@
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
 #include "System/Services/service_LevelInfo.h"
+#include "System/Services/service_SceneParameters.h"
+#include "System/Services/service_FxColManager.h"
 #include "System/Services/service_GameServiceTypeRegistry.h"
 
 // Objects

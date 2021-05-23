@@ -12,7 +12,7 @@ namespace gindows
 		MEMBER_FUNC(Control, void, Remove, Control* pControl);
 		MEMBER_FUNC(Control, void, SetContainsFocus, bool focused);
 		MEMBER_FUNC(Control, Control*, FindControl, const csl::ut::Point2<int>& point);
-		MEMBER_FUNC(Control, bool, GetControlArea, const csl::ut::Point2<int>& point);
+		MEMBER_FUNC(Control, size_t, GetControlArea, const csl::ut::Point2<int>& point);
 		MEMBER_FUNC(Control, void, Show);
 		MEMBER_FUNC(Control, void, Hide);
 		MEMBER_FUNC(Control, void, Render);
@@ -53,7 +53,7 @@ namespace gindows
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFont, ASLR(0x0096FE80), Control* pControl, uint font);
 		
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnDestroy;
-		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
+		csl::fnd::Delegate<void(Object*, ExecuteEventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
 		csl::fnd::Delegate<void(Object*, RenderEventArgs&), DelegateAllocator> m_OnRender; // RenderEventArgs
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnLocationChanged;
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnSizeChanged;
@@ -120,7 +120,7 @@ namespace gindows
 		virtual void Remove(Control* pControl) { ms_fpVftable->fpRemove(this, pControl); }
 		virtual void SetContainsFocus(bool focused) { ms_fpVftable->fpSetContainsFocus(this, focused); }
 		virtual Control* FindControl(const csl::ut::Point2<int>& point) { return ms_fpVftable->fpFindControl(this, point); }
-		virtual bool GetControlArea(const csl::ut::Point2<int>& point) { return ms_fpVftable->fpGetControlArea(this, point); }
+		virtual size_t GetControlArea(const csl::ut::Point2<int>& point) { return ms_fpVftable->fpGetControlArea(this, point); }
 		virtual void Show() { m_Flags.reset(1); }
 		virtual void Hide() { m_Flags.set(1); }
 		virtual void Render() { ms_fpVftable->fpRender(this); }

@@ -35,12 +35,12 @@ namespace gindows
 			return m_pGraphics;
 		}
 
-		[[nodiscard]] Desktop* GetDesktopPointer() const
+		[[nodiscard]] Desktop* GetDesktop() const
 		{
 			return m_pDesktop;
 		}
 		
-		[[nodiscard]] Mouse* GetMousePointer() const
+		[[nodiscard]] Mouse* GetMouse() const
 		{
 			return m_pMouse;
 		}
@@ -107,6 +107,11 @@ namespace gindows
 		void SetFocusControl(Control* pControl)
 		{
 			m_pFocusedControl = pControl;
+		}
+
+		void Execute(float delta)
+		{
+			m_TimeElapsed += delta;
 		}
 	};
 }
