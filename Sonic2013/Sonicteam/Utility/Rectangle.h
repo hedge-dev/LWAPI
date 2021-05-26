@@ -30,5 +30,15 @@ namespace csl::ut
 		{
 			return y + height;
 		}
+
+		T GetWidth() const
+		{
+			return width;
+		}
+
+		T GetHeight() const
+		{
+			return height;
+		}
 	};
 }

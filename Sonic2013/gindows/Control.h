@@ -199,6 +199,16 @@ namespace gindows
 			return !m_Flags.test(1);
 		}
 
+		csl::ut::Size2<int> GetSize() const
+		{
+			return { m_TransformRect.GetWidth(), m_TransformRect.GetHeight() };
+		}
+
+		csl::ut::Point2<int> GetLocation() const
+		{
+			return { m_TransformRect.GetLeft(), m_TransformRect.GetTop() };
+		}
+		
 		void SetFocus();
 	};
 }
