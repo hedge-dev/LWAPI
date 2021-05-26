@@ -17,5 +17,10 @@ namespace csl::ut
 		{
 			return m_Buffer;
 		}
+
+		operator const char*() const
+		{
+			return m_Buffer;
+		}
 	};
 }

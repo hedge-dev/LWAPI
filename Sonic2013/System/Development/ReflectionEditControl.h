@@ -33,6 +33,12 @@ namespace app::dev
 		{
 			ms_fpSetData(this, rData);
 		}
+
+		void ReadValue()
+		{
+			if (m_pGroup)
+				m_pGroup->ReadValue();
+		}
 		
 		void Reset()
 		{

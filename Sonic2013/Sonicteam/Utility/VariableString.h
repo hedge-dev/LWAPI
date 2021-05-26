@@ -30,10 +30,12 @@ namespace csl::ut
 				return;
 			}
 
-			char* pBuffer = reinterpret_cast<char*>(m_pAllocator->Alloc(strlen(pStr) + 1, 16));
+			size_t bufSize = strlen(pStr) + 1;
+			char* pBuffer = reinterpret_cast<char*>(m_pAllocator->Alloc(bufSize, 16));
 			for (size_t i = 0; pStr[i]; i++)
 				pBuffer[i] = pStr[i];
 
+			pBuffer[bufSize - 1] = '\0';
 			m_pStr = pBuffer + 1;
 		}
 		
@@ -45,7 +47,7 @@ namespace csl::ut
 
 		VariableString(csl::fnd::IAllocator* pAlloc)
 		{
-			assign(pAlloc, nullptr);
+			m_pAllocator = pAlloc;
 		}
 		
 		~VariableString()
@@ -76,12 +78,25 @@ namespace csl::ut
 			return ms_Empty;
 		}
 
+		char* c_str()
+		{
+			if (m_pStr)
+				return reinterpret_cast<char*>(reinterpret_cast<size_t>(m_pStr) & ~1);
+
+			return m_pStr;
+		}
+
 		bool Compare(const char* pStr) const
 		{
 			return strcmp(c_str(), pStr);
 		}
 		
 		operator const char*() const
+		{
+			return c_str();
+		}
+
+		operator char* ()
 		{
 			return c_str();
 		}

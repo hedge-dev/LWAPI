@@ -112,7 +112,7 @@ namespace csl
 
 				this->p_buffer[this->m_length - 1] = item;
 			}
-
+			
 			void remove(uint i)
 			{
 				if (i > this->m_length)

@@ -57,6 +57,7 @@
 #include "Hedgehog/Reflection/hhDataResource.h"
 #include "Hedgehog/Reflection/hhDataValue.h"
 #include "Hedgehog/Reflection/hhVariantDataUtil.h"
+#include "Hedgehog/Reflection/hhRflSerializeUtil.h"
 
 // Hedgehog Library
 #include "Hedgehog/Base/System/hhThreadSafeReferencedObject.h"
@@ -73,6 +74,7 @@
 #include "Hedgehog/Base/System/hhActivationHandle.h"
 #include "Hedgehog/Base/System/hhFrame.h"
 #include "Hedgehog/Base/System/hhArray.h"
+#include "Hedgehog/Base/System/hhIOStream.h"
 #include "System/GlobalAllocator.h"
 
 // Hedgehog Utility Library
@@ -151,6 +153,9 @@
 #include "System/Development/VariableGroup.h"
 #include "System/Development/VariableEditControl.h"
 #include "System/Development/ReflectionEditControl.h"
+#include "System/Development/FileStreamWin32.h"
+#include "System/Development/HostFileSystem.h"
+#include "System/Development/HostFileSystemWin32.h"
 
 // System Debug
 #include "System/Debug/Allocator.h"

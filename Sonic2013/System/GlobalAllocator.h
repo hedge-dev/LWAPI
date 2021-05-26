@@ -1,24 +1,37 @@
 #pragma once
-namespace app::game
+namespace app
 {
-	class GlobalAllocator
+	namespace game
 	{
-		inline static csl::fnd::IAllocator** ms_ppAllocators = reinterpret_cast<csl::fnd::IAllocator**>(ASLR(0x000FD7C34));
-
-	public:
-		static csl::fnd::IAllocator* GetAllocator(uint id)
+		class GlobalAllocator
 		{
-			return ms_ppAllocators[id];
-		}
+			inline static csl::fnd::IAllocator** ms_ppAllocators = reinterpret_cast<csl::fnd::IAllocator**>(ASLR(0x000FD7C34));
 
-		static void SetAllocator(uint id, csl::fnd::IAllocator* allocator)
-		{
-			ms_ppAllocators[id] = allocator;
-		}
+		public:
+			static csl::fnd::IAllocator* GetAllocator(uint id)
+			{
+				return ms_ppAllocators[id];
+			}
+
+			static void SetAllocator(uint id, csl::fnd::IAllocator* allocator)
+			{
+				ms_ppAllocators[id] = allocator;
+			}
+		};
+	}
+
+	namespace fnd
+	{
+		inline static FUNCTION_PTR(csl::fnd::IAllocator*, __cdecl, ms_fpGetTempAllocator, ASLR(0x00499EB0));
 		
-		static csl::fnd::IAllocator* GetSingletonAllocator()
+		inline static csl::fnd::IAllocator* GetSingletonAllocator()
 		{
-			return GetAllocator(2);
+			return game::GlobalAllocator::GetAllocator(2);
 		}
-	};
+
+		inline static csl::fnd::IAllocator* GetTempAllocator()
+		{
+			return ms_fpGetTempAllocator();
+		}
+	}
 }

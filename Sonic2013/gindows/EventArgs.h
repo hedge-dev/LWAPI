@@ -18,9 +18,16 @@ namespace gindows
 	struct KeyEventArgs : EventArgs
 	{
 		ushort m_KeyCode{};
-		char m_Unk2;
-		char m_Unk3;
-		char m_Unk4;
+		char m_ProcessCount;
+		INSERT_PADDING(1);
+		char m_AltDown;
+		char m_ShiftDown;
+		char m_CtrlDown;
+
+		KeyEventArgs()
+		{
+			ASSERT_OFFSETOF(KeyEventArgs, m_ShiftDown, 0xD);
+		}
 	};
 
 	struct KeyPressEventArgs : EventArgs

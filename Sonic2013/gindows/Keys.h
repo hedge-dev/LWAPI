@@ -132,5 +132,6 @@ namespace gindows
 		KEY_RIGHT_SHIFT = 229,
 		KEY_RIGHT_ALTGR = 230,
 		KEY_RIGHT_GUI = 231,
+		KEY_INVALID = -1,
 	};
 }

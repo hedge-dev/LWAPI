@@ -81,6 +81,11 @@ namespace gindows
 			return m_pImpl->GetFocusControl();
 		}
 
+		[[nodiscard]] Control* GetMouseOverControl()
+		{
+			return m_pImpl->GetFocusControl();
+		}
+		
 		[[nodiscard]] Control* FindControl(const csl::ut::Point2<int>& point)
 		{
 			return GetDesktop()->FindControl(point);

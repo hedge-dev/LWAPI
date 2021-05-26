@@ -74,6 +74,11 @@ namespace gindows
 		{
 			return m_pFocusedControl;
 		}
+
+		[[nodiscard]] Control* GetMouseOverControl()
+		{
+			return m_pControlBelowMouse;
+		}
 		
 		void SetFont(size_t idx, Font* pFont)
 		{

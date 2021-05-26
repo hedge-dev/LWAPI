@@ -49,6 +49,10 @@ namespace app::ut
 		{
 			return m_pObj != nullptr;
 		}
+
+		operator T* () const {
+			return m_pObj;
+		}
 		
 		T* get() const
 		{

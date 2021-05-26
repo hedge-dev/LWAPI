@@ -41,9 +41,9 @@ namespace app::dev
 			if (!args.m_Handled)
 			{
 				// ???, it just does that
-				args.m_Unk2++;
+				args.m_ProcessCount++;
 				m_pEditor->OnKeyDown(args);
-				args.m_Unk2--;
+				args.m_ProcessCount--;
 			}
 
 			FormObject::OnKeyDown(args);

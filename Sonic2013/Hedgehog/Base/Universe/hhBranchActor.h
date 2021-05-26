@@ -5,7 +5,7 @@ namespace app::fnd
 	class CBranchActor : public CActor
 	{
 	protected:
-		csl::ut::MoveArray<CActor*> m_ChildActors { 1024, game::GlobalAllocator::GetSingletonAllocator() };
+		csl::ut::MoveArray<CActor*> m_ChildActors { 1024, game::GlobalAllocator::GetAllocator(2) };
 		csl::ut::MoveArray<CActor*> m_PhasedActors[3];
 
 	public:
@@ -13,7 +13,7 @@ namespace app::fnd
 		{
 			for (size_t i = 0; i < 3; i++)
 			{
-				m_PhasedActors[i] = csl::ut::MoveArray<CActor*>(1024, game::GlobalAllocator::GetSingletonAllocator());
+				m_PhasedActors[i] = csl::ut::MoveArray<CActor*>(1024, game::GlobalAllocator::GetAllocator(2));
 			}
 		}
 

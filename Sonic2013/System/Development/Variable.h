@@ -27,9 +27,9 @@ namespace app::dev
 			
 		}
 		
-		virtual size_t GetChildCount_TN() const = 0;
+		/*virtual size_t GetChildCount_TN() const = 0;
 		virtual gindows::TreeNode* GetChild_TN() = 0;
-		virtual gindows::TreeNode* GetSibling_TN() = 0;
+		virtual gindows::TreeNode* GetSibling_TN() = 0;*/
 		virtual void Release() = 0;
 		virtual void Increment(float value) = 0;
 		virtual void Decrement(float value) = 0;
