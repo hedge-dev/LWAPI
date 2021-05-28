@@ -22,12 +22,9 @@ namespace app
 			ASSERT_OFFSETOF(FxColManager, m_Flags, 136);
 		}
 
-		void ToggleEditingFxParam(bool enable)
+		void EditingFxParam()
 		{
-			if (enable)
-				m_Flags |= 0x400;
-			else
-				m_Flags &= ~0x400;
+			m_Flags |= 0x400;
 		}
 
 		bool IsEditingFxParam() const
