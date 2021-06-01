@@ -37,8 +37,8 @@ namespace app
 		INSERT_PADDING(16); // app::Util::TFreeList<app::Gops::CActorPack, 4>
 		std::unique_ptr<CSetAdapterMgr> m_pAdapterManager; // boost::scoped_ptr<CSetAdapterMgr>
 		std::unique_ptr<Gops::CActorListener> m_pListener; // boost::scoped_ptr<Gops::CActorListener>
-		alignas(16) INSERT_PADDING(144); // csl::ut::InplaceObjectMoveArrayAligned16<app::CActivationVolume, 2>
-		alignas(16) INSERT_PADDING(48); // csl::ut::InplaceObjectMoveArrayAligned16<csl::math::Vector3, 2>
+		csl::ut::InplaceObjectMoveArrayAligned16<app::CActivationVolume, 2> m_Volumes;
+		csl::ut::InplaceObjectMoveArrayAligned16<csl::math::Vector3, 2> m_BasePoints;
 		float m_RangeIn;
 		INSERT_PADDING(72); // PointMarkerManager
 		INSERT_PADDING(24); // RespawnPointManager
@@ -56,7 +56,8 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpKillAllObject, ASLR(0x0084BAF0), CSetObjectManager*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartUpLayerInfo, ASLR(0x0084C4B0), CSetObjectManager*, size_t difficulty);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadDatabase, ASLR(0x0084B910), CSetObjectManager*, size_t idx);
-		inline static FUNCTION_PTR(CSetObjectListener*, __thiscall, ms_fpCreateObjectImpl, ASLR(0x0084C370), CSetObjectManager*, CSetAdapter*, CActivationManager*, uint);;
+		inline static FUNCTION_PTR(CSetObjectListener*, __thiscall, ms_fpCreateObjectImpl, ASLR(0x0084C370), CSetObjectManager*, CSetAdapter*, CActivationManager*, uint);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpRangeInSetObject, ASLR(0x0084D620), CSetObjectManager*, const csl::math::Vector3&);
 
 	protected:
 		void SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
@@ -109,6 +110,31 @@ namespace app
 			ms_fpLoadDatabase(this, idx);
 		}
 
+		void RangeInSetObject(const csl::math::Vector3& pos)
+		{
+			ms_fpRangeInSetObject(this, pos);
+		}
+
+		void SetBasePos(size_t unit, const csl::math::Vector3& pos)
+		{
+			if (m_BasePoints.size() <= unit)
+			{
+				m_BasePoints.resize(unit + 1);
+				size_t oldSize = m_Volumes.size();
+				m_Volumes.resize(unit + 1);
+				if (oldSize)
+				{
+					for (size_t i = oldSize; i < m_Volumes.size(); i++)
+					{
+						m_pActivationMan->AddVolume(&m_Volumes[i]);
+					}
+				}
+			}
+			
+			m_BasePoints[unit] = pos;
+			m_Volumes[unit].SetVolume({ pos, m_RangeIn + 200 });
+		}
+		
 		CSetObjectListener* CreateObjectAlways(CSetAdapter* pAdapter)
 		{
 			return CreateObjectImpl(pAdapter, m_pActivationMan, 2);

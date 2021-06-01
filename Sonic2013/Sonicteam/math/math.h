@@ -127,6 +127,21 @@ namespace csl::math
 		
 	};
 
+	class Sphere
+	{
+	public:
+		Vector3 m_Origin{};
+		float m_Radius{};
+
+		Sphere() {}
+		Sphere(const Vector3& origin, float rad) : m_Origin(origin), m_Radius(rad) {}
+		
+		bool Intersects(const Vector3& point) const
+		{
+			return (m_Origin - point).squaredNorm() <= m_Radius * m_Radius;
+		}
+	};
+	
 	class Transform
 	{
 	public:

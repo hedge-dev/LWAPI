@@ -2,7 +2,7 @@
 
 namespace hh::ut
 {
-	enum class eEndianType : char
+	enum class EEndianType : char
 	{
 		eEndianType_Big = 'B',
 		eEndianType_Little = 'L'
@@ -12,7 +12,7 @@ namespace hh::ut
 	{
 		size_t m_Signature{};
 		char m_Version[3]{};
-		eEndianType m_Endian{};
+		EEndianType m_Endian{};
 		size_t m_Size{};
 		ushort m_BlockCount{};
 
