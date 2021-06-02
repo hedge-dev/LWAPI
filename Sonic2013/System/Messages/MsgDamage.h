@@ -10,7 +10,9 @@ namespace app::xgame
 
 		size_t m_Unk1;
 		uint m_Damage{1};
-		INSERT_PADDING(40) {};
+		INSERT_PADDING(8) {};
+		csl::math::Vector3 m_DamagePos{};
+		INSERT_PADDING(16){};
 		csl::ut::Bitset<uint> m_ReplyStatus{};
 		
 		MsgDamage(EnumSenderType senderType, uint a3, uint a4, const csl::math::Vector3& pos1, const csl::math::Vector3& pos2) : MsgDamageBase(MessageID)
@@ -21,6 +23,13 @@ namespace app::xgame
 		Message* Clone() override
 		{
 			return new MsgDamage(*this);
+		}
+
+		void SetReplyStatus(const csl::math::Vector3& damagePos, bool response)
+		{
+			m_DamagePos = damagePos;
+			m_ReplyStatus.set(6, response);
+			m_ReplyStatus.set(7, response);
 		}
 	};
 }

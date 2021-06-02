@@ -227,6 +227,17 @@ namespace app
 			BroadcastMessageImm(groupActor, msg);
 		}
 
+		bool HasProperty(uint key) const
+		{
+			for (auto& prop : m_Properties)
+			{
+				if (prop.GetKey() == key)
+					return true;
+			}
+
+			return false;
+		}
+		
 		void AddProperty(uint key, fnd::PropertyValue value)
 		{
 			m_Properties.push_back(fnd::Property(key, value));

@@ -12,3 +12,4 @@
 #include "Messages/MsgDamage.h"
 #include "Messages/MsgKick.h"
 #include "Messages/MsgTakeObject.h"
+#include "Messages/MsgPLGetHomingTargetInfo.h"
