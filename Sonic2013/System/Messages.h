@@ -13,3 +13,4 @@
 #include "Messages/MsgKick.h"
 #include "Messages/MsgTakeObject.h"
 #include "Messages/MsgPLGetHomingTargetInfo.h"
+#include "Messages/MsgGoal.h"

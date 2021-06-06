@@ -13,13 +13,13 @@ namespace app::fnd
 	class Message
 	{
 	protected:
-		uint m_ID;
+		uint m_ID{};
 
 	public:
-		uint m_Sender;
-		uint m_Receiver;
-		char m_Unk1;
-		bool m_Broadcasted;
+		uint m_Sender{};
+		uint m_Receiver{};
+		char m_Unk1{};
+		bool m_Broadcasted{};
 		const uint mask{ (uint)-1 };
 		
 		Message(uint id_)

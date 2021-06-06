@@ -1,4 +1,6 @@
 #pragma once
+#pragma push_macro("SendMessage")
+#undef SendMessage
 
 namespace app::fnd
 {
@@ -69,6 +71,16 @@ namespace app::fnd
 			UpdateFinal(reinterpret_cast<SUpdateInfo&>(data));
 			return true;
 		}
+
+		void SendMessageToGame(fnd::Message& msg)
+		{
+			SendMessage(m_pOwnerDocument->GetGameActorID(), msg);
+		}
+
+		bool SendMessageImmToGame(fnd::Message& msg)
+		{
+			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), msg);
+		}
 	};
 
 	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* allocator) const
@@ -79,3 +91,5 @@ namespace app::fnd
 		return service;
 	}
 }
+
+#pragma pop_macro("SendMessage")
