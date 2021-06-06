@@ -208,6 +208,11 @@ namespace app::game
 			m_Status.set(0, enable);
 			OnShapeEvent(0);
 		}
+
+		bool IsEnable() const
+		{
+			return m_Status.test(0);
+		}
 	};
 
 	class ColliShape : public ColliShapeBase {};
