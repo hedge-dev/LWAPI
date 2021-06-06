@@ -2,7 +2,7 @@
 
 namespace csl::fnd
 {
-	class DelegateAllocator : csl::fnd::IAllocator
+	class DelegateAllocator : public csl::fnd::IAllocator
 	{
 	public:
 		void* Alloc(size_t size, int alignment) override
