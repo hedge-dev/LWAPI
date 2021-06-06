@@ -10,7 +10,7 @@ namespace csl::ut
 	public:
 		T* begin()
 		{
-			return &m_Items[0];
+			return m_Items;
 		}
 
 		T* end()

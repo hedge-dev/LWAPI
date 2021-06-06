@@ -1,4 +1,6 @@
 #pragma once
+#pragma push_macro("SendMessage")
+#undef SendMessage
 
 namespace app
 {
@@ -227,6 +229,16 @@ namespace app
 			BroadcastMessageImm(groupActor, msg);
 		}
 
+		void SendMessageToGame(fnd::Message& msg)
+		{
+			SendMessage(m_pOwnerDocument->GetGameActorID(), msg);
+		}
+		
+		bool SendMessageImmToGame(fnd::Message& msg)
+		{
+			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), msg);
+		}
+		
 		bool HasProperty(uint key) const
 		{
 			for (auto& prop : m_Properties)
@@ -288,3 +300,5 @@ namespace app
 		return csl::fnd::Singleton<GameObjectSystem>::GetInstance()->GetPooledAllocator();
 	}
 }
+
+#pragma pop_macro("SendMessage")

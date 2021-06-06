@@ -8,9 +8,14 @@ namespace app
 	{
 		class GameServiceClass;
 		class GameService;
+		class GameDocumentListener;
 	}
-
 	class GameObject;
+
+	class CWorld
+	{
+		
+	};
 	
 	class GameDocument : public fnd::ReferencedObject
 	{
@@ -22,21 +27,54 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), void* This);
 
 
-	private:
-		void* gameMode{};
-		unsigned int unk1{};
-		void* unk2{};
-		float time{};
-
+	protected:
+		void* m_pGameMode{};
+		size_t m_GameActorID{};
+		std::unique_ptr<CWorld> m_pWorld{};
+		float m_GlobalTime{};
+		csl::ut::FixedArray<fnd::CBranchActor*, 32> m_Layers{};
+		csl::ut::MoveArray<GameObject*> m_Objects{ GetAllocator() };
+		csl::ut::MoveArray<fnd::GameService*> m_Services{ GetAllocator() };
+		csl::ut::MoveArray<GameObject*> m_ShutdownObjects{ GetAllocator() };
+		csl::ut::MoveArray<fnd::GameDocumentListener*> m_Listeners{ GetAllocator() };
+		
 	public:
-
 		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
 
-		uint GetGroupActorID(uint group)
+		HH_FORCE_INLINE float GetGlobalTime() const
 		{
-			return ms_fpGetGroupActorID(this, group);
+			return m_GlobalTime;
 		}
 
+		HH_FORCE_INLINE size_t GetGameActorID() const
+		{
+			return m_GameActorID;
+		}
+		
+		HH_FORCE_INLINE uint GetGroupActorID(uint group) const
+		{
+			return m_Layers[group]->GetID();
+		}
+
+		HH_FORCE_INLINE const csl::ut::Array<GameObject*>& GetObjects() const
+		{
+			return m_Objects;
+		}
+		
+		inline void AddGameDocumentListener(fnd::GameDocumentListener* pListener)
+		{
+			m_Listeners.push_back(pListener);
+		}
+
+		void RemoveGameDocumentListener(fnd::GameDocumentListener* pListener)
+		{
+			auto idx = m_Listeners.find(pListener);
+			if (idx == -1)
+				return;
+
+			m_Listeners.remove(idx);
+		}
+		
 		void AddGameObject(GameObject* object)
 		{
 			ms_fpAddGameObject(this, object);

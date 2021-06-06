@@ -69,17 +69,17 @@ namespace app::fnd
 		virtual bool ActorProc(int id, void* data) = 0;
 
 	public:
-		size_t GetID() const
+		HH_FORCE_INLINE size_t GetID() const
 		{
 			return m_ActorID;
 		}
 		
-		void SetUpdateFlag(uint16 flag, bool value)
+		HH_FORCE_INLINE void SetUpdateFlag(uint16 flag, bool value)
 		{
 			m_updateFlags.set(flag, value);
 		}
 
-		bool GetUpdateFlag(uint16 flag) const
+		HH_FORCE_INLINE bool GetUpdateFlag(uint16 flag) const
 		{
 			return m_updateFlags.test(flag);
 		}
