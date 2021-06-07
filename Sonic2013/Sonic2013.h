@@ -87,6 +87,27 @@
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 #include "Hedgehog/Base/Universe/hhBranchActor.h"
 
+// Hedgehog Game Messages
+#include "Hedgehog/Game/Messages/MsgKill.h"
+#include "Hedgehog/Game/Messages/MsgDeactivate.h"
+#include "Hedgehog/Game/Messages/MsgGetPosition.h"
+#include "Hedgehog/Game/Messages/MsgGetRotation.h"
+
+// Hedgehog Game Library
+#include "Hedgehog/Game/LuaScript.h"
+#include "Hedgehog/Game/GameSequence.h"
+#include "Hedgehog/Game/Game.h"
+#include "Hedgehog/Game/GameDocument.h"
+#include "Hedgehog/Game/GameObjectSystem.h"
+#include "Hedgehog/Game/GOComponent.h"
+#include "Hedgehog/Game/GameObject.h"
+#include "Hedgehog/Game/GameObjectHandle.h"
+#include "Hedgehog/Game/GameService.h"
+
+// Hedgehog Game Components
+#include "Hedgehog/Game/goc/goc_Transform.h"
+#include "Hedgehog/Game/goc/goc_EnemyTarget.h"
+
 // Hedgehog Resource Library
 #include "Hedgehog/Resource/hhResCommon.h"
 #include "Hedgehog/Pack/System/hhPackFileHeader.h"
@@ -97,6 +118,12 @@
 // Hedgehog Graphics Library
 #include "Hedgehog/Graphics/Resource/hhFxSceneParmeters.h"
 #include "Hedgehog/Graphics/Manager/RenderManager.h"
+
+// Hedgehog Graphics Components
+#include "Hedgehog/Graphics/goc/goc_Visual.h"
+#include "Hedgehog/Graphics/goc/goc_VisualTransformed.h"
+#include "Hedgehog/Graphics/goc/goc_VisualModel.h"
+#include "Hedgehog/Graphics/goc/goc_VisualContainer.h"
 
 // Hedgehog Animation Library
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
@@ -120,27 +147,30 @@
 #include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
 #include "Hedgehog/Animation/hhCharactorAnimationMultiLayer.h"
 
-// System Game
-#include "System/Game/LuaScript.h"
-#include "System/Game/ActorGroupRegistry.h"
+// Hedgehog Animation Components
+#include "Hedgehog/Animation/goc/goc_Animation.h"
+#include "Hedgehog/Animation/goc/goc_AnimationSingle.h"
+#include "Hedgehog/Animation/goc/goc_AnimationSimple.h"
+#include "Hedgehog/Animation/goc/goc_AnimationScript.h"
+#include "Hedgehog/Animation/goc/goc_AnimationScriptLayer.h"
+#include "Hedgehog/Animation/goc/goc_AnimationContainer.h"
+
+// Hedgehog Physics Components
+#include "Hedgehog/Physics/goc/goc_Collider.h"
+#include "Hedgehog/Physics/goc/goc_Physics.h"
 
 // System
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"
 #include "System/DeviceWin.h"
-#include "System/GameSequence.h"
-#include "System/Game.h"
-#include "System/GameDocument.h"
-#include "System/ObjectSystem/GameObjectSystem.h"
 #include "System/Messages.h"
-#include "System/GOComponent.h"
-#include "System/GameObject.h"
-#include "System/GameObjectHandle.h"
-#include "System/GameService.h"
 #include "System/ObjInfo.h"
 #include "System/FileLoader.h"
 #include "System/ResourceManager.h"
 #include "System/DeviceManager.h"
+
+// System Game
+#include "System/Game/ActorGroupRegistry.h"
 
 // System Font
 #include "System/Font/Font.h"
@@ -166,22 +196,6 @@
 
 #include "System/Development/ReflectionEditWindow.h"
 
-// Components
-#include "System/goc/goc_Transform.h"
-#include "System/goc/goc_Visual.h"
-#include "System/goc/goc_VisualTransformed.h"
-#include "System/goc/goc_VisualModel.h"
-#include "System/goc/goc_VisualContainer.h"
-#include "System/goc/goc_Collider.h"
-#include "System/goc/goc_Physics.h"
-#include "System/goc/goc_Animation.h"
-#include "System/goc/goc_AnimationSingle.h"
-#include "System/goc/goc_AnimationSimple.h"
-#include "System/goc/goc_AnimationScript.h"
-#include "System/goc/goc_AnimationScriptLayer.h"
-#include "System/goc/goc_AnimationContainer.h"
-#include "System/goc/goc_EnemyTarget.h"
-
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
 #include "System/Services/service_LevelInfo.h"
@@ -190,7 +204,7 @@
 #include "System/Services/service_GameServiceTypeRegistry.h"
 
 // Objects
-#include "System/GameObject3D.h"
+#include "Hedgehog/Game/GameObject3D.h"
 
 // SetData
 #include "System/ObjectSystem/Resource/Object.h"
