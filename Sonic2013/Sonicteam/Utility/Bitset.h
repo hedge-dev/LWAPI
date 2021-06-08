@@ -2,10 +2,10 @@
 
 namespace csl::ut
 {
-	template <typename T>
+	template <typename T, size_t BitSize = sizeof(T) * CHAR_BIT>
 	class Bitset
 	{
-		T m_dummy{};
+		T m_dummy : BitSize{};
 		
 	public:
 		Bitset()

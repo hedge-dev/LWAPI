@@ -54,8 +54,8 @@ typedef unsigned int	hhUint32;
 	typedef signed long hhLong; // UNIX64
 #	endif
 #elif defined(HH_COMPILER_MSVC) && (_MSC_VER >= 1300)
-	typedef unsigned long __w64 hhUlong; // VC7.0 or higher, 64bit warnings
-	typedef signed long __w64 hhLong;
+	typedef unsigned __int64 hhUlong; // VC7.0 or higher, 64bit warnings
+	typedef signed __int64 hhLong;
 #else
 	typedef unsigned long hhUlong;
 	typedef signed long hhLong;

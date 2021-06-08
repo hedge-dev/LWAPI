@@ -159,6 +159,19 @@
 #include "Hedgehog/Physics/goc/goc_Collider.h"
 #include "Hedgehog/Physics/goc/goc_Physics.h"
 
+// Hedgehog Sound Library
+#include "Hedgehog/Sound/Resource/ResSoundCueInfoDataTag.h"
+#include "Hedgehog/Sound/Debug/SoundInfo.h"
+#include "Hedgehog/Sound/hhSoundDeviceTag.h"
+#include "Hedgehog/Sound/hhSoundParam.h"
+#include "Hedgehog/Sound/hhSoundHandleObj.h"
+#include "Hedgehog/Sound/hhSoundHandle.h"
+#include "Hedgehog/Sound/hhSoundListenerHandle.h"
+#include "Hedgehog/Sound/hhSoundPlayer.h"
+#include "Hedgehog/Sound/goc/goc_Sound.h"
+#include "Hedgehog/Sound/hhSoundHandle.inl"
+#include "Hedgehog/Sound/hhSoundListenerHandle.inl"
+
 // System
 #include "System/Singleton.h"
 #include "System/ApplicationWin.h"

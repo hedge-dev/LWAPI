@@ -11,7 +11,7 @@ namespace app
 			bool enabled;
 		};
 		
-		inline static fnd::GOComponentClass* ms_pGOCEnemyTargetStaticClass = reinterpret_cast<fnd::GOComponentClass*>(0x00FE7608);
+		inline static fnd::GOComponentClass* ms_pGOCEnemyTargetStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FE7608));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00726510), GOCEnemyTarget* This, Description& description);
 		
 		static fnd::GOComponentClass* staticClass()

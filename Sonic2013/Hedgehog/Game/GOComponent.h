@@ -26,8 +26,8 @@ namespace app
 		protected:
 			GameObject* activeObject{};
 			unsigned short unk1{};
+			csl::ut::Bitset<char> m_Flags{};
 			char componentType{};
-			char componentFlags{};
 			unsigned int componentStats{};
 			unsigned int unk2{};
 			csl::ut::LinkListNode visualComponentNode;

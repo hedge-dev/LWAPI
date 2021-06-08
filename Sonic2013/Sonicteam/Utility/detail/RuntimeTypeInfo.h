@@ -6,7 +6,8 @@ namespace csl::ut
 	{
 		class RuntimeTypeInfo
 		{
-			// This is as far as my knowledge goes
+			// This is as far as my knowledge goes.
+			// Apparent, this is just as far as it goes.
 		protected:
 			const RuntimeTypeInfo* m_pBaseType{};
 
