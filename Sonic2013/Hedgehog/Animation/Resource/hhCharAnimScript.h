@@ -18,8 +18,8 @@ namespace app::animation
 
 	enum EPlayMode
 	{
-		ePlayMode_Stop,
-		ePlayMode_Loop
+		ePlayMode_Loop,
+		ePlayMode_Stop
 	};
 
 	enum EInterpolateMode
@@ -223,11 +223,7 @@ namespace app
 	{
 		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
 		{
-		private:
-			inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00FCE87C));
-
-		public:
-			static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
+			
 		};
 	}
 }

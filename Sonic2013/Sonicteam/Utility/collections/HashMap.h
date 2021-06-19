@@ -240,5 +240,17 @@ namespace csl::ut
 			pElem->m_Value = INVALID_KEY;
 			m_Length--;
 		}
+
+		void Erase(const iterator& iter)
+		{
+			if (iter == end())
+				return;
+
+			Elem* pElem = &m_pElements[iter.m_CurIdx];
+			pElem->m_Hash = INVALID_KEY;
+			pElem->m_Key = INVALID_KEY;
+			pElem->m_Value = INVALID_KEY;
+			m_Length--;
+		}
 	};
 }

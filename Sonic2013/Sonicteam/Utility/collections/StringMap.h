@@ -121,6 +121,11 @@ namespace csl::ut
 			Erase(keyCast(key));
 		}
 
+		void erase(const iterator& iter)
+		{
+			Erase({ iter.m_pOwner, iter.m_CurIdx });
+		}
+		
 		iterator find(const char* key) const
 		{
 			auto result = Find(keyCast(key));

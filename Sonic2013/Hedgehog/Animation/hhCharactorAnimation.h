@@ -31,11 +31,6 @@ namespace app::animation
 		virtual size_t GetTransitionLayerNum() const { return 0; }
 
 	public:
-		void RegisterExternalAnimation(ExternalAnimtion* pAnim)
-		{
-			m_NodeManager.RegisterExternal(pAnim);
-		}
-		
 		void SetAnimation(const char* pName)
 		{
 			auto* pClip = m_NodeManager.GetAnimationClip(pName);

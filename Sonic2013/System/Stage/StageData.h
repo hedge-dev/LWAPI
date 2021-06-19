@@ -45,7 +45,6 @@ namespace app::StageInfo
 			ASSERT_OFFSETOF(SStageData, m_PlayerRotations, 112);
 			ASSERT_OFFSETOF(SStageData, m_StageFlags, 140);
 			ASSERT_OFFSETOF(SStageData, m_Phantoms, 144);
-			sizeof(SStageData);
 		}
 	};
 }

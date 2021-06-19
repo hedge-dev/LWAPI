@@ -27,29 +27,13 @@ namespace app::animation
 
 		void SetExternal(ExternalAnimtion* pAnim)
 		{
-			ut::RefPtr<ExternalAnimtion> rpAnim = pAnim;
+			ut::RefPtr rpAnim = pAnim;
 			m_ExternalAnimations.push_back(rpAnim);
 
 			auto* pClip = pAnim->GetSimpleAnimation();
 			pClip->m_pManager = this;
 			pClip->m_pOwner = m_Blender;
 			pClip->ProcEvent(AnimationNode::eEventType_AttachExternal);
-		}
-
-		void RegisterExternal(ExternalAnimtion* pAnim)
-		{
-			SetExternal(pAnim);
-			auto* pClip = pAnim->GetSimpleAnimation();
-			auto* pDef = pAnim->GetAnimationDef();
-			
-			const auto result = m_Animations.find(pDef->m_pName);
-			if (result != m_Animations.end())
-			{
-				m_Animations.erase(pDef->m_pName);
-				delete result.get();
-			}
-			
-			m_Animations.insert(pDef->m_pName, pClip);
 		}
 		
 		AnimationClip* GetAnimationClip(const char* pName) const

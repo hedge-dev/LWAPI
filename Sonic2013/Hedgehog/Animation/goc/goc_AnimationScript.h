@@ -86,12 +86,6 @@ namespace app::game
 			if (m_rpCharAnimation)
 				m_rpCharAnimation->SetSpeed(speed);
 		}
-
-		void RegisterAnimation(animation::ExternalAnimtion* pAnim)
-		{
-			if (m_rpCharAnimation)
-				m_rpCharAnimation->RegisterExternalAnimation(pAnim);
-		}
 		
 		void SetAnimation(const char* pName)
 		{
