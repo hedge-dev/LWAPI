@@ -87,16 +87,34 @@ namespace app::game
 				m_rpLayerAnimation->SetSpeed(speed, layer);
 		}
 
+		void RegisterAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpLayerAnimation)
+				m_rpLayerAnimation->RegisterExternalAnimation(pAnim);
+		}
+		
 		void SetAnimation(const char* pName)
 		{
 			if (m_rpLayerAnimation)
 				m_rpLayerAnimation->SetAnimation(pName);
 		}
 
+		void SetAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpLayerAnimation && pAnim)
+				m_rpLayerAnimation->SetAnimation(pAnim);
+		}
+
 		void ChangeAnimation(const char* pName)
 		{
 			if (m_rpLayerAnimation)
 				m_rpLayerAnimation->ChangeAnimation(pName);
+		}
+
+		void ChangeAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpLayerAnimation && pAnim)
+				m_rpLayerAnimation->ChangeAnimation(pAnim);
 		}
 
 		void EnableCurrentBlend(const char* pName, size_t layer)

@@ -86,11 +86,23 @@ namespace app::game
 			if (m_rpCharAnimation)
 				m_rpCharAnimation->SetSpeed(speed);
 		}
+
+		void RegisterAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpCharAnimation)
+				m_rpCharAnimation->RegisterExternalAnimation(pAnim);
+		}
 		
 		void SetAnimation(const char* pName)
 		{
 			if (m_rpCharAnimation)
 				m_rpCharAnimation->SetAnimation(pName);
+		}
+
+		void SetAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpCharAnimation && pAnim)
+				m_rpCharAnimation->SetAnimation(pAnim);
 		}
 
 		void ChangeAnimation(const char* pName)
@@ -99,6 +111,12 @@ namespace app::game
 				m_rpCharAnimation->ChangeAnimation(pName);
 		}
 
+		void ChangeAnimation(animation::ExternalAnimtion* pAnim)
+		{
+			if (m_rpCharAnimation && pAnim)
+				m_rpCharAnimation->ChangeAnimation(pAnim);
+		}
+		
 		void EnableCurrentBlend(const char* pName)
 		{
 			if (!m_rpCharAnimation)

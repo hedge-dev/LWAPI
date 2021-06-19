@@ -31,6 +31,11 @@ namespace app::animation
 		virtual size_t GetTransitionLayerNum() const { return 0; }
 
 	public:
+		void RegisterExternalAnimation(ExternalAnimtion* pAnim)
+		{
+			m_NodeManager.RegisterExternal(pAnim);
+		}
+		
 		void SetAnimation(const char* pName)
 		{
 			auto* pClip = m_NodeManager.GetAnimationClip(pName);
@@ -38,6 +43,12 @@ namespace app::animation
 				return;
 			
 			SetAnimtionClip(pClip);
+		}
+
+		void SetAnimation(ExternalAnimtion* pAnim)
+		{
+			m_NodeManager.SetExternal(pAnim);
+			SetAnimtionClip(pAnim->GetSimpleAnimation());
 		}
 		
 		void ChangeAnimation(const char* pName)
@@ -47,6 +58,12 @@ namespace app::animation
 				return;
 
 			ChangeAnimationClip(pClip);
+		}
+
+		void ChangeAnimation(ExternalAnimtion* pAnim)
+		{
+			m_NodeManager.SetExternal(pAnim);
+			ChangeAnimationClip(pAnim->GetSimpleAnimation());
 		}
 
 		void RegisterCallback(int id, AnimationCallback* pCallback)

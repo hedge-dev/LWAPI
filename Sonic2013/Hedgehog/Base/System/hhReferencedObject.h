@@ -21,7 +21,8 @@ namespace app::fnd
 			
 		}
 		
-		void* operator new (size_t size, csl::fnd::IAllocator* allocator) {
+		void* operator new (size_t size, csl::fnd::IAllocator* allocator)
+		{
 			auto* object = static_cast<ReferencedObject*>(allocator->Alloc(size, 32));
 
 			if (object)
@@ -34,6 +35,11 @@ namespace app::fnd
 			return object;
 		}
 
+		void* operator new (size_t size, csl::fnd::IAllocator& allocator)
+		{
+			return operator new(size, &allocator);
+		}
+		
 		void* operator new(size_t size, void* placement)
 		{
 			return placement;

@@ -60,6 +60,11 @@ namespace app::animation
 			return *this;
 		}
 
+		operator SkeletonBlender*() const
+		{
+			return m_pBlender;
+		}
+		
 		SkeletonBlender* operator->() const
 		{
 			return m_pBlender;

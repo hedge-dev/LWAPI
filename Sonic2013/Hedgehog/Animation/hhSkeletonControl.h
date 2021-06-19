@@ -2,8 +2,6 @@
 
 namespace app::animation
 {
-	typedef uint UpdatingPhaze;
-	
 	class SkeletonControlBase : public AnimationObj
 	{
 	public:
@@ -16,5 +14,10 @@ namespace app::animation
 		virtual void SetupSub(uint) = 0;
 		virtual void CleanupSub() = 0;
 		virtual void Update(UpdatingPhaze phase, app::fnd::SUpdateInfo& info) = 0;
+	};
+
+	class SkeletonControl : public SkeletonControlBase
+	{
+		
 	};
 }

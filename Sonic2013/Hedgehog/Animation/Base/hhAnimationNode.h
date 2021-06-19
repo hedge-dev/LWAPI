@@ -2,10 +2,14 @@
 
 namespace app::animation
 {
+	typedef uint UpdatingPhaze;
+	class AnimationNodeManager;
 	class AnimationNodeManager;
 	
 	class AnimationNode
 	{
+		friend AnimationNodeManager;
+	
 	protected:
 		AnimationNodeManager* m_pManager{};
 		AnimationObj* m_pOwner{};
@@ -13,7 +17,14 @@ namespace app::animation
 	public:
 		DEFINE_RTTI_PTR(ASLR(0x00FD3FBC));
 		
-		typedef size_t EEventType;
+		enum EEventType
+		{
+			eEventType_Attach,
+			eEventType_Detach,
+			eEventType_CallBack,
+			eEventType_AttachExternal
+		};
+		
 		enum EGetEvent
 		{
 			eGetEvent_Frame,
@@ -37,7 +48,7 @@ namespace app::animation
 		
 		virtual ~AnimationNode() = default;
 		virtual void Update() = 0;
-		virtual void ProcEvent(EEventType type, void* pEvent) = 0;
+		virtual void ProcEvent(EEventType type) = 0;
 		virtual float GetValue(EGetEvent event) const = 0;
 		virtual void SetValue(ESetEvent event, float value) = 0;
 		virtual void GetStatus(EPlayStatus status) const = 0;

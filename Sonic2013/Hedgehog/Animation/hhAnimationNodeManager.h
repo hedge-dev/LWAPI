@@ -6,12 +6,6 @@ namespace app::animation
 	class AnimationClip;
 	class AnimationSimple;
 	class AnimationComplex;
-
-	class ExternalAnimtion : public fnd::ReferencedObject
-	{
-	public:
-		INSERT_PADDING(28);
-	};
 	
 	class AnimationNodeManager
 	{
@@ -31,6 +25,33 @@ namespace app::animation
 			m_pAllocator = &rAlloc;
 		}
 
+		void SetExternal(ExternalAnimtion* pAnim)
+		{
+			ut::RefPtr<ExternalAnimtion> rpAnim = pAnim;
+			m_ExternalAnimations.push_back(rpAnim);
+
+			auto* pClip = pAnim->GetSimpleAnimation();
+			pClip->m_pManager = this;
+			pClip->m_pOwner = m_Blender;
+			pClip->ProcEvent(AnimationNode::eEventType_AttachExternal);
+		}
+
+		void RegisterExternal(ExternalAnimtion* pAnim)
+		{
+			SetExternal(pAnim);
+			auto* pClip = pAnim->GetSimpleAnimation();
+			auto* pDef = pAnim->GetAnimationDef();
+			
+			const auto result = m_Animations.find(pDef->m_pName);
+			if (result != m_Animations.end())
+			{
+				m_Animations.erase(pDef->m_pName);
+				delete result.get();
+			}
+			
+			m_Animations.insert(pDef->m_pName, pClip);
+		}
+		
 		AnimationClip* GetAnimationClip(const char* pName) const
 		{
 			const auto result = m_Animations.find(pName);

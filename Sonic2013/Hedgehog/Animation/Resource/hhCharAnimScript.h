@@ -44,7 +44,7 @@ namespace app::animation
 
 	struct PlayModeInfo
 	{
-		EInterpolateMode m_Mode;
+		EPlayMode m_Mode;
 		short m_RandomMin;
 		short m_RandomMax;
 	};
@@ -219,8 +219,15 @@ namespace app
 		static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
 	};
 
-	class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
+	namespace animation
 	{
-		
-	};
+		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
+		{
+		private:
+			inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00FCE87C));
+
+		public:
+			static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
+		};
+	}
 }

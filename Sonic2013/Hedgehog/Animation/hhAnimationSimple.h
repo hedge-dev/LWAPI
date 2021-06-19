@@ -7,12 +7,17 @@ namespace app::animation
 	protected:
 		const SimpleDef* m_pDef{};
 		INSERT_PADDING(24) {}; // PlayingData
-		INSERT_PADDING(8) {}; // AnimSkeltonControl
+		AnimSkeletonControl m_SkelControl{};
 		
 	public:
 		AnimationSimple()
 		{
-			sizeof(AnimationSimple);
+			
+		}
+
+		void Cleanup()
+		{
+			m_SkelControl.Cleanup();
 		}
 	};
 }
