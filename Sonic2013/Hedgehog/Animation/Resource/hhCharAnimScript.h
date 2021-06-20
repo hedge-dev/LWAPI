@@ -223,7 +223,12 @@ namespace app
 	{
 		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
 		{
-			
+		public:
+			ResCharAnim& operator =(hh::gfx::res::ResAnimSkeleton* pSkel)
+			{
+				m_pRes = pSkel;
+				return *this;
+			}
 		};
 	}
 }

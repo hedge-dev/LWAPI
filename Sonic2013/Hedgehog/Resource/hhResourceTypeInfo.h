@@ -17,9 +17,11 @@ namespace hh::ut
 	typedef IResourceLoader* LoaderInitializer();
 	class ResourceTypeInfo
 	{
+	protected:
 		const char* m_pName{};
 		LoaderInitializer* m_pLoaderInit{};
-		INSERT_PADDING(8){};
+		IResourceLoader* m_pLoader{};
+		size_t m_Hash{};
 
 	public:
 		ResourceTypeInfo(const char* pName) : m_pName(pName)
@@ -32,9 +34,14 @@ namespace hh::ut
 			
 		}
 
-		const char* GetName() const
+		[[nodiscard]] const char* GetName() const
 		{
 			return m_pName;
+		}
+
+		[[nodiscard]] IResourceLoader* GetLoader() const
+		{
+			return m_pLoader;
 		}
 	};
 }
