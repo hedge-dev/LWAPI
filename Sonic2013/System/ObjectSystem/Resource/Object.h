@@ -110,6 +110,11 @@ namespace app
 				return ref().m_Class;
 			}
 
+			size_t GetClassHash() const
+			{
+				return ref().m_ClassCRC;
+			}
+
 			size_t GetUnitNum()
 			{
 				return ref().m_Units.size();
