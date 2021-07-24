@@ -2,11 +2,6 @@
 
 namespace app::fnd
 {
-	class FileHandleObj : public ThreadSafeReferencedObject
-	{
-		INSERT_PADDING(148);
-	};
-
 	struct FileLoaderParam
 	{
 		csl::fnd::IAllocator* m_pAllocator;
@@ -32,7 +27,7 @@ namespace app::fnd
 		INSERT_PADDING(92);
 
 	public:
-		inline static FUNCTION_PTR(FileHandleObj*, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), void* This, csl::fnd::com_ptr<FileHandleObj>& outHandle, const char* pName, const char* a3, FileLoaderParam& params);
+		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), void* This, const char* pName, const char* a3, FileLoaderParam& params);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpPreLoadFile, ASLR(0x00491880), void* This, const char* pName, int priority);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00491CC0), void* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSync, ASLR(0x00491F00), void* This, csl::fnd::com_ptr<FileHandleObj>& pHandle);
@@ -43,22 +38,14 @@ namespace app::fnd
 			return ms_fpPreLoadFile(this, pName, priority);
 		}
 		
-		FileHandleObj* LoadFile(csl::fnd::com_ptr<FileHandleObj>& outHandle, const char* pName, const char* a3, FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const char* a3, FileLoaderParam& params)
 		{
-			return ms_fpLoadFile(this, outHandle, pName, a3, params);
+			return ms_fpLoadFile(this, pName, a3, params);
 		}
 
-		FileHandleObj* LoadFile(csl::fnd::com_ptr<FileHandleObj>& outHandle, const char* pName, FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, FileLoaderParam& params)
 		{
-			return LoadFile(outHandle, pName, nullptr, params);
-		}
-
-		bool LoadFile(const char* pName, FileLoaderParam& params)
-		{
-			csl::fnd::com_ptr<FileHandleObj> fHandle{};
-			LoadFile(fHandle, pName, params);
-
-			return fHandle.get() != nullptr;
+			return LoadFile(pName, nullptr, params);
 		}
 
 		void WaitSync(csl::fnd::com_ptr<FileHandleObj>& rHandle)

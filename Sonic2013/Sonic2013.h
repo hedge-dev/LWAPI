@@ -108,6 +108,9 @@
 #include "Hedgehog/Game/goc/goc_Transform.h"
 #include "Hedgehog/Game/goc/goc_EnemyTarget.h"
 
+// Hedgehog File System Library
+#include "Hedgehog/FileSystem/Index.h"
+
 // Hedgehog Resource Library
 #include "Hedgehog/Resource/hhResCommon.h"
 #include "Hedgehog/Pack/System/hhPackFileHeader.h"

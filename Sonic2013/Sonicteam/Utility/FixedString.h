@@ -5,7 +5,7 @@ namespace csl::ut
 	template<size_t Len>
 	class FixedString
 	{
-		char m_Buffer[Len];
+		char m_Buffer[Len]{};
 
 	public:
 		void operator=(const char* pStr)
@@ -19,6 +19,11 @@ namespace csl::ut
 		}
 
 		operator const char*() const
+		{
+			return m_Buffer;
+		}
+
+		operator char* ()
 		{
 			return m_Buffer;
 		}

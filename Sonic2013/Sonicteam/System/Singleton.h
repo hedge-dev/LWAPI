@@ -9,9 +9,21 @@ namespace csl::fnd
 		static T** instance;
 
 	public:
+		static T** GetPointer()
+		{
+			return instance;
+		}
+		
 		static T* GetInstance()
 		{
 			return *instance;
+		}
+
+		static T* SwapInstance(T* inst)
+		{
+			T* pOldInstance = *instance;
+			*instance = inst;
+			return pOldInstance;
 		}
 
 		static void ReplaceInstance(T* inst)

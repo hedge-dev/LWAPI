@@ -8,6 +8,11 @@ namespace app::fnd
 		size_t m_SafeRefCount;
 
 	public:
+		ThreadSafeReferencedObject()
+		{
+			
+		}
+		
 		void AddRef()
 		{
 			if (GetSize())
