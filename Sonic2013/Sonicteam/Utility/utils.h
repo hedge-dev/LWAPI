@@ -32,18 +32,18 @@ typedef unsigned int uint;
 #define FUNCTION_PTR(returnType, callingConvention, function, location, ...) \
 	returnType (callingConvention *function)(__VA_ARGS__) = (returnType(callingConvention*)(__VA_ARGS__))(location)
 
+#ifndef BASE_ADDRESS
 #define BASE_ADDRESS 0x400000
-
-#ifdef BASE_ADDRESS
-namespace csl::ut
-{
-	const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
-	static constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
-}
+#endif
 
 #define ASLR(address) \
     ((size_t)csl::ut::MODULE_HANDLE + (size_t)address - (size_t)BASE_ADDRESS)
-#endif
+
+namespace csl::ut
+{
+    const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
+    static constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
+}
 
 namespace csl::fnd
 {
