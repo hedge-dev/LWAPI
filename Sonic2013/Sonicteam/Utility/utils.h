@@ -44,3 +44,29 @@ namespace csl::ut
 #define ASLR(address) \
     ((size_t)csl::ut::MODULE_HANDLE + (size_t)address - (size_t)BASE_ADDRESS)
 #endif
+
+namespace csl::fnd
+{
+	// This is copied from optimised code
+	static size_t StrLcpy(char* pDestBuf, const char* pSrc, size_t len)
+	{
+        char* pCurChar = pDestBuf;
+        size_t bytesReplaced = 0;
+        if (len == 1)
+        {
+            *pDestBuf = 0;
+        }
+        else
+        {
+            char srcChar = *pSrc;
+            do
+            {
+                *pCurChar = srcChar;
+                srcChar = (pCurChar++)[pSrc - pDestBuf + 1];
+                ++bytesReplaced;
+            } while (srcChar && bytesReplaced < len - 1);
+            *pCurChar = 0;
+        }
+        return bytesReplaced;
+	}
+}

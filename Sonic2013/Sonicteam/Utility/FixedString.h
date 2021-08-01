@@ -8,9 +8,24 @@ namespace csl::ut
 		char m_Buffer[Len]{};
 
 	public:
+		void set(const char* pStr)
+		{
+			csl::fnd::StrLcpy(m_Buffer, pStr, Len);
+		}
+
+		FixedString()
+		{
+			
+		}
+
+		FixedString(const char* pStr)
+		{
+			set(pStr);
+		}
+
 		void operator=(const char* pStr)
 		{
-			strcpy_s(m_Buffer, Len, pStr);
+			set(pStr);
 		}
 		
 		const char* c_str() const
@@ -26,6 +41,26 @@ namespace csl::ut
 		operator char* ()
 		{
 			return m_Buffer;
+		}
+		
+		friend bool operator==(const FixedString<Len>& lhs, const char* rhs)
+		{
+			return !strcmp(lhs.c_str(), rhs);
+		}
+
+		friend bool operator!=(const FixedString<Len>& lhs, const char* rhs)
+		{
+			return strcmp(lhs.c_str(), rhs);
+		}
+
+		friend bool operator==(const char* lhs, const FixedString<Len>& rhs)
+		{
+			return !strcmp(lhs, rhs.c_str());
+		}
+
+		friend bool operator!=(const char* lhs, const FixedString<Len>& rhs)
+		{
+			return strcmp(lhs, rhs.c_str());
 		}
 	};
 }
