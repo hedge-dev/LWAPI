@@ -6,12 +6,12 @@ namespace csl::ut
 	template <typename T, size_t BitSize = sizeof(T) * CHAR_BIT>
 	class Bitset
 	{
-		T m_dummy : BitSize{};
+		T m_dummy : BitSize;
 		
 	public:
 		Bitset()
 		{
-			
+			reset();
 		}
 
 		Bitset(T value) : m_dummy(value){}
