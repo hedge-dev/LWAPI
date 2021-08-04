@@ -8,22 +8,27 @@ namespace csl::ut
 		T m_Items[Len];
 
 	public:
-		T* begin()
+		constexpr size_t size() const
+		{
+			return Len;
+		}
+		
+		constexpr T* begin()
 		{
 			return m_Items;
 		}
 
-		T* end()
+		constexpr T* end()
 		{
 			return &m_Items[Len];
 		}
 		
-		T operator[] (size_t i) const
+		constexpr T operator[] (size_t i) const
 		{
 			return m_Items[i];
 		}
 
-		T& operator[] (size_t i)
+		constexpr T& operator[] (size_t i)
 		{
 			return m_Items[i];
 		}

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 
 // Common Sonicteam Library
 #include "Sonicteam/Utility/Bitset.h"
@@ -30,6 +31,17 @@
 #include "Sonicteam/Utility/Rectangle.h"
 #include "Sonicteam/Utility/Color.h"
 #include "Sonicteam/System/ComPtr.h"
+#include "Sonicteam/System/MallocAllocator.h"
+
+
+#ifdef LWAPI_NETWORKING
+// Sonicteam Hio Library
+#include "Sonicteam/hio/HioCore.h"
+#include "Sonicteam/hio/HioPacket.h"
+#include "Sonicteam/hio/HioServer.h"
+#include "Sonicteam/hio/HioClient.h"
+#include "Sonicteam/hio/HioCore.inl"
+#endif
 
 // Include this early
 #include "Hedgehog/Base/System/hhAllocator.h"
@@ -214,6 +226,10 @@
 
 #include "System/Development/ReflectionEditWindow.h"
 
+#ifdef LWAPI_NETWORKING
+#include "System/Debug/HioServer.h"
+#endif
+
 // Services
 #include "System/Services/service_ObjInfoContainer.h"
 #include "System/Services/service_LevelInfo.h"
@@ -243,6 +259,8 @@
 #include "System/Stage/World.h"
 #include "System/Stage/StageData.h"
 #include "System/Stage/StageInfo.h"
+
+#include "System/Camera/CameraController.h"
 
 // Utilities
 #include "System/Utility/ObjUtil.h"

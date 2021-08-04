@@ -46,7 +46,22 @@ namespace csl::ut
 }
 
 namespace csl::fnd
-{
+{	
+    static int Snprintf(char* pBuf, size_t bufSize, const char* pFormat, ...)
+    {
+        if (!bufSize)
+            return -1;
+    	
+        va_list args;
+        va_start(args, pFormat);
+
+        int result = vsnprintf_s(pBuf, bufSize, -1, pFormat, args);
+    	
+        va_end(args);
+
+        return result;
+    }
+	
 	// This is copied from optimised code
 	static size_t StrLcpy(char* pDestBuf, const char* pSrc, size_t len)
 	{

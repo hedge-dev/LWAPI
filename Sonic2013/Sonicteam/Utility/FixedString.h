@@ -15,15 +15,10 @@ namespace csl::ut
 
 		FixedString()
 		{
-			
+			set("");
 		}
 
 		FixedString(const char* pStr)
-		{
-			set(pStr);
-		}
-
-		void operator=(const char* pStr)
 		{
 			set(pStr);
 		}
@@ -33,7 +28,12 @@ namespace csl::ut
 			return m_Buffer;
 		}
 
-		operator const char*() const
+		void operator=(const char* pStr)
+		{
+			set(pStr);
+		}
+		
+		operator const char* () const
 		{
 			return m_Buffer;
 		}
