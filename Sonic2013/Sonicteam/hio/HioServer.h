@@ -33,10 +33,10 @@ namespace csl::hio
 	class HioServer : public HioCore
 	{
 	public:
-		typedef bool ConnectFuncType(void*, const ConnectArgs&);
-		typedef bool DisconnectFuncType(void*, const DisconnectArgs&);
-		typedef bool ReadFuncType(void*, const PacketReadArgs&);
-		typedef bool WriteFuncType(void*, const PacketWriteArgs&);
+		typedef HioError ConnectFuncType(void*, const ConnectArgs&);
+		typedef HioError DisconnectFuncType(void*, const DisconnectArgs&);
+		typedef HioError ReadFuncType(void*, const PacketReadArgs&);
+		typedef HioError WriteFuncType(void*, const PacketWriteArgs&);
 	
 	protected:
 		struct ServiceDesc
@@ -55,34 +55,26 @@ namespace csl::hio
 
 			void ReadCallback(const PacketReadArgs& args)
 			{
-				if (m_pReadFunc)
-					m_pReadFunc(m_pReadContext, args);
-
-				m_pReadFunc = nullptr;
+				if (m_pReadFunc && m_pReadFunc(m_pReadContext, args) != HIO_ERROR_OK)
+					m_pReadFunc = nullptr;
 			}
 
 			void WriteCallback(NetworkSocket sock)
 			{
-				if (m_pWriteFunc)
-					m_pWriteFunc(m_pWriteContext, { sock });
-
-				m_pWriteFunc = nullptr;
+				if (m_pWriteFunc && m_pWriteFunc(m_pWriteContext, { sock }) != HIO_ERROR_OK)
+					m_pWriteFunc = nullptr;
 			}
 			
 			void ConnectCallback(NetworkSocket sock)
 			{
-				if (m_pConnectFunc)
-					m_pConnectFunc(m_pConnectContext, { sock });
-
-				m_pConnectFunc = nullptr;
+				if (m_pConnectFunc && m_pConnectFunc(m_pConnectContext, { sock }) != HIO_ERROR_OK)
+					m_pConnectFunc = nullptr;
 			}
 			
 			void DisconnectCallback(NetworkSocket sock)
 			{
-				if (m_pDisconnectFunc)
-					m_pDisconnectFunc(m_pDisconnectContext, { sock });
-
-				m_pDisconnectFunc = nullptr;
+				if (m_pDisconnectFunc && m_pDisconnectFunc(m_pDisconnectContext, { sock }) != HIO_ERROR_OK)
+					m_pDisconnectFunc = nullptr;
 			}
 		};
 
