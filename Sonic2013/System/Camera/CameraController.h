@@ -9,7 +9,7 @@ namespace app::Camera
 	class CCameraController : public hh::base::CRefCountObject
 	{
 	protected:
-		void* m_pUnk1{}; // Owner?
+		CCamera* m_pOwner{}; // Owner?
 	
 	public:
 		float m_Fovy{ 45 };
@@ -20,10 +20,10 @@ namespace app::Camera
 		csl::math::Vector3 m_TargetPosition{};
 
 	public:
-		void* m_Unk2{};
+		void* m_Unk1{};
 		csl::fnd::IAllocator* m_pDebugAlloc{ app::dbg::GetMemoryAllocator() };
-		csl::math::Vector2 m_Unk3{};
-		bool m_Unk4{};
+		csl::math::Vector2 m_Unk2{};
+		bool m_Unk3{};
 	
 	protected:
 		bool m_Active{};
@@ -35,6 +35,19 @@ namespace app::Camera
 			
 		}
 
+		bool IsCollisionEnable() const { return m_Flags.test(0); }
+		bool IsPhantomCamera() const { return m_Flags.test(1); }
+		bool IsDebugCamera() const { return m_Flags.test(2); }
+		bool IsMultiCamera() const { return m_Flags.test(3); }
+		bool IsPreview() const { return m_Flags.test(4); }
+
+		void SetCollisionEnable(bool flag) { m_Flags.set(0, flag); }
+		void SetPhantomCamera(bool flag) { m_Flags.set(1, flag); }
+		void SetDebugCamera(bool flag) { m_Flags.set(2, flag); }
+		void SetMultiCamera(bool flag) { m_Flags.set(3, flag); }
+		void SetPreview(bool flag) { m_Flags.set(4, flag); }
+
+		
 		void SetActive(bool value)
 		{
 			m_Active = value;

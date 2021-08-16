@@ -17,7 +17,7 @@ namespace app
 		virtual void InitializeMain() = 0;
 		virtual void ShutdownMain() = 0;
 		virtual void RunCore(SyncTimer* timer) = 0;
-
+		
 		INSERT_PADDING(0x90) {};
 		IDirect3D9Ex* d3d{};
 		IDirect3DDevice9Ex* d3dDevice{};

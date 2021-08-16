@@ -5,7 +5,7 @@ namespace app::xgame
 	class MsgGetRotation : public fnd::Message
 	{
 	private:
-		const csl::math::Quaternion* rotation = csl::math::Quaternion::Identity;
+		const csl::math::Quaternion* rotation = &csl::math::Quaternion::Identity;
 		
 	public:
 		inline static unsigned int MessageID = 0x2003;

@@ -4,6 +4,7 @@
 
 namespace app
 {
+	class GameMode;
 	namespace fnd 
 	{
 		class GameServiceClass;
@@ -28,7 +29,7 @@ namespace app
 
 
 	protected:
-		void* m_pGameMode{};
+		GameMode* m_pGameMode{};
 		size_t m_GameActorID{};
 		std::unique_ptr<CWorld> m_pWorld{};
 		float m_GlobalTime{};
@@ -41,6 +42,11 @@ namespace app
 	public:
 		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
 
+		HH_FORCE_INLINE GameMode* GetGameMode() const
+		{
+			return m_pGameMode;
+		}
+		
 		HH_FORCE_INLINE float GetGlobalTime() const
 		{
 			return m_GlobalTime;
@@ -54,6 +60,14 @@ namespace app
 		HH_FORCE_INLINE uint GetGroupActorID(uint group) const
 		{
 			return m_Layers[group]->GetID();
+		}
+
+		HH_FORCE_INLINE fnd::CBranchActor* GetGroupActor(uint group) const
+		{
+			if (group > m_Layers.size())
+				return nullptr;
+
+			return m_Layers[group];
 		}
 
 		HH_FORCE_INLINE const csl::ut::Array<GameObject*>& GetObjects() const

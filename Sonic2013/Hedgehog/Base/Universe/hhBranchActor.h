@@ -17,6 +17,16 @@ namespace app::fnd
 			}
 		}
 
+		void AddChild(CActor* pActor)
+		{
+			m_ChildActors.push_back(pActor);
+			for (size_t i = 0; i < 3; i++)
+				if (pActor->GetUpdateFlag(i))
+					m_PhasedActors[i].push_back(pActor);
+
+			pActor->SetParent(this);
+		}
+		
 		size_t ForEach(CActorTraverser& traverser) override
 		{
 			auto count = traverser.Callback(*this);

@@ -68,7 +68,7 @@ namespace app::fnd
 			if (id != 5)
 				return CLeafActor::ActorProc(id, data);
 
-			UpdateFinal(reinterpret_cast<SUpdateInfo&>(data));
+			UpdateFinal(*reinterpret_cast<SUpdateInfo*>(data));
 			return true;
 		}
 

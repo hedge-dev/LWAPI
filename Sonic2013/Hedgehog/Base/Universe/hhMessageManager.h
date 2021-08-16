@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class CActor;
 	
-	class MessageManager : ReferencedObject, csl::fnd::SingletonPointer<MessageManager>
+	class MessageManager : public ReferencedObject, public csl::fnd::SingletonPointer<MessageManager>
 	{
 	protected:
 		size_t m_NextID{};

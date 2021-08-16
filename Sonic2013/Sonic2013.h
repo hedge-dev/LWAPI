@@ -110,6 +110,7 @@
 #include "Hedgehog/Game/GameSequence.h"
 #include "Hedgehog/Game/Game.h"
 #include "Hedgehog/Game/GameDocument.h"
+#include "Hedgehog/Game/GameMode.h"
 #include "Hedgehog/Game/GameObjectSystem.h"
 #include "Hedgehog/Game/GOComponent.h"
 #include "Hedgehog/Game/GameObject.h"
@@ -131,8 +132,9 @@
 #include "Hedgehog/Resource/hhResourceReflections.h"
 
 // Hedgehog Graphics Library
+#include "Hedgehog/Graphics/hhCameraParam.h"
 #include "Hedgehog/Graphics/Resource/hhFxSceneParmeters.h"
-#include "Hedgehog/Graphics/Manager/RenderManager.h"
+#include "Hedgehog/Graphics/Manager/hhRenderManager.h"
 
 // Hedgehog Graphics Components
 #include "Hedgehog/Graphics/goc/goc_Visual.h"
@@ -260,7 +262,21 @@
 #include "System/Stage/StageData.h"
 #include "System/Stage/StageInfo.h"
 
+#include "System/Camera/Camera.h"
 #include "System/Camera/CameraController.h"
+#include "System/Camera/CameraUtil.h"
+#include "System/Camera/MsgPushCameraController.h"
+#include "System/Camera/MsgPopCameraController.h"
+#include "System/Camera/MsgCameraUpdate.h"
+
+#include "System/Player/GOCCollection.h"
+#include "System/Player/Player.h"
+#include "System/Player/GOCReferenceHolder.h"
+#include "System/Player/VisualBase.h"
+#include "System/Player/PlayerVisual.h"
+#include "System/Player/VisualGOC.h"
+#include "System/Player/StateGOC.h"
+#include "System/Player/StateUtil.h"
 
 // Utilities
 #include "System/Utility/ObjUtil.h"

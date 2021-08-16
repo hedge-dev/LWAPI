@@ -25,6 +25,14 @@ namespace app
 		csl::ut::Bitset<uint> m_StageFlags{};
 		csl::ut::Bitset<uint> m_UnkFlags{};
 		INSERT_PADDING(20){};
+
+		size_t GetCameraActor(size_t i) const
+		{
+			if (i > m_PlayerNum)
+				return 0;
+
+			return m_Cameras[i];
+		}
 		
 		[[nodiscard]] uint GetPlayerID(const uint playerNo) const
 		{

@@ -10,3 +10,6 @@
 #include "Messages/MsgTakeObject.h"
 #include "Messages/MsgPLGetHomingTargetInfo.h"
 #include "Messages/MsgGoal.h"
+#include "Messages/MsgSuspendWorld.h"
+#include "Messages/MsgShowHintMessage.h"
+#include "Messages/MsgLevelStarted.h"

@@ -2,6 +2,12 @@
 
 namespace app::hid
 {
+	enum TouchStates
+	{
+		TOUCH_PRIMARY = 1,
+		TOUCH_ACTIVE = 0x800000
+	};
+	
     enum ButtonStates
     {
         BUTTON_A = 1,
@@ -39,7 +45,7 @@ namespace app::hid
         csl::math::Vector2 m_RightStick;
         float m_LeftTrigger;
         float m_RightTrigger;
-        INSERT_PADDING(28);
+        INSERT_PADDING(12);
 
     	bool IsButtonHeld(ButtonStates buttons) const
     	{
@@ -55,6 +61,16 @@ namespace app::hid
         {
             return (m_ReleasedButtones & buttons) == buttons;
         }
+
+    	float ButtonToAxis(ButtonStates high, ButtonStates low) const
+    	{
+            if (IsButtonHeld(high))
+                return 1;
+            else if (IsButtonHeld(low))
+                return -1;
+            
+            return 0;
+    	}
     };
 
     struct ResGyroDeviceData
@@ -69,7 +85,11 @@ namespace app::hid
 
     struct ResTouchDeviceData
     {
-        INSERT_PADDING(24);
+        TouchStates m_HeldStates{};
+        TouchStates m_PressedStates{};
+        TouchStates m_ReleasedStates{};
+        csl::math::Vector2 m_Position{};
+        bool m_IsBackground{};
     };
 
     struct ResMotorDeviceData

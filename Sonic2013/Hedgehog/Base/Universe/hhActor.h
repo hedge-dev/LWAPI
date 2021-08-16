@@ -66,9 +66,9 @@ namespace app::fnd
 
 		}
 
+	public:
 		virtual bool ActorProc(int id, void* data) = 0;
 
-	public:
 		HH_FORCE_INLINE size_t GetID() const
 		{
 			return m_ActorID;
@@ -82,6 +82,11 @@ namespace app::fnd
 		HH_FORCE_INLINE bool GetUpdateFlag(uint16 flag) const
 		{
 			return m_updateFlags.test(flag);
+		}
+
+		void SetParent(CActor* pParent)
+		{
+			m_pParent = pParent;
 		}
 		
 		bool SendMessageImm(uint to, fnd::Message& msg) const

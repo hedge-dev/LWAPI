@@ -2,6 +2,9 @@
 
 // We use Eigen as our math library, this file is basically a stub
 #include "Eigen/Eigen"
+#define MATHF_PI ((float)3.14159265359f)
+#define MATHF_RADTODEG(X) (X * ((float)(180.0f / MATHF_PI)))
+#define MATHF_DEGTORAD(X) (X * ((float)(MATHF_PI / 180.0f)))
 
 namespace csl::math 
 {
@@ -13,6 +16,11 @@ namespace csl::math
 		Vector2() : Eigen::Vector2f()
 		{
 
+		}
+
+		Vector2(const Eigen::Vector2f& rVec) : Eigen::Vector2f(rVec.x(), rVec.y())
+		{
+			
 		}
 		
 		Vector2(float x, float y) : Eigen::Vector2f(x, y)
@@ -35,6 +43,11 @@ namespace csl::math
 		}
 		
 		Vector3(float x, float y, float z) : Eigen::Vector3f(x, y, z)
+		{
+			
+		}
+		
+		Vector3(const Eigen::Vector3f& vec) : Eigen::Vector3f(vec.x(), vec.y(), vec.z())
 		{
 			
 		}
@@ -94,9 +107,14 @@ namespace csl::math
 	class alignas(16) Quaternion : public Eigen::Quaternionf
 	{
 	public:
-		static const Quaternion* Identity;
+		static const Quaternion Identity;
 		
 		Quaternion() : Eigen::Quaternionf()
+		{
+			
+		}
+
+		Quaternion(const Eigen::Quaternionf& quat) : Eigen::Quaternionf(quat)
 		{
 			
 		}
@@ -164,6 +182,18 @@ namespace csl::math
 		}
 	};
 
+	template<typename T>
+	inline static const T& Clamp(const T& value, const T& min, const T& max)
+	{
+		if (value < min)
+			return min;
+		
+		if (value > max)
+			return max;
+		
+		return value;
+	}
+	
 	class Constants
 	{
 	public:
@@ -174,5 +204,5 @@ namespace csl::math
 
 	inline const Vector2* Vector2::Zero = &Constants::Vector2Zero;
 	inline const Vector3* Vector3::Zero = &Constants::Vector3Zero;
-	inline const Quaternion* Quaternion::Identity = &Constants::QuaternionIdentity;
+	inline const Quaternion Quaternion::Identity = Constants::QuaternionIdentity;
 }

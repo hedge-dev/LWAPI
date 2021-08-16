@@ -4,12 +4,11 @@ namespace app::fnd
 {
 	class ReferencedObject : public BaseObject
 	{
-	private:
+	protected:
 		unsigned short m_ObjectSize;
 		unsigned short m_RefCount;
 		csl::fnd::IAllocator* m_pAllocator;
-
-	protected:
+		
 		size_t GetSize()
 		{
 			return m_ObjectSize;
