@@ -15,6 +15,14 @@ namespace csl::ut
 		}
 
 		Bitset(T value) : m_dummy(value){}
+
+		// This doesn't actually exist, i just want to make bits easily
+		template<typename... TArgs>
+		constexpr Bitset(TArgs... bits)
+		{
+			reset();
+			(set(bits), ...);
+		}
 		
 		constexpr void reset()
 		{
@@ -42,6 +50,11 @@ namespace csl::ut
 				set(bit);
 			else
 				reset(bit);
+		}
+
+		constexpr T value() const
+		{
+			return m_dummy;
 		}
 		
 		constexpr bool test(T bit) const

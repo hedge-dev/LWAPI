@@ -61,14 +61,14 @@ namespace app::fnd
 		virtual void InitByScript(app::game::LuaScript& script) {}
 		virtual void OnAddedToGame() {}
 		virtual void OnRemovedFromGame() {}
-		virtual void UpdateFinal(SUpdateInfo& updatdeInfo) {}
+		virtual void UpdateFinal(const SUpdateInfo& updatdeInfo) {}
 
 		bool ActorProc(int id, void* data) override
 		{
 			if (id != 5)
 				return CLeafActor::ActorProc(id, data);
 
-			UpdateFinal(*reinterpret_cast<SUpdateInfo*>(data));
+			UpdateFinal(*reinterpret_cast<const SUpdateInfo*>(data));
 			return true;
 		}
 

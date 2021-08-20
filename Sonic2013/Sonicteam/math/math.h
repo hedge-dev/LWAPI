@@ -193,6 +193,24 @@ namespace csl::math
 		
 		return value;
 	}
+
+	template<typename T>
+	inline static const T& Max(const T& value, const T& max)
+	{
+		if (value > max)
+			return value;
+
+		return max;
+	}
+
+	template<typename T>
+	inline static const T& Min(const T& value, const T& min)
+	{
+		if (value < min)
+			return value;
+
+		return min;
+	}
 	
 	class Constants
 	{
