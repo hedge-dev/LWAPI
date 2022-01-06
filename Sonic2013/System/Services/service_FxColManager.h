@@ -11,9 +11,12 @@ namespace app
 		INSERT_PADDING(76) {};
 		uint m_Flags;
 		INSERT_PADDING(76);
+	public:
 		hh::ut::PackFile m_Resources{ nullptr };
 		void* m_pUnk1;
 		app::FxParameter m_CurrentParameter;
+		
+	protected:
 		INSERT_PADDING(64);
 		
 	public:
