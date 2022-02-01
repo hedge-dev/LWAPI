@@ -8,6 +8,7 @@ namespace app
 	}
 
 	class CObjInfoContainer;
+	class CSetObjectFactory;
 	
 	class CObjInfoFileLoader
 	{
@@ -19,13 +20,19 @@ namespace app
 	class CObjInfo : public fnd::ReferencedObject
 	{
 		friend CObjInfoContainer;
+		friend CSetObjectFactory;
+
 	protected:
 		csl::ut::Bitset<unsigned int> status{};
 
 		virtual void Load(CObjInfoFileLoader& loader) {}
 		virtual void Initialize(GameDocument& document) {}
 		virtual void Finalize() {}
+
+	public:
 		virtual const char* GetInfoName() = 0;
+
+	protected:
 		virtual void RegisterCallback(CObjInfoContainer& container) {}
 	};
 }

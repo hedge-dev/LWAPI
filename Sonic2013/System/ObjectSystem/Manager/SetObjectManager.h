@@ -9,7 +9,9 @@ namespace app
 	{
 		class CResource : public fnd::ReferencedObject
 		{
-			INSERT_PADDING(32);
+		public:
+			csl::ut::ObjectMoveArray<app::ut::RefPtr<CClassProject>> m_ClassProjects{ GetAllocator() };
+			INSERT_PADDING(12); // csl::ut::ObjectMoveArray<app::ut::RefPtr<CObjectProject>>
 		};
 	}
 
@@ -23,9 +25,10 @@ namespace app
 	class CSetObjectManager : public fnd::GameService
 	{
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEF2E8));
-	protected:
+
+	public:
 		GameDocument* m_pDocument;
-		INSERT_PADDING(8); // boost::shared_ptr<app::CSetObjectFactory>
+		boost::shared_ptr<CSetObjectFactory> m_spObjectFactory;
 		csl::ut::LinkList<CSetObjectListener> m_Objects;
 		SLayerInfo m_Layers[9];
 		size_t m_CurrentLayerIdx;

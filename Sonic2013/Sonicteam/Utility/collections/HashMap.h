@@ -36,7 +36,7 @@ namespace csl::ut
 
 		Elem* AllocateMemory(size_t count)
 		{
-			return static_cast<Elem*>(m_pAllocator->Alloc(sizeof(Elem), alignof(Elem)));
+			return static_cast<Elem*>(m_pAllocator->Alloc(sizeof(Elem) * count, alignof(Elem)));
 		}
 
 		void ReleaseMemory()

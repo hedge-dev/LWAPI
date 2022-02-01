@@ -1,5 +1,6 @@
 #pragma once
 #include <stdio.h>
+#include "boost/smart_ptr/shared_ptr.hpp"
 
 // Common Sonicteam Library
 #include "Sonicteam/Utility/Bitset.h"
@@ -244,6 +245,8 @@
 
 // SetData
 #include "System/ObjectSystem/Resource/Object.h"
+#include "System/ObjectSystem/Resource/ClassProject.h"
+#include "System/ObjectSystem/detail/SetObjClass.h"
 #include "System/ObjectSystem/Placement/WorldHandle.h"
 #include "System/ObjectSystem/Placement/Actor.h"
 #include "System/ObjectSystem/Placement/ActorPack.h"
@@ -254,6 +257,8 @@
 #include "System/ObjectSystem/MyActivationHandle.h"
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/ObjectSystem/Object.h"
+#include "System/ObjectSystem/ClassProject.h"
+#include "System/ObjectSystem/SetObjectFactory.h"
 #include "System/ObjectSystem/Manager/SetObjectManager.h"
 #include "System/ObjectSystem/SetObjectListener.h"
 

@@ -64,4 +64,10 @@ namespace app::ut
 			return m_pObj;
 		}
 	};
+
+	template<class T, size_t Allocator = 2, typename... Args>
+	inline static RefPtr<T> make_ref(Args&&... args)
+	{
+		return new(game::GlobalAllocator::GetAllocator(Allocator)) T(std::forward<Args>(args)...);
+	}
 }

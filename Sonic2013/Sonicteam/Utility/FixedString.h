@@ -13,6 +13,16 @@ namespace csl::ut
 			csl::fnd::StrLcpy(m_Buffer, pStr, Len);
 		}
 
+		void setf(const char* pFormat, ...)
+		{
+			va_list args;
+			va_start(args, pFormat);
+
+			csl::fnd::VSnprintf(m_Buffer, Len, pFormat, args);
+
+			va_end(args);
+		}
+
 		FixedString()
 		{
 			set("");

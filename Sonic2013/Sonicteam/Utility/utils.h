@@ -46,7 +46,17 @@ namespace csl::ut
 }
 
 namespace csl::fnd
-{	
+{
+    static int VSnprintf(char* pBuf, size_t bufSize, const char* pFormat, va_list args)
+    {
+        if (!bufSize)
+            return -1;
+
+        int result = vsnprintf_s(pBuf, bufSize, -1, pFormat, args);
+
+        return result;
+    }
+
     static int Snprintf(char* pBuf, size_t bufSize, const char* pFormat, ...)
     {
         if (!bufSize)

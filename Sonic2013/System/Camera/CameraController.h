@@ -9,7 +9,7 @@ namespace app::Camera
 	class CCameraController : public hh::base::CRefCountObject
 	{
 	protected:
-		CCamera* m_pOwner{}; // Owner?
+		CCamera* m_pOwner{};
 	
 	public:
 		float m_Fovy{ 45 };
@@ -46,6 +46,11 @@ namespace app::Camera
 		void SetDebugCamera(bool flag) { m_Flags.set(2, flag); }
 		void SetMultiCamera(bool flag) { m_Flags.set(3, flag); }
 		void SetPreview(bool flag) { m_Flags.set(4, flag); }
+
+		CCamera* GetOwner() const
+		{
+			return m_pOwner;
+		}
 
 		
 		void SetActive(bool value)
