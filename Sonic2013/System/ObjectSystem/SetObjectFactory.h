@@ -17,7 +17,10 @@ namespace app
 
 		void EndRegistration()
 		{
-			std::sort(m_Classes.begin(), m_Classes.end());
+			std::sort(m_Classes.begin(), m_Classes.end(), [](const CSetObjClass* c1, const CSetObjClass* c2) -> bool
+			{
+				return strcmp(c1->m_pName, c2->m_pName) >> 31;
+			});
 		}
 
 		void CreateParamMap(app::ut::RefPtr<SetEd::CClassProject>& rClassProject)

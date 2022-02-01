@@ -112,10 +112,5 @@ namespace app
 
 			m_fpSetupParamMap(rClass);
 		}
-
-		bool operator <(const CSetObjClass& other) const
-		{
-			return strcmp(m_pName, other.m_pName) >> 31;
-		}
 	};
 }
