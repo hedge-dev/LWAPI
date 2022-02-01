@@ -48,7 +48,8 @@ namespace app
 			}
 			else if (msg.IsOfType<xgame::MsgDeactivate>())
 			{
-				isDeactivated = true;
+				auto& msgDeactivate = reinterpret_cast<xgame::MsgDeactivate&>(msg);
+				msgDeactivate.m_Handled = true;
 				Kill();
 				return true;
 			}
