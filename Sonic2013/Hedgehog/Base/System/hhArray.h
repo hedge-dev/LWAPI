@@ -37,7 +37,7 @@ namespace app
 		T* allocateMemory(size_t num)
 		{
 			TAllocator memAlloc{};
-			memAlloc.allocate(num);
+			return memAlloc.allocate(num);
 		}
 
 		void copy(T* pDest, const T* pSrc, size_t count)
