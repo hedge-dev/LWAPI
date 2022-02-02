@@ -112,7 +112,7 @@ namespace app::game
 	class ColliMeshShapeCInfo : public ColliShapeCInfo
 	{
 	public:
-		ResPhysicsMesh* m_pMesh{};
+		ResPhysicsMesh m_Mesh{};
 
 		ColliMeshShapeCInfo()
 		{

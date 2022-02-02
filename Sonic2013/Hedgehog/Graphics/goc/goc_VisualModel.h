@@ -13,8 +13,8 @@ namespace app::fnd
 		class Description
 		{
 		public:
-			hh::gfx::res::ResModel* m_pModel;
-			hh::gfx::res::ResSkeleton* m_pSkeleton{};
+			hh::gfx::res::ResModel m_Model{};
+			hh::gfx::res::ResSkeleton m_Skeleton{};
 			int field_08{}; // some kind of flags
 			void* field_0C{};
 			int field_10{}; // light quality type?

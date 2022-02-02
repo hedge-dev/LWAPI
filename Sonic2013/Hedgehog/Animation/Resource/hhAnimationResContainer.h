@@ -3,7 +3,6 @@
 namespace hh::gfx::res
 {
 	class ResSkeleton;
-	using ResSkeletonData = ResSkeleton;
 }
 
 namespace app
@@ -58,7 +57,7 @@ namespace app
 			struct LoadInfo
 			{
 				ResCharAnimScript* m_pScript{};
-				hh::gfx::res::ResSkeletonData* m_pSkeleton{};
+				hh::gfx::res::ResSkeleton m_Skeleton{};
 				csl::ut::MoveArray<MirrorBindData>* m_pMirrorData{};
 			};
 

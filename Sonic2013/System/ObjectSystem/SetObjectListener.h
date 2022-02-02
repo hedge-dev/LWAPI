@@ -98,5 +98,11 @@ namespace app
 
 			Kill();
 		}
+
+		void Deactivate()
+		{
+			xgame::MsgDeactivate msg{};
+			SendMessage(msg);
+		}
 	};
 }
