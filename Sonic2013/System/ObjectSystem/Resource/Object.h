@@ -32,8 +32,8 @@ namespace app
 			const char* m_pName;
 			const char* m_pCategory;
 			void* m_Unk1;
-			float m_DefaultRangeIn;
 			float m_DefaultRangeOut;
+			float m_DefaultRangeIn;
 			app::TArray<SParamDescData, app::dbg::Allocator<SParamDescData>> m_Params;
 		};
 

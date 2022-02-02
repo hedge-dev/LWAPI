@@ -20,5 +20,23 @@ namespace app::SetEd
 
 			return ret;
 		}
+
+		CResClass FindClass(const char* pName) const
+		{
+			if (!ref().m_Classes.size())
+				return {};
+
+			auto& classes = ref().m_Classes;
+
+			SResClassData** result = std::find_if(classes.begin(), classes.end(), [pName](SResClassData* lhs) -> bool
+				{
+					return strcmp(lhs->m_pName, pName) == 0;
+				});
+
+			if (result == classes.end())
+				return {};
+
+			return { *result };
+		}
 	};
 }

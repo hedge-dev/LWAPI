@@ -5,16 +5,6 @@ namespace app
 	class CActivationManager;
 	typedef size_t CSetObjectID;
 
-	namespace SetEd
-	{
-		class CResource : public fnd::ReferencedObject
-		{
-		public:
-			csl::ut::ObjectMoveArray<app::ut::RefPtr<CClassProject>> m_ClassProjects{ GetAllocator() };
-			INSERT_PADDING(12); // csl::ut::ObjectMoveArray<app::ut::RefPtr<CObjectProject>>
-		};
-	}
-
 	struct SLayerInfo
 	{
 		csl::ut::Bitset<uint> m_Flags;

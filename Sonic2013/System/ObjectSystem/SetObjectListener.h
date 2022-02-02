@@ -9,17 +9,16 @@ namespace app
 	protected:
 		CSetObjectManager* m_pSetObjectManager{};
 		CSetAdapter* m_pAdapter{};
-		INSERT_PADDING(8){};
 		CMyActivationHandle m_ActivationHandle{};
 	public:
 		csl::ut::LinkListNode m_ListNode;
 		
-	protected:
-		INSERT_PADDING(12){};
-		
 	public:
 		CSetObjectListener()
 		{
+			ASSERT_OFFSETOF(CSetObjectListener, m_ActivationHandle, 816);
+			ASSERT_OFFSETOF(CSetObjectListener, m_ListNode, 912);
+
 			m_ActivationHandle.SetOwner(this);
 		}
 

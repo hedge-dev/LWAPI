@@ -11,17 +11,16 @@ namespace app
 	protected:
 		CActivationManager* m_pOwner{};
 		csl::math::Vector3 m_Position;
-		INSERT_PADDING(8){};
+		INSERT_PADDING(16){};
 		csl::ut::LinkListNode m_ListNode{ nullptr, nullptr };
 		float m_Size;
-		INSERT_PADDING(16){};
 		
 	public:
 		virtual ~CActivationHandle();
 		virtual void ActivationProc(EActivationOp op) = 0;
 		virtual void SetAppearance(float opacity)
 		{
-
+			
 		}
 	};
 }

@@ -246,6 +246,7 @@
 // SetData
 #include "System/ObjectSystem/Resource/Object.h"
 #include "System/ObjectSystem/Resource/ClassProject.h"
+#include "System/ObjectSystem/Resource/ObjectProject.h"
 #include "System/ObjectSystem/detail/SetObjClass.h"
 #include "System/ObjectSystem/Placement/WorldHandle.h"
 #include "System/ObjectSystem/Placement/Actor.h"
@@ -258,7 +259,9 @@
 #include "System/ObjectSystem/SetAdapter.h"
 #include "System/ObjectSystem/Object.h"
 #include "System/ObjectSystem/ClassProject.h"
+#include "System/ObjectSystem/ObjectProject.h"
 #include "System/ObjectSystem/SetObjectFactory.h"
+#include "System/ObjectSystem/Resource.h"
 #include "System/ObjectSystem/Manager/SetObjectManager.h"
 #include "System/ObjectSystem/SetObjectListener.h"
 
