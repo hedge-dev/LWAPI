@@ -13,7 +13,7 @@ namespace app
 
 		protected:
 			CActorPack* m_pPack;
-			SetEd::CResObject m_Object{ nullptr };
+			SetEd::CResObject m_Object{};
 			size_t m_UnitNum{};
 			CSetAdapter* m_pAdapter{};
 			const game::ActorGroupInfo* m_pGroupInfo{};

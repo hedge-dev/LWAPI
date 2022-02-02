@@ -9,9 +9,14 @@ namespace app::fnd
 		T* m_pRes{};
 
 	public:
-		ResCommon(T* pRes) : m_pRes(pRes)
+		ResCommon() : m_pRes(nullptr)
 		{
+			
+		}
 
+		ResCommon(void* pRes) : m_pRes((T*)pRes)
+		{
+			
 		}
 
 		bool IsValid() const

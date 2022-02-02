@@ -53,15 +53,15 @@ namespace hh::ut
 		}
 		
 		template<typename T>
-		T* Get(const char* pName, uint* a2)
+		T Get(const char* pName, uint* a2 = nullptr)
 		{
-			return static_cast<T*>(GetResource(T::staticTypeInfo(), pName, a2));
+			return T{ GetResource(T::staticTypeInfo(), pName, a2) };
 		}
 
 		template<typename T>
-		T* Get(size_t index, uint* a2)
+		T Get(size_t index, uint* a2 = nullptr)
 		{
-			return static_cast<T*>(GetResource(T::staticTypeInfo(), index, a2));
+			return T{ GetResource(T::staticTypeInfo(), index, a2) };
 		}
 
 		template<typename T>

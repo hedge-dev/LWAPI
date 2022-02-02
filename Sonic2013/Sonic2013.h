@@ -262,6 +262,9 @@
 #include "System/ObjectSystem/Manager/SetObjectManager.h"
 #include "System/ObjectSystem/SetObjectListener.h"
 
+#include "System/ObjectSystem/Activation/ActivationHandle.inl"
+#include "System/ObjectSystem/MyActivationHandle.inl"
+
 // Stage Data
 #include "System/Stage/World.h"
 #include "System/Stage/StageData.h"
