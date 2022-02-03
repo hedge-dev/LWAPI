@@ -239,6 +239,7 @@
 #include "System/Services/service_SceneParameters.h"
 #include "System/Services/service_FxColManager.h"
 #include "System/Services/service_GameServiceTypeRegistry.h"
+#include "System/Services/service_RingManager.h"
 
 // Objects
 #include "Hedgehog/Game/GameObject3D.h"
