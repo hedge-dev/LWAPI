@@ -22,12 +22,12 @@ namespace app::fnd
 		}
 	};
 	
-	class FileLoader : public ReferencedObject, csl::fnd::SingletonPointer<FileLoader>
+	class FileLoader : public ReferencedObject, public csl::fnd::SingletonPointer<FileLoader>
 	{
 		INSERT_PADDING(92);
 
 	public:
-		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), void* This, const char* pName, const char* a3, FileLoaderParam& params);
+		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>&, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), void* This, csl::fnd::com_ptr<FileHandleObj>&  rRet, const char* pName, const char* a3, const FileLoaderParam& params);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpPreLoadFile, ASLR(0x00491880), void* This, const char* pName, int priority);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00491CC0), void* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSync, ASLR(0x00491F00), void* This, csl::fnd::com_ptr<FileHandleObj>& pHandle);
@@ -38,12 +38,14 @@ namespace app::fnd
 			return ms_fpPreLoadFile(this, pName, priority);
 		}
 		
-		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const char* a3, FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const char* a3, const FileLoaderParam& params)
 		{
-			return ms_fpLoadFile(this, pName, a3, params);
+			csl::fnd::com_ptr<FileHandleObj> result{};
+			ms_fpLoadFile(this, result, pName, a3, params);
+			return result;
 		}
 
-		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const FileLoaderParam& params)
 		{
 			return LoadFile(pName, nullptr, params);
 		}
