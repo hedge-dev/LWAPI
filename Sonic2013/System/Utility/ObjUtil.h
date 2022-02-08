@@ -5,6 +5,28 @@ namespace app
 	class ObjUtil
 	{
 	public:
+		enum EFilter
+		{
+			eFilter_Default = 0,
+			eFilter_Unk1,
+			eFilter_Unk2,
+			eFilter_Unk3,
+			eFilter_Unk4,
+			eFilter_Unk5,
+			eFilter_Unk6,
+			eFilter_Unk7,
+			eFilter_Unk8,
+			eFilter_Unk9,
+			eFilter_Unk10,
+			eFilter_Unk11,
+			eFilter_Unk12,
+			eFilter_Unk13,
+			eFilter_Unk14,
+			eFilter_Unk15,
+			eFilter_Unk16,
+			eFilter_Unk17,
+		};
+
 		template <class T>
 		static T* GetObjectInfo(GameDocument& rDocument, const char* pName)
 		{
@@ -44,6 +66,79 @@ namespace app
 				return { nullptr };
 
 			return rPackFile.Get<hh::gfx::res::ResSkeleton>(pName);
+		}
+
+		static void SetupCollisionFilter(EFilter filter, game::ColliShapeCInfo& rInfo)
+		{
+			switch (filter)
+			{
+			case eFilter_Unk1:
+				rInfo.m_Unk7 = 18;
+				rInfo.m_Unk8 = 0xB0000;
+				break;
+			case eFilter_Unk2:
+				rInfo.m_Unk7 = 18;
+				rInfo.m_Unk8 = 0x40000;
+				break;
+			case eFilter_Unk3:
+			case eFilter_Unk4:
+				rInfo.m_Unk7 = 18;
+				rInfo.m_Unk8 = 0x80000;
+				break;
+			case eFilter_Unk5:
+				rInfo.m_Unk7 = 18;
+				rInfo.m_Unk8 = 0x5F0000;
+				break;
+			case eFilter_Unk6:
+				rInfo.m_Unk7 = 25;
+				rInfo.m_Unk8 = 0x30000;
+				break;
+			case eFilter_Unk7:
+				rInfo.m_Unk7 = 25;
+				rInfo.m_Unk8 = 0x800000;
+				break;
+			case eFilter_Unk8:
+				rInfo.m_Unk7 = 22;
+				rInfo.m_Unk8 = 0x30000;
+				break;
+			case eFilter_Unk9:
+			case eFilter_Unk10:
+				rInfo.m_Unk7 = 19;
+				rInfo.m_Unk8 = 0x30000;
+				break;
+			case eFilter_Unk11:
+				rInfo.m_Unk7 = 16;
+				rInfo.m_Unk8 = 0x4C0000;
+				break;
+			case eFilter_Unk12:
+				rInfo.m_Unk7 = 20;
+				rInfo.m_Unk8 = 0x200000;
+				break;
+			case eFilter_Unk13:
+				rInfo.m_Unk7 = 21;
+				rInfo.m_Unk8 = 0;
+				break;
+			case eFilter_Unk14:
+				rInfo.m_Unk7 = 16;
+				rInfo.m_Unk8 = 0x5F0000;
+				break;
+			case eFilter_Unk15:
+				rInfo.m_Unk7 = 16;
+				rInfo.m_Unk8 = 0xE0000;
+				break;
+			case eFilter_Unk16:
+				rInfo.m_Unk7 = 29;
+				rInfo.m_Unk8 = 0x540000;
+				break;
+			case eFilter_Unk17:
+				rInfo.m_Unk7 = 17;
+				rInfo.m_Unk8 = 0x5F0000;
+				break;
+			default:
+				rInfo.m_Unk7 = 18;
+				rInfo.m_Unk8 = 0x30000;
+				break;
+			}
 		}
 
 		static void SendMessageImmToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
