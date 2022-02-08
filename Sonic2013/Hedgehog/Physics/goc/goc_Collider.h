@@ -147,7 +147,7 @@ namespace app::game
 	
 	class ColliShapeBase : public fnd::RefByHandleObject, fnd::HFrameListener
 	{
-	protected:
+	public:
 		GOCCollider* m_pOwner;
 		GameObject* m_pObj;
 		fnd::HFrame* m_pFrame{};
