@@ -179,7 +179,7 @@
 #include "Hedgehog/Physics/goc/goc_Collider.h"
 #include "Hedgehog/Physics/goc/goc_Physics.h"
 
-// Hedgehog Physics Components
+// Hedgehog Effect Components
 #include "Hedgehog/Effect/goc/goc_Effect.h"
 
 // Hedgehog Sound Library
