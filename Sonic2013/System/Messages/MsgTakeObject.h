@@ -7,7 +7,25 @@ namespace app::xgame
 	public:
 		enum EType
 		{
-			eType_Ring
+			eType_Ring,
+			eType_DroppedRing,
+			eType_SuperRing,
+			eType_OneUp,
+			eType_RedRing,
+			eType_SpeedUp,
+			eType_SlowDown,
+			eType_Invincibility,
+			eType_Warp,
+			eType_Barrier,
+			eType_WaterBarrier,
+			eType_ThunderBarrier,
+			eType_RedRingRadar,
+			eType_StealRing,
+			eType_SwapRing,
+			eType_PhantomBomb,
+			eType_YoshiOneUp,
+			eType_YoshiCoin,
+			eType_ZeldaOneUp
 		};
 		
 		inline const static unsigned int MessageID = 0x6008;
@@ -19,7 +37,7 @@ namespace app::xgame
 		
 		MsgTakeObject(EType type) : Message(MessageID), m_Type(type)
 		{
-			
+
 		}
 
 		Message* Clone() override
@@ -30,6 +48,12 @@ namespace app::xgame
 		bool IsValidUserID() const
 		{
 			return m_HasUserID;
+		}
+
+		void SetShapeUserID(uint userID)
+		{
+			m_UserID = userID;
+			m_HasUserID = 1;
 		}
 	};
 }
