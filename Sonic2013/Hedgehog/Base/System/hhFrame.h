@@ -26,6 +26,7 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddHFrameListener, ASLR(0x0048E2E0), void* This, HFrameListener* pListener);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveHFrameListener, ASLR(0x0048E1D0), void* This, HFrameListener* pListener);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetTranslation, ASLR(0x0048DD30), void* This, const csl::math::Vector3& rTranslation);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpMarkUpdate, ASLR(0x0048DD00), void* This);
 
 		void AddHFrameListener(HFrameListener* pListener)
 		{
@@ -45,6 +46,11 @@ namespace app::fnd
 		void SetTranslation(csl::math::Vector3& rTranslation)
 		{
 			ms_fpSetTranslation(this, rTranslation);
+		}
+
+		void MarkUpdate()
+		{
+			ms_fpMarkUpdate(this);
 		}
 	};
 }

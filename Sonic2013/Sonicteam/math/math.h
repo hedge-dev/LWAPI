@@ -173,12 +173,17 @@ namespace csl::math
 	{
 	public:
 		Matrix34 m_Mtx;
-		Vector3 m_Unk;
+		Vector3 m_Scale;
 		size_t m_Flags;
 
 		Vector3 GetTranslation() const
 		{
 			return m_Mtx.GetTransVector();
+		}
+
+		void SetFlag(size_t value)
+		{
+			m_Flags |= value;
 		}
 	};
 
