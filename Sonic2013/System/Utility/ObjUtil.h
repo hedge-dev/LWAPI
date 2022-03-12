@@ -68,6 +68,27 @@ namespace app
 			return rPackFile.Get<hh::gfx::res::ResSkeleton>(pName);
 		}
 
+		static hh::gfx::res::ResAnimTexSrt GetTexSrtAnimationResource(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<hh::gfx::res::ResAnimTexSrt>(pName);
+		}
+
+		static hh::gfx::res::ResAnimMaterial GetMaterialAnimationResource(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<hh::gfx::res::ResAnimMaterial>(pName);
+		}
+
+		static void SetPropertyLockonTarget(GameObject* pObject)
+		{
+			pObject->SetProperty(0x4002, { 1 });
+		}
+
 		static void SetupCollisionFilter(EFilter filter, game::ColliShapeCInfo& rInfo)
 		{
 			switch (filter)
@@ -141,6 +162,13 @@ namespace app
 			}
 		}
 
+		static void SendMessageImmToPlayer(const GameObject& rObj, int playerNo, fnd::Message& rMsg)
+		{
+			auto* pDocument = rObj.GetDocument();
+			uint actorID = ObjUtil::GetPlayerActorID(*pDocument, playerNo);
+			rObj.SendMessageImm(actorID, rMsg);
+		}
+
 		static void SendMessageImmToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
 		{
 			auto* pDocument = rObj.GetDocument();
@@ -183,6 +211,18 @@ namespace app
 				return nullptr;
 
 			return pObjMan->CreateObjectBySetObjectID(id);
+		}
+
+		static int GetPlayerActorID(GameDocument& rDocument, int playerNo)
+		{
+			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
+			return pLevelInfo->GetPlayerID(playerNo);
+		}
+
+		static int GetPlayerNo(GameDocument& rDocument, uint actorID)
+		{
+			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
+			return pLevelInfo->GetPlayerNo(actorID);
 		}
 	};
 }
