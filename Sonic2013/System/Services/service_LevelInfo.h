@@ -13,6 +13,7 @@ namespace app
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFD1C));
 
 		inline static FUNCTION_PTR(SPlayerInfo*, __thiscall, ms_fpGetPlayerInfo, ASLR(0x009125A0), void* This, uint playerNum);
+		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetPlayerNo, ASLR(0x00912570), const void* This, const uint actorID);
 		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID, ASLR(0x00912550), const void* This, const uint playerNo);
 	public:
 		csl::ut::FixedArray<SPlayerInfo, 2> m_Players{};
@@ -37,6 +38,11 @@ namespace app
 		[[nodiscard]] uint GetPlayerID(const uint playerNo) const
 		{
 			return ms_fpGetPlayerID(this, playerNo);
+		}
+
+		int GetPlayerNo(uint actorID)
+		{
+			return ms_fpGetPlayerNo(this, actorID);
 		}
 
 		SPlayerInfo* GetPlayerInfo(uint playerNum)
