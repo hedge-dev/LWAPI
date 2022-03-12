@@ -13,3 +13,4 @@
 #include "Messages/MsgSuspendWorld.h"
 #include "Messages/MsgShowHintMessage.h"
 #include "Messages/MsgLevelStarted.h"
+#include "Messages/MsgSpringImpulse.h"
