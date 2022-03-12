@@ -145,5 +145,12 @@ namespace app
 				return const_cast<void**>(&ref().m_pParam);
 			}
 		};
+
+		static csl::math::Quaternion CalcRotationByAngle(const csl::math::Angle3& angle)
+		{
+			return Eigen::AngleAxisf(angle.x(), Eigen::Vector3f::UnitX()) *
+				Eigen::AngleAxisf(angle.y(), Eigen::Vector3f::UnitY()) *
+				Eigen::AngleAxisf(angle.z(), Eigen::Vector3f::UnitZ());
+		}
 	}
 }

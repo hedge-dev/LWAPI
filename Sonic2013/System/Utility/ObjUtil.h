@@ -204,6 +204,27 @@ namespace app
 			return GetGameObjectHandle(rDoc, id, 0);
 		}
 
+		static void GetSetObjectTransform(const GameDocument& rDoc, const CSetObjectID& id, csl::math::Vector3* pPosition, csl::math::Quaternion* pRotation)
+		{
+			auto* pObjMan = rDoc.GetService<CSetObjectManager>();
+			if (!pObjMan)
+				return;
+
+			auto resObj = pObjMan->GetResObjectByID(id);
+			if (!resObj)
+				return;
+
+			auto unit = resObj.GetUnit(0);
+			if (!unit.IsValid())
+				return;
+			
+			if (pPosition)
+				*pPosition = unit.GetPosition();
+		
+			if (pRotation)
+				*pRotation = SetEd::CalcRotationByAngle(unit.GetRotation());
+		}
+
 		static GameObjectHandle<CSetObjectListener> CreateSetObject(const GameDocument& rDoc, const CSetObjectID& id)
 		{
 			auto* pObjMan = rDoc.GetService<CSetObjectManager>();

@@ -3,7 +3,6 @@
 namespace app
 {
 	class CActivationManager;
-	typedef size_t CSetObjectID;
 
 	struct SLayerInfo
 	{
@@ -67,6 +66,20 @@ namespace app
 		static fnd::GameServiceClass& staticClass()
 		{
 			return *ms_pStaticClass;
+		}
+
+		size_t GetLayerIDFromUID(CSetObjectID id) const
+		{
+			return id / 4000;
+		}
+
+		SetEd::CResObject GetResObjectByID(CSetObjectID id) const
+		{
+			auto* pProject = m_rpRes->GetObjectProject(GetLayerIDFromUID(id));
+			if (!pProject)
+				return { nullptr };
+			
+			return pProject->GetObjectByID(id);
 		}
 
 		void GetSetObjectFromUniqID(app::ut::RefPtr<CSetObject>& outObj, size_t id)

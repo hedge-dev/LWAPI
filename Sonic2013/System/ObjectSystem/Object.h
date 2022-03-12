@@ -2,6 +2,7 @@
 
 namespace app
 {
+	typedef size_t CSetObjectID;
 	class CSetObjectListener;
 	class CSetObjectManager;
 	

@@ -21,5 +21,17 @@ namespace app::SetEd
 
 			return { pObj };
 		}
+
+		CResObject GetObjectByID(CSetObjectID id)
+		{
+			for (size_t i = 0; i < ref().m_Objects.size(); i++)
+			{
+				SetEd::CResObject resObj{ ref().m_Objects[i] };
+				if (resObj.IsValid() && id == resObj.GetUID())
+					return resObj;
+			}
+
+			return { nullptr };
+		}
 	};
 }

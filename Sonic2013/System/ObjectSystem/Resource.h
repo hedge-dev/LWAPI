@@ -14,7 +14,7 @@ namespace app::SetEd
 				return {};
 
 			for (auto& pProject : m_ClassProjects)
-			{
+			{	
 				auto result = pProject->FindClass(pName);
 				if (!result.IsValid())
 					continue;
@@ -23,6 +23,14 @@ namespace app::SetEd
 			}
 
 			return {};
+		}
+
+		CObjectProject* GetObjectProject(size_t i) const
+		{
+			if (i < m_ObjectProjects.size())
+				return m_ObjectProjects[i].get();
+
+			return { nullptr };
 		}
 	};
 }
