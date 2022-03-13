@@ -40,6 +40,11 @@ namespace app::fnd
 			if (m_pParent)
 				m_pParent->ActorProc(2, this);
 		}
+
+		CActor()
+		{
+			SetUpdateFlag(0, true);
+		}
 		
 		virtual ~CActor()
 		{
