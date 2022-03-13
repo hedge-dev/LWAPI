@@ -14,3 +14,4 @@
 #include "Messages/MsgShowHintMessage.h"
 #include "Messages/MsgLevelStarted.h"
 #include "Messages/MsgSpringImpulse.h"
+#include "Messages/MsgJumpBoardImpulse.h"
