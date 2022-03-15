@@ -105,6 +105,7 @@
 #include "Hedgehog/Game/Messages/MsgDeactivate.h"
 #include "Hedgehog/Game/Messages/MsgGetPosition.h"
 #include "Hedgehog/Game/Messages/MsgGetRotation.h"
+#include "Hedgehog/Game/Messages/MsgGetVelocity.h"
 
 // Hedgehog Game Library
 #include "Hedgehog/Game/LuaScript.h"
