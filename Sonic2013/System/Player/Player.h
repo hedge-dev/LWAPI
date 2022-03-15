@@ -3,7 +3,6 @@
 namespace app::Player
 {
 	struct SCinfo;
-	class CPhysics;
 	class CStateGOC;
 	class CVisualGOC;
 	class CBlackBoard;

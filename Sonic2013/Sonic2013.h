@@ -286,6 +286,7 @@
 #include "System/Camera/MsgCameraUpdate.h"
 
 #include "System/Player/GOCCollection.h"
+#include "System/Player/Physics.h"
 #include "System/Player/Player.h"
 #include "System/Player/GOCReferenceHolder.h"
 #include "System/Player/VisualBase.h"
