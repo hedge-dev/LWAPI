@@ -8,7 +8,7 @@ namespace app::xgame
 		const csl::math::Vector3* position = csl::math::Vector3::Zero;
 
 	public:
-		inline static unsigned int MessageID = 0x2003;
+		inline static unsigned int MessageID = 0x2000;
 
 		MsgGetPosition() : Message(MessageID)
 		{
