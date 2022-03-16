@@ -70,7 +70,6 @@ namespace app::game
 		fnd::SoundHandle CreateSoundHandle(const char* pName, float tween, fnd::SoundDeviceTag device)
 		{
 			fnd::SoundParam param{};
-			param.m_Volume = 1;
 			param.m_TweenFactor = tween;
 			param.m_Device = device;
 			
