@@ -178,22 +178,22 @@ namespace app::game
 			return false;
 		}
 
-		bool InitPlatformInstance(GOCCollider& collider)
+		virtual bool InitPlatformInstance(GOCCollider& collider)
 		{
 			return false;
 		}
 
-		bool InitPlatformInstancePhysics(GOCPhysics& physics)
+		virtual bool InitPlatformInstancePhysics(GOCPhysics& physics)
 		{
 			return false;
 		}
 
-		void DestroyPlatformInstance()
+		virtual void DestroyPlatformInstance()
 		{
 			
 		}
 
-		void OnShapeEvent(ShapeEventType event)
+		virtual void OnShapeEvent(ShapeEventType event)
 		{
 			
 		}
