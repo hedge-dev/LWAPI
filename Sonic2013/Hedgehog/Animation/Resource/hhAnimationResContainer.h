@@ -56,7 +56,7 @@ namespace app
 		public:
 			struct LoadInfo
 			{
-				ResCharAnimScript* m_pScript{};
+				ResCharAnimScript m_Script{};
 				hh::gfx::res::ResSkeleton m_Skeleton{};
 				csl::ut::MoveArray<MirrorBindData>* m_pMirrorData{};
 			};

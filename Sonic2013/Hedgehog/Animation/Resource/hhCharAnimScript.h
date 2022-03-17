@@ -221,12 +221,12 @@ namespace app
 
 	namespace animation
 	{
-		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeleton>
+		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeletonData>
 		{
 		public:
-			ResCharAnim& operator =(hh::gfx::res::ResAnimSkeleton* pSkel)
+			ResCharAnim& operator =(hh::gfx::res::ResAnimSkeleton in_anim)
 			{
-				m_pRes = pSkel;
+				m_pRes = &in_anim.ref();
 				return *this;
 			}
 		};
