@@ -159,7 +159,87 @@ namespace csl::math
 			return (m_Origin - point).squaredNorm() <= m_Radius * m_Radius;
 		}
 	};
+
+	class Segment3
+	{
+	public:
+		Vector3 m_Start{};
+		Vector3 m_End{};
+
+		Segment3() {}
+		Segment3(const Vector3& start, const Vector3& end) : m_Start(start), m_End(end) {}
+		
+		bool Intersects(const Sphere& sphere) const
+		{
+			Vector3 closestPoint = m_Start;
+			float distance = (m_End - m_Start).norm();
+			float t = 0.0f;
+			
+			if (distance > 0.0f)
+			{
+				t = (sphere.m_Origin - m_Start).dot(m_End - m_Start) / distance;
+				
+				if (t < 0.0f)
+				{
+					t = 0.0f;
+				}
+				else if (t > 1.0f)
+				{
+					t = 1.0f;
+				}
+				
+				closestPoint = Vector3(m_Start + t * (m_End - m_Start));
+			}
+			
+			return (sphere.m_Origin - closestPoint).squaredNorm() <= sphere.m_Radius * sphere.m_Radius;
+		}
+	};
+
+	class Capsule
+	{
+	public:
+		Segment3 m_Segment{};
+		float m_Radius{};
+
+		Capsule() {}
+		Capsule(const Segment3& segment, float rad) : m_Segment(segment), m_Radius(rad) {}
+
+		bool Intersects(const Sphere& sphere) const
+		{
+			Vector3 closestPoint = m_Segment.m_Start;
+			float distance = (m_Segment.m_End - m_Segment.m_Start).norm();
+			float t = 0.0f;
+			
+			if (distance > 0.0f)
+			{
+				t = (sphere.m_Origin - m_Segment.m_Start).dot(m_Segment.m_End - m_Segment.m_Start) / distance;
+				
+				if (t < 0.0f)
+				{
+					t = 0.0f;
+				}
+				else if (t > 1.0f)
+				{
+					t = 1.0f;
+				}
+				
+				closestPoint = Vector3(m_Segment.m_Start + t * (m_Segment.m_End - m_Segment.m_Start));
+			}
+			
+			return (sphere.m_Origin - closestPoint).squaredNorm() <= sphere.m_Radius * sphere.m_Radius;
+		}
+	};
 	
+	class Aabb
+	{
+	public:
+		Vector3 m_Min{};
+		Vector3 m_Max{};
+
+		Aabb() {}
+		Aabb(const Vector3& min, const Vector3& max) : m_Min(min), m_Max(max) {}
+	};
+
 	class Transform
 	{
 	public:

@@ -23,15 +23,16 @@ namespace app::ut
 		}
 
 	public:
-		RefPtr() {}
+		RefPtr() = default;
 		
 		RefPtr(T* pObj)
 		{
 			swap(pObj);
 		}
+
 		RefPtr(const RefPtr& rOther)
 		{
-			swap(rOther.m_pObj);
+			swap(rOther.get());
 		}
 		
 		~RefPtr()
@@ -45,12 +46,22 @@ namespace app::ut
 			return *this;
 		}
 
+		RefPtr<T>& operator=(const RefPtr& rOther)
+		{
+			if (this == &rOther)
+				return *this;
+
+			swap(rOther.get());
+			return *this;
+		}
+
 		operator bool() const
 		{
 			return m_pObj != nullptr;
 		}
 
-		operator T* () const {
+		operator T* () const
+		{
 			return m_pObj;
 		}
 		
@@ -68,6 +79,6 @@ namespace app::ut
 	template<class T, size_t Allocator = 2, typename... Args>
 	inline static RefPtr<T> make_ref(Args&&... args)
 	{
-		return new(game::GlobalAllocator::GetAllocator(Allocator)) T(std::forward<Args>(args)...);
+		return RefPtr<T>(new(game::GlobalAllocator::GetAllocator(Allocator)) T(std::forward<Args>(args)...));
 	}
 }

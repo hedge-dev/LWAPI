@@ -92,6 +92,7 @@
 // Hedgehog Utility Library
 #include "Hedgehog/Base/Utility/hhScopedPointer.h"
 #include "Hedgehog/Base/Utility/hhReferencePointer.h"
+#include "Hedgehog/Base/Utility/hhTempArray.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"
@@ -176,9 +177,8 @@
 #include "Hedgehog/Animation/goc/goc_AnimationScriptLayer.h"
 #include "Hedgehog/Animation/goc/goc_AnimationContainer.h"
 
-// Hedgehog Physics Components
-#include "Hedgehog/Physics/goc/goc_Collider.h"
-#include "Hedgehog/Physics/goc/goc_Physics.h"
+// Hedgehog Physics Library
+#include "Hedgehog/Physics/hhPhysics.h"
 
 // Hedgehog Effect Components
 #include "Hedgehog/Effect/goc/goc_Effect.h"

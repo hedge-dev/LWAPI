@@ -13,10 +13,10 @@ namespace app::game
 	protected:
 		csl::ut::MoveArray<ColliShape*> m_Shapes{ GetAllocator() };
 		fnd::HFrame* m_pFrame{};
-		PhysicsWorld* m_pPhysicsWorld{};
+		CPhysicsWorld* m_pPhysicsWorld{};
 
 	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateShape, ASLR(0x004CB710), GOCPhysics* pThis, const ColliShapeCInfo& rInfo);
+		inline static FUNCTION_PTR(ColliShape*, __thiscall, ms_fpCreateShape, ASLR(0x004CB710), GOCPhysics* pThis, const ColliShapeCInfo& rInfo);
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD78B4));
 
 		static fnd::GOComponentClass* staticClass()
@@ -31,9 +31,9 @@ namespace app::game
 			m_Shapes.reserve(rDesc.m_ShapeCount);
 		}
 
-		void CreateShape(const ColliShapeCInfo& rInfo)
+		ColliShape* CreateShape(const ColliShapeCInfo& rInfo)
 		{
-			ms_fpCreateShape(this, rInfo);
+			return ms_fpCreateShape(this, rInfo);
 		}
 
 		ColliShape* GetShape() const
