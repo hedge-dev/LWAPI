@@ -13,7 +13,7 @@ namespace app::fnd
 
 	class HFrame : public ReferencedObject
 	{
-	protected:
+	public:
 		csl::ut::LinkListNode m_Child;
 		HFrame* m_pParent;
 		INSERT_PADDING(12);

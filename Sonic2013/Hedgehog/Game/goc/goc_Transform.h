@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class GOCTransform : public GOComponent
 	{
-	private:
+	public:
 		csl::ut::LinkListNode m_ChildNode;
 		INSERT_PADDING(12);
 		csl::ut::LinkList<GOCTransform> m_Children{ &GOCTransform::m_ChildNode };
