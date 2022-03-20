@@ -10,10 +10,8 @@ namespace app::fnd
 			size_t m_VisualCount;
 		};
 		
-	protected:
 		csl::ut::InplaceMoveArray<GOCVisual*, 2> m_Visuals{ GetAllocator() };
-
-	public:
+		
 		inline static GOComponentClass* ms_pStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x00FD4254));
 
 		static GOComponentClass* staticClass()
