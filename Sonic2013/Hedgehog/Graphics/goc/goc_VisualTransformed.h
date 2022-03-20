@@ -31,6 +31,12 @@ namespace app::fnd
 		}
 
 	public:
+		void SetLocalTranslation(const csl::math::Vector3& translation)
+		{
+			m_Transform.SetTranslation(translation);
+			MarkUpdate();
+		}
+
 		void SetLocalScale(const csl::math::Vector3& scale)
 		{
 			m_Transform.m_Scale = scale;

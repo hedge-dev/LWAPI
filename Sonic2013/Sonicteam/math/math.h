@@ -98,9 +98,19 @@ namespace csl::math
 			return *(Vector4*)col(column).data();
 		}
 
+		void SetColumn(uint column, const Vector3& data)
+		{
+			*(Vector3*)col(column).data() = data;
+		}
+
 		Vector3& GetTransVector() const
 		{
 			return reinterpret_cast<Vector3&>(GetColumn(3));
+		}
+
+		void SetTransVector(const Vector3& translation)
+		{
+			SetColumn(3, translation);
 		}
 	};
 	
@@ -259,6 +269,12 @@ namespace csl::math
 		Vector3 GetTranslation() const
 		{
 			return m_Mtx.GetTransVector();
+		}
+
+		void SetTranslation(const Vector3& translation)
+		{
+			m_Mtx.SetTransVector(translation);
+			SetFlag(1);
 		}
 
 		void SetFlag(size_t value)
