@@ -11,7 +11,7 @@ namespace app::xgame
 		EEventType eventType;
 		
 	public:
-		inline static uint MessageID = 0x6013;
+		inline const static unsigned int MessageID = 0x6013;
 
 		MsgNotifyObjectEvent(EEventType type) : Message(MessageID)
 		{
