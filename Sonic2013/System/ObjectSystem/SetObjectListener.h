@@ -65,6 +65,14 @@ namespace app
 		}
 
 	public:
+		uint GetExtUserData(EExtUserDataType type) const
+		{
+			if (m_pAdapter)
+				return m_pAdapter->GetUserData(type);
+
+			return 0;
+		}
+
 		void SetExtUserData(EExtUserDataType type, uint value)
 		{
 			if (m_pAdapter)

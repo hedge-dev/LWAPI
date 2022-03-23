@@ -32,6 +32,12 @@ namespace app
 		{
 			return m_StatusFlags;
 		}
+
+		uint GetUserData(uint type) const
+		{
+			uint shift = ShiftOfUserData(type);
+			return (m_StatusFlags & (255 << shift)) >> shift;
+		}
 		
 		void SetStatusFlags(uint flag)
 		{
