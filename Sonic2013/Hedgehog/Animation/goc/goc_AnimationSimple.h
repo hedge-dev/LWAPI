@@ -55,13 +55,12 @@ namespace app::game
 		};
 		
 	protected:
-		fnd::GOCVisualModel* m_pVisual{};
 		csl::ut::ObjectMoveArray<AnimationControlHH> m_Controls{ GetAllocator() };
 		AnimationControlBase* m_pCurrentAnimation{};
 
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleaup, ASLR(0x004B3CC0), GOCAnimationSimple*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B3C80), GOCAnimationSimple*, const Description&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x004B3E50), GOCAnimationSimple*, const char*, hh::gfx::res::ResAnimSkeleton*, PlayPolicy);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x004B3E50), GOCAnimationSimple*, const char*, hh::gfx::res::ResAnimSkeleton, PlayPolicy);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x004B3A80), GOCAnimationSimple*, const char*);
 		
 		void Cleanup()
@@ -92,14 +91,14 @@ namespace app::game
 			ms_fpSetup(this, desc);
 		}
 		
-		void Add(const char* pName, hh::gfx::res::ResAnimSkeleton* pAnimation, PlayPolicy policy)
+		void Add(const char* pName, hh::gfx::res::ResAnimSkeleton animation, PlayPolicy policy)
 		{
-			ms_fpAdd(this, pName, pAnimation, policy);
+			ms_fpAdd(this, pName, animation, policy);
 		}
 
 		void SetAnimation(const char* pName)
 		{
-			if (!m_pVisual)
+			if (!m_pModel)
 				return;
 
 			auto* pAnim = FindAnimation(pName);
