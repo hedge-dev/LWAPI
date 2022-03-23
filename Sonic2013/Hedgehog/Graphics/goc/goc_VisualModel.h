@@ -17,6 +17,8 @@ namespace app::fnd
 	class GOCVisualModel : public GOCVisualTransformed
 	{
 	public:
+		typedef uint NodeSpace;
+
 		class Description
 		{
 		public:
@@ -42,13 +44,15 @@ namespace app::fnd
 		
 	public:
 		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, const Description& description);
-		inline static FUNCTION_PTR(TexSrtBlenderHH*, __thiscall, ms_fpSetTexSrtBlender, ASLR(0x00495930), void*, const TexSrtBlenderDesc& description);
-		inline static FUNCTION_PTR(MatAnimBlenderHH*, __thiscall, ms_fpSetMatAnimBlender, ASLR(0x00495A70), void*, const MatAnimBlenderDesc& description);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialAnimation, ASLR(0x004959D0), void*, const MatAnimDesc& description);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetTexSrtAnimation, ASLR(0x00495890), void*, const TexSrtDesc& description);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, const Description&);
+		inline static FUNCTION_PTR(TexSrtBlenderHH*, __thiscall, ms_fpSetTexSrtBlender, ASLR(0x00495930), void*, const TexSrtBlenderDesc&);
+		inline static FUNCTION_PTR(MatAnimBlenderHH*, __thiscall, ms_fpSetMatAnimBlender, ASLR(0x00495A70), void*, const MatAnimBlenderDesc&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialAnimation, ASLR(0x004959D0), void*, const MatAnimDesc&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetTexSrtAnimation, ASLR(0x00495890), void*, const TexSrtDesc&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAttachAnimation, ASLR(0x004951B0), void*, game::GOCAnimationSingle*);
-		
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetNodeTransform, ASLR(0x004951F0), const void*, NodeSpace, const char*, csl::math::Transform*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetNodeTransform, ASLR(0x00495240), void*, NodeSpace, const char*, const csl::math::Transform&);
+
 		static GOComponentClass* staticClass()
 		{
 			return ms_pGOCVisualModelStaticClass;
@@ -82,6 +86,16 @@ namespace app::fnd
 		void AttachAnimation(game::GOCAnimationSingle* pAnimation)
 		{
 			ms_fpAttachAnimation(this, pAnimation);
+		}
+
+		void GetNodeTransform(NodeSpace nodeSpace, const char* pNodeName, csl::math::Transform* pTransform) const
+		{
+			ms_fpGetNodeTransform(this, nodeSpace, pNodeName, pTransform);
+		}
+
+		void SetNodeTransform(NodeSpace nodeSpace, const char* pNodeName, const csl::math::Transform& rTransform)
+		{
+			ms_fpSetNodeTransform(this, nodeSpace, pNodeName, rTransform);
 		}
 	};
 
