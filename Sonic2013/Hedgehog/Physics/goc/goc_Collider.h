@@ -12,7 +12,6 @@ namespace app::game
 			size_t m_ShapeCount;
 		};
 		
-	protected:
 		// app::game::ColliShape
 		csl::ut::MoveArray<ColliShape*> m_Shapes{ GetAllocator() };
 		csl::ut::MoveArray<GOCColliderListener*> m_Listeners{ GetAllocator() };
