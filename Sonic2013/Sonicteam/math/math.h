@@ -138,6 +138,11 @@ namespace csl::math
 		{
 
 		}
+
+		Quaternion(const Eigen::AngleAxisf& angleAxis) : Eigen::Quaternionf(angleAxis)
+		{
+
+		}
 		
 		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
 		{
