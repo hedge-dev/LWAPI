@@ -68,6 +68,14 @@ namespace app
 			return rPackFile.Get<hh::gfx::res::ResSkeleton>(pName);
 		}
 
+		static hh::gfx::res::ResAnimSkeleton GetAnimationResource(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<hh::gfx::res::ResAnimSkeleton>(pName);
+		}
+
 		static ResPhysicsMesh GetPhysicsMeshResource(const char* pName, hh::ut::PackFile& rPackFile)
 		{
 			if (!rPackFile.IsValid())
