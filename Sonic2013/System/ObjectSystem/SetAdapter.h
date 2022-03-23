@@ -4,7 +4,9 @@ namespace app
 {
 	class CSetObjectListener;
 	class CSetAdapterMgr;
-	
+
+	inline static int ShiftOfUserData(uint type) { return 8 * type + 16; }
+
 	class CSetAdapter
 	{
 	protected:
@@ -34,6 +36,12 @@ namespace app
 		void SetStatusFlags(uint flag)
 		{
 			m_StatusFlags |= flag;
+		}
+
+		void SetUserData(uint type, uint value)
+		{
+			uint shift = ShiftOfUserData(type);
+			m_StatusFlags = m_StatusFlags & ~(255 << shift) | (value << shift) & (255 << shift);
 		}
 
 		const SetEd::CResObject& GetObjectResource() const

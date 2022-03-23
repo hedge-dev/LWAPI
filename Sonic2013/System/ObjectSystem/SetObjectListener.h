@@ -6,10 +6,17 @@ namespace app
 	
 	class CSetObjectListener : public GameObject3D
 	{
+	public:
+		enum EExtUserDataType
+		{
+			eExtUserDataType_High, eExtUserDataType_Low
+		};
+
 	protected:
 		CSetObjectManager* m_pSetObjectManager{};
 		CSetAdapter* m_pAdapter{};
 		CMyActivationHandle m_ActivationHandle{};
+
 	public:
 		csl::ut::LinkListNode m_ListNode;
 		
@@ -58,6 +65,12 @@ namespace app
 		}
 
 	public:
+		void SetExtUserData(EExtUserDataType type, uint value)
+		{
+			if (m_pAdapter)
+				m_pAdapter->SetUserData(type, value);
+		}
+
 		virtual unsigned int GetAdsorbGuidePathID()
 		{
 			return 0;
@@ -72,7 +85,6 @@ namespace app
 		{
 			return { 0, 0, 0 };
 		}
-
 		
 		virtual void SetAppearance(float opacity) // not sure if this is opacity
 		{
