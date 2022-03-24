@@ -39,8 +39,8 @@ namespace app::fnd
 			int field_38{};
 		};
 
-	private:
-		INSERT_PADDING(128);
+		INSERT_PADDING(32) {};
+		GOCVisualModelImpl m_Impl{ GetAllocator() };
 		
 	public:
 		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
@@ -58,44 +58,59 @@ namespace app::fnd
 			return ms_pGOCVisualModelStaticClass;
 		}
 
-		bool Setup(const Description& description)
+		const csl::math::Aabb& GetBounds() 
 		{
-			return ms_fpSetup(this, description);
+			return m_Impl.GetBounds();
 		}
 
-		TexSrtBlenderHH* SetTexSrtBlender(const TexSrtBlenderDesc& description)
+		void SetBounds(const csl::math::Aabb& in_bounds)
 		{
-			return ms_fpSetTexSrtBlender(this, description);
+			m_Impl.SetBounds(in_bounds);
 		}
 
-		MatAnimBlenderHH* SetMatAnimBlender(const MatAnimBlenderDesc& description)
+		void ChangeModel(const Description& in_description) 
 		{
-			return ms_fpSetMatAnimBlender(this, description);
+			m_Impl.ChangeModel(*this, reinterpret_cast<const GOCVisualModelImpl::Description&>(in_description));
 		}
 
-		void SetMaterialAnimation(const MatAnimDesc& description)
+		bool Setup(const Description& in_description)
 		{
-			ms_fpSetMaterialAnimation(this, description);
+			return ms_fpSetup(this, in_description);
 		}
 
-		void SetTexSrtAnimation(const TexSrtDesc& description)
+		TexSrtBlenderHH* SetTexSrtBlender(const TexSrtBlenderDesc& in_description)
 		{
-			ms_fpSetTexSrtAnimation(this, description);
+			return ms_fpSetTexSrtBlender(this, in_description);
 		}
 
-		void AttachAnimation(game::GOCAnimationSingle* pAnimation)
+		MatAnimBlenderHH* SetMatAnimBlender(const MatAnimBlenderDesc& in_description)
 		{
-			ms_fpAttachAnimation(this, pAnimation);
+			return ms_fpSetMatAnimBlender(this, in_description);
 		}
 
-		void GetNodeTransform(NodeSpace nodeSpace, const char* pNodeName, csl::math::Transform* pTransform) const
+		void SetMaterialAnimation(const MatAnimDesc& in_description)
 		{
-			ms_fpGetNodeTransform(this, nodeSpace, pNodeName, pTransform);
+			ms_fpSetMaterialAnimation(this, in_description);
 		}
 
-		void SetNodeTransform(NodeSpace nodeSpace, const char* pNodeName, const csl::math::Transform& rTransform)
+		void SetTexSrtAnimation(const TexSrtDesc& in_description)
 		{
-			ms_fpSetNodeTransform(this, nodeSpace, pNodeName, rTransform);
+			ms_fpSetTexSrtAnimation(this, in_description);
+		}
+
+		void AttachAnimation(game::GOCAnimationSingle* in_pAnimation)
+		{
+			ms_fpAttachAnimation(this, in_pAnimation);
+		}
+
+		void GetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, csl::math::Transform* in_pTransform) const
+		{
+			ms_fpGetNodeTransform(this, in_nodeSpace, in_pNodeName, in_pTransform);
+		}
+
+		void SetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, const csl::math::Transform& in_transform)
+		{
+			ms_fpSetNodeTransform(this, in_nodeSpace, in_pNodeName, in_transform);
 		}
 	};
 
@@ -129,9 +144,9 @@ namespace app::fnd
 	public:
 		inline static FUNCTION_PTR(TexSrtControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x00496B40), void* This, const TexSrtControlDesc& description);
 
-		TexSrtControlHH* CreateControl(const TexSrtControlDesc& description)
+		TexSrtControlHH* CreateControl(const TexSrtControlDesc& in_description)
 		{
-			return ms_fpCreateControl(this, description);
+			return ms_fpCreateControl(this, in_description);
 		}
 	};
 
@@ -143,9 +158,9 @@ namespace app::fnd
 	public:
 		inline static FUNCTION_PTR(MatAnimControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x004965A0), void* This, const MatAnimControlDesc& description);
 
-		MatAnimControlHH* CreateControl(const MatAnimControlDesc& description)
+		MatAnimControlHH* CreateControl(const MatAnimControlDesc& in_description)
 		{
-			return ms_fpCreateControl(this, description);
+			return ms_fpCreateControl(this, in_description);
 		}
 	};
 }

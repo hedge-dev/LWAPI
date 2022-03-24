@@ -253,6 +253,11 @@ namespace csl::math
 
 		Aabb() {}
 		Aabb(const Vector3& min, const Vector3& max) : m_Min(min), m_Max(max) {}
+		void Add(const Vector3& point)
+		{
+			m_Min = { m_Min.cwiseMin(point) };
+			m_Max = { m_Max.cwiseMax(point) };
+		}
 	};
 
 	class Transform

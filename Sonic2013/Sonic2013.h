@@ -149,12 +149,6 @@
 
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
 
-// Hedgehog Graphics Components
-#include "Hedgehog/Graphics/goc/goc_Visual.h"
-#include "Hedgehog/Graphics/goc/goc_VisualTransformed.h"
-#include "Hedgehog/Graphics/goc/goc_VisualModel.h"
-#include "Hedgehog/Graphics/goc/goc_VisualContainer.h"
-
 // Hedgehog Animation Library
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
 #include "Hedgehog/Animation/Base/hhAnimationNode.h"
@@ -307,3 +301,5 @@
 
 // Utilities
 #include "System/Utility/ObjUtil.h"
+
+#include "Hedgehog/Graphics/goc/Impl/goc_VisualModelImpl.inl"
