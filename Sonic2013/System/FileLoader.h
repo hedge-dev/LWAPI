@@ -30,7 +30,7 @@ namespace app::fnd
 		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>&, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), void* This, csl::fnd::com_ptr<FileHandleObj>&  rRet, const char* pName, const char* a3, const FileLoaderParam& params);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpPreLoadFile, ASLR(0x00491880), void* This, const char* pName, int priority);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00491CC0), void* This);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSync, ASLR(0x00491F00), void* This, csl::fnd::com_ptr<FileHandleObj>& pHandle);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSync, ASLR(0x00491F00), void* This, csl::fnd::com_ptr<FileHandleObj> handle);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSyncAll, ASLR(0x00491FB0), void* This);
 		
 		bool PreLoadFile(const char* pName, int priority)
@@ -50,9 +50,9 @@ namespace app::fnd
 			return LoadFile(pName, nullptr, params);
 		}
 
-		void WaitSync(csl::fnd::com_ptr<FileHandleObj>& rHandle)
+		void WaitSync(csl::fnd::com_ptr<FileHandleObj> handle)
 		{
-			ms_fpWaitSync(this, rHandle);
+			ms_fpWaitSync(this, handle);
 		}
 
 		void WaitSyncAll()

@@ -45,10 +45,9 @@ namespace csl::fnd
 	template<typename T>
 	class Singleton
 	{
-	protected:
+	public:
 		inline static T* instance;
 
-	public:
 		[[nodiscard]] static T* GetInstance()
 		{
 			if constexpr (std::is_base_of<SingletonPointer<T>, T>())

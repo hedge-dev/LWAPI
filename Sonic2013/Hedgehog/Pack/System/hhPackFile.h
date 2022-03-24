@@ -8,6 +8,7 @@ namespace hh::ut
 	{
 	private:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsValidHeader, ASLR(0x00C1A770), const PackFile*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpBind, ASLR(0x00C18DF0), PackFile*, csl::fnd::IAllocator*, PackFile);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResource, ASLR(0x00C191E0), PackFile*, const ResourceTypeInfo&, const char*, uint*);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResourceByIndex, ASLR(0x00C19230), PackFile*, const ResourceTypeInfo&, size_t, uint*);
 		inline static FUNCTION_PTR(size_t, __thiscall, ms_fpGetResourceCount, ASLR(0x00C192C0), const PackFile*, const ResourceTypeInfo&);
@@ -30,6 +31,11 @@ namespace hh::ut
 		PackFile(PackFile& pack) : ResCommon<PackFileHeaderDataTag>(pack.m_pRes)
 		{
 			
+		}
+
+		void Bind(csl::fnd::IAllocator* pAllocator, PackFile other)
+		{
+			ms_fpBind(this, pAllocator, other);
 		}
 
 		void* GetResource(const ResourceTypeInfo& info, const char* pName, uint* a3)

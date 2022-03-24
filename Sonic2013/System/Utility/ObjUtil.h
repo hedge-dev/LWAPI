@@ -49,7 +49,7 @@ namespace app
 			if (!data.IsValid())
 				return { nullptr };
 
-			return hh::ut::PackFile(data->GetAddress());
+			return (data->GetAddress());
 		}
 
 		static hh::gfx::res::ResModel GetModelResource(const char* pName, hh::ut::PackFile& rPackFile)

@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class FileBinder;
 	class FileCache;
-	class FileSystem : public ReferencedObject, csl::fnd::SingletonPointer<FileSystem>
+	class FileSystem : public ReferencedObject, public csl::fnd::SingletonPointer<FileSystem>
 	{
 	protected:
 		csl::ut::FixedString<256> m_RootDir{};

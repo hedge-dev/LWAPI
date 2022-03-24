@@ -54,9 +54,13 @@
 #include "gindows/gindows.h"
 
 // Hedgehog Library
-#include"Hedgehog/Base/Types/hhBaseTypes.h"
+#include "Hedgehog/Base/Type/hhBaseTypes.h"
+#include "Hedgehog/Base/System/hhObject.h"
 #include "Hedgehog/Base/System/hhBaseObject.h"
 #include "Hedgehog/Base/System/hhReferencedObject.h"
+#include "Hedgehog/Base/Type/hhCowData.h"
+#include "Hedgehog/Base/Type/hhSharedString.h"
+#include "Hedgehog/Base/System/hhSymbol.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhInternalClassMember.h"
@@ -134,10 +138,16 @@
 #include "Hedgehog/Resource/hhResourceTypeInfo.h"
 #include "Hedgehog/Resource/hhResourceReflections.h"
 
+#include "Hedgehog/Database/System/hhDatabaseData.h"
+
 // Hedgehog Graphics Library
-#include "Hedgehog/Graphics/hhCameraParam.h"
-#include "Hedgehog/Graphics/Resource/hhFxSceneParmeters.h"
-#include "Hedgehog/Graphics/Manager/hhRenderManager.h"
+#include "Hedgehog/MirageCore/RenderData/hhVertexShaderData.h"
+#include "Hedgehog/MirageCore/RenderData/hhPixelShaderData.h"
+#include "Hedgehog/MirageCore/Misc/hhRenderingDevice.h"
+#include "Hedgehog/MirageCore/Misc/hhRenderingInfrastructure.h"
+#include "Hedgehog/Graphics/hhGraphics.h"
+
+#include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
 
 // Hedgehog Graphics Components
 #include "Hedgehog/Graphics/goc/goc_Visual.h"

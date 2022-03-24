@@ -1,8 +1,13 @@
 #pragma once
 
+namespace Extra::fx
+{
+	struct AmbientParamLightField;
+}
+
 namespace app::gfx
 {
-	class RenderManager : public fnd::ReferencedObject, csl::fnd::SingletonPointer<RenderManager>
+	class RenderManager : public fnd::ReferencedObject, public csl::fnd::SingletonPointer<RenderManager>
 	{
 		class Impl;
 		
@@ -14,6 +19,8 @@ namespace app::gfx
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetEnableRenderHud, ASLR(0x004E1D50), RenderManager* pThis, bool enabled);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxParameter, ASLR(0x004E4240), RenderManager* pThis, const app::FxParameter& rParameter);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxConfig, ASLR(0x004DFF00), RenderManager* pThis, const app::FxSceneConfig& rConfig);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRenderable, ASLR(0x004E1E30), RenderManager* pThis, Renderable* pRenderable);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetLightFieldColor, ASLR(0x004E1D30), RenderManager* pThis, const csl::math::Vector3&, Extra::fx::AmbientParamLightField& out_param);
 		inline static FUNCTION_PTR(Render::CameraParam&, __thiscall, ms_fpGetCameraParam, ASLR(0x004E1E10), const RenderManager* pThis, int camera);
 		
 		RenderManager()
@@ -21,24 +28,34 @@ namespace app::gfx
 			
 		}
 
-		void SetEnableRenderHud(bool enabled)
+		bool GetLightFieldColor(const csl::math::Vector3& in_point, Extra::fx::AmbientParamLightField& out_lightfield)
 		{
-			ms_fpSetEnableRenderHud(this, enabled);
+			return ms_fpGetLightFieldColor(this, in_point, out_lightfield);
 		}
 
-		void SetFxParameter(const app::FxParameter& rParameter)
+		void SetEnableRenderHud(bool in_enabled)
 		{
-			ms_fpSetFxParameter(this, rParameter);
+			ms_fpSetEnableRenderHud(this, in_enabled);
 		}
 
-		void SetFxConfig(const app::FxSceneConfig& rConfig)
+		void SetFxParameter(const app::FxParameter& in_parameter)
 		{
-			ms_fpSetFxConfig(this, rConfig);
+			ms_fpSetFxParameter(this, in_parameter);
 		}
 
-		const Render::CameraParam& GetCameraParam(int camera) const
+		void SetFxConfig(const app::FxSceneConfig& in_config)
 		{
-			return ms_fpGetCameraParam(this, camera);
+			ms_fpSetFxConfig(this, in_config);
+		}
+
+		const Render::CameraParam& GetCameraParam(int in_camera) const
+		{
+			return ms_fpGetCameraParam(this, in_camera);
+		}
+
+		void AddRenderable(Renderable* in_pRenderable)
+		{
+			ms_fpAddRenderable(this, in_pRenderable);
 		}
 	};
 }
