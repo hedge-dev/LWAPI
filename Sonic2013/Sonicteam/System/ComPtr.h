@@ -64,6 +64,11 @@ namespace csl::fnd
 			return m_pObj;
 		}
 
+		T*& get()
+		{
+			return m_pObj;
+		}
+
 		T* get() const
 		{
 			return m_pObj;

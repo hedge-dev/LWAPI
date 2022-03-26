@@ -20,6 +20,25 @@ namespace app::fnd
 			*ms_ppCurNode = this;
 		}
 	};
+
+	// Utility class
+	template<typename T>
+	class Singleton : public csl::fnd::Singleton<T>
+	{
+	protected:
+		static void* CreateInstance()
+		{
+			return new T();
+		}
+
+		static void DeleteInstance(void* pInstance)
+		{
+			delete static_cast<T*>(pInstance);
+		}
+
+		inline static SingletonInitNode singletonInitNode{ CreateInstance,
+			DeleteInstance, reinterpret_cast<void**>(&csl::fnd::Singleton<T>::instance) };
+	};
 }
 
 #define DECLARE_SINGLETON static app::fnd::SingletonInitNode singletonInitNode;
