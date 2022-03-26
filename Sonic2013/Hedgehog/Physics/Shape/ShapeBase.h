@@ -57,5 +57,19 @@ namespace app::game
 		{
 			return m_Status.test(0);
 		}
+
+		void MarkUpdate()
+		{
+			if (m_pFrame)
+				m_pFrame->MarkUpdate();
+
+			m_Status.set(2);
+		}
+
+		void SetLocalTranslation(const csl::math::Vector3& in_translation)
+		{
+			m_Transform.SetTransVector(in_translation);
+			MarkUpdate();
+		}
 	};
 }
