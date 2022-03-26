@@ -16,4 +16,5 @@
 #include "Messages/MsgSpringImpulse.h"
 #include "Messages/MsgJumpBoardImpulse.h"
 #include "Messages/MsgCatchPlayer.h"
+#include "Messages/MsgCatchEndPlayer.h"
 #include "Messages/MsgGetExternalMovePosition.h"
