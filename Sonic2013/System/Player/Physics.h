@@ -64,5 +64,10 @@ namespace app::Player
 		{
 			return static_cast<csl::math::Vector3>(GetVelocity() - m_Up * GetVelocity().dot(m_Up));
 		}
+
+		csl::math::Vector3 GetVertVelocity() const
+		{
+			return static_cast<csl::math::Vector3>(m_Up * GetVelocity().dot(m_Up));
+		}
 	};
 }
