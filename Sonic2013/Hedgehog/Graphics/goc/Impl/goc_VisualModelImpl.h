@@ -16,6 +16,7 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00497A40), GOCVisualModelImpl*, GOCVisualModel&, const Description&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x00498060), GOCVisualModelImpl*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialColor, ASLR(0x00497530), GOCVisualModelImpl*, const float*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetMatrix, ASLR(0x00498100), const GOCVisualModelImpl*, csl::math::Matrix34*);
 
 		hh::gfx::ModelNode* m_pModelNode{};
 		game::GOCAnimationSingle* m_pAnimation{};
@@ -28,6 +29,11 @@ namespace app::fnd
 		GOCVisualModelImpl(csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator)
 		{
 
+		}
+
+		void GetMatrix(csl::math::Matrix34* out_matrix) const
+		{
+			ms_fpGetMatrix(this, out_matrix);
 		}
 
 		const csl::math::Aabb& GetBounds() const

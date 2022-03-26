@@ -58,6 +58,11 @@ namespace app::fnd
 			return ms_pGOCVisualModelStaticClass;
 		}
 
+		void GetMatrix(csl::math::Matrix34* out_matrix)
+		{
+			m_Impl.GetMatrix(out_matrix);
+		}
+
 		const csl::math::Aabb& GetBounds() 
 		{
 			return m_Impl.GetBounds();
