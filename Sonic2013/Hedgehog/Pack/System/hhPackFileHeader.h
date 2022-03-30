@@ -15,6 +15,8 @@ namespace hh::ut
 		EEndianType m_Endian{};
 		size_t m_Size{};
 		ushort m_BlockCount{};
+		char m_Status{};
+		char m_RemainingDepends{};
 
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpConvertEndian, ASLR(0x00C1A620), PackFileHeaderDataTag**);

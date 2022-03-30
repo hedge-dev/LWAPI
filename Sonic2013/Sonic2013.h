@@ -113,6 +113,7 @@
 #include "Hedgehog/Game/Messages/MsgGetVelocity.h"
 
 // Hedgehog Game Library
+#include "Hedgehog/Game/TinyFsm.h"
 #include "Hedgehog/Game/LuaScript.h"
 #include "Hedgehog/Game/GameSequence.h"
 #include "Hedgehog/Game/Game.h"
