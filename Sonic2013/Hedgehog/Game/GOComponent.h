@@ -1,4 +1,5 @@
 #pragma once
+#include "GOComponent.h"
 
 namespace app
 {
@@ -23,7 +24,7 @@ namespace app
 		{
 			friend GameObject;
 			
-		protected:
+		public:
 			GameObject* activeObject{};
 			unsigned short unk1{};
 			csl::ut::Bitset<char> m_Flags{};
@@ -36,7 +37,7 @@ namespace app
 
 			GOComponent(bool skip) : RefByHandleObject()
 			{
-				
+
 			}
 			
 		public:

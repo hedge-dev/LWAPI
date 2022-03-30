@@ -26,7 +26,10 @@ namespace app::fnd
 		
 		void Add(GOCVisual* pVisual)
 		{
+			pVisual->AddRef();
 			m_Visuals.push_back(pVisual);
+
+			unk1 |= pVisual->unk1;
 		}
 
 		void Remove(GOCVisual* pVisual)
