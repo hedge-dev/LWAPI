@@ -6,7 +6,9 @@ namespace app
 	enum RcType;
 
 	// Size is actually 272 bytes
-	class CGameSequence : public fnd::ReferencedObject
+	class CGameSequence : public fnd::ReferencedObject,
+		public TTinyFsm<CGameSequence, TiFsmBasicEvent<CGameSequence>, true>,
+		TinyFsmSetOption<TiFSM_OPTION_USE_FP_TOP>
 	{
 	public:
 		struct DevData
@@ -22,34 +24,62 @@ namespace app
 		};
 
 	protected:
-		INSERT_PADDING(44);
 		CGame* m_pGame;
 		void* m_pUnk1;
 		
 	public:
 		csl::ut::FixedString<16> m_StgId;
-		void* m_pNextSequence;
-		void* m_Unk2;
-		void* m_Unk3;
-		INSERT_PADDING(24);
+		TiFsmState_t m_NextState;
+		INSERT_PADDING(20);
 		DevData* m_pDevData;
 		
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSeqGotoStage, ASLR(0x009116B0), CGameSequence*);
-		
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateProduct, ASLR(0x00910850), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+
+		CGameSequence()
+		{
+			ASSERT_OFFSETOF(CGameSequence, m_pGame, 56);
+			ASSERT_OFFSETOF(CGameSequence, m_pDevData, 116);
+		}
+
 		DevData* GetDevData() const
 		{
 			return m_pDevData;
 		}
 		
-		void SetDevData(DevData* pDevData)
+		void SetDevData(DevData* in_pDevData)
 		{
-			m_pDevData = pDevData;
+			m_pDevData = in_pDevData;
 		}
+
+		void ChangeState(TiFsmState_t in_state)
+		{
+			m_NextState = in_state;
+		}
+
+		template<TiFsmHookState_t ExternalState>
+		void ChangeStateExternal()
+		{
+			ChangeState(FSM_HOOK<ExternalState>());
+		}
+
+		//template<TiFsmHookState_t ExternalState>
+		//void ChangeStateExternal(TiFsmHookState_t)
+		//{
+		//	ChangeState(FSM_HOOK<ExternalState>());
+		//}
 
 		void SeqGotoStage()
 		{
 			ms_fpSeqGotoStage(this);
+		}
+
+		TiFsmState_t StateProduct(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateProduct(this, result, in_event);
+			return result;
 		}
 	};
 

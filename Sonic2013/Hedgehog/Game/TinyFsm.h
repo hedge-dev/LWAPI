@@ -7,8 +7,15 @@
 #define TiFSM_SIGNAL_MESSAGE 1
 #define TiFSM_SIGNAL_USER 100
 
+#define TiFSM_OPTION_USE_FP_TOP 0
+
 namespace app
 {
+	inline static void* fpFsmTop = reinterpret_cast<void*>(ASLR(0x007B7030));
+	
+	template<const int Option>
+	class TinyFsmSetOption;
+
 	template<typename T, typename TEvent>
 	class TTinyFsmState;
 
@@ -27,12 +34,16 @@ namespace app
 	public:
 		typedef TEvent TiFsmEvent_t;
 		typedef State_t TiFsmState_t;
+		typedef TiFsmState_t(*TiFsmHookState_t)(T& in_self, const TEvent& in_event);
 
 	private:
 		State_t m_Src;
 		State_t m_Cur;
 
 		State_t _top(const TEvent& e) { return {}; }
+
+		template<TiFsmHookState_t HookFunc>
+		State_t _hook(const TEvent& e) { return HookFunc(*static_cast<T*>(this), e); }
 
 		State_t Trigger(const State_t& in_state, const TEvent& in_event)
 		{
@@ -70,7 +81,18 @@ namespace app
 	public:
 		inline static State_t FSM_TOP()
 		{
-			return { &TTinyFsm::_top };
+			if constexpr (std::is_base_of<TinyFsmSetOption<TiFSM_OPTION_USE_FP_TOP>, T>())
+			{
+				return csl::ut::union_cast<State_t>(fpFsmTop);
+			}
+			else
+				return { &TTinyFsm::_top };
+		}
+
+		template<TiFsmHookState_t HookFunc>
+		inline static State_t FSM_HOOK()
+		{
+			return { &TTinyFsm::_hook<HookFunc> };
 		}
 
 		void FSM_INIT(State_t in_state)
@@ -359,5 +381,11 @@ namespace app
 		{
 			return { TiFSM_SIGNAL_MESSAGE, in_msg };
 		}
+	};
+
+	template<const int Option>
+	class TinyFsmSetOption
+	{
+		
 	};
 }

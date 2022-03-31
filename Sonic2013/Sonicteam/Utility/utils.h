@@ -39,10 +39,28 @@ typedef unsigned int uint;
 #define ASLR(address) \
     ((size_t)csl::ut::MODULE_HANDLE + (size_t)address - (size_t)BASE_ADDRESS)
 
+#undef max
 namespace csl::ut
 {
     const HMODULE MODULE_HANDLE = GetModuleHandle(nullptr);
     static constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
+
+    template<typename TTo, typename TFrom>
+    TTo union_cast(const TFrom& in_from)
+    {
+        alignas(std::max(alignof(TTo), alignof(TFrom))) union
+	    {
+            char srcBuffer[sizeof(TFrom)];
+	    	char destBuffer[sizeof(TTo)];
+	    } container;
+
+        if constexpr (sizeof(TTo) > sizeof(TFrom))
+            memset(container.destBuffer, 0, sizeof(container.destBuffer));
+
+        memcpy(container.srcBuffer, &in_from, sizeof(container.srcBuffer));
+
+        return *reinterpret_cast<TTo*>(container.destBuffer);
+    }
 }
 
 namespace csl::fnd
