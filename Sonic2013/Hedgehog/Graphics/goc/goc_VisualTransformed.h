@@ -4,7 +4,7 @@ namespace app::fnd
 {
 	class GOCVisualTransformed : public GOCVisual, HFrameListener
 	{
-	protected:
+	public:
 		void* m_Unk1;
 		HFrame* m_pFrame;
 		void* m_Unk2;
