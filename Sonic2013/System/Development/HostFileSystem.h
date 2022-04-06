@@ -4,7 +4,7 @@
 
 namespace app::dev
 {
-	class HostFileSystem : public fnd::ReferencedObject, csl::fnd::SingletonPointer<HostFileSystem>
+	class HostFileSystem : public fnd::ReferencedObject, public csl::fnd::SingletonPointer<HostFileSystem>
 	{
 	public:
 		struct FileEntry

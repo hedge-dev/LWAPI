@@ -23,12 +23,15 @@ namespace app::fnd
 
 	// Utility class
 	template<typename T>
-	class Singleton : public csl::fnd::Singleton<T>
+	class SingletonUtil : public csl::fnd::Singleton<T>
 	{
 	protected:
 		static void* CreateInstance()
 		{
-			return new T();
+			if constexpr (std::is_base_of<fnd::ReferencedObject, T>())
+				return new(GetSingletonAllocator()) T();
+			else
+				return new T();
 		}
 
 		static void DeleteInstance(void* pInstance)
