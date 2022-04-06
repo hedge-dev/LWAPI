@@ -39,6 +39,11 @@ namespace app
 			}
 		}
 
+		GameObject(bool skip)
+		{
+			
+		}
+
 	public:
 		void Kill();
 		bool IsKilled() const
@@ -54,9 +59,9 @@ namespace app
 		~GameObject() override
 		{
 			csl::fnd::Singleton<GameObjectSystem>::GetInstance()->RemoveObject(this);
-			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
+			for (auto& component : m_Components)
 			{
-				(*it)->Release();
+				component->Release();
 			}
 		}
 

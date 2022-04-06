@@ -48,13 +48,21 @@ namespace app
 	class CGame : public GameBase, public fnd::CBranchActor
 	{
 	protected:
-		void* m_Unk1;
+		app::ut::RefPtr<GameMode> m_rpMode;
 		CGameSequence* m_pSequence;
 		void* m_Unk2;
 		void* m_Unk3;
 		float m_AspectRatio{ 1.7777778f };
 		
 	public:
+		void InitGameMode(GameMode* in_pMode);
+		void ShutdownGameMode();
+
+		GameMode* GetGameMode() const
+		{
+			return m_rpMode;
+		}
+
 		CGameSequence* GetSequence() const
 		{
 			return m_pSequence;

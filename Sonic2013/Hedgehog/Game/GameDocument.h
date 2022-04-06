@@ -20,12 +20,19 @@
 
 namespace app
 {
+	class GameDocument;
 	class GameMode;
 	namespace fnd 
 	{
 		class GameServiceClass;
 		class GameService;
-		class GameDocumentListener;
+		class GameDocumentListener
+		{
+		public:
+			virtual ~GameDocumentListener() = default;
+			virtual void PreShutdownObjectCallback(GameDocument* in_pDocument) { }
+			virtual void PostShutdownObjectCallback(GameDocument* in_pDocument) { }
+		};
 	}
 	class GameObject;
 
@@ -58,6 +65,11 @@ namespace app
 	public:
 		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
 
+		HH_FORCE_INLINE void UpdateGlobalTime(const fnd::SUpdateInfo& info)
+		{
+			m_GlobalTime += info.deltaTime;
+		}
+
 		HH_FORCE_INLINE GameMode* GetGameMode() const
 		{
 			return m_pGameMode;
@@ -89,6 +101,11 @@ namespace app
 		HH_FORCE_INLINE const csl::ut::Array<GameObject*>& GetObjects() const
 		{
 			return m_Objects;
+		}
+
+		HH_FORCE_INLINE const csl::ut::Array<fnd::GameService*>& GetServices() const
+		{
+			return m_Services;
 		}
 		
 		inline void AddGameDocumentListener(fnd::GameDocumentListener* pListener)

@@ -4,6 +4,7 @@ namespace app
 {
 	class CGame;
 	enum RcType;
+	class GameMode;
 
 	// Size is actually 272 bytes
 	class CGameSequence : public fnd::ReferencedObject,
@@ -22,30 +23,42 @@ namespace app
 			uint m_RingRaceSetNo;
 			uint m_MinigameMode;
 		};
-
-	protected:
 		CGame* m_pGame;
 		void* m_pUnk1;
 		
 	public:
 		csl::ut::FixedString<16> m_StgId;
 		TiFsmState_t m_NextState;
-		INSERT_PADDING(20);
+		INSERT_PADDING(8);
+		GameMode* m_pGameMode;
+		INSERT_PADDING(8);
 		DevData* m_pDevData;
 		
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSeqGotoStage, ASLR(0x009116B0), CGameSequence*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateProduct, ASLR(0x00910850), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateBoot, ASLR(0x00910C30), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateDevelop, ASLR(0x00910280), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateSegalogo, ASLR(0x00910770), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateSaveInit, ASLR(0x00910690), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateTitle, ASLR(0x00910370), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateStage, ASLR(0x00911000), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
 
 		CGameSequence()
 		{
 			ASSERT_OFFSETOF(CGameSequence, m_pGame, 56);
+			ASSERT_OFFSETOF(CGameSequence, m_pGameMode, 104);
 			ASSERT_OFFSETOF(CGameSequence, m_pDevData, 116);
 		}
 
 		DevData* GetDevData() const
 		{
 			return m_pDevData;
+		}
+
+		GameMode* GetGameMode() const
+		{
+			return m_pGameMode;
 		}
 		
 		void SetDevData(DevData* in_pDevData)
@@ -64,12 +77,6 @@ namespace app
 			ChangeState(FSM_HOOK<ExternalState>());
 		}
 
-		//template<TiFsmHookState_t ExternalState>
-		//void ChangeStateExternal(TiFsmHookState_t)
-		//{
-		//	ChangeState(FSM_HOOK<ExternalState>());
-		//}
-
 		void SeqGotoStage()
 		{
 			ms_fpSeqGotoStage(this);
@@ -81,6 +88,51 @@ namespace app
 			ms_fpStateProduct(this, result, in_event);
 			return result;
 		}
+
+		TiFsmState_t StateBoot(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateBoot(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateSegalogo(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateSegalogo(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateSaveInit(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateSaveInit(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateTitle(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateTitle(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateStage(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateStage(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateDevelop(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateDevelop(this, result, in_event);
+			return result;
+		}
+
+		void InitGameMode(GameMode* in_pMode);
+		void ShutdownGameMode();
 	};
 
 	enum RcType

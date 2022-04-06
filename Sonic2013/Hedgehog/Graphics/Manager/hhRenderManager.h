@@ -11,12 +11,14 @@ namespace app::gfx
 	{
 		class Impl;
 		
-	protected:
+	public:
 		Impl* m_pImpl{};
 		INSERT_PADDING(114448){};
-		
-	public:
+
+		typedef int eDrcRenderMode;
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetEnableRenderHud, ASLR(0x004E1D50), RenderManager* pThis, bool enabled);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGameDocument, ASLR(0x004DFF20), RenderManager* pThis, GameDocument*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDRCRenderMode, ASLR(0x004E5F30), RenderManager* pThis, eDrcRenderMode);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxParameter, ASLR(0x004E4240), RenderManager* pThis, const app::FxParameter& rParameter);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxConfig, ASLR(0x004DFF00), RenderManager* pThis, const app::FxSceneConfig& rConfig);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRenderable, ASLR(0x004E1E30), RenderManager* pThis, Renderable* pRenderable);
@@ -53,9 +55,19 @@ namespace app::gfx
 			ms_fpSetEnableRenderHud(this, in_enabled);
 		}
 
+		void SetDRCRenderMode(eDrcRenderMode in_mode)
+		{
+			ms_fpSetDRCRenderMode(this, in_mode);
+		}
+
 		void SetFxParameter(const app::FxParameter& in_parameter)
 		{
 			ms_fpSetFxParameter(this, in_parameter);
+		}
+
+		void SetGameDocument(app::GameDocument* in_pDocument)
+		{
+			ms_fpSetGameDocument(this, in_pDocument);
 		}
 
 		void SetFxConfig(const app::FxSceneConfig& in_config)

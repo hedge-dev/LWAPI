@@ -26,6 +26,17 @@ namespace app::StageInfo
 			return *ms_ppInstance;
 		}
 
+		SStageData* GetStageData(const char* in_pName) const
+		{
+			for (auto& pData : m_Stages)
+			{
+				if (pData->m_Name == in_pName)
+					return pData;
+			}
+
+			return nullptr;
+		}
+
 		void ReadCategoryDebug(const char* pCat, game::LuaScript& rScript, size_t worldIdx)
 		{
 			if (worldIdx > 2)

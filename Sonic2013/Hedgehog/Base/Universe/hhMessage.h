@@ -18,7 +18,7 @@ namespace app::fnd
 	public:
 		uint m_Sender{};
 		uint m_Receiver{};
-		char m_Unk1{};
+		char m_Handled{};
 		bool m_Broadcasted{};
 		const uint mask{ (uint)-1 };
 		

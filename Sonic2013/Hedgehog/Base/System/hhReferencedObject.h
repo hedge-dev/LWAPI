@@ -49,6 +49,10 @@ namespace app
 
 			void* operator new(size_t size, void* placement)
 			{
+				auto* pObj = static_cast<ReferencedObject*>(placement);
+				pObj->m_pAllocator = nullptr;
+				pObj->m_ObjectSize = 0;
+				pObj->m_RefCount = 0;
 				return placement;
 			}
 

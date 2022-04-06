@@ -119,6 +119,7 @@
 #include "Hedgehog/Game/Game.h"
 #include "Hedgehog/Game/GameDocument.h"
 #include "Hedgehog/Game/GameMode.h"
+#include "Hedgehog/Game/GameModeUtil.h"
 #include "Hedgehog/Game/GameObjectSystem.h"
 #include "Hedgehog/Game/GOComponent.h"
 #include "Hedgehog/Game/GameObject.h"
@@ -130,7 +131,7 @@
 #include "Hedgehog/Game/goc/goc_EnemyTarget.h"
 
 // Hedgehog File System Library
-#include "Hedgehog/FileSystem/Index.h"
+#include "Hedgehog/FileSystem/FileSystem.h"
 
 // Hedgehog Resource Library
 #include "Hedgehog/Resource/hhResCommon.h"
@@ -196,10 +197,15 @@
 #include "Hedgehog/Sound/hhSoundHandleObj.h"
 #include "Hedgehog/Sound/hhSoundHandle.h"
 #include "Hedgehog/Sound/hhSoundListenerHandle.h"
+#include "Hedgehog/Sound/hhSoundSystem.h"
 #include "Hedgehog/Sound/hhSoundPlayer.h"
 #include "Hedgehog/Sound/goc/goc_Sound.h"
 #include "Hedgehog/Sound/hhSoundHandle.inl"
 #include "Hedgehog/Sound/hhSoundListenerHandle.inl"
+
+// Hedgehog Movie
+#include "Hedgehog/Movie/hhMovieSystem.h"
+#include "Hedgehog/Movie/hhMoviePlayer.h"
 
 // System
 #include "System/Singleton.h"
@@ -210,6 +216,7 @@
 #include "System/FileLoader.h"
 #include "System/ResourceManager.h"
 #include "System/DeviceManager.h"
+#include "System/TerrainManager.h"
 
 // System Game
 #include "System/Game/ActorGroupRegistry.h"
@@ -282,6 +289,7 @@
 #include "System/Stage/World.h"
 #include "System/Stage/StageData.h"
 #include "System/Stage/StageInfo.h"
+#include "System/Stage/StageDataInitializer.h"
 
 #include "System/Camera/Camera.h"
 #include "System/Camera/CameraController.h"
@@ -300,7 +308,13 @@
 #include "System/Player/StateGOC.h"
 #include "System/Player/StateUtil.h"
 
+#include "System/StandardGameUpdate.h"
+#include "System/GameMode/GameModeStartUp.h"
+
 // Utilities
 #include "System/Utility/ObjUtil.h"
 
 #include "Hedgehog/Graphics/goc/Impl/goc_VisualModelImpl.inl"
+#include "Hedgehog/Game/GameSequence.inl"
+#include "Hedgehog/Game/GameMode.inl"
+#include "Hedgehog/Game/Game.inl"

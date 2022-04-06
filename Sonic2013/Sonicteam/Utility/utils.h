@@ -58,7 +58,6 @@ namespace csl::ut
             memset(container.destBuffer, 0, sizeof(container.destBuffer));
 
         memcpy(container.srcBuffer, &in_from, sizeof(container.srcBuffer));
-
         return *reinterpret_cast<TTo*>(container.destBuffer);
     }
 }

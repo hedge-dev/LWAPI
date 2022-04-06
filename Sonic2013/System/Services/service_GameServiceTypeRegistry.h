@@ -2,18 +2,18 @@
 
 namespace app::fnd
 {
-	class GameServiceTypeRegistry : public ReferencedObject, csl::fnd::SingletonPointer<GameServiceTypeRegistry>
+	class GameServiceTypeRegistry : public ReferencedObject, public csl::fnd::SingletonPointer<GameServiceTypeRegistry>
 	{
 	protected:
 		csl::ut::MoveArray<const GameServiceClass*> m_Classes{ GetAllocator() };
 		
 	public:
-		[[nodiscard]] const GameServiceClass* GetClassByName(const char* name) const
+		[[nodiscard]] const GameServiceClass* GetClassByName(const char* in_pName) const
 		{
-			for (auto& cls : m_Classes)
+			for (const auto& cls : m_Classes)
 			{
-				const auto* nam = cls->GetName();
-				if (!strcmp(name, nam))
+				const char* pName = cls->GetName();
+				if (!strcmp(in_pName, pName))
 				{
 					return cls;
 				}

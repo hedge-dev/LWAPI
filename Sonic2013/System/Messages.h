@@ -18,3 +18,4 @@
 #include "Messages/MsgCatchPlayer.h"
 #include "Messages/MsgCatchEndPlayer.h"
 #include "Messages/MsgGetExternalMovePosition.h"
+#include "Messages/MsgAdvanceSequence.h"

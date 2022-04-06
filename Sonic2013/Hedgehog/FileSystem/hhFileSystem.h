@@ -18,6 +18,11 @@ namespace app::fnd
 			return nullptr;
 		};
 
+		FileCache* GetCache() const
+		{
+			return m_pCache;
+		}
+
 		static const char* GetFileName(const char* pName)
 		{
 			const char* pEnd = strchr(pName, 0);
