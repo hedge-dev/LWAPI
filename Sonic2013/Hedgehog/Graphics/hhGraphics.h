@@ -8,6 +8,7 @@
 #include "hhRenderable.h"
 #include "hhCameraParam.h"
 #include "hhRenderableContainer.h"
+#include "hhGeometry.h"
 #include "Resource/hhFxSceneParmeters.h"
 #include "Manager/hhRenderManager.h"
 
