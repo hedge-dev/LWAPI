@@ -28,7 +28,7 @@ namespace app::font
 
 		void Clear()
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 			for (auto& param : m_Params)
 			{
 				m_Params.get_allocator()->Free(param.m_pText);
@@ -88,7 +88,7 @@ namespace app::font
 
 		void SetColorAll(uint color)
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 
 			m_Color = color;
 			for (auto& param : m_Params)
@@ -104,7 +104,7 @@ namespace app::font
 
 		void AddString(const csl::math::Vector2& pos, const char* pText)
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 			auto textSize = strlen(pText) + 1;
 			auto* pTexCpy = (char*)m_Params.get_allocator()->Alloc(textSize, alignof(char));
 
@@ -132,7 +132,7 @@ namespace app::font
 				if (m_AutoFlush)
 					pFont->Begin();
 				
-				csl::fnd::MutexLock lock(m_Lock);
+				csl::fnd::MutexGuard lock(m_Lock);
 				
 				for (auto& param : m_Params)
 				{

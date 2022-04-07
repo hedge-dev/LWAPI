@@ -26,7 +26,7 @@ namespace app::font
 
 		void DbgAddFontText(FontText* pText)
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 			if (!m_DbgTexts.get_allocator())
 				m_DbgTexts.change_allocator(GetAllocator());
 
@@ -35,7 +35,7 @@ namespace app::font
 
 		void DbgRemoveFontText(FontText* pText)
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 			auto idx = m_DbgTexts.find(pText);
 			if (idx == -1)
 				return;
@@ -45,7 +45,7 @@ namespace app::font
 		
 		void DbgDraw()
 		{
-			csl::fnd::MutexLock lock(m_Lock);
+			csl::fnd::MutexGuard lock(m_Lock);
 			for (auto& pText : m_DbgTexts)
 			{
 				if (pText)

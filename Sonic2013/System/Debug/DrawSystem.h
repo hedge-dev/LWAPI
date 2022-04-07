@@ -7,7 +7,7 @@ namespace app::dbg
 	public:
 		inline static DrawSystem& ms_rInstance = *reinterpret_cast<DrawSystem*>(ASLR(0x00FD405C));
 		typedef DrawContext* CreateDrawContext_t(csl::fnd::IAllocator* in_pAllocator);
-		typedef GraphicsGeometry* CreateGraphicsGeometry_t(csl::fnd::IAllocator* in_pAllocator);
+		typedef GraphicsGeometry* CreateGraphicsGeometry_t(DrawContext* in_pContext, csl::fnd::IAllocator* in_pAllocator);
 
 		CreateDrawContext_t* m_fpDrawContextFactory{};
 		CreateGraphicsGeometry_t* m_fpGraphicsGeometryFactory{};
@@ -17,9 +17,9 @@ namespace app::dbg
 			return m_fpDrawContextFactory(in_pAllocator);
 		}
 
-		[[nodiscard]] GraphicsGeometry* CreateGeometry(csl::fnd::IAllocator* in_pAllocator) const
+		[[nodiscard]] GraphicsGeometry* CreateGeometry(DrawContext* in_pContext, csl::fnd::IAllocator* in_pAllocator) const
 		{
-			return m_fpGraphicsGeometryFactory(in_pAllocator);
+			return m_fpGraphicsGeometryFactory(in_pContext, in_pAllocator);
 		}
 
 		inline static DrawSystem& GetInstance()

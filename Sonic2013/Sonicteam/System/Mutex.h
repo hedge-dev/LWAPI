@@ -29,17 +29,17 @@ namespace csl::fnd
 		}
 	};
 
-	class MutexLock
+	class MutexGuard
 	{
 		Mutex* m_pMutex;
 
 	public:
-		MutexLock(Mutex& rMutex) : m_pMutex(&rMutex)
+		MutexGuard(Mutex& rMutex) : m_pMutex(&rMutex)
 		{
 			m_pMutex->Lock();
 		}
 
-		~MutexLock()
+		~MutexGuard()
 		{
 			m_pMutex->Unlock();
 		}

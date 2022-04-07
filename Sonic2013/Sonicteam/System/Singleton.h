@@ -46,7 +46,7 @@ namespace csl::fnd
 	class Singleton
 	{
 	public:
-		inline static T* instance;
+		inline static T* instance{};
 
 		[[nodiscard]] static T* GetInstance()
 		{

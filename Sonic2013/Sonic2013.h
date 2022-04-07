@@ -12,6 +12,7 @@
 #include "Sonicteam/Utility/detail/LinkListImpl.h"
 #include "Sonicteam/math/math.h"
 #include "Sonicteam/System/Mutex.h"
+#include "Sonicteam/System/DummyLock.h"
 #include "Sonicteam/System/IAllocator.h"
 #include "Sonicteam/System/Singleton.h"
 #include "Sonicteam/System/Delegate.h"
@@ -22,6 +23,7 @@
 #include "Sonicteam/Utility/collections/InplaceObjectMoveArray.h"
 #include "Sonicteam/Utility/collections/FixedArray.h"
 #include "Sonicteam/Utility/collections/LinkList.h"
+#include "Sonicteam/Utility/collections/List.h"
 #include "Sonicteam/Utility/collections/HashMap.h"
 #include "Sonicteam/Utility/collections/PointerMap.h"
 #include "Sonicteam/Utility/collections/StringMap.h"
@@ -32,6 +34,9 @@
 #include "Sonicteam/Utility/Rectangle.h"
 #include "Sonicteam/Utility/Color.h"
 #include "Sonicteam/System/ComPtr.h"
+#include "Sonicteam/System/HeapBase.h"
+#include "Sonicteam/System/PoolHeapBase.h"
+#include "Sonicteam/System/PoolHeapTemplate.h"
 #include "Sonicteam/System/MallocAllocator.h"
 
 
