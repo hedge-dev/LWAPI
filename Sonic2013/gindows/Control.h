@@ -105,6 +105,7 @@ namespace gindows
 	protected:
 		Control(bool skipFp)
 		{
+			m_Name._Mypad = 0;
 			new (&m_Name) std::dummy::string();
 			m_Name._Mypad |= true;
 		}
