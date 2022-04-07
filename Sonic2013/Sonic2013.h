@@ -242,6 +242,9 @@
 #include "System/Debug/Menu/Menu.h"
 #include "System/Debug/Menu/MenuManager.h"
 #include "System/Debug/FormObject.h"
+#include "System/Debug/DrawContext.h"
+#include "System/Debug/GraphicsGeometry.h"
+#include "System/Debug/DrawSystem.h"
 
 #include "System/Development/ReflectionEditWindow.h"
 
