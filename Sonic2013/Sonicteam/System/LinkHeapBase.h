@@ -12,6 +12,15 @@ namespace csl::fnd
 		{
 			for (auto& pHeap : m_Heaps)
 				pHeap = nullptr;
+
+			AttachToLinkList(nullptr);
+			RaiseInitializeCallback();
+		}
+
+		~LinkHeapBase()
+		{
+			RaiseFinalizeCallback();
+			DetachToLinkList();
 		}
 
 		void* Alloc(size_t in_size, size_t in_alignment) override
