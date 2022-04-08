@@ -198,6 +198,11 @@ namespace csl::fnd
 			m_Heaps[in_idx] = in_pHeap;
 		}
 
+		inline void SetPoolHeap(size_t in_size, PoolHeapBase* in_pHeap)
+		{
+			SetHeap(GetHeapIndex(in_size), in_pHeap);
+		}
+
 		inline HeapIndex GetHeapIndex(size_t in_size) const
 		{
 			size_t blockSize = 2 * in_size - 1;
