@@ -12,7 +12,17 @@ namespace csl::ut
 		{
 			return Len;
 		}
-		
+
+		constexpr const T* begin() const
+		{
+			return m_Items;
+		}
+
+		constexpr const T* end() const
+		{
+			return &m_Items[Len];
+		}
+
 		constexpr T* begin()
 		{
 			return m_Items;

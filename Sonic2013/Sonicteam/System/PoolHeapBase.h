@@ -94,7 +94,7 @@ namespace csl::fnd
 		{
 			out_pInfo->m_AllocationCount = m_AllocationCount;
 			out_pInfo->m_FreeSpace = (m_BlockCount * m_BlockSize) - (m_AllocationCount * m_BlockSize);
-			out_pInfo->m_BlockSize = m_BlockSize;
+			out_pInfo->m_LargestBlockSize = m_BlockSize;
 			out_pInfo->m_AllocationSize = (m_BlockCount * m_BlockSize);
 		}
 
@@ -126,11 +126,9 @@ namespace csl::fnd
 	protected:
 		virtual void* AllocCore(size_t in_size)
 		{
-			if (!m_pCurBlock)
-			{
-				++m_TotalAllocationCalls;
+			++m_TotalAllocationCalls;
+			if (!m_pCurBlock || in_size > m_BlockSize)
 				return nullptr;
-			}
 
 			auto* pBlock = m_pCurBlock;
 			++m_AllocationCount;
@@ -138,8 +136,6 @@ namespace csl::fnd
 
 			if (m_MaxAllocationCount < m_AllocationCount)
 				m_MaxAllocationCount = m_AllocationCount;
-
-			++m_TotalAllocationCalls;
 
 			return pBlock;
 		}

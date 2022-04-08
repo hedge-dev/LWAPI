@@ -6,13 +6,11 @@ namespace csl::fnd
 	{
 		size_t m_AllocationCount{};
 		size_t m_FreeSpace{};
-		size_t m_BlockSize{};
+		size_t m_LargestBlockSize{};
 		size_t m_AllocationSize{};
 	};
 
-	struct MemoryBlockFunction;
-	struct MemorySnapshot;
-
+	class MemoryBlockFunction;
 	class HeapBase
 	{
 	public:
@@ -29,18 +27,29 @@ namespace csl::fnd
 			CallbackFunc* m_pFinalizeCallback{};
 		};
 
+		struct Allocation
+		{
+			HeapBase* m_pSource{};
+			const void* m_pBlock{};
+			size_t m_BlockSize{};
+			size_t m_Line{};
+			csl::ut::FixedString<64> m_Name{};
+			size_t m_Status{};
+			Allocation* m_pNextAllocation{};
+		};
+
 		DEFINE_RTTI_PTR(ASLR(0x00FF001C));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAttachToLinkList, ASLR(0x009682D0), HeapBase*, void*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDetachToLinkList, ASLR(0x009681C0), HeapBase*);
 		inline static Callback& ms_Callback = *reinterpret_cast<Callback*>(ASLR(0x00FF0014));
 
-		uint m_Unk1{};
+		Allocation* m_pAllocations{}; // Linked list of allocations
 		csl::ut::FixedString<16> m_Name{};
 		HeapBase* m_pParent{};
 		csl::ut::List m_Children;
 		csl::ut::List::Node m_ListNode{};
-		bool m_Unk2{};
-		uint m_Unk3{};
+		bool m_Unk1{};
+		uint m_Unk2{};
 
 		HeapBase()
 		{

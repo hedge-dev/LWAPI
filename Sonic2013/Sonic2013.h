@@ -34,8 +34,10 @@
 #include "Sonicteam/Utility/Rectangle.h"
 #include "Sonicteam/Utility/Color.h"
 #include "Sonicteam/System/ComPtr.h"
+#include "Sonicteam/System/MemorySnapshot.h"
 #include "Sonicteam/System/HeapBase.h"
 #include "Sonicteam/System/PoolHeapBase.h"
+#include "Sonicteam/System/LinkHeapBase.h"
 #include "Sonicteam/System/PoolHeapTemplate.h"
 #include "Sonicteam/System/MallocAllocator.h"
 
