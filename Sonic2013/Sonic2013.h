@@ -37,9 +37,11 @@
 #include "Sonicteam/System/MemorySnapshot.h"
 #include "Sonicteam/System/HeapBase.h"
 #include "Sonicteam/System/PoolHeapBase.h"
+#include "Sonicteam/System/FreeListHeapBase.h"
 #include "Sonicteam/System/LinkHeapBase.h"
 #include "Sonicteam/System/PoolHeapTemplate.h"
 #include "Sonicteam/System/LinkHeapTemplate.h"
+#include "Sonicteam/System/FreeListHeapTemplate.h"
 #include "Sonicteam/System/MallocAllocator.h"
 
 

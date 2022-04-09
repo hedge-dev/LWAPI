@@ -5,6 +5,8 @@ namespace csl::fnd
 	class LinkHeapBase : public HeapBase
 	{
 	public:
+		DEFINE_RTTI_PTR(ASLR(0x00FBABC4));
+
 		typedef size_t HeapIndex;
 		csl::ut::FixedArray<HeapBase*, 12> m_Heaps{};
 
@@ -21,6 +23,11 @@ namespace csl::fnd
 		{
 			RaiseFinalizeCallback();
 			DetachToLinkList();
+		}
+
+		const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() override
+		{
+			return GetRuntimeTypeInfoStatic();
 		}
 
 		void* Alloc(size_t in_size, size_t in_alignment) override
@@ -210,6 +217,11 @@ namespace csl::fnd
 		inline void SetPoolHeap(size_t in_size, PoolHeapBase* in_pHeap)
 		{
 			SetHeap(GetHeapIndex(in_size), in_pHeap);
+		}
+
+		inline void SetFreelistHeap(FreeListHeapBase* in_pHeap)
+		{
+			SetHeap(11, in_pHeap);
 		}
 
 		inline HeapIndex GetHeapIndex(size_t in_size) const

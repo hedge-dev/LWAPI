@@ -2,21 +2,16 @@
 
 namespace csl::fnd
 {
-	template<typename TLock = Mutex>
-	class PoolHeapTemplate : public PoolHeapBase
+	template<typename TLock>
+	class FreeListHeapTemplate : public FreeListHeapBase
 	{
 	public:
 		TLock m_Lock{};
 
-		PoolHeapTemplate()
-		{
-			
-		}
-
 		void* Alloc(size_t in_size, size_t in_alignment) override
 		{
 			m_Lock.Lock();
-			void* pMemory = PoolHeapBase::Alloc(in_size, in_alignment);
+			void* pMemory = FreeListHeapBase::Alloc(in_size, in_alignment);
 			m_Lock.Unlock();
 
 			return pMemory;
@@ -25,7 +20,7 @@ namespace csl::fnd
 		void* AllocBottom(size_t in_size, size_t in_alignment) override
 		{
 			m_Lock.Lock();
-			void* pMemory = PoolHeapBase::AllocBottom(in_size, in_alignment);
+			void* pMemory = FreeListHeapBase::AllocBottom(in_size, in_alignment);
 			m_Lock.Unlock();
 
 			return pMemory;
@@ -34,7 +29,7 @@ namespace csl::fnd
 		void Free(void* in_pMemory) override
 		{
 			m_Lock.Lock();
-			PoolHeapBase::Free(in_pMemory);
+			FreeListHeapBase::Free(in_pMemory);
 			m_Lock.Unlock();
 		}
 	};

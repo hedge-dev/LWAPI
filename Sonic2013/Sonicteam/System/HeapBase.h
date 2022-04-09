@@ -63,7 +63,7 @@ namespace csl::fnd
 		virtual void Free(void* in_pMemory) = 0;
 		virtual bool IsIn(void* in_pMemory) const = 0;
 		virtual size_t GetBlockSize(void* in_pMemory) const = 0;
-		virtual void CollectHeapInformation(csl::fnd::HeapInformation* out_pInfo) const = 0;
+		virtual void CollectHeapInformation(HeapInformation* out_pInfo) const = 0;
 		virtual void* GetBufferTop() const = 0;
 		virtual void* GetBufferEnd() const = 0;
 		virtual size_t GetCurrentAllocateCount() const = 0;

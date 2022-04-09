@@ -60,6 +60,12 @@ namespace csl::ut
         memcpy(container.srcBuffer, &in_from, sizeof(container.srcBuffer));
         return *reinterpret_cast<TTo*>(container.destBuffer);
     }
+
+    template<typename T>
+    T RoundUp(const T& in_value, uint in_round)
+    {
+        return (in_value + in_round - 1) & ~(in_round - 1);
+    }
 }
 
 namespace csl::fnd
