@@ -8,8 +8,8 @@ namespace csl
 		public:
 			virtual ~IAllocator() = default;
 			
-			virtual void* Alloc(size_t size, int alignment) = 0;
-			virtual void Free(void* loc) = 0;
+			virtual void* Alloc(size_t in_size, int in_alignment) = 0;
+			virtual void Free(void* in_pMemory) = 0;
 		};
 	}
 }

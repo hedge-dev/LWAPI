@@ -55,7 +55,7 @@
 #endif
 
 // Include this early
-#include "Hedgehog/Base/System/hhAllocator.h"
+#include "Hedgehog/Base/Memory/hhAllocator.h"
 
 // Dummy standard library
 #include "std-dummy/std-dummy.h"
@@ -107,6 +107,12 @@
 #include "Hedgehog/Base/Utility/hhScopedPointer.h"
 #include "Hedgehog/Base/Utility/hhReferencePointer.h"
 #include "Hedgehog/Base/Utility/hhTempArray.h"
+#include "Hedgehog/Base/Utility/hhUtils.h"
+
+// Hedgehog Memory Library
+#include "Hedgehog/Base/Memory/Pooled/hhPooledAllocatorBase.h"
+#include "Hedgehog/Base/Memory/Pooled/hhPooledAllocator.h"
+#include "Hedgehog/Base/Memory/Pooled/hhThreadSafePooledAllocator.h"
 
 // Hedgehog Universe Library
 #include "Hedgehog/Base/Universe/hhMessage.h"

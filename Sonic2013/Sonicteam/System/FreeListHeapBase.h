@@ -27,7 +27,6 @@ namespace csl::fnd
 		size_t m_BufferFreeSize{}; // 80
 		size_t m_TotalAllocationCalls{}; // 84
 		uint m_Unk3{}; // 88
-		uint m_Unk4{}; // 92
 
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpAllocCore, ASLR(0x0096A450), FreeListHeapBase*, size_t, size_t);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpAllocBottomCore, ASLR(0x0096A4E0), FreeListHeapBase*, size_t, size_t);
