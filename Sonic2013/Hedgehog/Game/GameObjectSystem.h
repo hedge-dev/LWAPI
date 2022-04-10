@@ -6,26 +6,28 @@ namespace app
 
 	struct GameObjectTableEntry
 	{
-		size_t handle{};
-		GameObject* object{};
+		size_t m_Handle{};
+		GameObject* m_pObject{};
 	};
 
 	class GameObjectSystem : public fnd::ReferencedObject, csl::fnd::SingletonPointer<GameObjectSystem>
 	{
-	private:
-		csl::fnd::IAllocator* pooledAllocator{};
-		INSERT_PADDING(0x110);
-		
 	public:
-		fnd::HandleManagerBase* handleManager;
+		app::fnd::PooledAllocator* m_pPooledAllocator{};
+		app::fnd::PooledAllocator m_PooledAllocator{ &m_PoolList };
+		csl::fnd::LinkHeapTemplate<csl::fnd::DummyLock> m_PoolList{};
+		csl::ut::MoveArray<GameObjectTableEntry> m_Handles{ m_pPooledAllocator };
+		INSERT_PADDING(24) {}; // csl::ut::Queue<uint>
+		app::ut::RefPtr<app::fnd::HandleManagerBase> m_rpHandleManager{};
+
 		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0x00FD3FC4);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddObject, ASLR(0x0049D9C0), GameObjectSystem* This, GameObject* object);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveObject, ASLR(0x0049DA30), GameObjectSystem* This, GameObject* object);
 
 		GameObjectSystem()
 		{
-			ASSERT_OFFSETOF(GameObjectSystem, pooledAllocator, 12);
-			ASSERT_OFFSETOF(GameObjectSystem, handleManager, 0x120);
+			ASSERT_OFFSETOF(GameObjectSystem, m_pPooledAllocator, 12);
+			ASSERT_OFFSETOF(GameObjectSystem, m_rpHandleManager, 0x120);
 		}
 		
 		void AddObject(GameObject* object)
@@ -40,7 +42,7 @@ namespace app
 
 		csl::fnd::IAllocator* GetPooledAllocator() const
 		{
-			return pooledAllocator;
+			return m_pPooledAllocator;
 		}
 	};
 }

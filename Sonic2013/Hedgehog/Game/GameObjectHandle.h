@@ -38,7 +38,7 @@ namespace app
 			if (!m_pEntry)
 				return false;
 
-			return (m_pEntry->handle == m_ObjectHandle) && m_pEntry->object;
+			return (m_pEntry->m_Handle == m_ObjectHandle) && m_pEntry->m_pObject;
 		}
 
 		GameObject* Get() const
@@ -46,7 +46,7 @@ namespace app
 			if (!IsValid())
 				return nullptr;
 
-			return m_pEntry->object;
+			return m_pEntry->m_pObject;
 		}
 
 		bool IsAlive() const

@@ -43,12 +43,12 @@ namespace app
 		public:
 			GOComponent() : RefByHandleObject()
 			{
-				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->AddObject(*this);
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_rpHandleManager->AddObject(*this);
 			}
 
 			~GOComponent()
 			{
-				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->handleManager->RemoveObject(*this);
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_rpHandleManager->RemoveObject(*this);
 			}
 			
 			virtual const char* GetFamilyID() = 0;
