@@ -156,7 +156,9 @@
 #include "Hedgehog/Pack/System/hhPackFileHeader.h"
 #include "Hedgehog/Pack/System/hhPackFile.h"
 #include "Hedgehog/Resource/hhResourceTypeInfo.h"
+#include "Hedgehog/Resource/hhResName.h"
 #include "Hedgehog/Resource/hhResourceReflections.h"
+#include "Hedgehog/Resource/hhResTexture.h"
 
 #include "Hedgehog/Database/System/hhDatabaseData.h"
 
