@@ -13,8 +13,8 @@ namespace app::game
 		GOCCollider* m_pOwner;
 		GOCPhysics* m_pPhysicsOwner;
 		fnd::HFrame* m_pFrame{};
-		csl::math::Matrix34 m_UnkMtx{};
 		csl::math::Matrix34 m_Transform{};
+		csl::math::Matrix34 m_UnkMtx{};
 		void* m_Unk1{};
 		void* m_Unk2{};
 		size_t m_Unk3{}; // Unk3 from CollisionObjCinfo
