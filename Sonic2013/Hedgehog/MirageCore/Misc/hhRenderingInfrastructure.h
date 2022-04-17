@@ -2,17 +2,17 @@
 
 namespace hh::mr
 {
-	inline static FUNCTION_PTR(boost::shared_ptr<CPixelShaderData>&, __cdecl, fpGetMiragePixelShaderDataFromPackfile, ASLR(0x00C2C1E0), boost::shared_ptr<CPixelShaderData>& ret, hh::ut::PackFile&, const char*);
-	inline static FUNCTION_PTR(boost::shared_ptr<CVertexShaderData>&, __cdecl, fpGetMirageVertexShaderDataFromPackfile, ASLR(0x00C2BF10), boost::shared_ptr<CVertexShaderData>& ret, hh::ut::PackFile&, const char*);
+	inline static FUNCTION_PTR(boost::shared_ptr<CPixelShaderData>&, __cdecl, fpGetMiragePixelShaderDataFromPackfile, ASLR(0x00C2C1E0), boost::shared_ptr<CPixelShaderData>& ret, const hh::ut::PackFile&, const char*);
+	inline static FUNCTION_PTR(boost::shared_ptr<CVertexShaderData>&, __cdecl, fpGetMirageVertexShaderDataFromPackfile, ASLR(0x00C2BF10), boost::shared_ptr<CVertexShaderData>& ret, const hh::ut::PackFile&, const char*);
 
-	inline static boost::shared_ptr<CPixelShaderData> GetMiragePixelShaderDataFromPackfile(ut::PackFile& in_pac, const char* in_pName)
+	inline static boost::shared_ptr<CPixelShaderData> GetMiragePixelShaderDataFromPackfile(const ut::PackFile& in_pac, const char* in_pName)
 	{
 		boost::shared_ptr<CPixelShaderData> ret{};
 		fpGetMiragePixelShaderDataFromPackfile(ret, in_pac, in_pName);	
 		return ret;
 	}
 
-	inline static boost::shared_ptr<CVertexShaderData> GetMirageVertexShaderDataFromPackfile(ut::PackFile& in_pac, const char* in_pName)
+	inline static boost::shared_ptr<CVertexShaderData> GetMirageVertexShaderDataFromPackfile(const ut::PackFile& in_pac, const char* in_pName)
 	{
 		boost::shared_ptr<CVertexShaderData> ret{};
 		fpGetMirageVertexShaderDataFromPackfile(ret, in_pac, in_pName);

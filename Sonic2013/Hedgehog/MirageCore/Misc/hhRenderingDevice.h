@@ -36,6 +36,7 @@ namespace hh::mr
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpPopRenderState, ASLR(0x00C2FE80), CRenderingDevice*, rsdx::_D3DRENDERSTATETYPE);
 
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLightFieldData, ASLR(0x00C32070), CRenderingDevice*, const rsdx::rsdx_simd_float4*, bool);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetHasBone, ASLR(0x00488610), CRenderingDevice*, bool);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetPixelShaderParameterF, ASLR(0x004892A0), CRenderingDevice*, const base::CStringSymbol&, const float*, uint offset, uint count, CPixelShaderData*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVertexShaderParameterF, ASLR(0x00488820), CRenderingDevice*, const base::CStringSymbol&, const float*, uint offset, uint count, CVertexShaderData*);
 
@@ -66,6 +67,11 @@ namespace hh::mr
 		void SetShader(const boost::shared_ptr<CVertexShaderData>& in_vertexShader, const boost::shared_ptr<CPixelShaderData>& in_pixelShader)
 		{
 			ms_fpSetShader(this, in_vertexShader, in_pixelShader);
+		}
+
+		void SetHasBone(bool in_value)
+		{
+			ms_fpSetHasBone(this, in_value);
 		}
 
 		void SetCullMode(uint in_mode)

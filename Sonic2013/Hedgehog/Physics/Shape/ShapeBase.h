@@ -7,7 +7,7 @@ namespace app::game
 	struct PhysicsContactPoint;
 	struct PhysicsOverlapOutput;
 
-	class ColliShapeBase : public fnd::RefByHandleObject, fnd::HFrameListener
+	class ColliShapeBase : public fnd::RefByHandleObject, public fnd::HFrameListener
 	{
 	public:
 		GOCCollider* m_pOwner;

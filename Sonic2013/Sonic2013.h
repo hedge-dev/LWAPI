@@ -123,6 +123,17 @@
 #include "Hedgehog/Base/Universe/hhLeafActor.h"
 #include "Hedgehog/Base/Universe/hhBranchActor.h"
 
+// Hedgehog Resource Library
+#include "Hedgehog/Resource/hhResCommon.h"
+#include "Hedgehog/Pack/System/hhPackFileHeader.h"
+#include "Hedgehog/Pack/System/hhPackFile.h"
+#include "Hedgehog/Resource/hhResourceTypeInfo.h"
+#include "Hedgehog/Resource/hhResName.h"
+#include "Hedgehog/Resource/hhResourceReflections.h"
+#include "Hedgehog/Resource/hhResTexture.h"
+
+#include "Hedgehog/Database/System/hhDatabaseData.h"
+
 // Hedgehog Game Messages
 #include "Hedgehog/Game/Messages/MsgKill.h"
 #include "Hedgehog/Game/Messages/MsgDeactivate.h"
@@ -131,6 +142,7 @@
 #include "Hedgehog/Game/Messages/MsgGetVelocity.h"
 
 // Hedgehog Game Library
+#include "Hedgehog/Game/Resource/ResNameExtra.h"
 #include "Hedgehog/Game/TinyFsm.h"
 #include "Hedgehog/Game/LuaScript.h"
 #include "Hedgehog/Game/GameSequence.h"
@@ -150,17 +162,6 @@
 
 // Hedgehog File System Library
 #include "Hedgehog/FileSystem/FileSystem.h"
-
-// Hedgehog Resource Library
-#include "Hedgehog/Resource/hhResCommon.h"
-#include "Hedgehog/Pack/System/hhPackFileHeader.h"
-#include "Hedgehog/Pack/System/hhPackFile.h"
-#include "Hedgehog/Resource/hhResourceTypeInfo.h"
-#include "Hedgehog/Resource/hhResName.h"
-#include "Hedgehog/Resource/hhResourceReflections.h"
-#include "Hedgehog/Resource/hhResTexture.h"
-
-#include "Hedgehog/Database/System/hhDatabaseData.h"
 
 // Hedgehog Graphics Library
 #include "Hedgehog/MirageCore/RenderData/hhVertexShaderData.h"
@@ -236,6 +237,7 @@
 #include "System/FileLoader.h"
 #include "System/ResourceManager.h"
 #include "System/DeviceManager.h"
+#include "System/TerrainBase.h"
 #include "System/TerrainManager.h"
 
 // System Game

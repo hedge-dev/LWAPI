@@ -48,6 +48,7 @@ namespace app
 	namespace res
 	{
 		LWAPI_MAKE_STUBRES(ResShadowModel, ASLR(0x00FB6F0C));
+		LWAPI_MAKE_STUBRES(ResSvCol, ASLR(0x00FB772C));
 	}
 }
 

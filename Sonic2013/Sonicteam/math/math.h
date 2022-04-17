@@ -64,7 +64,12 @@ namespace csl::math
 		{
 			
 		}
-		
+
+		Vector4(const Vector3& vec, float w) : Eigen::Vector4f(vec[0], vec[1], vec[2], w)
+		{
+			
+		}
+
 		Vector4(float x, float y, float z, float w) : Eigen::Vector4f(x, y, z, w)
 		{
 

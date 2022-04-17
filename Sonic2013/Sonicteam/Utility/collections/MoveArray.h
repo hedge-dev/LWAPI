@@ -102,7 +102,7 @@ namespace csl
 				return p_allocator;
 			}
 			
-			void push_back(T item)
+			void push_back(const T& item)
 			{
 				this->m_length++;
 				if (this->m_length > this->capacity())
@@ -112,7 +112,13 @@ namespace csl
 
 				this->p_buffer[this->m_length - 1] = item;
 			}
-			
+
+			void push_back_unchecked(const T& item)
+			{
+				this->m_length++;
+				this->p_buffer[this->m_length - 1] = item;
+			}
+
 			void remove(uint i)
 			{
 				if (i > this->m_length)

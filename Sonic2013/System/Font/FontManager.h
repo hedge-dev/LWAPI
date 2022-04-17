@@ -5,23 +5,23 @@ namespace app::font
 	class Font;
 	class FontText;
 
-	class FontManager : public fnd::ReferencedObject, csl::fnd::SingletonPointer<FontManager>
+	class FontManager : public fnd::ReferencedObject, public csl::fnd::SingletonPointer<FontManager>
 	{
 	protected:
-		csl::ut::InplaceMoveArray<Font*, 2> m_DebugFonts{ GetAllocator() };
+		csl::ut::InplaceMoveArray<Font*, 2> m_Fonts{ GetAllocator() };
 		csl::ut::MoveArray<FontText*> m_DbgTexts{ GetAllocator() };
 		app::ut::ScopedPtr<FontText> m_DbgText{};
 		csl::fnd::Mutex m_Lock{};
 		
 	public:
-		void SetDbgFont(Font* pFont)
+		void SetDbgFont(Font* in_pFont)
 		{
-			m_DebugFonts[0] = pFont;
+			m_Fonts[1] = in_pFont;
 		}
 
 		Font* GetDbgFont()
 		{
-			return m_DebugFonts[0];
+			return m_Fonts[1];
 		}
 
 		void DbgAddFontText(FontText* pText)
