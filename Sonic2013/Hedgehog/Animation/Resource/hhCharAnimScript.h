@@ -195,16 +195,23 @@ namespace app::animation
 		ComplexAnimationArray m_ComplexAnimations;
 	};
 
-	class ResCharAnimScriptData
+	class ResCharAnimScriptHeader
 	{
 	protected:
-		const char* m_pSignature;
-		const char* m_pVersion;
+		const char* m_pSignature{};
+		const char* m_pVersion{};
 	public:
-		ushort m_LayerCount;
-		ushort m_TriggerCount;
-		AnimationDefArray* m_pAnimations;
-		TransitionTable* m_pTransitions;
+		ushort m_LayerCount{};
+		ushort m_TriggerCount{};
+		AnimationDefArray* m_pAnimations{};
+		TransitionTable* m_pTransitions{};
+	};
+
+	class ResCharAnimScriptData
+	{
+	public:
+		ResCharAnimScriptHeader* m_pHeader{};
+		csl::fnd::IAllocator* m_pAllocator{};
 	};
 }
 
