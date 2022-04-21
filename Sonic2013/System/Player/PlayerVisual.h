@@ -5,7 +5,6 @@ namespace app::Player
 	class CPlayerVisual : public fnd::ReferencedObject, CVisualBase
 	{
 	protected:
-		void* m_pVftableVisualBase{};
 		const char* m_pVisualName{};
 
 	public:
