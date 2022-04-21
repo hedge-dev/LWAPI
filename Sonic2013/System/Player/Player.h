@@ -3,6 +3,7 @@
 namespace app::Player
 {
 	struct SCinfo;
+	struct ResourceInfo;
 	class CStateGOC;
 	class CVisualGOC;
 	class CBlackBoard;
@@ -46,4 +47,14 @@ namespace app::Player
 			return m_Components.GetGOC<CVisualGOC>();
 		}
 	};
+
+	template <class T>
+	void CreateInfo(CObjInfoContainer& in_rContainer, csl::fnd::IAllocator& in_rAlloc)
+	{
+		CObjInfo* pInfo = new(in_rAlloc) T();
+		if (!pInfo)
+			return;
+
+		in_rContainer.Register(pInfo->GetInfoName(), pInfo);
+	}
 }
