@@ -20,8 +20,7 @@ namespace app
 		size_t m_ObjectHandle{};
 		GameObjectTableEntry* m_pObjectEntry{};
 		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> m_Components{ GetAllocator() };
-		csl::ut::VariableString* m_pName{};
-		csl::fnd::IAllocator* m_pObjectAllocator{ GetAllocator() };
+		csl::ut::VariableString m_name{ GetAllocator() };
 		csl::ut::InplaceMoveArray<fnd::Property, 2> m_Properties{ GetAllocator() };
 		unsigned int m_ComponentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ &fnd::GOComponent::visualComponentNode };

@@ -28,7 +28,17 @@ namespace app::fnd
 		const size_t m_MemberCount{};
 
 	public:
-		[[nodiscard]] bool GetNameOfValue(size_t value, const char** pp_name) const
+		const RflClassEnumMember* GetValues() const
+		{
+			return m_pValues;
+		}
+
+		size_t GetValueCount() const
+		{
+			return m_MemberCount;
+		}
+
+		bool GetNameOfValue(size_t value, const char** pp_name) const
 		{
 			if (m_MemberCount <= 0)
 				return false;
@@ -50,7 +60,7 @@ namespace app::fnd
 			return false;
 		}
 
-		[[nodiscard]] bool GetValueOfName(const char* name, size_t* p_value) const
+		bool GetValueOfName(const char* name, size_t* p_value) const
 		{
 			if (m_MemberCount <= 0)
 				return false;

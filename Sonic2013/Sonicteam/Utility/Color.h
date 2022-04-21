@@ -8,6 +8,11 @@ namespace csl::ut
 		uint8 g;
 		uint8 b;
 		uint8 a;
+
+		inline operator const uint&() const
+		{
+			return *reinterpret_cast<const uint*>(this);
+		}
 	};
 
 #define DEFINE_COLOR(NAME, R, G, B, A) inline static constexpr Color8 NAME{R, G, B, A};

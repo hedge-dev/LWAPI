@@ -45,6 +45,11 @@ namespace app::xgame
 				m_Backups[0] = m_Backups[1];
 		}
 
+		const bool& HasBackup() const
+		{
+			return m_HasBackup;
+		}
+
 		const FxSceneData* GetSceneData() const 
 		{
 			return m_pSceneData;

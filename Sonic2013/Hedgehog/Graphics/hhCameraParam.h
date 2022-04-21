@@ -20,9 +20,6 @@ namespace app::Render
 		{
 			using namespace csl::math;
 
-			csl::math::Vector3 ndc{};
-			ms_fpTransformNDC(this, ndc, in_point);
-
 			Eigen::Vector4f clipPos{ m_Perspective * (m_ViewMtx * Vector4(in_point, 1)) };
 			if (clipPos[3] < FLT_EPSILON)
 				return false;
@@ -31,7 +28,7 @@ namespace app::Render
 			return true;
 		}
 
-		bool ProjectScreen(const csl::math::Vector3& in_point, csl::math::Vector3& out_screenPoint, float* out_pClip) const
+		bool ProjectScreen(const csl::math::Vector3& in_point, csl::math::Vector3& out_screenPoint, float* out_pDepth) const
 		{
 			using namespace csl::math;
 
@@ -41,8 +38,8 @@ namespace app::Render
 
 			Vector3 ndcPos{ Vector3{clipPos[0], clipPos[1], clipPos[2]} / clipPos[3] };
 
-			if (out_pClip)
-				*out_pClip = clipPos[3];
+			if (out_pDepth)
+				*out_pDepth = clipPos[3];
 
 			out_screenPoint[0] = (0.5f + ndcPos[0] / 2.0f) * m_Width;
 			out_screenPoint[1] = (0.5f - ndcPos[1] / 2.0f) * m_Height;
