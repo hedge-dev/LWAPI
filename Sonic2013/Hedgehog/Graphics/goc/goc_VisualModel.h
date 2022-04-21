@@ -25,7 +25,7 @@ namespace app::fnd
 			hh::gfx::res::ResModel m_Model{};
 			hh::gfx::res::ResSkeleton m_Skeleton{};
 			int field_08{}; // some kind of flags
-			void* field_0C{};
+			uint field_0C{};
 			int field_10{}; // light quality type?
 			HFrame* m_pParent{}; // parent?
 			float zOffset{};
