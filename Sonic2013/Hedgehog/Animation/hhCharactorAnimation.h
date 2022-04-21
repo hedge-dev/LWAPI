@@ -7,14 +7,12 @@ namespace app::animation
 	
 	class CharactorAnimation : public fnd::ReferencedObject
 	{
-	protected:
+	public:
 		AnimationNodeManager m_NodeManager{ *GetAllocator() };
 		CallbackExecutioner m_CallbackExecutor{ *GetAllocator() };
 		void* m_pUnk1{};
 		void* m_pUnk2{};
 		
-		
-	public:
 		virtual void* GetRuntimeTypeInfo() const
 		{
 			return nullptr;

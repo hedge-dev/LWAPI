@@ -10,11 +10,9 @@ namespace app::game
 			const animation::AnimationResContainer* m_pContainer;
 		};
 		
-	protected:
 		ut::RefPtr<animation::CharactorAnimationSingle> m_rpCharAnimation{};
 
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B35B0), GOCAnimationScript*, const Description&);
-	public:
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7518));
 
 		static fnd::GOComponentClass* staticClass()
