@@ -39,14 +39,23 @@ namespace app::Player
 		fnd::HFrame* m_pFrame{};
 		ut::RefPtr<fnd::GOCVisualModel> m_rpModel{};
 		ut::RefPtr<game::GOCAnimationScript> m_rpAnimScript{};
-		INSERT_PADDING(20) {};
-		csl::fnd::IAllocator* m_pAllocator{};
-		INSERT_PADDING(24) {};
+		INSERT_PADDING(4) {};
+		INSERT_PADDING(16) {}; // csl::ut::ObjectMoveArray<Effect::CEffectHandle>
+		INSERT_PADDING(16) {}; // csl::ut::MoveArray<game::ShadowShape>
+		GOCReferenceHolder* m_pOwner{};
+		csl::ut::Bitset<hhUchar, 8> m_Unk1{};
 
-		void SetOwner(GOCReferenceHolder* pOwner)
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGOCAnimation, ASLR(0x008F41B0), GOCReferenceHolderUnit*, game::GOCAnimationScript*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetOwner, ASLR(0x008F3FA0), GOCReferenceHolderUnit*, GOCReferenceHolder*);
+
+		void SetOwner(GOCReferenceHolder* in_pOwner)
 		{
-			FUNCTION_PTR(void, __thiscall, fp_SetOwner, ASLR(0x008F3FA0), GOCReferenceHolderUnit*, GOCReferenceHolder*);
-			fp_SetOwner(this, pOwner);
+			ms_fpSetOwner(this, in_pOwner);
+		}
+
+		void AddGOCAnimation(game::GOCAnimationScript* in_pScript)
+		{
+			ms_fpAddGOCAnimation(this, in_pScript);
 		}
 	};
 
