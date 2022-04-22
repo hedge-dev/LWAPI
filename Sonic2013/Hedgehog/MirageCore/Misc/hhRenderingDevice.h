@@ -6,12 +6,6 @@ namespace Extra::fx
 	struct SShaderPair;
 }
 
-namespace hh::rsdx
-{
-	typedef D3DRENDERSTATETYPE _D3DRENDERSTATETYPE;
-	typedef csl::math::Vector4 rsdx_simd_float4;
-}
-
 namespace hh::mr
 {
 	class CPixelShaderData;
@@ -43,7 +37,7 @@ namespace hh::mr
 		CRenderingInfrastructure* m_pRenderingInfrastructure;
 		IDirect3DDevice9* m_pD3DDevice;
 		INSERT_PADDING(2788);
-		IDirect3DVertexDeclaration9* m_pCurrentVertexDecl;
+		rsdx::RsdxVertexDeclaration9* m_pCurrentVertexDecl;
 		INSERT_PADDING(8);
 		CVertexShaderData* m_pCurrentVertexShaderData;
 		CPixelShaderData* m_pCurrentPixelShaderData;
@@ -59,7 +53,7 @@ namespace hh::mr
 			ASSERT_OFFSETOF(CRenderingDevice, m_LockVertexDecl, 3455);
 		}
 
-		void SetVertexDeclaration(IDirect3DVertexDeclaration9* in_pDecl);
+		void SetVertexDeclaration(rsdx::RsdxVertexDeclaration9* in_pDecl);
 		void SetPixelShaderParameterF(const base::CStringSymbol& in_name, const float* in_pData, uint in_offset, uint in_count, CPixelShaderData* in_pShader);
 		void SetVertexShaderParameterF(const base::CStringSymbol& in_name, const float* in_pData, uint in_offset, uint in_count, CVertexShaderData* in_pShader);
 		void SetShaderFromPool(ShaderType in_type);

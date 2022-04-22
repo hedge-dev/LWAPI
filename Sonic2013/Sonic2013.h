@@ -163,14 +163,18 @@
 // Hedgehog File System Library
 #include "Hedgehog/FileSystem/FileSystem.h"
 
+#include "Hedgehog/Rsdx/Types.h"
+
 // Hedgehog Graphics Library
 #include "Hedgehog/MirageCore/RenderData/hhVertexShaderData.h"
 #include "Hedgehog/MirageCore/RenderData/hhPixelShaderData.h"
+#include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.h"
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.h"
 #include "Hedgehog/MirageCore/Misc/hhRenderingInfrastructure.h"
 #include "Hedgehog/Graphics/hhGraphics.h"
 
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
+#include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"
 
 // Hedgehog Animation Library
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
@@ -311,10 +315,12 @@
 #include "System/ObjectSystem/MyActivationHandle.inl"
 
 // Stage Data
-#include "System/Stage/World.h"
-#include "System/Stage/StageData.h"
-#include "System/Stage/StageInfo.h"
-#include "System/Stage/StageDataInitializer.h"
+#include "Stage/World.h"
+#include "Stage/StageData.h"
+#include "Stage/StageInfo.h"
+#include "Stage/StageDataInitializer.h"
+
+#include "Stage/Shadow/Resource/ShadowModel.h"
 
 #include "System/Camera/Camera.h"
 #include "System/Camera/CameraController.h"

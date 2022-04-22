@@ -2,7 +2,7 @@
 
 namespace hh::mr
 {
-	inline void CRenderingDevice::SetVertexDeclaration(IDirect3DVertexDeclaration9* in_pDecl)
+	inline void CRenderingDevice::SetVertexDeclaration(rsdx::RsdxVertexDeclaration9* in_pDecl)
 	{
 		if (m_pCurrentVertexDecl == in_pDecl)
 			return;

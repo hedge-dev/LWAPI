@@ -23,6 +23,11 @@ namespace hh::mr
 	{
 	public:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetShaderFromPool, ASLR(0x00C2B330), CRenderingInfrastructure*, CRenderingDevice*, ShaderType);
+		inline static FUNCTION_PTR(HRESULT, __thiscall, ms_fpCreateVertexDeclaration, ASLR(0x00C2BED0), CRenderingInfrastructure*, const rsdx::_D3DVERTEXELEMENT9*, hh::mr::CVertexDeclarationPtr*, const hhUchar*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpReleaseVertexDeclaration, ASLR(0x00C2BD70), CRenderingInfrastructure*, rsdx::RsdxVertexDeclaration9**);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRefVertexDeclaration, ASLR(0x00C2BD80), CRenderingInfrastructure*, rsdx::RsdxVertexDeclaration9**);
+
+
 		virtual ~CRenderingInfrastructure() = default;
 
 		INSERT_PADDING(0x5C);
@@ -30,12 +35,28 @@ namespace hh::mr
 
 		CRenderingInfrastructure()
 		{
+
 			ASSERT_OFFSETOF(CRenderingInfrastructure, m_RenderingDevice, 0x60);
 		}
 
 		void SetShaderFromPool(CRenderingDevice* in_pDevice, ShaderType in_type)
 		{
 			ms_fpSetShaderFromPool(this, in_pDevice, in_type);
+		}
+
+		HRESULT CreateVertexDeclaration(const rsdx::_D3DVERTEXELEMENT9* in_pElements, CVertexDeclarationPtr* out_pDecl, const hhUchar* a3 = nullptr)
+		{
+			return ms_fpCreateVertexDeclaration(this, in_pElements, out_pDecl, a3);
+		}
+
+		void AddRefVertexDeclaration(rsdx::RsdxVertexDeclaration9** in_ppDecl)
+		{
+			ms_fpAddRefVertexDeclaration(this, in_ppDecl);
+		}
+
+		void ReleaseVertexDeclaration(rsdx::RsdxVertexDeclaration9** in_ppDecl)
+		{
+			ms_fpReleaseVertexDeclaration(this, in_ppDecl);
 		}
 	};
 
