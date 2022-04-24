@@ -9,7 +9,7 @@ namespace app::animation
 	
 	class AnimationNodeManager
 	{
-	protected:
+	public:
 		csl::ut::StringMap<AnimationClip*> m_Animations;
 		AnimSkeletonBlender m_Blender{ nullptr };
 		csl::ut::ObjectMoveArray<AnimationSimple> m_SimpleAnimations;
@@ -18,7 +18,6 @@ namespace app::animation
 		csl::fnd::IAllocator* m_pAllocator{};
 		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimtion>> m_ExternalAnimations;
 		
-	public:
 		AnimationNodeManager(csl::fnd::IAllocator& rAlloc) : m_Animations(&rAlloc), m_SimpleAnimations(&rAlloc),
 			m_ComplexAnimations(&rAlloc), m_ExternalAnimations(&rAlloc)
 		{
@@ -33,7 +32,7 @@ namespace app::animation
 			auto* pClip = pAnim->GetSimpleAnimation();
 			pClip->m_pManager = this;
 			pClip->m_pOwner = m_Blender;
-			pClip->ProcEvent(AnimationNode::eEventType_AttachExternal);
+			pClip->ProcEvent(AnimationNode::eEvent_AttachExternal);
 		}
 		
 		AnimationClip* GetAnimationClip(const char* pName) const

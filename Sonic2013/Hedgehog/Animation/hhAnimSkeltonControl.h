@@ -21,7 +21,7 @@ namespace app::animation
 		
 		~AnimSkeletonControl()
 		{
-			
+			Cleanup();
 		}
 	};
 }

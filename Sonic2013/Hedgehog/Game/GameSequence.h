@@ -43,6 +43,7 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateSaveInit, ASLR(0x00910690), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateTitle, ASLR(0x00910370), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateStage, ASLR(0x00911000), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateDevMenu, ASLR(0x0090FEF0), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
 
 		CGameSequence()
 		{
@@ -80,6 +81,11 @@ namespace app
 		void SeqGotoStage()
 		{
 			ms_fpSeqGotoStage(this);
+		}
+
+		void SeqGotoDevMenu()
+		{
+			ChangeState(&CGameSequence::StateDevMenu);
 		}
 
 		TiFsmState_t StateProduct(const TiFsmBasicEvent<CGameSequence>& in_event)
@@ -121,6 +127,13 @@ namespace app
 		{
 			TiFsmState_t result{};
 			ms_fpStateStage(this, result, in_event);
+			return result;
+		}
+
+		TiFsmState_t StateDevMenu(const TiFsmBasicEvent<CGameSequence>& in_event)
+		{
+			TiFsmState_t result{};
+			ms_fpStateDevMenu(this, result, in_event);
 			return result;
 		}
 

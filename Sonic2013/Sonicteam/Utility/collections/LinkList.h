@@ -3,7 +3,7 @@
 namespace csl::ut
 {
 	template<class T>
-	class LinkList : public detail::LinkListImpl, NonCopyable
+	class LinkList : public detail::LinkListImpl
 	{
 	public:
 		template<class T>

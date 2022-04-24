@@ -17,12 +17,12 @@ namespace app::animation
 	public:
 		DEFINE_RTTI_PTR(ASLR(0x00FD3FBC));
 		
-		enum EEventType
+		enum EEvent
 		{
-			eEventType_Attach,
-			eEventType_Detach,
-			eEventType_CallBack,
-			eEventType_AttachExternal
+			eEvent_Attach,
+			eEvent_Detach,
+			eEvent_CallBack,
+			eEvent_AttachExternal
 		};
 		
 		enum EGetEvent
@@ -47,11 +47,11 @@ namespace app::animation
 		}
 		
 		virtual ~AnimationNode() = default;
-		virtual void Update() = 0;
-		virtual void ProcEvent(EEventType type) = 0;
-		virtual float GetValue(EGetEvent event) const = 0;
-		virtual void SetValue(ESetEvent event, float value) = 0;
-		virtual void GetStatus(EPlayStatus status) const = 0;
-		virtual void SetStatus(EPlayStatus status, bool state) const = 0;
+		virtual void Update(float in_time) = 0;
+		virtual void ProcEvent(EEvent in_type) = 0;
+		virtual float GetValue(EGetEvent in_event) const = 0;
+		virtual void SetValue(ESetEvent in_event, float in_value) = 0;
+		virtual bool GetStatus(EPlayStatus in_status) const = 0;
+		virtual void SetStatus(EPlayStatus in_status, bool in_state) const = 0;
 	};
 }
