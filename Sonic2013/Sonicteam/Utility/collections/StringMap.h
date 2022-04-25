@@ -18,10 +18,17 @@ namespace csl::ut
 			
 			const char* pStr = reinterpret_cast<const char*>(key);
 			size_t hashResult{};
+			size_t i = 0;
+			char c = *pStr;
 
-			for (size_t i = 0; pStr[i]; i++)
+			if (*pStr)
 			{
-				hashResult = HASH_MAGIC * hashResult + pStr[i];
+				do
+				{
+					++i;
+					hashResult = HASH_MAGIC * hashResult + c;
+					c = pStr[i];
+				} while (pStr[i]);
 			}
 
 			return hashResult & HASH_MASK;
