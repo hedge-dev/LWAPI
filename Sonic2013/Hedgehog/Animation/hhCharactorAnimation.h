@@ -51,6 +51,24 @@ namespace app::animation
 			return true;
 		}
 
+		bool Extend(const AnimationResContainer& in_container)
+		{
+			if (!in_container.m_Data.m_pFile || !m_Initialized)
+				return false;
+
+			m_CallbackExecutor.Extend(in_container.m_Data.m_pFile->m_TriggerCount);
+			auto token = m_NodeManager.SetupExtend(in_container.m_Data.m_pFile->m_pAnimations->m_SimpleAnimations.m_Count,
+				in_container.m_Data.m_pFile->m_pAnimations->m_ComplexAnimations.m_Count);
+			m_NodeManager.ResisterAnimationsExtend(in_container.m_Data, token);
+
+			// Just in case someone tries to check (game doesn't)
+			m_Initialized = false;
+			SetupSub(in_container);
+			m_Initialized = true;
+
+			return true;
+		}
+
 		void Cleanup()
 		{
 			if (!m_Initialized)

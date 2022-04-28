@@ -29,6 +29,15 @@ namespace app::game
 			m_rpCharAnimation->AttachAnimSkeletonBlender(m_pBlender);
 		}
 
+		void Extend(const Description& in_desc)
+		{
+			if (!m_rpCharAnimation)
+				return;
+
+			m_rpCharAnimation->Extend(*in_desc.m_pContainer);
+			m_rpCharAnimation->AttachAnimSkeletonBlender(m_pBlender);
+		}
+
 		float GetFrame() const
 		{
 			if (!m_rpCharAnimation)

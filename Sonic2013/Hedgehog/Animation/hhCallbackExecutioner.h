@@ -26,6 +26,14 @@ namespace app::animation
 			m_SystemCallbacks.resize(1);
 		}
 
+		void Extend(size_t in_count)
+		{
+			if (m_Callbacks.size() >= in_count)
+				return;
+
+			m_Callbacks.resize(in_count);
+		}
+
 		void RegisterCallback(int id, AnimationCallback* pCallback)
 		{
 			if (id < 0)
