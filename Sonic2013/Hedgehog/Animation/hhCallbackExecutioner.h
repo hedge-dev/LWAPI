@@ -19,6 +19,13 @@ namespace app::animation
 			
 		}
 
+		void Setup(CharactorAnimation* in_pOwner, size_t in_count)
+		{
+			m_pOwner = in_pOwner;
+			m_Callbacks.resize(in_count);
+			m_SystemCallbacks.resize(1);
+		}
+
 		void RegisterCallback(int id, AnimationCallback* pCallback)
 		{
 			if (id < 0)
@@ -41,6 +48,15 @@ namespace app::animation
 
 				m_Callbacks[id] = pCallback;
 			}
+		}
+
+		void Cleanup()
+		{
+			m_Callbacks.clear();
+			m_SystemCallbacks.clear();
+
+			m_Callbacks.change_allocator(m_pAlloc);
+			m_SystemCallbacks.change_allocator(m_pAlloc);
 		}
 	};
 }

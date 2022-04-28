@@ -6,10 +6,16 @@ namespace app::animation
 	
 	class AnimationClip : public AnimationNode
 	{
-		csl::ut::LinkListNode m_ListNode{};
-		INSERT_PADDING(8){};
-
 	public:
+		csl::ut::LinkListNode m_ListNode{};
+		AnimationClip* m_pParent{};
+		uint m_State{};
+
+		AnimationClip()
+		{
+
+		}
+		
 		DEFINE_RTTI_PTR(ASLR(0x00F61114))
 
 		virtual const AnimationDef* GetAnimationDef() const = 0;

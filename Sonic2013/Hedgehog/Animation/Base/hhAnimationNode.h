@@ -4,17 +4,16 @@ namespace app::animation
 {
 	typedef uint UpdatingPhaze;
 	class AnimationNodeManager;
-	class AnimationNodeManager;
+	class CharactorAnimation;
 	
 	class AnimationNode
 	{
 		friend AnimationNodeManager;
-	
-	protected:
-		AnimationNodeManager* m_pManager{};
-		AnimationObj* m_pOwner{};
-		
+
 	public:
+		AnimationNodeManager* m_pManager{};
+		CharactorAnimation* m_pOwner{};
+		
 		DEFINE_RTTI_PTR(ASLR(0x00FD3FBC));
 		
 		enum EEvent
@@ -22,7 +21,8 @@ namespace app::animation
 			eEvent_Attach,
 			eEvent_Detach,
 			eEvent_CallBack,
-			eEvent_AttachExternal
+			eEvent_AttachExternal,
+			eEvent_FinishCleanup,
 		};
 		
 		enum EGetEvent
@@ -41,7 +41,7 @@ namespace app::animation
 		
 		typedef size_t EPlayStatus;
 		
-		virtual csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const
+		virtual const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const
 		{
 			return nullptr;
 		}
@@ -52,6 +52,6 @@ namespace app::animation
 		virtual float GetValue(EGetEvent in_event) const = 0;
 		virtual void SetValue(ESetEvent in_event, float in_value) = 0;
 		virtual bool GetStatus(EPlayStatus in_status) const = 0;
-		virtual void SetStatus(EPlayStatus in_status, bool in_state) const = 0;
+		virtual void SetStatus(EPlayStatus in_status, bool in_state) = 0;
 	};
 }

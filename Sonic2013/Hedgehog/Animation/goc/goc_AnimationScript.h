@@ -20,9 +20,13 @@ namespace app::game
 			return ms_pStaticClass;
 		}
 
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_desc)
 		{
-			ms_fpSetup(this, rDesc);
+			m_rpCharAnimation = new(GetAllocator()) animation::CharactorAnimationSingle();
+			m_rpCharAnimation->Setup(*in_desc.m_pContainer);
+			CreateBlender();
+
+			m_rpCharAnimation->AttachAnimSkeletonBlender(m_pBlender);
 		}
 
 		float GetFrame() const

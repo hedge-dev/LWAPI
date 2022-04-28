@@ -2,33 +2,74 @@
 
 namespace app::animation
 {
-	class AnimationResContainer;
 	class AnimationClip;
 	
 	class CharactorAnimation : public fnd::ReferencedObject
 	{
 	public:
+		DEFINE_RTTI_PTR(ASLR(0x00FD3FB8));
+
 		AnimationNodeManager m_NodeManager{ *GetAllocator() };
 		CallbackExecutioner m_CallbackExecutor{ *GetAllocator() };
-		void* m_pUnk1{};
+		bool m_Initialized{};
 		void* m_pUnk2{};
 		
-		virtual void* GetRuntimeTypeInfo() const
+		virtual const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const
 		{
-			return nullptr;
+			return GetRuntimeTypeInfoStatic();
 		}
 
-	protected:
-		virtual void Update(float delta) = 0;
+		virtual void Update(float in_delta) = 0;
 		virtual void ClearAll() = 0;
-		virtual void SetupSub(const AnimationResContainer& rContainer) = 0;
+
+	protected:
+		virtual bool SetupSub(const AnimationResContainer& in_container) = 0;
 		virtual void CleanupSub() = 0;
-		virtual void SetAnimtionClip(AnimationClip* pClip) = 0;
-		virtual void ChangeAnimationClip(AnimationClip* pClip) = 0;
-		virtual void* GetTransition(uint a1) const = 0;
-		virtual size_t GetTransitionLayerNum() const { return 0; }
 
 	public:
+		virtual void SetAnimtionClip(AnimationClip* in_pClip) = 0;
+		virtual void ChangeAnimationClip(AnimationClip* in_pClip) = 0;
+		virtual const TransitionArray* GetTransition(uint in_layer) const = 0;
+		virtual size_t GetTransitionLayerNum() const { return 1; }
+
+	public:
+		bool Setup(const AnimationResContainer& in_container)
+		{
+			if (m_Initialized)
+				Cleanup();
+
+			if (!in_container.m_Data.m_pFile)
+				return false;
+
+			m_CallbackExecutor.Setup(this, in_container.m_Data.m_pFile->m_TriggerCount);
+			m_NodeManager.Setup(this, in_container.m_Data.m_pFile->m_pAnimations->m_SimpleAnimations.m_Count, 
+				in_container.m_Data.m_pFile->m_pAnimations->m_ComplexAnimations.m_Count);
+			m_NodeManager.ResisterAnimations(in_container.m_Data);
+			SetupSub(in_container);
+
+			m_Initialized = true;
+			return true;
+		}
+
+		void Cleanup()
+		{
+			if (!m_Initialized)
+				return;
+
+			CleanupSub();
+			m_NodeManager.Cleanup();
+			m_CallbackExecutor.Cleanup();
+
+			m_Initialized = false;
+		}
+
+		void AttachAnimSkeletonBlender(AnimSkeletonBlender blender)
+		{
+			ClearAll();
+			blender.BindAnimation(*this);
+			m_NodeManager.AttachAnimSkeletonBlender(blender);
+		}
+
 		void SetAnimation(const char* pName)
 		{
 			auto* pClip = m_NodeManager.GetAnimationClip(pName);

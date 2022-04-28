@@ -69,6 +69,11 @@ namespace app::ut
 		{
 			return m_pObj;
 		}
+
+		T& ref() const
+		{
+			return *m_pObj;
+		}
 		
 		T* operator->() const
 		{

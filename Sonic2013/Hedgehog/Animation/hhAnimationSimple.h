@@ -6,7 +6,7 @@ namespace app::animation
 	{
 	protected:
 		const SimpleDef* m_pDef{};
-		INSERT_PADDING(24) {}; // PlayingData
+		PlayingData m_PlayData{};
 		AnimSkeletonControl m_SkelControl{};
 		uint m_Unk1{};
 
@@ -20,11 +20,21 @@ namespace app::animation
 		inline static FUNCTION_PTR(const InterpolateArray*, __thiscall, ms_fpGetInterpolateArray, ASLR(0x00415FC0), const AnimationSimple*);
 
 	public:
+		DEFINE_RTTI_PTR(ASLR(0x00F61178));
+
 		AnimationSimple()
 		{
 
 		}
-		
+
+		void Setup(csl::fnd::IAllocator& in_allocator, const SimpleDef& in_def, const ResCharAnim& in_anim)
+		{
+			m_pDef = &in_def;
+			m_SkelControl.Setup(in_allocator, in_anim, in_def.m_Data.m_Options == 0);
+		}
+
+		const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const override { return GetRuntimeTypeInfoStatic(); }
+
 		void Update(float in_deltaTime) override
 		{
 			ms_fpUpdate(this, in_deltaTime);
@@ -50,7 +60,7 @@ namespace app::animation
 			return ms_fpGetStatus(this, in_status);
 		}
 
-		void SetStatus(EPlayStatus in_status, bool in_state) const override
+		void SetStatus(EPlayStatus in_status, bool in_state) override
 		{
 			ms_fpSetStatus(this, in_status, in_state);
 		}

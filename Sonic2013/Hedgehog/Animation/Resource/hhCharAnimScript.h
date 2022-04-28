@@ -59,7 +59,7 @@ namespace app::animation
 	// Size is 20
 	struct BlenderDef
 	{
-		size_t m_StructType; // Always 1
+		size_t m_StructType{ 1 }; // Always 1
 		const char* m_pName;
 		float m_Weight;
 		size_t m_NodeCount;
@@ -68,7 +68,7 @@ namespace app::animation
 
 	struct BlenderData
 	{
-		size_t m_StructType; // Always 1
+		size_t m_StructType{ 1 }; // Always 1
 		size_t m_BlenderCount;
 		BlenderDef** m_ppBlenders;
 
@@ -85,7 +85,7 @@ namespace app::animation
 
 	struct SequenceTable
 	{
-		size_t m_StructType; // Always 0
+		size_t m_StructType{ 0 }; // Always 0
 		PlayModeInfo m_PlayMode;
 		size_t m_SequenceCount;
 		SeqData* m_pSequences;
@@ -102,7 +102,7 @@ namespace app::animation
 		const char* m_pTo;
 	};
 
-	struct TransitionTable
+	struct TransitionArray
 	{
 		size_t m_Count;
 		TransitionInfo* m_pTransitions;
@@ -149,16 +149,21 @@ namespace app::animation
 		EAnimationType m_Type;
 		short m_Layer;
 	};
-	
-	struct SimpleDef : AnimationDef
+
+	struct PlayData
 	{
-		const char* m_pResource;
 		float m_StartFrame;
 		float m_EndFrame;
 		float m_Speed;
 		PlayModeInfo m_PlayInfo;
 		EAnimOptions m_Options;
 		InterpolateArray m_Interpolations;
+	};
+
+	struct SimpleDef : AnimationDef
+	{
+		const char* m_pResource;
+		PlayData m_Data;
 		TriggerInfoArray m_Callbacks;
 	};
 
@@ -173,7 +178,7 @@ namespace app::animation
 
 	struct SimpleAnimationArray
 	{
-		size_t m_AnimationCount;
+		size_t m_Count;
 		SimpleDef* m_pAnimations;
 	};
 
@@ -186,7 +191,7 @@ namespace app::animation
 	struct ComplexAnimationArray
 	{
 		size_t m_Count;
-		ComplexDef* m_pComplexAnimations;
+		ComplexDef* m_pAnimations;
 	};
 
 	struct AnimationDefArray
@@ -195,22 +200,22 @@ namespace app::animation
 		ComplexAnimationArray m_ComplexAnimations;
 	};
 
-	class ResCharAnimScriptHeader
+	class FileHeader
 	{
 	protected:
-		const char* m_pSignature{};
-		const char* m_pVersion{};
+		const char* m_pSignature{ "ANIM" };
+		const char* m_pVersion{ "1.02" };
 	public:
 		ushort m_LayerCount{};
 		ushort m_TriggerCount{};
 		AnimationDefArray* m_pAnimations{};
-		TransitionTable* m_pTransitions{};
+		TransitionArray* m_pTransitions{};
 	};
 
 	class ResCharAnimScriptData
 	{
 	public:
-		ResCharAnimScriptHeader* m_pHeader{};
+		FileHeader* m_pHeader{};
 		csl::fnd::IAllocator* m_pAllocator{};
 	};
 }

@@ -15,11 +15,11 @@ namespace csl::ut
 			size_t m_Value;
 		};
 		
-		Elem* m_pElements;
-		size_t m_Length;
-		size_t m_Capacity;
-		size_t m_CapacityMax;
-		fnd::IAllocator* m_pAllocator;
+		Elem* m_pElements{};
+		size_t m_Length{};
+		size_t m_Capacity{};
+		size_t m_CapacityMax{};
+		fnd::IAllocator* m_pAllocator{};
 		TOp m_Operation{};
 		
 	protected:
@@ -98,9 +98,14 @@ namespace csl::ut
 		{
 			Reserve(capacity);
 		}
+
 		~HashMap()
 		{
 			ReleaseMemory();
+			m_Length = 0;
+			m_Capacity = 0;
+			m_CapacityMax = 0;
+			m_pElements = nullptr;
 		}
 		
 	protected:
@@ -180,9 +185,24 @@ namespace csl::ut
 			friend bool operator!=(const iterator& a, const iterator& b) { return a.m_CurIdx != b.m_CurIdx; }
 		};
 
+		iterator begin() const
+		{
+			return iterator{ this, GetBegin() };
+		}
+
 		iterator end() const
 		{
 			return iterator{ this, m_CapacityMax + 1 };
+		}
+
+		void clear()
+		{
+			m_Length = 0;
+			for (size_t i = 0; i < m_CapacityMax + 1; ++i)
+			{
+				auto& element = m_pElements[i];
+				element.m_Hash = INVALID_KEY;
+			}
 		}
 
 	protected:

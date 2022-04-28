@@ -5,7 +5,10 @@ namespace app::animation
 {
 	class SkeletonBlenderBase : public AnimationObj
 	{
-		INSERT_PADDING(52);
+	public:
+		INSERT_PADDING(40) {};
+		CharactorAnimation* m_pAnimation{};
+		INSERT_PADDING(8) {};
 		
 	public:
 		virtual void SetWeight(float weight) = 0;
@@ -17,6 +20,11 @@ namespace app::animation
 		virtual void SetupSub(uint sub) = 0;
 		virtual void CleanupSub() = 0;
 		virtual void Update(UpdatingPhaze phase, fnd::SUpdateInfo& info) = 0;
+
+		void BindAnimation(CharactorAnimation& in_animation)
+		{
+			m_pAnimation = &in_animation;
+		}
 	};
 
 	class SkeletonBlenderHavok : public SkeletonBlenderBase
@@ -27,47 +35,34 @@ namespace app::animation
 
 	class SkeletonBlender : public SkeletonBlenderHavok
 	{
-		
+	public:
+		inline static FUNCTION_PTR(SkeletonBlender*, __cdecl, ms_fpCreate, ASLR(0x0040C470), uint, csl::fnd::IAllocator&);
+
+		static SkeletonBlender* Create(uint in_category, csl::fnd::IAllocator& in_allocator)
+		{
+			return ms_fpCreate(in_category, in_allocator);
+		}
 	};
 	
-	class AnimSkeletonBlender
+	class AnimSkeletonBlender : public app::ut::RefPtr<SkeletonBlender>
 	{
-	protected:
-		SkeletonBlender* m_pBlender{};
-
-		void swap(SkeletonBlender* pBlender)
-		{
-			if (m_pBlender == pBlender)
-				return;
-
-			if (m_pBlender)
-				m_pBlender->Release();
-
-			m_pBlender = pBlender;
-			if (pBlender)
-				pBlender->AddRef();
-		}
-		
 	public:
-		AnimSkeletonBlender(SkeletonBlender* pBlender) : m_pBlender(pBlender)
+		AnimSkeletonBlender()
 		{
 			
 		}
 
-		AnimSkeletonBlender& operator=(SkeletonBlender* pBlender)
+		AnimSkeletonBlender(SkeletonBlender* in_pBlender) : RefPtr<app::animation::SkeletonBlender>(in_pBlender)
 		{
-			m_pBlender = pBlender;
-			return *this;
+
 		}
 
-		operator SkeletonBlender*() const
+		void BindAnimation(CharactorAnimation& in_anim)
 		{
-			return m_pBlender;
-		}
-		
-		SkeletonBlender* operator->() const
-		{
-			return m_pBlender;
+			if (!get())
+				return;
+
+			ref().BindAnimation(in_anim);
 		}
 	};
 }

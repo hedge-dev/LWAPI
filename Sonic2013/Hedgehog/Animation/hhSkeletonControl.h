@@ -18,6 +18,12 @@ namespace app::animation
 
 	class SkeletonControl : public SkeletonControlBase
 	{
-		
+	public:
+		inline static FUNCTION_PTR(SkeletonControl*, __cdecl, ms_fpCreate, ASLR(0x0040C820), hh::gfx::res::ResAnimSkeleton, uint, csl::fnd::IAllocator&);
+
+		static SkeletonControl* Create(hh::gfx::res::ResAnimSkeleton in_anim, uint in_a2, csl::fnd::IAllocator& in_allocator)
+		{
+			return ms_fpCreate(in_anim, in_a2, in_allocator);
+		}
 	};
 }

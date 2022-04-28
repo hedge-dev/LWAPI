@@ -34,8 +34,8 @@ namespace app::game
 		virtual bool Compare(const char* pOther) const = 0;
 		virtual const char* GetName() const = 0;
 		virtual bool IsValid() const = 0;
-		virtual void Attach(animation::SkeletonBlenderBase* pBlender) = 0;
-		virtual void Detach(animation::SkeletonBlenderBase* pBlender) = 0;
+		virtual void Attach(animation::SkeletonBlender* pBlender) = 0;
+		virtual void Detach(animation::SkeletonBlender* pBlender) = 0;
 	};
 
 	class AnimationControlHH : public AnimationControlBase
@@ -107,10 +107,10 @@ namespace app::game
 				return;
 
 			if (m_pCurrentAnimation)
-				m_pCurrentAnimation->Detach(m_pSkeletalBlender);
+				m_pCurrentAnimation->Detach(m_pBlender);
 
 			m_pCurrentAnimation = pAnim;
-			pAnim->Attach(m_pSkeletalBlender);
+			pAnim->Attach(m_pBlender);
 			pAnim->SetSpeed(1);
 			pAnim->SetFrame(0);
 		}

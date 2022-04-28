@@ -2,54 +2,57 @@
 
 namespace app::animation
 {
-	class AnimationTransition
-	{
-	protected:
-		AnimationClip* m_pCurClip{};
-		AnimationClip* m_pLastClip{};
-		size_t m_Status{};
-		csl::ut::Bitset<uint> m_PlaybackFlags{};
-		INSERT_PADDING(16){};
-
-	public:
-		AnimationClip* GetClip(bool last = false) const
-		{
-			if (last)
-				return m_pLastClip;
-			
-			return m_pCurClip;
-		}
-
-		bool IsInterpolate() const
-		{
-			return m_Status == 2;
-		}
-
-		bool IsFinished() const
-		{
-			return m_PlaybackFlags.test(1);
-		}
-
-		bool IsFinishedEdge() const
-		{
-			return m_PlaybackFlags.test(2);
-		}
-
-		void ExitLoop()
-		{
-			m_PlaybackFlags.set(0);
-		}
-	};
-	
 	class CharactorAnimationSingle : public CharactorAnimation
 	{
 	protected:
 		AnimationTransition m_Transition{};
 
 	public:
+		DEFINE_RTTI_PTR(ASLR(0x00F61088));
 		CharactorAnimationSingle()
 		{
-			
+
+		}
+
+		const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const override
+		{
+			return GetRuntimeTypeInfoStatic();
+		}
+
+		void Update(float in_delta) override
+		{
+			m_Transition.Update(in_delta);
+		}
+
+		void ClearAll() override
+		{
+			m_Transition.ClearAll();
+		}
+
+		bool SetupSub(const AnimationResContainer& in_container) override
+		{
+			m_Transition.Setup(&m_NodeManager, in_container.m_Data.m_pFile->m_pTransitions);
+			return true;
+		}
+
+		void CleanupSub() override
+		{
+			m_Transition.Cleanup();
+		}
+
+		void SetAnimtionClip(AnimationClip* in_pClip) override
+		{
+			m_Transition.SetAnimation(in_pClip);
+		}
+
+		void ChangeAnimationClip(AnimationClip* in_pClip) override
+		{
+			m_Transition.ChangeAnimation(in_pClip);
+		}
+
+		const TransitionArray* GetTransition(uint in_layer) const override
+		{
+			return m_Transition.m_pTransitions;
 		}
 
 		AnimationClip* GetCurrentAnimationClip(bool last = false) const

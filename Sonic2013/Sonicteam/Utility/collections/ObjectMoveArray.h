@@ -12,7 +12,7 @@ namespace csl::ut
 			
 		}
 		
-		void push_back(T& item)
+		void push_back(const T& item)
 		{
 			this->m_length++;
 			if (this->m_length > this->capacity())
@@ -64,7 +64,7 @@ namespace csl::ut
 
 				for (size_t i = this->size(); i < num; i++)
 				{
-					(*this)[i] = T{};
+					new(&(*this)[i]) T();
 				}
 
 				this->m_length = num;

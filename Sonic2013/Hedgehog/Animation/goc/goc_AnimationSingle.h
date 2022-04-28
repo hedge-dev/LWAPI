@@ -5,7 +5,7 @@ namespace app::game
 	class GOCAnimationSingle : public GOCAnimation
 	{
 	public:
-		animation::SkeletonBlenderBase* m_pSkeletalBlender{};
+		animation::SkeletonBlender* m_pBlender{};
 		animation::AnimationListener* m_pListener{};
 		fnd::GOCVisualModel* m_pModel{};
 
@@ -21,6 +21,20 @@ namespace app::game
 		virtual void ReleaseModel()
 		{
 			ms_fpReleaseModel(this);
+		}
+
+		void CreateBlender()
+		{
+			m_pBlender = animation::SkeletonBlender::Create(GetGameObject()->GetObjectCategory(), *GetAllocator());
+		}
+
+		void DestroyBlender()
+		{
+			if (!m_pBlender)
+				return;
+
+			m_pBlender->Release();
+			m_pBlender = nullptr;
 		}
 
 		void AddListener(animation::AnimationListener* in_pListener)

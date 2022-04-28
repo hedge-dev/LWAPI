@@ -54,31 +54,42 @@ namespace app
 		class AnimationResContainer
 		{
 		public:
+			struct ResData
+			{
+				FileHeader* m_pFile{};
+				csl::ut::ObjectMoveArray<ResCharAnim> m_SimpleAnimations;
+				csl::ut::ObjectMoveArray<ResCharAnim> m_ComplexAnimations;
+				csl::ut::ObjectMoveArray<ut::RefPtr<ResCharMirrorAnim>> m_MirrorAnims;
+
+				ResData(csl::fnd::IAllocator& in_allocator) : m_SimpleAnimations(&in_allocator),
+					m_ComplexAnimations(&in_allocator), m_MirrorAnims(&in_allocator)
+				{
+					
+				}
+			};
+
 			struct LoadInfo
 			{
 				ResCharAnimScript m_Script{};
 				hh::gfx::res::ResSkeleton m_Skeleton{};
 				csl::ut::MoveArray<MirrorBindData>* m_pMirrorData{};
 			};
-
-		protected:
+			
 			csl::fnd::IAllocator* m_pAllocator{};
-			void* m_Unk1{};
-			csl::ut::ObjectMoveArray<ResCharAnim> m_Anims{ m_pAllocator }; // Simple and complex animations?
-			csl::ut::ObjectMoveArray<ResCharAnim> m_Anims2{ m_pAllocator };
-			csl::ut::ObjectMoveArray<ut::RefPtr<ResCharMirrorAnim>> m_MirrorAnims{ m_pAllocator };
+			ResData m_Data;
 			ut::RefPtr<AnimationXMLLoader> m_rpLoader;
 
+		private:
 			inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadFromBuffer, ASLR(0x00412CA0), AnimationResContainer*, LoadInfo&, hh::ut::PackFile);
 		public:
-			AnimationResContainer(csl::fnd::IAllocator& rAllocator) : m_pAllocator(&rAllocator)
+			AnimationResContainer(csl::fnd::IAllocator& in_allocator) : m_pAllocator(&in_allocator), m_Data(in_allocator)
 			{
 				
 			}
 			
-			void LoadFromBuffer(LoadInfo& rInfo, hh::ut::PackFile pac)
+			void LoadFromBuffer(LoadInfo& in_info, hh::ut::PackFile in_pac)
 			{
-				ms_fpLoadFromBuffer(this, rInfo, pac);
+				ms_fpLoadFromBuffer(this, in_info, in_pac);
 			}
 		};
 	}
