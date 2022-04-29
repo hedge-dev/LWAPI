@@ -4,6 +4,17 @@
 
 namespace std::dummy
 {
+    struct _Equal_allocators {}; // usually allows contents to be stolen (e.g. with swap)
+    using _Propagate_allocators = true_type; // usually allows the allocator to be propagated, and then contents stolen
+    using _No_propagate_allocators = false_type; // usually turns moves into copies
+    template <class _Alloc>
+    using _Choose_pocma = conditional_t<allocator_traits<_Alloc>::is_always_equal::value, _Equal_allocators,
+        typename allocator_traits<_Alloc>::propagate_on_container_move_assignment::type>;
+
+    template <class _Alloc>
+    using _Choose_pocca = bool_constant<allocator_traits<_Alloc>::propagate_on_container_copy_assignment::value
+        && !allocator_traits<_Alloc>::is_always_equal::value>;
+
     using _Container_base = _Container_base0;
     using _Iterator_base = _Iterator_base0;
 	
