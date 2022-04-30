@@ -60,6 +60,14 @@ namespace app
 			return rPackFile.Get<hh::gfx::res::ResModel>(pName);
 		}
 
+		static res::ResShadowModel GetShadowModel(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<res::ResShadowModel>(pName);
+		}
+
 		static hh::gfx::res::ResSkeleton GetSkeletonResource(const char* pName, hh::ut::PackFile& rPackFile)
 		{
 			if (!rPackFile.IsValid())
@@ -98,6 +106,14 @@ namespace app
 				return { nullptr };
 
 			return rPackFile.Get<hh::gfx::res::ResAnimTexSrt>(pName);
+		}
+
+		static hh::gfx::res::ResAnimVis GetVisAnimationResource(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<hh::gfx::res::ResAnimVis>(pName);
 		}
 
 		static hh::gfx::res::ResAnimMaterial GetMaterialAnimationResource(const char* pName, hh::ut::PackFile& rPackFile)
