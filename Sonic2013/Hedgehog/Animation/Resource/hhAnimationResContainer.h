@@ -13,8 +13,8 @@ namespace app
 	{
 		struct MirrorBindData
 		{
-			void* m_Unk1;
-			void* m_Unk2;
+			const char* m_Unk1;
+			const char* m_Unk2;
 		};
 		
 		class ResCharMirrorAnim : public fnd::ReferencedObject
@@ -29,6 +29,8 @@ namespace app
 			csl::ut::MoveArray<void*> m_Buffers{ GetAllocator() };
 
 		public:
+			AnimationXMLLoader() { }
+			
 			void* CreateBuffer(size_t size)
 			{
 				void* buffer = GetAllocator()->Alloc(size, 16);
