@@ -9,7 +9,6 @@ namespace app
 
 	class CShadowManager;
 	class CEffectManager;
-	class FootPrintManager;
 	class SnowBallTrackManager;
 	class StandardGameUpdate : public fnd::GameDocumentListener
 	{
