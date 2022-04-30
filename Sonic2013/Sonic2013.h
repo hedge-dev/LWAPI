@@ -288,6 +288,7 @@
 #include "System/Services/service_FxColManager.h"
 #include "System/Services/service_GameServiceTypeRegistry.h"
 #include "System/Services/service_RingManager.h"
+#include "System/Services/service_FootPrintManager.h"
 
 // Objects
 #include "Hedgehog/Game/GameObject3D.h"
@@ -332,6 +333,9 @@
 #include "System/Camera/MsgPopCameraController.h"
 #include "System/Camera/MsgCameraUpdate.h"
 
+// Utilities
+#include "System/Utility/ObjUtil.h"
+
 #include "System/Player/GOCCollection.h"
 #include "System/Player/Physics.h"
 #include "System/Player/Player.h"
@@ -341,12 +345,10 @@
 #include "System/Player/VisualGOC.h"
 #include "System/Player/StateGOC.h"
 #include "System/Player/StateUtil.h"
+#include "System/Player/Info/Sonic.h"
 
 #include "System/StandardGameUpdate.h"
 #include "System/GameMode/GameModeStartUp.h"
-
-// Utilities
-#include "System/Utility/ObjUtil.h"
 
 #include "Hedgehog/Graphics/goc/Impl/goc_VisualModelImpl.inl"
 #include "Hedgehog/Game/GameSequence.inl"

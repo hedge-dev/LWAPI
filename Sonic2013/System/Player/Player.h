@@ -4,6 +4,7 @@ namespace app::Player
 {
 	struct SCinfo;
 	struct ResourceInfo;
+	struct RegisterCompornentsInfo;
 	class CStateGOC;
 	class CVisualGOC;
 	class CBlackBoard;
