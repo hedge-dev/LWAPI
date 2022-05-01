@@ -70,6 +70,18 @@ namespace csl::fnd
 			instance = inst;
 		}
 
+		static T* SwapInstance(T* inst)
+		{
+			if constexpr (std::is_base_of<SingletonPointer<T>, T>())
+			{
+				return SingletonPointer<T>::SwapInstance(inst);
+			}
+
+			T* pInst = instance;
+			instance = inst;
+			return pInst;
+		}
+
 		static bool IsInitialized()
 		{
 			if constexpr (std::is_base_of<SingletonPointer<T>, T>())

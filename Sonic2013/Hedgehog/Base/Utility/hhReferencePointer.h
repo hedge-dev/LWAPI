@@ -79,6 +79,16 @@ namespace app::ut
 		{
 			return m_pObj;
 		}
+
+		bool operator<(const RefPtr& other) const
+		{
+			return m_pObj < other.m_pObj;
+		}
+
+		bool operator>(const RefPtr& other) const
+		{
+			return m_pObj > other.m_pObj;
+		}
 	};
 
 	template<class T, size_t Allocator = 2, typename... Args>

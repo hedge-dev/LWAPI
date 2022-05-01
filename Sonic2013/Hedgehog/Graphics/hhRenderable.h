@@ -17,7 +17,7 @@ namespace app::gfx
 		csl::ut::FixedString<32> m_Name{};
 		RenderableEvent m_OpaEvent{ this };
 		RenderableEvent m_XluEvent{ this };
-		uint m_Unk2{ 1 };
+		uint m_CameraTargets{ 1 };
 		char m_Unk3{ static_cast<char>(0x80) };
 
 		~Renderable() override;

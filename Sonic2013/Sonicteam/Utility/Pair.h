@@ -3,11 +3,22 @@
 namespace csl::ut
 {
 	template<typename TKey, typename Tx>
-	class Pair
+	struct Pair
 	{
-	public:
 		TKey key;
 		Tx x;
+
+		Pair(TKey key, Tx x) : key(key), x(x) {}
+
+		bool operator==(const TKey& key) const
+		{
+			return this->key == key;
+		}
+
+		bool operator!=(const TKey& key) const
+		{
+			return this->key != key;
+		}
 	};
 
 	template<typename TKey, typename Tx>

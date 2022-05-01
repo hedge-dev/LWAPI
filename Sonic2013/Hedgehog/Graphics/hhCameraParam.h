@@ -51,5 +51,21 @@ namespace app::Render
 		{
 			return ProjectScreen(in_point, out_screenPoint, nullptr);
 		}
+
+		// Transform 0-1 range screen co-ordinates to world space
+		csl::math::Vector3 ProjectWorld(const csl::math::Vector2& in_point)
+		{
+			using namespace csl::math;
+
+			Vector2 ndc = in_point;
+			ndc[0] = (ndc[0] - 0.5f) * 2.0f;
+			ndc[1] = (ndc[1] - 0.5f) * -2.0f;
+			
+			auto invProj = m_Perspective.inverse();
+			auto transformed = invProj * Vector4(ndc[0], ndc[1], 0, 1);
+			transformed /= transformed[3];
+
+			return Vector3{ transformed[0], transformed[1], transformed[2] };
+		}
 	};
 }

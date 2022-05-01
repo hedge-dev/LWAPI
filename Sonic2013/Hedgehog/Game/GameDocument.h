@@ -17,6 +17,7 @@
 #define OBJECT_CATEGORY_HUD_NONSTOP 12
 #define OBJECT_CATEGORY_SYSTEM 13
 #define OBJECT_CATEGORY_NONSTOP 14
+#define OBJECT_CATEGORY_COUNT 15
 
 namespace app
 {
@@ -49,7 +50,11 @@ namespace app
 		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B2E0), const GameDocument* This, const fnd::GameServiceClass& cls);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), void* This, fnd::GameService* service);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), void* This);
-
+		inline static constexpr const char* ms_CategoryNames[OBJECT_CATEGORY_COUNT] = 
+		{
+			"SERVER", "DEBUG", "ENVIRONMENT", "PATH", "PLATFORM", "RADIO_CONTROL", "OBJECT",
+			"ENEMY", "PLAYER", "ATTACHED", "CAMERA", "HUD", "HUD_NONSTOP", "SYSTEM", "NONSTOP"
+		};
 
 	protected:
 		GameMode* m_pGameMode{};
@@ -64,6 +69,14 @@ namespace app
 		
 	public:
 		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
+
+		HH_FORCE_INLINE static constexpr const char* GetCategoryName(size_t in_category)
+		{
+			if (in_category >= OBJECT_CATEGORY_COUNT)
+				return nullptr;
+
+			return ms_CategoryNames[in_category];
+		}
 
 		HH_FORCE_INLINE void UpdateGlobalTime(const fnd::SUpdateInfo& info)
 		{
