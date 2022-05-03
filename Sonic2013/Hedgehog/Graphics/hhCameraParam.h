@@ -53,19 +53,26 @@ namespace app::Render
 		}
 
 		// Transform 0-1 range screen co-ordinates to world space
-		csl::math::Vector3 ProjectWorld(const csl::math::Vector2& in_point) const
+		csl::math::Vector3 ProjectWorld(const csl::math::Vector3& in_point) const
 		{
 			using namespace csl::math;
 			using namespace Eigen;
 			
-			Vector2 ndc = in_point;
+			Vector2 ndc = reinterpret_cast<const csl::math::Vector2&>(in_point);
 			ndc[0] = (ndc[0] - 0.5f) * 2.0f;
 			ndc[1] = (ndc[1] - 0.5f) * -2.0f;
 
-			Vector4f transformed = m_Perspective.inverse() * Vector4f{ ndc[0], ndc[1], 0, 1 };
+			Vector4f transformed = m_Perspective.inverse() * Vector4f { ndc[0], ndc[1], in_point[2], 1 };
+			transformed = m_ViewMtx.inverse() * transformed;
 			transformed /= transformed[3];
 
 			return Vector3{ transformed[0], transformed[1], transformed[2] };
+		}
+
+		// Transform 0-1 range screen co-ordinates to world space
+		csl::math::Vector3 ProjectWorld(const csl::math::Vector2& in_point, float in_depth = 0) const
+		{
+			return ProjectWorld(csl::math::Vector3{ in_point[0], in_point[1], std::clamp(in_depth, 0.0f, 1.0f) });
 		}
 	};
 }
