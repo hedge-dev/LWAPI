@@ -5,10 +5,8 @@ namespace app::Render
 	struct CameraParam
 	{
 		csl::math::Matrix34 m_ViewMtx{}; // 0
-		float m_Unk1{}; // 64
-		float m_Unk2{}; // 68
-		float m_Width{ 1280 }; // 72
-		float m_Height{ 720 }; // 76
+		csl::math::Vector2 m_ViewportPosition{}; // 64
+		csl::math::Vector2 m_ViewportSize{ 1280, 720 }; // 72
 		csl::math::Matrix34 m_Perspective{}; // 80
 		csl::math::Vector3 m_Unk3{}; // ???
 		csl::math::Vector3 m_Unk4{}; // ???
@@ -41,8 +39,8 @@ namespace app::Render
 			if (out_pDepth)
 				*out_pDepth = clipPos[3];
 
-			out_screenPoint[0] = (0.5f + ndcPos[0] / 2.0f) * m_Width;
-			out_screenPoint[1] = (0.5f - ndcPos[1] / 2.0f) * m_Height;
+			out_screenPoint[0] = (0.5f + ndcPos[0] / 2.0f) * m_ViewportSize.x();
+			out_screenPoint[1] = (0.5f - ndcPos[1] / 2.0f) * m_ViewportSize.y();
 
 			return true;
 		}
