@@ -10,6 +10,7 @@
 #include "hhRenderableContainer.h"
 #include "hhGeometry.h"
 #include "Resource/hhFxSceneParmeters.h"
+#include "Resource/hhMeshData.h"
 #include "Manager/hhRenderManager.h"
 
 #include "goc/goc_Visual.h"
