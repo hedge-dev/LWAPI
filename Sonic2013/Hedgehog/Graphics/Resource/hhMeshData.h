@@ -19,16 +19,23 @@ namespace hh::gfx::res
     {
         IDirect3DVertexBuffer9* m_pVertexBuffer;
         uint32_t m_Stride;
+        uint32_t m_Unk1;
+    };
+
+    struct ResVertexBufferData
+    {
+        ResVertexStreamData* m_pStream;
+        uint32_t m_Unk1;
         uint32_t m_Offset;
     };
 
     struct ResPrimitiveData
     {
-        ResVertexStreamData** m_ppVertexStreams;
-        uint32_t m_VertexStreamCount;
+        ResVertexBufferData* m_pVertexBuffers;
+        uint32_t m_BufferCount;
         ResIndexBufferObjectData* m_pIndexBuffer;
-        uint32_t m_IndexBufferSize;
-        uint32_t m_IndexCount;
+        uint32_t m_StartIndex;
+        uint32_t m_VertexCount;
     };
 
     struct ResMeshData
