@@ -40,6 +40,16 @@ namespace app
 		class CResClass : public fnd::ResCommon<SResClassData>
 		{
 		public:
+			uint GetParamSize() const
+			{
+				return ref().m_Flags & 0xFFFF;
+			}
+
+			bool IsPlain() const
+			{
+				return (ref().m_Flags >> 30) & 1;
+			}
+
 			const char* GetName() const
 			{
 				return ref().m_pName;
