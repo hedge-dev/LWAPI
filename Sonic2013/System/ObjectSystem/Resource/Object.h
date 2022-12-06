@@ -124,10 +124,30 @@ namespace app
 			{
 				return CResUnit{ const_cast<SResUnitData*>(&ref().m_Units[unit]) };
 			}
-			
+
 			uint GetUID() const
 			{
 				return ref().m_ObjectID & 0xFFFF;
+			}
+
+			// None
+			// Ground
+			// Guide
+			// Grind
+			// SV
+			// Circle
+			// Ground2
+			char GetAlignment() const
+			{
+				return (ref().m_ObjectID & 0xF000000) >> 24;
+			}
+
+			// Front
+			// Side
+			// Up
+			char GetLayout() const
+			{
+				return (ref().m_ObjectID & 0xF00000) >> 20;
 			}
 
 			uint GetParentID() const
