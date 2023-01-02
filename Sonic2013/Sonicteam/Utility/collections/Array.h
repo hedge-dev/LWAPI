@@ -33,5 +33,10 @@ namespace csl::ut
 		{
 			return this->m_capacity & ~csl::ut::SIGN_BIT;
 		}
+
+		bool empty() const
+		{
+			return this->m_length == 0;
+		}
 	};
 }

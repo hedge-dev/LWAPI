@@ -127,11 +127,6 @@ namespace csl
 				this->p_buffer[i] = this->p_buffer[i + 1];
 				this->m_length--;
 			}
-
-			bool empty()
-			{
-				return this->m_length == 0;
-			}
 			
 			void clear()
 			{
