@@ -21,20 +21,21 @@ namespace app::xgame
 			eType_ThunderBarrier,
 			eType_RedRingRadar,
 			eType_StealRing,
-			eType_SwapRing,
+			eType_ChangeRing,
 			eType_PhantomBomb,
 			eType_YoshiOneUp,
 			eType_YoshiCoin,
 			eType_ZeldaOneUp
 		};
 		
-		inline const static unsigned int MessageID = 0x6008;
 		EType m_Type;
-		uint m_Unk1{static_cast<uint>(-1)};
+		uint ItemLevel{ static_cast<uint>(-1) };
 		bool m_Taken{};
 		bool m_HasUserID{};
 		uint m_UserID{};
 		
+		inline const static unsigned int MessageID = 0x6008;
+
 		MsgTakeObject(EType type) : Message(MessageID), m_Type(type)
 		{
 
@@ -54,6 +55,12 @@ namespace app::xgame
 		{
 			m_UserID = userID;
 			m_HasUserID = 1;
+		}
+
+		void ResetShapeUserID()
+		{
+			m_UserID = 0;
+			m_HasUserID = 0;
 		}
 	};
 }
