@@ -27,6 +27,8 @@
 #include "Sonicteam/Utility/collections/HashMap.h"
 #include "Sonicteam/Utility/collections/PointerMap.h"
 #include "Sonicteam/Utility/collections/StringMap.h"
+#include "Sonicteam/Utility/collections/CircularBuffer.h"
+#include "Sonicteam/Utility/String.h"
 #include "Sonicteam/Utility/VariableString.h"
 #include "Sonicteam/Utility/FixedString.h"
 #include "Sonicteam/Utility/Point.h"
@@ -46,6 +48,8 @@
 #include "Sonicteam/System/FreeListHeapTemplate.h"
 #include "Sonicteam/System/MallocAllocator.h"
 
+#include "SonicUSA/System/Random.h"
+#include "SonicUSA/System/RadianMask.h"
 
 #ifdef LWAPI_NETWORKING
 // Sonicteam Hio Library
@@ -64,6 +68,25 @@
 
 // gindows
 #include "gindows/gindows.h"
+
+// SurfRide Library
+#include "SurfRide/Math.h"
+#include "SurfRide/Color.h"
+#include "SurfRide/Allocator.h"
+#include "SurfRide/Base.h"
+#include "SurfRide/ReferenceCount.h"
+#include "SurfRide/BinaryData.h"
+#include "SurfRide/SrCamera.h"
+#include "SurfRide/Camera.h"
+#include "SurfRide/Project.h"
+#include "SurfRide/Scene.h"
+#include "SurfRide/Animation.h"
+#include "SurfRide/Layer.h"
+#include "SurfRide/CastNode.h"
+#include "SurfRide/ReferenceCast.h"
+
+#include "SurfRide/Project.inl"
+#include "SurfRide/Scene.inl"
 
 // Hedgehog Library
 #include "Hedgehog/Base/Type/hhBaseTypes.h"
@@ -102,8 +125,10 @@
 #include "Hedgehog/Base/System/hhApplication.h"
 #include "Hedgehog/Base/System/hhFrame.h"
 #include "Hedgehog/Base/System/hhArray.h"
+#include "Hedgehog/Base/System/hhInplaceArray.h"
 #include "Hedgehog/Base/System/hhIOStream.h"
 #include "System/GlobalAllocator.h"
+#include "Hedgehog/Base/System/hhInplaceTempArray.h"
 
 // Hedgehog Utility Library
 #include "Hedgehog/Base/Utility/hhScopedPointer.h"
@@ -131,6 +156,7 @@
 #include "Hedgehog/Resource/hhResName.h"
 #include "Hedgehog/Resource/hhResourceReflections.h"
 #include "Hedgehog/Resource/hhResTexture.h"
+#include "Hedgehog/Resource/hhResPathObject.h"
 
 #include "Hedgehog/Database/System/hhDatabaseData.h"
 
@@ -155,10 +181,10 @@
 #include "Hedgehog/Game/GameObject.h"
 #include "Hedgehog/Game/GameObjectHandle.h"
 #include "Hedgehog/Game/GameService.h"
+#include "Hedgehog/Game/HudLayerController.h"
 
-// Hedgehog Game Components
-#include "Hedgehog/Game/goc/goc_Transform.h"
-#include "Hedgehog/Game/goc/goc_EnemyTarget.h"
+#include "System/DisplaySwitch/DisplayText.h"
+#include "System/DisplaySwitch/DisplaySwitch.h"
 
 // Hedgehog File System Library
 #include "Hedgehog/FileSystem/FileSystem.h"
@@ -172,6 +198,15 @@
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.h"
 #include "Hedgehog/MirageCore/Misc/hhRenderingInfrastructure.h"
 #include "Hedgehog/Graphics/hhGraphics.h"
+
+// Hedgehog Game Components
+#include "Hedgehog/Game/goc/goc_Transform.h"
+#include "Hedgehog/Game/goc/goc_EnemyTarget.h"
+#include "Hedgehog/Game/goc/hud/goc_HudCollider.h"
+#include "Hedgehog/Game/goc/hud/goc_Hud.h"
+
+// Hedgehog Input Library
+#include "Hedgehog/Input/goc/goc_CharacterInput.h"
 
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
 #include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"
@@ -214,7 +249,10 @@
 // Hedgehog Physics Library
 #include "Hedgehog/Physics/hhPhysics.h"
 
+#include "Hedgehog/Physics/goc/goc_Launcher.h"
+
 // Hedgehog Effect Components
+#include "Hedgehog/Effect/hhInstanceHandle.h"
 #include "Hedgehog/Effect/goc/goc_Effect.h"
 
 // Hedgehog Sound Library
@@ -244,8 +282,10 @@
 #include "System/FileLoader.h"
 #include "System/ResourceManager.h"
 #include "System/DeviceManager.h"
+#include "System/AocManager.h"
 #include "System/TerrainBase.h"
 #include "System/TerrainManager.h"
+#include "System/FadeInOutManager.h"
 
 // System Game
 #include "System/Game/ActorGroupRegistry.h"
@@ -289,6 +329,7 @@
 #include "System/Services/service_GameServiceTypeRegistry.h"
 #include "System/Services/service_RingManager.h"
 #include "System/Services/service_FootPrintManager.h"
+#include "System/Services/service_SnowBallTrackManager.h"
 
 // Objects
 #include "Hedgehog/Game/GameObject3D.h"
@@ -324,7 +365,79 @@
 #include "Stage/StageInfo.h"
 #include "Stage/StageDataInitializer.h"
 
+#include "System/Player/BlackBoard.h"
+
+// Utilities
+#include "System/Utility/AabbTree.h"
+
+#include "Hedgehog/Path/PathDebugDraw.h"
+#include "Hedgehog/Path/PathCollisionHandler.h"
+#include "Hedgehog/Path/PathCollisionHandlerStandard.h"
+#include "Hedgehog/Path/PathComponent.h"
+#include "Hedgehog/Path/PathManager.h"
+#include "Hedgehog/Path/PathEvaluator.h"
+
 #include "Stage/Shadow/Resource/ShadowModel.h"
+
+#include "Hedgehog/Gravity/GravityEffect.h"
+#include "Hedgehog/Gravity/SimpleGravityEffect.h"
+#include "Hedgehog/Gravity/SplineGravityEffect.h"
+#include "Hedgehog/Gravity/SvSplineGravityEffect.h"
+#include "Hedgehog/Gravity/GravityField.h"
+#include "Hedgehog/Gravity/GFieldCylinderSpline.h"
+#include "Hedgehog/Gravity/GFieldSphere.h"
+#include "Hedgehog/Gravity/GFieldHemisphere.h"
+#include "Hedgehog/Gravity/GFieldOutsideCylinderSpline.h"
+#include "Hedgehog/Gravity/GFieldInsideCylinderSpline.h"
+#include "Hedgehog/Gravity/GFieldOutsidePrismSpline.h"
+#include "Hedgehog/Gravity/GFieldInsidePrismSpline.h"
+#include "Hedgehog/Gravity/GFieldSvSpline.h"
+#include "Hedgehog/Gravity/goc/goc_Gravity.h"
+#include "Hedgehog/Gravity/GravityManager.h"
+#include "Hedgehog/Gravity/GravityController.h"
+
+#include "System/Utility/ObjUtil.h"
+
+#include "Stage/Debris/Resource/ResFixPositionDebris.h"
+#include "Stage/Debris/Resource/ResRandomSpaceDebris.h"
+#include "Stage/Debris/DebrisBaseInfo.h"
+#include "Stage/Debris/RandomSpaceDebrisInfo.h"
+#include "Stage/Debris/DebrisUtil.h"
+
+// Hedgehog Shadow Components
+#include "Hedgehog/Shadow/ShadowShape.h"
+#include "Hedgehog/Shadow/ShadowSphereShape.h"
+#include "Hedgehog/Shadow/ShadowHemisphereShape.h"
+#include "Hedgehog/Shadow/ShadowModelShape.h"
+#include "Hedgehog/Shadow/goc/goc_Shadow.h"
+#include "Hedgehog/Shadow/goc/goc_ShadowSimple.h"
+
+#include "System/Utility/StateBase.h"
+#include "System/Utility/HsmImpl.h"
+#include "System/Enemy/goc/goc_EnemyHsm.h"
+#include "System/Enemy/EnemyState.h"
+#include "System/Enemy/EnemyBlowOffObjectCInfo.h"
+#include "System/Enemy/EnemyDeadEffect.h"
+#include "System/Enemy/AnimalManager.h"
+#include "System/Enemy/EnemyManager.h"
+#include "System/Enemy/EnemySweepMove.h"
+
+#include "Hedgehog/Movement/MovementUtility.h"
+#include "Hedgehog/Movement/BarrierChecker.h"
+#include "Hedgehog/Movement/MoveController.h"
+#include "Hedgehog/Movement/goc/goc_Movement.h"
+#include "Hedgehog/Movement/MoveBound.h"
+#include "Hedgehog/Movement/MovePopup.h"
+#include "Hedgehog/Movement/MoveStraight.h"
+#include "Hedgehog/Movement/MoveCharacterRigidBody.h"
+#include "Hedgehog/Movement/MoveObjGolonRock.h"
+#include "Hedgehog/Movement/MoveEnemyKeese.h"
+#include "Hedgehog/Movement/MoveObjCocco.h"
+#include "Hedgehog/Movement/MoveVelocityReference.h"
+#include "Hedgehog/Movement/goc/goc_MovementComplex.h"
+
+#include "Hedgehog/Movement/goc/goc_Motor.h"
+#include "Hedgehog/Movement/goc/goc_MotorRotate.h"
 
 #include "System/Camera/Camera.h"
 #include "System/Camera/CameraController.h"
@@ -332,25 +445,110 @@
 #include "System/Camera/MsgPushCameraController.h"
 #include "System/Camera/MsgPopCameraController.h"
 #include "System/Camera/MsgCameraUpdate.h"
+#include "System/Camera/MsgCameraOn.h"
+#include "System/Camera/MsgCameraOff.h"
+#include "System/Camera/MsgCameraReset.h"
+#include "System/Camera/MsgShakeCamera.h"
 
-// Utilities
-#include "System/Utility/ObjUtil.h"
+#include "System/Player/Info/PlayerVisualSonicInfo.h"
+#include "System/Player/Info/PlayerVisualSuperSonicInfo.h"
+#include "System/Player/Info/PlayerVisualVirtualSonicInfo.h"
+#include "System/Player/Info/PlayerVehicleTornadoInfo.h"
+#include "System/Player/Info/PlayerVehicleSnowBallInfo.h"
+#include "System/Player/Info/PlayerVisualSonicZeldaInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomSpinInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomLaserInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomRocketInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomAsteroidInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomEagleInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomRhythmInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomHoverInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomBombInfo.h"
+#include "System/Player/Info/PlayerVisualPhantomQuakeInfo.h"
 
+#include "System/Player/ParameterSpeed.h"
+#include "System/Player/PlayerUtil.h"
 #include "System/Player/GOCCollection.h"
+#include "System/Player/ParameterGOC.h"
 #include "System/Player/Physics.h"
-#include "System/Player/Player.h"
+#include "System/Player/PathService.h"
+#include "System/Player/HomingTargetService.h"
+#include "System/Player/PlayerVehicle.h"
+#include "System/Player/SnowBall.h"
+#include "System/Player/States.h"
 #include "System/Player/GOCReferenceHolder.h"
+#include "System/Player/CollisionGOC.h"
+#include "System/Player/VisualGOC.h"
+#include "System/Player/Player.h"
+#include "System/Player/PlayerResourceInfoRegister.h"
+#include "System/Player/VisualUtil.h"
 #include "System/Player/VisualBase.h"
 #include "System/Player/PlayerVisual.h"
-#include "System/Player/VisualGOC.h"
+#include "System/Player/VisualUnit.h"
+#include "System/Player/VisualHuman.h"
+#include "System/Player/VisualSonic.h"
+#include "System/Player/State.h"
+#include "System/Player/PluginBase.h"
+#include "System/Player/StatePlugin.h"
 #include "System/Player/StateGOC.h"
+#include "System/Player/PlayerStateUtilEffect.h"
 #include "System/Player/StateUtil.h"
-#include "System/Player/Info/Sonic.h"
+#include "System/Player/Plugins.h"
+#include "System/Player/Sonic.h"
+
+#include "System/Player/StateGOC.inl"
+#include "System/Player/Physics.inl"
+#include "System/Player/Player.inl"
+#include "System/Player/PathService.inl"
+#include "System/Player/VisualGOC.inl"
+#include "System/Player/PlayerVehicle.inl"
+#include "System/Player/SnowBall.inl"
+#include "System/Player/PlayerUtil.inl"
+
+#include "System/Player/PlayerStateBase.h"
+
+#include "System/Enemy/MoveEnemyBlowOffObject.h"
+#include "System/Enemy/EnemyBlowOffObject.h"
+#include "System/Enemy/EnemyUtil.h"
+#include "System/Enemy/EnemyBase.h"
+#include "System/Enemy/EnemyInfo.h"
+#include "System/Enemy/EnemyUvAnimLinkController.h"
+#include "Object/Objects.h"
+
+#include "System/Player/PlayerStateUtilEffect.inl"
+#include "System/Player/StateUtil.inl"
+
+// Hedgehog HUD Components
+#include "HUD/HudGameMainDisplay.h"
 
 #include "System/StandardGameUpdate.h"
 #include "System/GameMode/GameModeStartUp.h"
+
+#include "xgame/system/GameScore/GameScoreManager.h"
+#include "xgame/system/DlcManager.h"
+#include "xgame/system/DlcManager.inl"
+
+#include "xgame/gamemode/stage/StagePhysicsSetup.h"
+#include "xgame/gamemode/stage/StageSoundGuidePathControl.h"
+#include "xgame/gamemode/stage/GlobalAmbCoordinator.h"
+#include "xgame/gamemode/stage/BGMCoordinator.h"
+#include "xgame/gamemode/stage/BGMParamCoordinator.h"
+#include "xgame/gamemode/stage/StageSoundDirector.h"
+#include "xgame/gamemode/stage/StageGameStatus.h"
+#include "xgame/gamemode/stage/StatusCheckPoint.h"
+#include "xgame/gamemode/gameover/GameOverInfo.h"
+#include "xgame/gamemode/minigame/MinigameCharacterInfo.h"
+#include "xgame/gamemode/WorldAreaMap/WorldAreaMapObjResource.h"
+#include "xgame/gamemode/WorldAreaMap/WorldAreaMapInfo.h"
+#include "xgame/gamemode/WorldAreaMap/worldmap_diorama.h"
+#include "xgame/gamemode/WorldAreaMap/worldmap_diorama_stage.h"
+
+#include "System/GameMode/GameModeStage.h"
+#include "xgame/gamemode/StageBattle/GameModeStageBattle.h"
 
 #include "Hedgehog/Graphics/goc/Impl/goc_VisualModelImpl.inl"
 #include "Hedgehog/Game/GameSequence.inl"
 #include "Hedgehog/Game/GameMode.inl"
 #include "Hedgehog/Game/Game.inl"
+#include "Hedgehog/Path/PathComponent.inl"
+#include "Hedgehog/Movement/MoveBound.inl"
