@@ -6,7 +6,14 @@ namespace app::game
 	class CharacterRigidBodyBase : public ColliShape
 	{
 	public:
-		INSERT_PADDING(64){};
+		INSERT_PADDING(32){};
+		csl::math::Vector3 LinearVelocity{};
+		csl::math::Quaternion Rotation{};
+
+		void SetLinearVelocity(const csl::math::Vector3 in_rLinearVelocity)
+		{
+			LinearVelocity = in_rLinearVelocity;
+		}
 	};
 
 	class alignas(16) CharacterRigidBodyCinfo : public CollisionObjCinfo

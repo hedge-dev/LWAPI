@@ -5,12 +5,21 @@ namespace app::game
 	class ColliSphereShapeBase : public ColliShape
 	{
 	public:
-		float m_Radius{};
-		size_t m_Unk9{};
+		float Radius{};
+		size_t Unk9{};
 
 		ColliSphereShapeBase()
 		{
-			ASSERT_OFFSETOF(ColliSphereShapeBase, m_Radius, 352);
+			ASSERT_OFFSETOF(ColliSphereShapeBase, Radius, 352);
+		}
+
+		void SetRadius(float in_radius)
+		{
+			if (Radius == in_radius)
+				return;
+
+			Radius = in_radius;
+			OnShapeEvent(2);
 		}
 	};
 
@@ -18,7 +27,7 @@ namespace app::game
 	{
 	public:
 		float m_Radius{};
-		size_t m_Unk9{};
+		char m_Unk9{};
 
 		ColliSphereShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::ShapeType_Sphere)
 		{

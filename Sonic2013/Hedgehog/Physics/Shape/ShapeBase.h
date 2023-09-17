@@ -49,6 +49,9 @@ namespace app::game
 
 		void SetEnable(bool enable)
 		{
+			if (enable == IsEnable())
+				return;
+
 			m_Status.set(0, enable);
 			OnShapeEvent(0);
 		}
@@ -68,7 +71,22 @@ namespace app::game
 
 		void SetLocalTranslation(const csl::math::Vector3& in_translation)
 		{
-			m_Transform.SetTransVector(in_translation);
+			m_UnkMtx.SetTransVector(in_translation);
+			MarkUpdate();
+		}
+
+		void SetLocalRotation(const csl::math::Quaternion& in_rRotation)
+		{
+			csl::math::Matrix34 mtx{};
+			
+			Eigen::Matrix3f rotMtx = in_rRotation.toRotationMatrix();
+			mtx.SetColumn(0, (csl::math::Vector3)rotMtx.col(0));
+			mtx.SetColumn(1, (csl::math::Vector3)rotMtx.col(1));
+			mtx.SetColumn(2, (csl::math::Vector3)rotMtx.col(2));
+			
+			mtx.SetTransVector(m_UnkMtx.GetTransVector());
+			m_UnkMtx = mtx;
+			
 			MarkUpdate();
 		}
 	};
