@@ -33,7 +33,7 @@ namespace app::fnd
 	{
 		friend GameServiceClass;
 
-	protected:
+	public:
 		GameDocument* m_pOwnerDocument{};
 		const GameServiceClass* m_pClass{};
 		void* m_Unk1{};
