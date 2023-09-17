@@ -17,7 +17,7 @@ namespace app
 
 	inline CSetAdapter* CSetObjectManager::FindAdapter(CSetObjectID id)
 	{
-		auto* pPack = m_pActorManager->FindPack(id);
+		auto* pPack = m_pActorManager->FindPack(id.Value);
 		if (!pPack)
 			return nullptr;
 
@@ -28,7 +28,7 @@ namespace app
 	inline SetEd::CResObject CSetObjectManager::FindObjectResource(app::CSetObjectID id)
 	{
 		ASSERT_OFFSETOF(SetEd::SResObjectData, m_pParam, 48);
-		auto* pPack = m_pActorManager->FindPack(id);
+		auto* pPack = m_pActorManager->FindPack(id.Value);
 		if (!pPack)
 			return SetEd::CResObject{ nullptr };
 
@@ -37,7 +37,7 @@ namespace app
 
 	inline CSetObjectListener* CSetObjectManager::CreateObjectBySetObjectID(CSetObjectID id)
 	{
-		auto* pPack = m_pActorManager->FindPack(id);
+		auto* pPack = m_pActorManager->FindPack(id.Value);
 		if (!pPack)
 			return nullptr;
 

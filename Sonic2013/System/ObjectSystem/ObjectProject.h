@@ -27,7 +27,7 @@ namespace app::SetEd
 			for (size_t i = 0; i < ref().m_Objects.size(); i++)
 			{
 				SetEd::CResObject resObj{ ref().m_Objects[i] };
-				if (resObj.IsValid() && id == resObj.GetUID())
+				if (resObj.IsValid() && id.Value == resObj.GetUID())
 					return resObj;
 			}
 
