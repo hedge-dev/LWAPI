@@ -44,7 +44,7 @@ namespace app::animation
 					return;
 				}
 
-				m_SystemCallbacks[id] = pCallback;
+				m_SystemCallbacks[id + 1] = pCallback;
 			}
 			else
 			{
