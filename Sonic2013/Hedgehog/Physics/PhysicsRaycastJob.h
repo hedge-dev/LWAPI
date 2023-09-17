@@ -46,5 +46,15 @@ namespace app::game
 				m_pBuffer = nullptr;
 			}
 		}
+
+		void Reserve(int in_amount)
+		{
+			m_Commands.reserve(in_amount);
+		}
+
+		void Clear()
+		{
+			m_Commands.clear();
+		}
 	};
 }
