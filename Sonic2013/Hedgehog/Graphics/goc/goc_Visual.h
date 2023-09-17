@@ -7,7 +7,7 @@ namespace app::fnd
 		typedef char Flag;
 		typedef char VisualType;
 		
-	protected:
+	public:
 		//Flag m_Flags{};
 		csl::ut::Bitset<Flag> m_Flags;
 		VisualType visualType;
@@ -26,7 +26,7 @@ namespace app::fnd
 			return m_Flags.test(0);
 		}
 
-		void SetVisibility(bool visibility)
+		void SetVisible(bool visibility)
 		{
 			m_Flags.set(0, visibility);
 			OnGOCVisualEvent(0, 0, nullptr);

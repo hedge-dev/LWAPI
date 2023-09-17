@@ -8,7 +8,7 @@ namespace app::fnd
 		void* m_Unk1;
 		HFrame* m_pFrame;
 		void* m_Unk2;
-		csl::math::CalculatedTransform m_Transform;
+		math::CalculatedTransform m_Transform;
 		bool m_Unk3;
 		INSERT_PADDING(12);
 		
@@ -34,6 +34,18 @@ namespace app::fnd
 		void SetLocalTranslation(const csl::math::Vector3& translation)
 		{
 			m_Transform.SetTranslation(translation);
+			MarkUpdate();
+		}
+
+		void SetLocalRotation(const csl::math::Quaternion& in_rRotation)
+		{
+			m_Transform.SetRotation(in_rRotation);
+			MarkUpdate();
+		}
+
+		void SetLocalRotationXYZ(float in_roll, float in_pitch, float in_yaw)
+		{
+			m_Transform.SetRotationXYZ(in_roll, in_pitch, in_yaw);
 			MarkUpdate();
 		}
 
