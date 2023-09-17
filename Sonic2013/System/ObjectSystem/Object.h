@@ -2,10 +2,20 @@
 
 namespace app
 {
-	typedef size_t CSetObjectID;
 	class CSetObjectListener;
 	class CSetObjectManager;
 	
+	class CSetObjectID
+	{
+	public:
+		size_t Value{};
+
+		size_t get() const
+		{
+			return Value;
+		}
+	};
+
 	class CSetObject : public hh::base::CRefCountObject
 	{
 	public:

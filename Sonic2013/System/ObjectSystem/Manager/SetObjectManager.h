@@ -42,7 +42,7 @@ namespace app
 		INSERT_PADDING(8); // ???
 		
 	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, app::ut::RefPtr<CSetObject>&, size_t);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveListener, ASLR(0x0084BA60), CSetObjectManager*, CSetObjectListener*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpKillAllObject, ASLR(0x0084BAF0), CSetObjectManager*);
@@ -52,9 +52,9 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRangeInSetObject, ASLR(0x0084D620), CSetObjectManager*, const csl::math::Vector3&);
 
 	protected:
-		void SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
+		bool SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
 		{
-			ms_fpSendObjectMessageImpl(this, id, rMsg, sender, create, immediate);
+			return ms_fpSendObjectMessageImpl(this, id, rMsg, sender, create, immediate);
 		}
 
 		CSetObjectListener* CreateObjectImpl(CSetAdapter* pAdapter, CActivationManager* pActivationMan, uint spawnFlags)
@@ -70,7 +70,7 @@ namespace app
 
 		size_t GetLayerIDFromUID(CSetObjectID id) const
 		{
-			return id / 4000;
+			return id.Value / 4000;
 		}
 
 		SetEd::CResObject GetResObjectByID(CSetObjectID id) const
@@ -92,9 +92,9 @@ namespace app
 			SendObjectMessageImpl(id, rMsg, sender, create, false);
 		}
 
-		void SendObjectMessageImm(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)
+		bool SendObjectMessageImm(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)
 		{
-			SendObjectMessageImpl(id, rMsg, sender, create, true);
+			return SendObjectMessageImpl(id, rMsg, sender, create, true);
 		}
 
 		void RemoveListener(CSetObjectListener* pListener)
