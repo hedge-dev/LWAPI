@@ -31,7 +31,7 @@ namespace app
 			size_t m_CRC;
 			const char* m_pName;
 			const char* m_pCategory;
-			void* m_Unk1;
+			size_t m_Unk1;
 			float m_DefaultRangeOut;
 			float m_DefaultRangeIn;
 			app::TArray<SParamDescData, app::dbg::Allocator<SParamDescData>> m_Params;
