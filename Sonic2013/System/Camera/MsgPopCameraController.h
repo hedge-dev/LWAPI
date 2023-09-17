@@ -5,7 +5,8 @@ namespace app::xgame
 	class MsgPopCameraController : public app::fnd::Message
 	{
 	public:
-		inline static uint MessageID = 0x8006;
+		inline const static unsigned int MessageID = 0x8006;
+
 		Camera::CCameraController* m_pController{};
 		float m_Easing{};
 		bool m_Unk1{};
