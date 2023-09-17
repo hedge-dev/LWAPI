@@ -118,6 +118,18 @@ namespace app::animation
 			ChangeAnimationClip(pAnim->GetSimpleAnimation());
 		}
 
+		void ExitLoopSeqInsideAnimationClip(AnimationClip* in_pClip)
+		{
+			if (!in_pClip)
+				return;
+
+			ComplexSequence* pSequence = static_cast<ComplexSequence*>(GetSequence(*in_pClip));
+			if (!pSequence)
+				return;
+		
+			pSequence->ExitLoop();
+		}
+
 		void RegisterCallback(int id, AnimationCallback* pCallback)
 		{
 			m_CallbackExecutor.RegisterCallback(id, pCallback);

@@ -133,4 +133,17 @@ namespace app::animation
 
 		return static_cast<ComplexBlend*>(pComplex->m_pImpl.get())->m_BlenderMap.find(pName);
 	}
+
+	inline static ComplexImpl* GetSequence(const AnimationClip& in_rClip)
+	{
+		auto* pComplex = csl::ut::DynamicCast<const AnimationComplex>(&in_rClip);
+		if (pComplex && !*(size_t*)pComplex->m_pDef->m_pData)
+		{
+			return pComplex->m_pImpl.get();
+		}
+		else
+		{
+			return { nullptr };
+		}
+	}
 }
