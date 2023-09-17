@@ -2,9 +2,34 @@
 
 namespace app
 {
-	class ObjUtil
+	static bool IsGrindPathSearchRadiusSet = false;
+	static float GringPathSearchRadius = 0.0f;
+
+	static bool IsSVPathSearchRadiusSet = false;
+	static float SVPathSearchRadius = 0.0f;
+
+	namespace game
 	{
-	public:
+		class PathManager;
+		class PathRaycastInput;
+		class PathRaycastOutput;
+	}
+
+	namespace ObjUtil
+	{
+		namespace detail
+		{
+			template <typename T>
+			inline game::PathComponent* GetGravityPath(const game::GravityField* in_pGravityField)
+			{
+				T* pGravityField = csl::ut::DynamicCast<T, game::GravityField>(const_cast<game::GravityField*>(in_pGravityField));
+				if (!pGravityField)
+					return { nullptr };
+			
+				return pGravityField->GetPath();
+			}
+		}
+
 		enum EFilter
 		{
 			eFilter_Default = 0,
@@ -27,10 +52,43 @@ namespace app
 			eFilter_Unk17,
 		};
 
-		template <class T>
-		static T* GetObjectInfo(GameDocument& rDocument, const char* pName)
+		template <size_t Len>
+		class ResModelFixedContainer
 		{
-			return reinterpret_cast<T*>(rDocument.GetService<CObjInfoContainer>()->GetInfo(pName));
+		public:
+			csl::ut::FixedArray<hh::gfx::res::ResModel, Len> Models{};
+		};
+
+		template <size_t Len>
+		class ResSkeletonFixedContainer
+		{
+		public:
+			csl::ut::FixedArray<hh::gfx::res::ResSkeleton, Len> Skeletons{};
+		};
+
+		template <size_t Len>
+		class ResCharAnimFixedContainer
+		{
+		public:
+			csl::ut::FixedArray<hh::gfx::res::ResAnimSkeleton, Len> Animations{};
+		};
+
+		template <size_t Len>
+		class ResTexSrtAnimFixedContainer
+		{
+		public:
+			csl::ut::FixedArray<hh::gfx::res::ResAnimTexSrt, Len> Animations{};
+		};
+
+		static CObjInfo* GetObjectInfo(GameDocument& in_rDocument, const char* in_pName)
+		{
+			return in_rDocument.GetService<CObjInfoContainer>()->GetInfo(in_pName);
+		}
+
+		template <class T>
+		static T* GetObjectInfo(GameDocument& in_rDocument)
+		{
+			return reinterpret_cast<T*>(GetObjectInfo(in_rDocument, T::ms_pName));
 		}
 
 		static const char* GetStagePackName(GameDocument& rDocument)
@@ -52,12 +110,37 @@ namespace app
 			return (data->GetAddress());
 		}
 
+		static hh::gfx::res::ResTexture GetResTexture(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			if (!rPackFile.IsValid())
+				return { nullptr };
+
+			return rPackFile.Get<hh::gfx::res::ResTexture>(pName);
+		}
+
 		static hh::gfx::res::ResModel GetModelResource(const char* pName, hh::ut::PackFile& rPackFile)
 		{
 			if (!rPackFile.IsValid())
 				return { nullptr };
 
 			return rPackFile.Get<hh::gfx::res::ResModel>(pName);
+		}
+
+		template <size_t Len>
+		static ResModelFixedContainer<Len> GetLodModelResource(const char* pName, hh::ut::PackFile& rPackFile)
+		{
+			static csl::ut::FixedString<128> buffer{};
+			ResModelFixedContainer<Len> container{};
+
+			if (!rPackFile.IsValid())
+				return { container };
+
+			container.Models[0] = GetModelResource(pName, rPackFile);
+			for (size_t i = 1; i < Len; i++)
+			{
+				buffer.setf("%s_lod%02d", pName, i - 1);
+				container.Models[i] = rPackFile.Get<hh::gfx::res::ResModel>(buffer);
+			}
 		}
 
 		static res::ResShadowModel GetShadowModel(const char* pName, hh::ut::PackFile& rPackFile)
@@ -122,6 +205,27 @@ namespace app
 				return { nullptr };
 
 			return rPackFile.Get<hh::gfx::res::ResAnimMaterial>(pName);
+		}
+
+		static int GetPlayerActorID(GameDocument& rDocument, int playerNo)
+		{
+			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
+			return pLevelInfo->GetPlayerID(playerNo);
+		}
+
+		static int GetPlayerNo(GameDocument& rDocument, uint actorID)
+		{
+			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
+			return pLevelInfo->GetPlayerNo(actorID);
+		}
+
+		static xgame::PlayerInformation* GetPlayerInformation(GameDocument& in_rDocument, int in_playerNo)
+		{
+			auto* pLevelInfo = in_rDocument.GetService<CLevelInfo>();
+			if (in_playerNo < 0 || pLevelInfo->GetNumPlayers() <= in_playerNo)
+				return { nullptr };
+
+			return in_rDocument.GetService<xgame::Blackboard>()->GetPlayerInformation(in_playerNo);
 		}
 
 		static void SetPropertyLockonTarget(GameObject* pObject)
@@ -202,18 +306,48 @@ namespace app
 			}
 		}
 
-		static void SendMessageImmToPlayer(const GameObject& rObj, int playerNo, fnd::Message& rMsg)
+		static void SetEnableColliShape(game::GOCCollider* in_pCollider, size_t in_shapeId, bool in_enable)
 		{
-			auto* pDocument = rObj.GetDocument();
-			uint actorID = ObjUtil::GetPlayerActorID(*pDocument, playerNo);
-			rObj.SendMessageImm(actorID, rMsg);
+			if (auto* pShape = in_pCollider->GetShapeById(in_shapeId))
+				pShape->SetEnable(in_enable);
 		}
 
-		static void SendMessageImmToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
+		static void SetEnableColliShape(game::ColliShape* in_pShape, bool in_enable)
 		{
-			auto* pDocument = rObj.GetDocument();
-			auto* pSetMgr = pDocument->GetService<CSetObjectManager>();
-			pSetMgr->SendObjectMessageImm(id, rMsg, rObj.GetID(), create);
+			in_pShape->SetEnable(in_enable);
+		}
+
+		static bool SendMessageImmToPlayer(const GameObject& in_rObj, int playerNo, fnd::Message& in_rMsg)
+		{
+			auto* pDocument = in_rObj.GetDocument();
+			uint actorID = ObjUtil::GetPlayerActorID(*pDocument, playerNo);
+			return in_rObj.SendMessageImm(actorID, in_rMsg);
+		}
+
+		static bool SendMessageImmToPlayer(const GameObject& in_rObj, fnd::Message& in_rMsg)
+		{
+			return SendMessageImmToPlayer(in_rObj, 0, in_rMsg);
+		}
+
+		static void SendMessageImmToGameActor(const GameObject& in_rObject, fnd::Message& in_rMessage)
+		{
+			auto* pDocument = in_rObject.GetDocument();
+			uint gameActorID = pDocument->GetGameActorID();
+			in_rObject.SendMessageImm(gameActorID, in_rMessage);
+		}
+
+		static bool SendMessageImmToCamera(GameObject& in_rObject, int in_playerNo, fnd::Message& in_rMessage)
+		{
+			auto* pLevelInfo = in_rObject.GetDocument()->GetService<CLevelInfo>();
+			if (!pLevelInfo)
+				return false;
+
+			return in_rObject.SendMessageImm(pLevelInfo->m_Cameras[in_playerNo], in_rMessage);
+		}
+
+		static bool SendMessageImmToCamera(GameObject& in_rObject, fnd::Message& in_rMessage)
+		{
+			return SendMessageImmToCamera(in_rObject, 0, in_rMessage);
 		}
 
 		static void SendMessageToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
@@ -223,6 +357,16 @@ namespace app
 			pSetMgr->SendObjectMessage(id, rMsg, rObj.GetID(), create);
 		}
 
+		static bool SendMessageImmToSetObject(const GameObject& rObj, const CSetObjectID& id, fnd::Message& rMsg, bool create)
+		{
+			auto* pDocument = rObj.GetDocument();
+			auto* pSetMgr = pDocument->GetService<CSetObjectManager>();
+			if (!pSetMgr)
+				return false;
+
+			return pSetMgr->SendObjectMessageImm(id, rMsg, rObj.GetID(), create);
+		}
+
 		static GameObjectHandle<CSetObjectListener> GetGameObjectHandle(const GameDocument& rDoc, const CSetObjectID& id, size_t unit)
 		{
 			auto* pSetMan = rDoc.GetService<CSetObjectManager>();
@@ -230,7 +374,7 @@ namespace app
 				return nullptr;
 			
 			ut::RefPtr<CSetObject> setObj{};
-			pSetMan->GetSetObjectFromUniqID(setObj, id);
+			pSetMan->GetSetObjectFromUniqID(setObj, id.Value);
 			if (!setObj)
 			{
 				return nullptr;
@@ -244,25 +388,27 @@ namespace app
 			return GetGameObjectHandle(rDoc, id, 0);
 		}
 
-		static void GetSetObjectTransform(const GameDocument& rDoc, const CSetObjectID& id, csl::math::Vector3* pPosition, csl::math::Quaternion* pRotation)
+		static bool GetSetObjectTransform(const GameDocument& rDoc, const CSetObjectID& id, csl::math::Vector3* pPosition, csl::math::Quaternion* pRotation)
 		{
 			auto* pObjMan = rDoc.GetService<CSetObjectManager>();
 			if (!pObjMan)
-				return;
+				return false;
 
 			auto resObj = pObjMan->GetResObjectByID(id);
 			if (!resObj)
-				return;
+				return false;
 
 			auto unit = resObj.GetUnit(0);
 			if (!unit.IsValid())
-				return;
+				return false;
 			
 			if (pPosition)
 				*pPosition = unit.GetPosition();
 		
 			if (pRotation)
 				*pRotation = SetEd::CalcRotationByAngle(unit.GetRotation());
+
+			return true;
 		}
 
 		static GameObjectHandle<CSetObjectListener> CreateSetObject(const GameDocument& rDoc, const CSetObjectID& id)
@@ -274,16 +420,218 @@ namespace app
 			return pObjMan->CreateObjectBySetObjectID(id);
 		}
 
-		static int GetPlayerActorID(GameDocument& rDocument, int playerNo)
+		static void AddScore(GameObject& in_rGameObject, const char* in_pName, xgame::MsgDamageBase& in_rMessage, csl::math::Vector3& in_rPosition)
 		{
-			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
-			return pLevelInfo->GetPlayerID(playerNo);
+			if (in_rMessage.PlayerNo < 0)
+				return;
+		
+			xgame::MsgScore msgScore{};
+			msgScore.m_pName = in_pName;
+			msgScore.m_Position = in_rPosition;
+			msgScore.m_PlayerNo = in_rMessage.PlayerNo;
+			msgScore.m_BonusData = in_rMessage.m_Bonus;
+
+			in_rGameObject.SendMessageImm(in_rGameObject.GetDocument()->GetGameActorID(), msgScore);
 		}
 
-		static int GetPlayerNo(GameDocument& rDocument, uint actorID)
+		static void AddScore(GameObject& in_rGameObject, const char* in_pName, int in_playerNo, const csl::math::Vector3& in_rPosition)
 		{
-			auto* pLevelInfo = rDocument.GetService<CLevelInfo>();
-			return pLevelInfo->GetPlayerNo(actorID);
+			if (in_playerNo < 0)
+				return;
+
+			xgame::MsgScore msg{};
+			msg.m_pName = in_pName;
+			msg.m_Position = in_rPosition;
+			msg.m_PlayerNo = in_playerNo;
+
+			in_rGameObject.SendMessageImm(in_rGameObject.GetDocument()->GetGameActorID(), msg);
 		}
-	};
+
+		static void AddScore(GameObject& in_rGameObject, const char* in_pName, xgame::MsgDamageBase& in_rMessage)
+		{
+			auto position = in_rGameObject.GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetTranslation();
+			AddScore(in_rGameObject, in_pName, in_rMessage, position);
+		}
+
+		static void AddScorePlayerAction(GameObject& in_rGameObject, const char* in_pName, int in_playerNo)
+		{
+			if (in_playerNo < 0)
+				return;
+
+			auto* pTransform = in_rGameObject.GetComponent<fnd::GOCTransform>();
+			if (!pTransform)
+				return;
+		
+			xgame::MsgScore msg{};
+			msg.m_pName = in_pName;
+			msg.m_Position = pTransform->m_Frame.m_Unk3.GetTranslation();
+			msg.m_PlayerNo = in_playerNo;
+			in_rGameObject.SendMessageImm(in_rGameObject.GetDocument()->GetGameActorID(), msg);
+		}
+
+		static game::PathManager* GetPathManager(GameDocument& in_rDocument)
+		{
+			return in_rDocument.GetService<game::PathManager>();
+		}
+
+		static bool RaycastNearestCollision(game::PhysicsRaycastOutput* out_pOutput, GameDocument& in_rDocument, const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, uint in_filter)
+		{
+			if (auto* pPhysicsWorld = in_rDocument.GetService<CPhysicsWorld>())
+				return pPhysicsWorld->Raycast(in_rFrom, in_rTo, in_filter, out_pOutput);
+			
+			return false;
+		}
+
+		static bool RaycastHitCollision(GameDocument& in_rDocument, const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, uint in_filter)
+		{
+			game::PhysicsRaycastOutput output{};
+			return RaycastNearestCollision(&output, in_rDocument, in_rFrom, in_rTo, in_filter);
+		}
+		
+		static bool GetSearchPathObjByRaycast(GameDocument& in_rDocument, const game::PathRaycastInput& in_rInput, game::PathRaycastOutput* out_pOutput)
+		{
+			auto* pathManager = GetPathManager(in_rDocument);
+			return pathManager && pathManager->CastRay(in_rInput, out_pOutput);
+		}
+
+		static bool RaycastGrindPath(GameDocument& in_rDocument, const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, game::PathRaycastOutput* out_pOutput)
+		{
+			game::PathRaycastInput input{ in_rFrom, in_rTo, 1, 8 };
+			if (GetSearchPathObjByRaycast(in_rDocument, input, out_pOutput))
+				return out_pOutput->pComponent != nullptr;
+
+			return false;
+		}
+
+		static bool SearchNearestGrindPath(GameDocument& in_rDocument, const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, game::PathRaycastOutput* out_pOutput)
+		{
+			if (!IsGrindPathSearchRadiusSet)
+			{
+				IsGrindPathSearchRadiusSet = true;
+				GringPathSearchRadius = 400.0f;
+			}
+
+			csl::math::Vector3 to{ in_rFrom + (in_rTo * GringPathSearchRadius) };
+			return RaycastGrindPath(in_rDocument, in_rFrom, to, out_pOutput);
+		}
+
+		static game::PathComponent* GetSVPath(GameDocument& in_rDocument, const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo)
+		{
+			if (!IsSVPathSearchRadiusSet)
+			{
+				IsSVPathSearchRadiusSet = true;
+				SVPathSearchRadius = 400.0f;
+			}
+
+			csl::math::Vector3 to{ in_rFrom + (in_rTo * SVPathSearchRadius) };
+			game::PathRaycastInput input{ in_rFrom, to, 1, 1 };
+			game::PathRaycastOutput output{};
+			if (GetSearchPathObjByRaycast(in_rDocument, input, &output))
+			{
+				return output.pComponent;
+			}
+
+			return { nullptr };
+		}
+
+		static fnd::SoundHandle PlaySE(const char* in_pSoundName, const csl::math::Vector3& in_rPosition, fnd::SoundDeviceTag device)
+		{
+			auto* pSoundManager = csl::fnd::Singleton<fnd::SoundPlayer>::GetInstance();
+			if (!pSoundManager)
+				return { nullptr };
+
+			fnd::SoundParam param{};
+			param.m_TweenFactor = 0.0f;
+			param.m_Device = device;
+
+			return pSoundManager->Play3D(2, in_pSoundName, in_rPosition, param);
+		}
+
+		static fnd::SoundHandle PlaySE2D(const char* in_pSoundName, fnd::SoundDeviceTag device)
+		{
+			auto* pSoundManager = csl::fnd::Singleton<fnd::SoundPlayer>::GetInstance();
+			if (!pSoundManager)
+				return { nullptr };
+
+			fnd::SoundParam param{};
+			param.m_TweenFactor = 0.0f;
+			param.m_Device = device;
+
+			return pSoundManager->Play(2, in_pSoundName, param);
+		}
+
+		static bool CheckShapeUserID(const game::ColliShape* in_pShape, uint in_id)
+		{
+			if (!in_pShape)
+				return false;
+
+			return in_pShape->m_ID == in_id;
+		}
+
+		static bool CheckShapeUserID(const fnd::Handle<game::ColliShape>& in_rShapeHandle, uint in_id)
+		{
+			return CheckShapeUserID(in_rShapeHandle.Get(), in_id);
+		}
+
+		inline game::GravityField* GetGravityField(GameDocument& in_rDocument, const csl::math::Vector3& in_rPosition)
+		{
+			auto* pGravityManager = in_rDocument.GetService<game::GravityManager>();
+			if (!pGravityManager)
+				return { nullptr };
+
+			return pGravityManager->GetObjectAtPoint(in_rPosition);
+		}
+
+		inline game::PathComponent* GetGravityPathCylinder(const game::GravityField* in_pGravityField)
+		{
+			return detail::GetGravityPath<game::GFieldCylinderSpline>(in_pGravityField);
+		}
+
+		inline game::PathComponent* GetGravityPathInsideCylinder(const game::GravityField* in_pGravityField)
+		{
+			return detail::GetGravityPath<game::GFieldInsideCylinderSpline>(in_pGravityField);
+		}
+
+		inline game::PathComponent* GetGravityPathSideview(const game::GravityField* in_pGravityField)
+		{
+			return detail::GetGravityPath<game::GFieldSvSpline>(in_pGravityField);
+		}
+
+		class LayoutCylinder
+		{
+		public:
+			struct Description
+			{
+				fnd::HFrame* pFrame{};
+				game::GravityField* pGravityField{};
+				csl::ut::Bitset<uint> Flags{};
+			};
+
+			csl::math::Vector3 Unk1{};
+			csl::math::Vector3 Unk2{};
+			csl::math::Vector3 Unk3{};
+			float Unk4{};
+			game::PathEvaluator Path{};
+			fnd::HFrame* pFrame{};
+			csl::ut::Bitset<uint> Flags{};
+	 
+		private:
+			inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x0073E410), LayoutCylinder*, const Description&);
+			inline static FUNCTION_PTR(math::Transform*, __thiscall, ms_fpCalcTransform, ASLR(0x0073E520), LayoutCylinder*, math::Transform*, const csl::math::Vector3&);
+
+		public:
+			bool Setup(const Description& in_rDescription)
+			{
+				return ms_fpSetup(this, in_rDescription);
+			}
+
+			math::Transform* CalcTransform(const csl::math::Vector3& in_rVector)
+			{
+				math::Transform transform{};
+				ms_fpCalcTransform(this, &transform, in_rVector);
+			
+				return &transform;
+			}
+		};
+	}
 }
