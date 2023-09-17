@@ -176,11 +176,16 @@ namespace app
 			}
 		};
 
-		static csl::math::Quaternion CalcRotationByAngle(const csl::math::Angle3& angle)
+		inline csl::math::Quaternion CalcRotationByAngle(const csl::math::Angle3& angle)
 		{
-			return Eigen::AngleAxisf(angle.x(), Eigen::Vector3f::UnitX()) *
-				Eigen::AngleAxisf(angle.y(), Eigen::Vector3f::UnitY()) *
-				Eigen::AngleAxisf(angle.z(), Eigen::Vector3f::UnitZ());
+			csl::math::Quaternion q
+			(
+				Eigen::AngleAxisf(angle.x(), csl::math::Angle3::UnitX())
+				* Eigen::AngleAxisf(angle.y(), csl::math::Angle3::UnitY())
+				* Eigen::AngleAxisf(angle.z(), csl::math::Angle3::UnitZ())
+			);
+
+			return q;
 		}
 	}
 }
