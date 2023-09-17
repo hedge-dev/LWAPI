@@ -21,6 +21,11 @@
 
 namespace app
 {
+	namespace Render
+	{
+		class CameraParam;
+	}
+
 	class GameDocument;
 	class GameMode;
 	namespace fnd 
@@ -39,7 +44,14 @@ namespace app
 
 	class CWorld
 	{
-		
+	private:
+		inline static FUNCTION_PTR(Render::CameraParam*, __thiscall, ms_fpGetCamera, ASLR(0x004DF5E0), CWorld*, size_t);
+
+	public:
+		Render::CameraParam* GetCamera(size_t in_unk)
+		{
+			return ms_fpGetCamera(this, in_unk);
+		}
 	};
 	
 	class GameDocument : public fnd::ReferencedObject
@@ -47,7 +59,6 @@ namespace app
 	public:
 		inline static GameDocument** ms_ppGameDocument = reinterpret_cast<GameDocument**>(ASLR(0xFEFEF4));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
-		inline static FUNCTION_PTR(fnd::GameService*, __thiscall, ms_fpGetServiceByClass, ASLR(0x0090B2E0), const GameDocument* This, const fnd::GameServiceClass& cls);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), void* This, fnd::GameService* service);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), void* This);
 		inline static constexpr const char* ms_CategoryNames[OBJECT_CATEGORY_COUNT] = 
@@ -56,7 +67,6 @@ namespace app
 			"ENEMY", "PLAYER", "ATTACHED", "CAMERA", "HUD", "HUD_NONSTOP", "SYSTEM", "NONSTOP"
 		};
 
-	protected:
 		GameMode* m_pGameMode{};
 		size_t m_GameActorID{};
 		std::unique_ptr<CWorld> m_pWorld{};
@@ -153,10 +163,7 @@ namespace app
 			return reinterpret_cast<T*>(CreateService(T::staticClass(), allocator));
 		}
 		
-		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls) const
-		{
-			return ms_fpGetServiceByClass(this, cls);
-		}
+		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls) const;
 
 		template <typename T>
 		T* GetService() const
@@ -187,6 +194,23 @@ inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameSe
 	AddService(service);
 
 	return service;
+}
+
+inline app::fnd::GameService* app::GameDocument::GetServiceByClass(const app::fnd::GameServiceClass& cls) const
+{
+	auto** begin = m_Services.begin();
+	auto** end = m_Services.end();
+
+	if (begin == end)
+		return { nullptr };
+
+	for (begin; (*begin)->m_pClass != &cls;)
+	{
+		if (++begin == m_Services.end())
+			return { nullptr };
+	}
+
+	return *begin;
 }
 
 #pragma pop_macro("CreateService")
