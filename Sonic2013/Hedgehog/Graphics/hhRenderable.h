@@ -6,6 +6,8 @@ namespace app::gfx
 	class Renderable : public hh::base::CRefCountObject
 	{
 	public:
+		typedef int EViewMask;
+
 		RenderableContainer* m_pContainer{};
 		csl::ut::LinkListNode m_ListNode{};
 		char m_OpaPriority{ static_cast<char>(0x80) };
