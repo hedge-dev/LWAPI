@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Shape/PhysicsMotionType.h"
 #include "Shape/CollisionShapeType.h"
 #include "Shape/CollisionObjCinfo.h"
 #include "Shape/ShapeCinfo.h"
@@ -14,6 +15,7 @@
 #include "Shape/BoxShapeBase.h"
 
 #include "Debug/PhysicsDebugDraw.h"
+#include "PhysicsContactPoint.h"
 #include "PhysicsRaycastOutput.h"
 #include "PhysicsOverlapOutput.h"
 #include "PhysicsSweepOutput.h"
@@ -22,6 +24,15 @@
 #include "PhysicsWorldImplBase.h"
 #include "PhysicsWorld.h"
 #include "goc/goc_Collider.h"
+#include "goc/goc_ColliderSimple.h"
+#include "goc/goc_BoxCollider.h"
+#include "goc/goc_SphereCollider.h"
 #include "goc/goc_Physics.h"
+
+#include "Debug/CollideDebugDraw.h"
+#include "ColliOverlapOutput.h"
+#include "ColliWorldImplBase.h"
+#include "ColliWorldImplHavok.h"
+#include "CollisionWorld.h"
 
 #include "Shape/ShapeBase.inl"
