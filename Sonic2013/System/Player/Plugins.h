@@ -1,0 +1,16 @@
+#pragma once
+
+#include "Plugin/PluginStateCheckNDC.h"
+#include "Plugin/PluginStateCheckDead.h"
+#include "Plugin/PluginStateLockOn.h"
+#include "Plugin/PluginStateCheckEnableItem.h"
+#include "Plugin/PluginStateAutoRun.h"
+#include "Plugin/PluginStateCheckChangePhantom.h"
+#include "Plugin/PluginStateSpeedUp.h"
+#include "Plugin/PluginStateInvincible.h"
+#include "Plugin/PluginStateCheckSuperSonic.h"
+#include "Plugin/PluginStateBarrier.h"
+#include "Plugin/PluginStateRedRingRadar.h"
+#include "Plugin/PluginStateHeartLife.h"
+#include "Plugin/PluginStateWater.h"
+#include "Plugin/PluginStateCheckSandHole.h"
