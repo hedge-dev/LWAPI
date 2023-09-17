@@ -162,6 +162,12 @@ namespace app::game
 			if (m_rpCharAnimation)
 				m_rpCharAnimation->ExitLoop();
 		}
+
+		void ExitLoopSeqInsideAnimation()
+		{
+			if (m_rpCharAnimation)
+				m_rpCharAnimation->ExitLoopSeqInsideAnimation();
+		}
 		
 		const char* GetAnimation() const
 		{
@@ -177,6 +183,14 @@ namespace app::game
 				return false;
 
 			return m_rpCharAnimation->IsCurrentAnimation(pName);
+		}
+
+		bool IsFinished() const
+		{
+			if (!m_rpCharAnimation)
+				return false;
+
+			return m_rpCharAnimation->IsFinished();
 		}
 	};
 }
