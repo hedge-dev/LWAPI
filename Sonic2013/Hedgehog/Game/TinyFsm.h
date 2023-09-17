@@ -102,9 +102,6 @@ namespace app
 
 		void FSM_TRAN(State_t in_state)
 		{
-			if (m_Cur == in_state)
-				return;
-
 			if constexpr (Hierarchical)
 			{
 				for (State_t state = m_Cur; state != m_Src; state = Super(state))
@@ -177,10 +174,20 @@ namespace app
 			}
 		}
 
+		void FSM_SET_INITSTATE(State_t in_state)
+		{
+			m_Cur = in_state;
+		}
+
 		void FSM_SETSTATE(State_t in_state)
 		{
 			m_Src = m_Cur;
 			FSM_TRAN(in_state);
+		}
+
+		State_t FSM_STATE() const
+		{
+			return m_Cur;
 		}
 
 		void InitFSM()
