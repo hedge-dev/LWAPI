@@ -5,7 +5,7 @@ namespace csl::ut
 	template<typename T>
 	class Array
 	{
-	protected:
+	public:
 		T* p_buffer{};
 		size_t m_length{};
 		size_t m_capacity{};
@@ -17,7 +17,7 @@ namespace csl::ut
 
 			return &this->p_buffer[i];
 		}
-	public:
+
 		[[nodiscard]] T* begin() const { return get(0); }
 
 		[[nodiscard]] T* end() const { return get(this->m_length); }
