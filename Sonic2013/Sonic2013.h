@@ -28,7 +28,6 @@
 #include "Sonicteam/Utility/collections/PointerMap.h"
 #include "Sonicteam/Utility/collections/StringMap.h"
 #include "Sonicteam/Utility/collections/CircularBuffer.h"
-#include "Sonicteam/Utility/String.h"
 #include "Sonicteam/Utility/VariableString.h"
 #include "Sonicteam/Utility/FixedString.h"
 #include "Sonicteam/Utility/Point.h"
