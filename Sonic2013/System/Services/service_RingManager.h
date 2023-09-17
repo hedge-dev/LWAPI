@@ -7,7 +7,9 @@ namespace app::Gimmick
 	protected:
 		csl::ut::ObjectMoveArray<GameObjectHandle<GameObject>> m_Objects{ GetAllocator() };
 		int m_Unk1{};
-		float m_Unk2{};
+
+	public:
+		float Unk2{};
 
 	private:
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FECC20));
