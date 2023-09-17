@@ -7,11 +7,35 @@ namespace csl::ut
 	class ObjectMoveArray : public MoveArray<T>
 	{
 	public:
+		ObjectMoveArray() : MoveArray<T>()
+		{
+
+		}
+
 		ObjectMoveArray(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
 		{
 			
 		}
-		
+
+		ObjectMoveArray(void* in_pBuffer, uint in_length, uint in_capacity, fnd::IAllocator* in_pAllocator, bool in_unk) : MoveArray<T>(in_pAllocator)
+		{
+			this->p_buffer = static_cast<T*>(in_pBuffer);
+			this->m_length = in_length;
+
+			if (in_unk)
+				in_capacity |= SIGN_BIT;
+			this->m_capacity = in_capacity;
+			this->p_allocator = in_pAllocator;
+
+			T* pEnd = (&static_cast<T*>(in_pBuffer)[in_length]);
+			T* pStart = static_cast<T*>(in_pBuffer);
+			while (pStart != pEnd)
+			{
+				new(pStart) T();
+				pStart++;
+			}
+		}
+
 		void push_back(const T& item)
 		{
 			this->m_length++;
@@ -32,6 +56,22 @@ namespace csl::ut
 
 			if (i != this->m_length - 1)
 				this->p_buffer[i] = this->p_buffer[i + 1];
+
+			this->m_length--;
+		}
+
+		void erase(T* in_pItem)
+		{
+			in_pItem->~T();
+
+			T* pEnd = &this->p_buffer[this->m_length];
+			if (in_pItem != pEnd)
+			{
+				for (T* i = in_pItem; i != pEnd; i++)
+				{
+					memcpy(i, &i[1], sizeof(T));
+				}
+			}
 
 			this->m_length--;
 		}
