@@ -18,7 +18,7 @@ namespace app::fnd
 	{
 		friend MessageManager;
 		
-	protected:
+	public:
 		uint m_ActorID{};
 		MessageManager* m_pMessageManager{};
 		CActor* m_pParent{};
