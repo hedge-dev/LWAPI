@@ -50,6 +50,17 @@ namespace app::game
 			return m_Shapes.front();
 		}
 
+		ColliShape* GetShapeById(size_t id) const
+		{
+			if (m_Shapes.empty())
+				return { nullptr };
+			
+			if (auto* pShape = FindColliShape(id))
+				return pShape;
+		
+			return { nullptr };
+		}
+
 		ColliShape* FindColliShape(size_t id) const
 		{
 			for (auto& shape : m_Shapes)
