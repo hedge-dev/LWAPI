@@ -8,7 +8,6 @@ namespace app
 	}
 
 	class CShadowManager;
-	class CEffectManager;
 	class SnowBallTrackManager;
 	class StandardGameUpdate : public fnd::GameDocumentListener
 	{
@@ -28,7 +27,7 @@ namespace app
 		CSetObjectManager* m_pObjectMan{};
 		FootPrintManager* m_pFootPrintMan{};
 		SnowBallTrackManager* m_pSnowBallTrackMan{};
-		CEffectManager* m_pEffectMan{};
+		Effect::CEffectManager* m_pEffectMan{};
 		uint m_Unk2{};
 		csl::ut::MoveArray<dbg::ProfileNode*> m_PerformanceNodes[4];
 
