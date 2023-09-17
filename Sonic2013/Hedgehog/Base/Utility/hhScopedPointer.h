@@ -6,8 +6,8 @@ namespace app::ut
 	class ScopedPtr : csl::ut::NonCopyable
 	{
 	protected:
-		csl::fnd::IAllocator* m_pAllocator{};
 		T* m_pX{};
+		csl::fnd::IAllocator* m_pAllocator{};
 
 	public:
 		ScopedPtr() : m_pAllocator(nullptr), m_pX(nullptr)
