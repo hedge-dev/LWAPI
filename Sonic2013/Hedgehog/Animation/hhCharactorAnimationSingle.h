@@ -109,6 +109,12 @@ namespace app::animation
 		{
 			m_Transition.ExitLoop();
 		}
+
+		void ExitLoopSeqInsideAnimation()
+		{
+			auto* pClip = m_Transition.GetClip();
+			ExitLoopSeqInsideAnimationClip(pClip);
+		}
 		
 		const char* GetCurrentAnimationName() const
 		{
@@ -131,6 +137,11 @@ namespace app::animation
 		bool IsCurrentAnimation(const char* pName) const
 		{
 			return !strcmp(GetCurrentAnimationName(), pName);
+		}
+
+		bool IsFinished() const
+		{
+			return m_Transition.m_PlaybackFlags.test(1);
 		}
 	};
 }
