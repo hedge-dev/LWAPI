@@ -8,13 +8,14 @@ namespace app::xgame
 		enum class EFinishType
 		{
 			eFinishType_Normal,
-			eFinishType_FadeToWhite
+			eFinishType_FadeToWhite,
+			eFinishType_Snowball
 		};
 		
 		bool m_PanCamera{ false };
 		EFinishType m_FinishType{ EFinishType::eFinishType_Normal };
 		
-		inline static uint MessageID = 0x300A;
+		inline const static unsigned int MessageID = 0x300A;
 
 		MsgGoal() : Message(MessageID)
 		{
