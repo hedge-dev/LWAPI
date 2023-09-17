@@ -10,7 +10,6 @@ namespace app::xgame
 	class alignas(16) MsgKick : public MsgDamageBase
 	{
 	public:
-		inline const static unsigned int MessageID = 0x4002;
 		struct Description
 		{
 			game::ColliShape* m_pSrcShape{};
@@ -22,9 +21,17 @@ namespace app::xgame
 		csl::math::Vector3 m_KickDirection{ 0, 0, 0 };
 		csl::ut::Bitset<uint> m_ReplyStatus{};
 		
+		inline const static unsigned int MessageID = 0x4002;
+		
 		MsgKick(EnumSenderType senderType, const Description& desc, const csl::math::Vector3& dir) : MsgDamageBase(MessageID)
 		{
 			ms_fpCtor(this, senderType, desc, dir);
+		}
+
+		void SetReplyForSucceed()
+		{
+			m_ReplyStatus.set(0, 1);
+			m_ReplyStatus.set(2, 1);
 		}
 	};
 }
