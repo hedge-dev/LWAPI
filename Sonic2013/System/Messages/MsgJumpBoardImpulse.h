@@ -5,17 +5,6 @@ namespace app::xgame
 	class MsgJumpBoardImpulse : public fnd::Message
 	{
 	public:
-		MsgJumpBoardImpulse(unsigned int messageID) : fnd::Message(messageID){}
-
-		Message* Clone() override
-		{
-			return new MsgJumpBoardImpulse(*this);
-		}
-	};
-
-	class MsgJJumpBoardImpulse : public MsgJumpBoardImpulse
-	{
-	public:
 		enum EType
 		{
 			eType_Default
@@ -32,7 +21,7 @@ namespace app::xgame
 
 		inline const static unsigned int MessageID = 0x6003;
 
-		MsgJJumpBoardImpulse(const csl::math::Vector3& rOrigin, const csl::math::Vector3& rDir, const csl::math::Vector3& rBoostDir, EType type, float speedDropoffTime) : MsgJumpBoardImpulse(MessageID)
+		MsgJumpBoardImpulse(const csl::math::Vector3& rOrigin, const csl::math::Vector3& rDir, const csl::math::Vector3& rBoostDir, EType type, float speedDropoffTime) : fnd::Message(MessageID)
 		{
 			m_Origin = rOrigin;
 			m_Direction = rDir;
@@ -40,6 +29,11 @@ namespace app::xgame
 			m_SpeedDropoffTime = speedDropoffTime;
 			m_Type = type;
 			m_Unk3 = false;
+		}
+
+		Message* Clone() override
+		{
+			return new MsgJumpBoardImpulse(*this);
 		}
 	};
 }
