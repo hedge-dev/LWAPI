@@ -6,12 +6,11 @@ namespace app::fnd
 	class FileCache;
 	class FileSystem : public ReferencedObject, public csl::fnd::SingletonPointer<FileSystem>
 	{
-	protected:
+	public:
 		csl::ut::FixedString<256> m_RootDir{};
 		FileCache* m_pCache{};
 		csl::ut::Bitset<size_t> m_LoadFlags{ 3 };
 	
-	public:
 		virtual void Update() {};
 		virtual FileBinder* GetDefaultBinder()
 		{
