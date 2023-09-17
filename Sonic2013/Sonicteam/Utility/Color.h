@@ -15,6 +15,14 @@ namespace csl::ut
 		}
 	};
 
+	struct ColorF
+	{
+		float A;
+		float R;
+		float G;
+		float B;
+	};
+
 #define DEFINE_COLOR(NAME, R, G, B, A) inline static constexpr Color8 NAME{R, G, B, A};
 
 	struct Colors
