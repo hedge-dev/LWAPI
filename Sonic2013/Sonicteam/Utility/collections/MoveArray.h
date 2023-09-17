@@ -74,6 +74,17 @@ namespace csl
 				this->m_capacity = len;
 				this->p_buffer = static_cast<T*>(new_buffer);
 			}
+
+			void resize(size_t len)
+			{
+				reserve(len);
+				this->m_length = len;
+			}
+
+			void resize_unchecked(size_t len)
+			{
+				this->m_length = len;
+			}
 			
 		public:
 			MoveArray()
@@ -126,6 +137,11 @@ namespace csl
 				
 				this->p_buffer[i] = this->p_buffer[i + 1];
 				this->m_length--;
+			}
+
+			bool empty() const
+			{
+				return this->m_length == 0;
 			}
 			
 			void clear()
