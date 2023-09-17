@@ -20,18 +20,38 @@ namespace app
 	class Game
 	{
 	public:
+		enum EPlayMode
+		{
+
+		};
+
 		enum EPhantomType
 		{
 			PHANTOM_DRILL,
 			PHANTOM_LASER,
 			PHANTOM_ROCKET,
-			PHANTOM_EAGLE,
 			PHANTOM_ASTEROID,
+			PHANTOM_EAGLE,
 			PHANTOM_RHYTHM,
-			PHANTOM_BOMB,
 			PHANTOM_HOVER,
+			PHANTOM_BOMB,
 			PHANTOM_QUAKE,
 			PHANTOM_MAX
+		};
+
+		enum EUser
+		{
+			
+		};
+
+		enum ERank
+		{
+
+		};
+
+		class CRecordTime
+		{
+			int Time{};
 		};
 	};
 
