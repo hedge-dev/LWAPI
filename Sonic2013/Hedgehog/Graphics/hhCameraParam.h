@@ -12,17 +12,15 @@ namespace app::Render
 		csl::math::Vector3 m_Unk4{}; // ???
 
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpProjectScreen, ASLR(0x008FF3D0), const CameraParam*, const csl::math::Vector3&, csl::math::Vector3&, float*);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpTransformNDC, ASLR(0x008FF660), const CameraParam*, csl::math::Vector3&, const csl::math::Vector3&);
 
-		bool TransformNDC(csl::math::Vector3& out_ndc, const csl::math::Vector3& in_point) const
+		bool TransformNDC(csl::math::Vector3& out_rNdc, const csl::math::Vector3& in_rPoint) const
 		{
-			using namespace csl::math;
-
-			Eigen::Vector4f clipPos{ m_Perspective * (m_ViewMtx * Vector4(in_point, 1)) };
-			if (clipPos[3] < FLT_EPSILON)
+			csl::math::Vector3 mtxPoint = { m_ViewMtx * csl::math::Vector4(in_rPoint, 1.0f) };
+			if (mtxPoint.z() >= 0.0f)
 				return false;
 
-			out_ndc = { Vector3{clipPos[0], clipPos[1], clipPos[2]} / clipPos[3] };
+			csl::math::Vector3 ndc{ m_Perspective.col(0).x() * mtxPoint.x(), m_Perspective.col(1).y() * mtxPoint.y(), m_Perspective.col(2).z() * mtxPoint.z() + m_Perspective.col(2).w() };
+			out_rNdc = { ndc * (1.0f / mtxPoint.z()) };
 			return true;
 		}
 
@@ -71,6 +69,14 @@ namespace app::Render
 		csl::math::Vector3 ProjectWorld(const csl::math::Vector2& in_point, float in_depth = 0) const
 		{
 			return ProjectWorld(csl::math::Vector3{ in_point[0], in_point[1], std::clamp(in_depth, 0.0f, 1.0f) });
+		}
+		
+		csl::math::Matrix34 GetInvViewMatrix() const
+		{
+			csl::math::Matrix34 mtx{};
+			csl::math::Matrix34Inverse(m_ViewMtx, &mtx);
+			
+			return mtx;
 		}
 	};
 }
