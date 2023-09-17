@@ -51,7 +51,7 @@ namespace app
 				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_rpHandleManager->RemoveObject(*this);
 			}
 			
-			virtual const char* GetFamilyID() = 0;
+			virtual const char* GetFamilyID() const = 0;
 			virtual void Update(UpdatingPhase phase, const SUpdateInfo& updateInfo)
 			{
 				
@@ -77,6 +77,8 @@ namespace app
 				return activeObject;
 			}
 			
+			bool SendMessageImm(uint to, fnd::Message& msg) const;
+
 			template <typename  T>
 			static T* Create(GameObject& obj);
 			template <typename  T>
@@ -134,4 +136,9 @@ inline void app::fnd::GOComponent::EndSetup(GameObject& obj)
 	{
 		(*it)->OnGOCEvent(1, obj, nullptr);
 	}
+}
+
+inline bool app::fnd::GOComponent::SendMessageImm(uint to, fnd::Message& msg) const
+{
+	return GetGameObject()->SendMessageImm(to, msg);
 }
