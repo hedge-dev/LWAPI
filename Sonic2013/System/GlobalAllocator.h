@@ -33,5 +33,17 @@ namespace app
 		{
 			return ms_fpGetTempAllocator();
 		}
+
+		template <typename T>
+		T* AllocateTemp(uint in_count)
+		{
+			return static_cast<T*>(GetTempAllocator()->Alloc(sizeof(T) * in_count, 16));
+		}
+
+		template <typename T>
+		void DeallocateTemp(T* in_pMemory)
+		{
+			GetTempAllocator()->Free(static_cast<void*>(in_pMemory));
+		}
 	}
 }
