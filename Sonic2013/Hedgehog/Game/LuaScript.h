@@ -25,6 +25,7 @@ namespace app::game
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetInt, ASLR(0x004DEE70), LuaScript* This, const char* pName, int& result);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetColor, ASLR(0x004DF470), LuaScript* This, const char* pName, csl::ut::Color8& result);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloat, ASLR(0x004DEDF0), LuaScript* This, const char* pName, float& result);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloatArray, ASLR(0x004DF070), LuaScript* This, const char* pName, csl::ut::MoveArray<float>& result);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetVector3, ASLR(0x004DF350), LuaScript* This, const char* pName, csl::math::Vector3& result);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetString, ASLR(0x004DEF00), LuaScript* This, const char* pName, const char*& result);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetStringArray, ASLR(0x004DF160), LuaScript* This, const char* pName, csl::ut::MoveArray<const char*>& result);
@@ -78,6 +79,11 @@ namespace app::game
 		bool GetColor(const char* pName, csl::ut::Color8& result)
 		{
 			return ms_fpGetColor(this, pName, result);
+		}
+
+		bool GetFloatArray(const char* pName, csl::ut::MoveArray<float>& result)
+		{
+			return ms_fpGetFloatArray(this, pName, result);
 		}
 
 		bool GetFloat(const char* pName, float& result)
