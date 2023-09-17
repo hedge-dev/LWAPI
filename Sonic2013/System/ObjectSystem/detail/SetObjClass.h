@@ -97,6 +97,22 @@ namespace app
 			return info;
 		}
 
+		inline static CSetObjClass Create(const char* pName, const char* pType, const char* pCategory, CreateObject_t fpCreateObject, CreateInfo_t* fpCreateInfo, SetupParamMap_t* fpSetupParamMap = nullptr, const fnd::GOComponentClass** ppComponents = nullptr, float defaultRangeOut = 1200, float defaultRangeIn = 1000, ESetObjectSpawnType spawnType = eSetObjectSpawnType_Default)
+		{
+			CSetObjClass info{};
+			info.m_pName = pName;
+			info.m_pType = pType;
+			info.m_pCategory = pCategory;
+			info.m_fpCreateObject = fpCreateObject;
+			info.m_fpCreateInfo = fpCreateInfo;
+			info.m_fpSetupParamMap = fpSetupParamMap;
+			info.m_ppComponents = ppComponents;
+			info.m_DefaultRangeIn = defaultRangeIn;
+			info.m_DefaultRangeOut = defaultRangeOut;
+			info.m_SpawnType = spawnType;
+			return info;
+		}
+
 		CObjInfo* CreateInfo(csl::fnd::IAllocator* pAllocator) const
 		{
 			if (!m_fpCreateInfo)
