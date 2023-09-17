@@ -27,7 +27,6 @@ namespace hh::mr
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpReleaseVertexDeclaration, ASLR(0x00C2BD70), CRenderingInfrastructure*, rsdx::RsdxVertexDeclaration9**);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRefVertexDeclaration, ASLR(0x00C2BD80), CRenderingInfrastructure*, rsdx::RsdxVertexDeclaration9**);
 
-
 		virtual ~CRenderingInfrastructure() = default;
 
 		INSERT_PADDING(0x5C);
@@ -35,7 +34,6 @@ namespace hh::mr
 
 		CRenderingInfrastructure()
 		{
-
 			ASSERT_OFFSETOF(CRenderingInfrastructure, m_RenderingDevice, 0x60);
 		}
 
