@@ -21,7 +21,7 @@ namespace app::fnd
 		virtual void UnbindAll() {  }
 		virtual bool IsFileExist(const char* pFile) { return false; }
 		virtual size_t GetFileSize(const char* pFile) { return 0; }
-		virtual bool IsBind(const char* pName)
+		virtual bool IsBind(uint in_index) const
 		{
 			return false;
 		}
