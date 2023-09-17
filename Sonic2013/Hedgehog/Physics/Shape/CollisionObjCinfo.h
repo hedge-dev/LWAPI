@@ -5,17 +5,16 @@ namespace app::game
 	class CollisionObjCinfo
 	{
 	public:
-		ushort m_Unk1{};
-		ushort m_Flags{};
-		uint m_Unk2{};
+		char m_Unk1{};
+		char m_Unk4{};
+		ushort m_Flags{ 2 };
+		short m_Unk2{};
+		short m_Unk5{};
 		uint m_Unk3{};
-		uint m_ShapeID{};
+		uint m_ShapeID{ static_cast<uint>(-1) };
 		fnd::HFrame* m_pParent{};
-		uint m_Unk4{};
-		uint m_Unk5{};
-		uint m_Unk6{};
-		csl::math::Vector3 m_Position{ 0,0,0 };
-		csl::math::Quaternion m_Rotation{ 0,0,0,1 };
+		csl::math::Vector3 m_Position{};
+		csl::math::Quaternion m_Rotation{};
 
 	public:
 		void SetLocalPosition(const csl::math::Vector3& rPos)

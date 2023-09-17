@@ -16,7 +16,7 @@ namespace app::game
 	class ColliBoxShapeCInfo : public ColliShapeCInfo
 	{
 	public:
-		csl::math::Vector3 m_Size{ 0,0,0 };
+		csl::math::Vector3 m_Size{};
 
 		ColliBoxShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::ShapeType_Box)
 		{
