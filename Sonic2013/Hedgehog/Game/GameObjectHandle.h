@@ -71,6 +71,14 @@ namespace app
 			return pObj->m_ObjectHandle == m_ObjectHandle;
 		}
 
+		bool operator==(const GameObjectHandleBase& in_rOther) const
+		{
+			if (!IsValid() || !in_rOther.IsValid())
+				return false;
+
+			return m_ObjectHandle == in_rOther.m_ObjectHandle;
+		}
+
 		bool operator!=(const GameObject* pObj) const
 		{
 			return !operator==(pObj);
