@@ -6,11 +6,16 @@ namespace app::fnd
 	{
 	public:
 		csl::ut::LinkListNode m_ChildNode;
-		INSERT_PADDING(12);
+		INSERT_PADDING(8);
+		GOCTransform* pParent;
 		csl::ut::LinkList<GOCTransform> m_Children{ &GOCTransform::m_ChildNode };
-		csl::math::Transform m_Transform;
+		app::math::Transform m_Transform;
 		app::fnd::HFrame m_Frame; // app::fnd::BranchHFrame
-		INSERT_PADDING(14);
+		bool Unk1{};
+		bool Unk2{};
+		int Unk3{};
+		int Unk4{};
+		int Unk5{};
 		
 	public:
 		inline static const char* ms_pGOCTransformFamilyID = (const char*)ASLR(0x00D60B44);
@@ -20,7 +25,7 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalRotation, ASLR(0x00494470), GOCTransform* This, const csl::math::Quaternion& rotation);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalTranslationAndRotation, ASLR(0x004944A0), 
 			GOCTransform* This, const csl::math::Vector3& translation, const csl::math::Quaternion& rotation);
-
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalTransform, ASLR(0x00494690), GOCTransform*, const math::Transform&);
 		
 		static GOComponentClass ms_GOCTransformStaticClass;
 		
@@ -35,6 +40,35 @@ namespace app::fnd
 		~GOCTransform() override
 		{
 			ms_fpDtor(this);
+		}
+
+		void SetParent(GOCTransform* in_pParent)
+		{
+			if (pParent != in_pParent)
+			{
+				if (pParent)
+					pParent->RemoveChild(this);
+			
+				pParent = in_pParent;
+				if (in_pParent)
+					in_pParent->m_Children.push_back(this);
+			}
+		}
+
+		bool IsExistParent()
+		{
+			return pParent != nullptr;
+		}
+
+		void SetInheriteFlags(byte in_flag)
+		{
+			m_Frame.SetFlag(16, in_flag & 1);
+			m_Frame.SetFlag(32, in_flag & 2);
+		}
+		
+		void RemoveChild(GOCTransform* in_pChild)
+		{
+			pParent->m_Children.erase(in_pChild);
 		}
 
 		void SetLocalTranslation(const csl::math::Vector3& translation)
@@ -52,17 +86,22 @@ namespace app::fnd
 			ms_fpSetLocalTranslationAndRotation(this, translation, rotation);
 		}
 
-		const csl::math::Vector3& GetLocalPosition() const
+		void SetLocalTransform(const math::Transform& in_rTransform)
+		{
+			ms_fpSetLocalTransform(this, in_rTransform);
+		}
+
+		csl::math::Vector3 GetLocalPosition() const
 		{
 			return m_Transform.m_Position;
 		}
 
-		const csl::math::Quaternion& GetLocalRotation() const
+		csl::math::Quaternion GetLocalRotation() const 
 		{
 			return m_Transform.m_Rotation;
 		}
 		
-		const char* GetFamilyID() override
+		const char* GetFamilyID() const override
 		{
 			return ms_pGOCTransformFamilyID;
 		}
