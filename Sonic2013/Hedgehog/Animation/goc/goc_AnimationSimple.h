@@ -166,5 +166,13 @@ namespace app::game
 
 			return m_pCurrentAnimation->GetFrame() >= m_pCurrentAnimation->GetEndFrame();
 		}
+
+		bool IsCurrentAnimation(const char* in_pAnimationName) const
+		{
+			if (!m_pCurrentAnimation)
+				return false;
+
+			return m_pCurrentAnimation->Compare(in_pAnimationName);
+		}
 	};
 }
