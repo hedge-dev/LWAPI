@@ -28,7 +28,8 @@ namespace app::Render
 		{
 			using namespace csl::math;
 
-			Eigen::Vector4f clipPos{ m_Perspective * (m_ViewMtx * Vector4(in_point, 1)) };
+			csl::math::Vector3 clip{ m_Perspective * Vector3(m_ViewMtx * Vector4(in_point, 1.0f)) };
+			Eigen::Vector4f clipPos{ *reinterpret_cast<Eigen::Vector4f*>(&clip) };
 			if (clipPos[3] < FLT_EPSILON)
 				return false;
 

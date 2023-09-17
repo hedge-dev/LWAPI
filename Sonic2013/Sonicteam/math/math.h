@@ -308,6 +308,16 @@ namespace csl::math
 			return { mtx * in_rVec };
 		}
 
+		Vector3 operator*(const Vector3& in_rVec) const
+		{
+			Eigen::Matrix3f mtx{};
+			mtx.col(0) = GetColumn(0);
+			mtx.col(1) = GetColumn(1);
+			mtx.col(2) = GetColumn(2);
+
+			return { mtx * in_rVec };
+		}
+
 		Vector3 operator*(const Vector4& in_rVec)
 		{
 			return { (Eigen::Matrix4f(*this) * in_rVec).head<3>() };
