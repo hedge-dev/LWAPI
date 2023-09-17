@@ -62,6 +62,13 @@ namespace app::Camera
 		{
 			m_Fovy = value;
 		}
+
+		void SetCameraParam(const csl::math::Vector3& in_rPosition, const csl::math::Vector3& in_rUp, const csl::math::Vector3& in_rTargetPosition)
+		{
+			m_Position = in_rPosition;
+			m_Up = in_rUp;
+			m_TargetPosition = in_rTargetPosition;
+		}
 		
 		virtual void ResetCamera(const csl::math::Vector3& rPos, const csl::math::Vector3& rTargetPos) {}
 		virtual void RestartCamera() {}
