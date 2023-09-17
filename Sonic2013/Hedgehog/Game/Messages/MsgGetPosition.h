@@ -5,21 +5,21 @@ namespace app::xgame
 	class alignas(16) MsgGetPosition : public fnd::Message
 	{
 	private:
-		const csl::math::Vector3* position = csl::math::Vector3::Zero;
+		csl::math::Vector3* position{};
 
 	public:
 		inline static unsigned int MessageID = 0x2000;
 
-		MsgGetPosition() : Message(MessageID)
+		MsgGetPosition(csl::math::Vector3& in_rPosition) : Message(MessageID), position(&in_rPosition)
 		{
 			ASSERT_OFFSETOF(MsgGetPosition, position, 0x18);
 		}
 
-		[[nodiscard]] const csl::math::Vector3& GetPosition() const { return *position; }
+		[[nodiscard]] csl::math::Vector3& GetPosition() const { return *position; }
 
-		void SetPosition(const csl::math::Vector3& pos)
+		void SetPosition(csl::math::Vector3& in_rPosition)
 		{
-			position = new const csl::math::Vector3(pos);
+			*position = in_rPosition;
 		}
 
 		Message* Clone() override
