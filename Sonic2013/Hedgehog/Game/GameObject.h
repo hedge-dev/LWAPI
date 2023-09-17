@@ -49,6 +49,16 @@ namespace app
 		{
 			return m_StatusFlags.test(0);
 		}
+
+		void Sleep()
+		{
+			m_StatusFlags.set(1);
+		}
+
+		void Resume()
+		{
+			m_StatusFlags.reset(1);
+		}
 		
 		GameObject()
 		{
@@ -169,6 +179,11 @@ namespace app
 			
 			return CLeafActor::ProcessMessage(msg);
 		}
+
+		void* operator new (size_t in_size, csl::fnd::IAllocator* in_pAllocator)
+		{
+			return in_pAllocator->Alloc(in_size, 16);
+		}
 		
 		void* operator new (size_t size)
 		{
@@ -223,6 +238,17 @@ namespace app
 		{
 			return m_pOwnerDocument;
 		}
+
+		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls)
+		{
+			return GetDocument()->GetServiceByClass(cls);
+		}
+
+		template <typename T>
+		T* GetService()
+		{
+			return reinterpret_cast<T*>(GetServiceByClass(T::staticClass()));
+		}
 		
 		bool BroadcastMessageImmToGroup(uint group, fnd::Message& msg)
 		{
@@ -241,6 +267,11 @@ namespace app
 		bool SendMessageImmToGame(fnd::Message& msg)
 		{
 			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), msg);
+		}
+
+		bool SendMessageImmToGameObject(GameObject* in_pObject, fnd::Message& in_rMessage)
+		{
+			return SendMessageImm(in_pObject->m_ActorID, in_rMessage);
 		}
 		
 		bool HasProperty(uint key) const
