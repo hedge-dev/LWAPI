@@ -6,6 +6,9 @@ namespace app
 	
 	class CSetObjectListener : public GameObject3D
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetStatusTemporaryRetire, ASLR(0x008447B0), CSetObjectListener*, float);
+
 	public:
 		enum EExtUserDataType
 		{
@@ -99,6 +102,11 @@ namespace app
 			
 		}
 		
+		void SetStatusTemporaryRetire(float in_retireTime)
+		{
+			ms_fpSetStatusTemporaryRetire(this, in_retireTime);
+		}
+
 		void SetStatusRetire()
 		{
 			if (m_pAdapter)
@@ -108,6 +116,22 @@ namespace app
 		CSetAdapter* GetAdapter() const
 		{
 			return m_pAdapter;
+		}
+
+		CSetObjectListener* GetParentObject()
+		{
+			if (!m_pAdapter)
+				return { nullptr };
+		
+			if (!m_pSetObjectManager)
+				return { nullptr };
+
+			ut::RefPtr<CSetObject> setObj{};
+			m_pSetObjectManager->GetSetObjectFromUniqID(setObj, m_pAdapter->GetObjectResource().GetParentID());
+			if (!setObj)
+				return { nullptr };
+		
+			return setObj->GetNthObject(0);
 		}
 
 		void TerminateImmediately()
