@@ -27,6 +27,7 @@ namespace app::Player
 		size_t m_PlayerNum{ 0 };
 	};
 
+	class CEffectGOC;
 	class CVisualGOC;
 	class CVisualLocater;
 
@@ -62,13 +63,20 @@ namespace app::Player
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x008EF8E0), CVisualGOC*, GameObject3D*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x008EFA90), CVisualGOC*, size_t);
 		inline static FUNCTION_PTR(game::GOCAnimationScript*, __thiscall, ms_fpGetHumanAnimationPtr, ASLR(0x008EF640), const CVisualGOC*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartBlink, ASLR(0x008EF6E0), CVisualGOC*, float);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartStealth, ASLR(0x008EF720), CVisualGOC*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpEndStealth, ASLR(0x008EF790), CVisualGOC*);
 
-		INSERT_PADDING(24) {};
+		INSERT_PADDING(12) {};
+		Game::EUser User{};
+		csl::ut::Bitset<uint> Flags{};
+		float Unk1{};
 		csl::ut::ObjectMoveArray<ut::RefPtr<CPlayerVisual>> m_Visuals{ GetAllocator() };
 		ut::RefPtr<CPlayerVisual> m_rpCurrentVisual{};
 		ut::RefPtr<CPlayerVisual> m_rpHumanVisual{};
 		ut::RefPtr<CVisualLocaterManager> m_rpLocatorManager{};
-		INSERT_PADDING(8) {};
+		CPlayer* pPlayer{};
+		INSERT_PADDING(4) {};
 
 		static const char* staticID()
 		{
@@ -94,12 +102,24 @@ namespace app::Player
 			ChangeFuncHelper<Mode>::ms_fpChangeVisualFunc(this);
 		}
 
-		game::GOCAnimationScript* GetHumanAnimationPtr() const
+		CEffectGOC* GetEffectGoc();
+
+		csl::math::Matrix34& GetLocaterMatrix() const
 		{
-			if (!m_rpHumanVisual && !m_rpHumanVisual->m_pGOCHolder)
+			return m_rpLocatorManager->m_Transform;
+		}
+
+		game::GOCAnimationScript* GetHumanAnimationPtr() const;
+
+		game::GOCAnimationScript& GetHumanAnimation() const;
+
+		const char* GetCurrentAnimationName()
+		{
+			auto* pCharAnimation = GetHumanAnimation().m_rpCharAnimation.get();
+			if (!pCharAnimation)
 				return nullptr;
 
-			return m_rpHumanVisual->m_pGOCHolder->GetUnit(0).m_rpAnimScript.get();
+			return pCharAnimation->GetCurrentAnimationName();
 		}
 
 		void ChangeAnimation(const char* pName)
@@ -112,6 +132,11 @@ namespace app::Player
 		CPlayerVisual* GetCurrentVisual() const
 		{
 			return m_rpCurrentVisual.get();
+		}
+
+		CPlayerVisual* GetHumanVisual() const
+		{
+			return m_rpHumanVisual.get();
 		}
 
 		void SetHumanVisual(CPlayerVisual* pVisual)
@@ -147,6 +172,23 @@ namespace app::Player
 			}
 #undef MODE_CASE
 		}
+
+		void StartBlink(float in_time)
+		{
+			ms_fpStartBlink(this, in_time);
+		}
+
+		void EndBlink();
+
+		void StartStealth()
+		{
+			ms_fpStartStealth(this);
+		}
+
+		void EndStealth()
+		{
+			ms_fpEndStealth(this);
+		}
 	};
 
 #define DEFINE_CHANGE_FUNC(BODY_MODE, ADDRESS) inline CVisualGOC::ChangeFunc* CVisualGOC::ChangeFuncHelper<BODY_MODE>::ms_fpChangeVisualFunc = reinterpret_cast<ChangeFunc*>(ADDRESS);
@@ -166,13 +208,23 @@ namespace app::Player
 
 #undef DEFINE_CHANGE_FUNC
 
-		class CEffectGOC : public CGOComponent
+	class CEffectBase;
+
+	class CEffectGOC : public CGOComponent
 	{
+		inline static const char* ms_pStaticId = (char*)ASLR(0x00E012E4);
+
 	public:
 		INSERT_PADDING(64);
 
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x008EE920), CEffectGOC*, GameObject3D*, CVisualGOC*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x008EEEE0), CEffectGOC*, size_t);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddEffect, ASLR(0x008EE5A0), CEffectGOC*, CEffectBase*);
+
+		static const char* staticID()
+		{
+			return ms_pStaticId;
+		}
 
 		CEffectGOC(GameObject3D* pObj, CVisualGOC* pVisual)
 		{
@@ -188,6 +240,11 @@ namespace app::Player
 		{
 			FUNCTION_PTR(void, __thiscall, fp_Initialize, ASLR(0x008EE6D0), CEffectGOC*, void*);
 			fp_Initialize(this, nullptr);
+		}
+
+		void AddEffect(CEffectBase* in_pEffect)
+		{
+			ms_fpAddEffect(this, in_pEffect);
 		}
 	};
 }
