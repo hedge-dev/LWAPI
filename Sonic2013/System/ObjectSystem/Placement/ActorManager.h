@@ -23,7 +23,7 @@ namespace app::Gops
 	private:
 		bool m_IsOptimized;
 
-	protected:
+	public:
 		float m_RangeIn;
 		void* m_Unk1;
 		app::TArray<SActorPackTag, std::dummy::allocator<SActorPackTag>> m_PackTags;
@@ -32,7 +32,6 @@ namespace app::Gops
 		std::unique_ptr<CGopsWorld> m_pWorld; // boost::scoped_ptr<CGopsWorld>
 		app::TArray<CActorListener*, std::dummy::allocator<CActorListener*>> m_Listeners;
 
-	public:
 		SActorPackTag* FindTag(size_t tag) const
 		{
 			for (auto& packTag : m_PackTags)
