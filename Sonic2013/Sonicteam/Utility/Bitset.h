@@ -38,6 +38,16 @@ namespace csl::ut
 		{
 			m_dummy ^= 1 << bit;
 		}
+
+		constexpr void Flip(T bit)
+		{
+			flip(bit);
+		}
+
+		constexpr void set()
+		{
+			m_dummy = -1;
+		}
 		
 		constexpr void set(T bit)
 		{
@@ -52,6 +62,16 @@ namespace csl::ut
 				reset(bit);
 		}
 
+		void Set(T bit)
+		{
+			set(bit);
+		}
+
+		void Set(T bit, bool flag)
+		{
+			set(bit, flag);
+		}
+
 		constexpr T value() const
 		{
 			return m_dummy;
@@ -60,6 +80,11 @@ namespace csl::ut
 		constexpr bool test(T bit) const
 		{
 			return m_dummy & (1 << bit);
+		}
+
+		constexpr bool Test(T bit) const
+		{
+			return test(bit);
 		}
 		
 		operator T() const { return m_dummy; }
