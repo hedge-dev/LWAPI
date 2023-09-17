@@ -65,17 +65,24 @@ namespace app
 			return m_pObject.GetName();
 		}
 
-		void* GetData() const
+		template <typename T>
+		T* GetData() const
 		{
 			if (m_pObject.IsValid())
-				return m_pObject.GetParamAddress();
+				return reinterpret_cast<T*>(m_pObject.GetParamAddress());
 			
 			return nullptr;
 		}
 
-		const csl::math::Vector3& GetPosition(size_t unit) const
+		const csl::math::Vector3& GetPosition() const
 		{
-			return m_pObject.GetUnit(unit).GetPosition();
+			return m_pObject.GetUnit(m_pObject.ref().m_Class.ref().m_Unk1).GetPosition();
+		}
+
+		const csl::math::Quaternion& GetRotation() const
+		{
+			csl::math::Quaternion q = SetEd::CalcRotationByAngle(m_pObject.GetUnit(m_pObject.ref().m_Class.ref().m_Unk1).GetRotation());
+			return q;
 		}
 		
 		static CSetAdapter* GetPointerFromActor(const Gops::CActor& pActor)
