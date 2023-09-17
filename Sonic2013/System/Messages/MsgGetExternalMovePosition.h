@@ -5,9 +5,9 @@ namespace app::xgame
 	class MsgGetExternalMovePosition : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x500D;
+		csl::math::Matrix34* pTrsMatrix{};
 		
-		csl::math::Matrix34* m_pTransform{};
+		inline const static unsigned int MessageID = 0x500D;
 		
 		MsgGetExternalMovePosition() : Message(MessageID)
 		{
