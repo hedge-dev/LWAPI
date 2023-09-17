@@ -115,14 +115,6 @@ namespace app::Effect
 		void SetStageName(const csl::ut::FixedString<16>& in_rStageName)
 		{
 			ms_fpSetStageName(this, in_rStageName);
-
-			/*if (strcmp(in_rStageName, "xmoa01") != 0)
-			{
-				for (size_t i = 0; i < 2; i++)
-					pRenderables[i]->Unk1 |= 1;
-			}
-
-			pImpl->pSetupHelper->SetupColorScaleMaterialList((const char**)ASLR(0x00F6807C), 35);*/
 		}
 
 		static fnd::GameServiceClass& staticClass()
