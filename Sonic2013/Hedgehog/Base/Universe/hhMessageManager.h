@@ -6,7 +6,10 @@ namespace app::fnd
 	
 	class MessageManager : public ReferencedObject, public csl::fnd::SingletonPointer<MessageManager>
 	{
-	protected:
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemove, ASLR(0x0049A910), MessageManager*, CActor*);
+
+	public:
 		size_t m_NextID{};
 		csl::ut::PointerMap<size_t, CActor*> m_Actors{ GetAllocator() };
 		csl::ut::MoveArray<Message*> m_Messages{ GetAllocator() };
@@ -18,7 +21,6 @@ namespace app::fnd
 			return m_NextID++;
 		}
 		
-	public:
 		MessageManager()
 		{
 			m_Actors.reserve(1024);
@@ -71,12 +73,15 @@ inline void app::fnd::MessageManager::Add(CActor* actor)
 
 inline void app::fnd::MessageManager::Remove(CActor* actor)
 {
-	if (!actor)
+	ms_fpRemove(this, actor);
+
+	// TODO: erase is broken, fix it
+	/*if (!actor)
 		return;
 
 	m_Actors.erase(actor->m_ActorID);
 	actor->m_ActorID = 0;
-	actor->m_pMessageManager = nullptr;
+	actor->m_pMessageManager = nullptr;*/
 }
 
 inline void app::fnd::MessageManager::Update()
