@@ -15,7 +15,6 @@ namespace app::animation
 			INSERT_PADDING(8){};
 		};
 
-	protected:
 		AnimationManager* m_pManager{};
 		csl::ut::LinkListNode m_ListNode{};
 		size_t m_Category{};
