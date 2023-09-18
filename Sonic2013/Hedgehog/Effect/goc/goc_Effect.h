@@ -13,6 +13,7 @@ namespace app::Effect
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStop, ASLR(0x0047EEA0), CEffectHandle<hh::eff::CEffectInstance>*, bool);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVisible, ASLR(0x0047EF60), CEffectHandle<>*, bool);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGlobalScaling, ASLR(0x0047EEC0), CEffectHandle<>*, float);
 
 	public:
 		hh::eff::CInstanceHandle<T> InstanceHandle{};
@@ -43,6 +44,11 @@ namespace app::Effect
 		void SetVisible(bool in_isVisible)
 		{
 			ms_fpSetVisible(this, in_isVisible);
+		}
+
+		void SetGlobalScaling(float in_scale)
+		{
+			ms_fpSetGlobalScaling(this, in_scale);
 		}
 	};
 
