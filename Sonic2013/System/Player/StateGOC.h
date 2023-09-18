@@ -227,6 +227,11 @@ namespace app::Player
 			GetVisualGoc()->ChangeAnimation(pAnim);
 		}
 
+		const char* GetCurrentAnimationName() const
+		{
+			return GetVisualGoc()->GetCurrentAnimationName();
+		}
+
 		void ChangeVisual(BodyMode mode)
 		{
 			GetVisualGoc()->ChangeVisual(mode);
@@ -388,6 +393,11 @@ namespace app::Player
 		}
 
 		void SetMoveCylinderTimer(float in_timer);
+
+		void StopSE(fnd::SoundHandle in_soundHandle)
+		{
+			in_soundHandle.Stop(0.0f);
+		}
 	};
 }
 

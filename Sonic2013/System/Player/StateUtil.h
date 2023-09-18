@@ -580,4 +580,9 @@ namespace app::Player::StateUtil
 		if (pPhysics->ConvertAirVertVector(pPhysics->GetVertVelocity()).x() > in_rStateGoc.GetParameter(21))
 			StateUtil::ClearAirOnceAction(in_rStateGoc);
 	}
+
+	inline void StopSE(CStateGOC& in_rStateGoc, const fnd::SoundHandle& in_rSoundHandle)
+	{
+		in_rStateGoc.StopSE(in_rSoundHandle);
+	}
 }
