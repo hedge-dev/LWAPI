@@ -180,11 +180,6 @@ namespace app
 			return CLeafActor::ProcessMessage(msg);
 		}
 
-		void* operator new (size_t in_size, csl::fnd::IAllocator* in_pAllocator)
-		{
-			return in_pAllocator->Alloc(in_size, 16);
-		}
-		
 		void* operator new (size_t size)
 		{
 			return GetAllocator()->Alloc(size, 16);
