@@ -152,10 +152,11 @@ namespace app::game
 
 	class GOCEffect : public fnd::GOComponent
 	{
+	public:
 		int m_Unk3{};
-		int m_Unk4{};
+		fnd::HFrame* pFrame{};
 		int m_Unk5{};
-		float m_Unk6{};
+		float GlobalScaling{};
 		csl::ut::Enum<GlobalScaleType, char> m_GlobalScale{};
 		csl::ut::Enum<effect::EffectGroup, char> m_Group{};
 		csl::ut::ObjectMoveArray<EffectFollowInfo> m_FollowInfos{ m_pAllocator };
