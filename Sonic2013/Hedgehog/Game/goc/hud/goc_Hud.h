@@ -30,7 +30,7 @@ namespace app::game
 		int m_Unk1{};
 		csl::ut::ObjectMoveArray<SurfRide::ReferenceCount<SurfRide::Project>> rcProjects{};
 		csl::ut::MoveArray<game::HudLayerController*> m_LayerControllers{};
-		gfx::Renderable* pRenderable{}; // boost::intrusive_ptr<gfx::Renderable>
+		ut::RefPtr<gfx::Renderable> pRenderable{}; // boost::intrusive_ptr<gfx::Renderable>
 		csl::ut::Bitset<char> m_Unk2{};
 		int m_Unk3{};
 
