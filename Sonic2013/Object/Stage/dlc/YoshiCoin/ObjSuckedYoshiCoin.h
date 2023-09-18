@@ -137,7 +137,7 @@ namespace app
 			{
 				game::EffectCreateInfo effectInfo{};
 				effectInfo.m_pName = ms_EffectName;
-				effectInfo.m_Unk1 = 1;
+				effectInfo.m_Unk1 = 1.0f;
 				effectInfo.m_Unk10 = true;
 
 				pEffect->CreateEffectEx(effectInfo);
