@@ -22,6 +22,14 @@ namespace app::Player
 		return *GetHumanVisual()->pGocHolder->GetUnit(0).m_rpAnimScript.get();
 	}
 
+	inline const char* CVisualGOC::GetCurrentVisualName() const
+	{
+		if (m_rpHumanVisual)
+			return m_rpHumanVisual->pVisualName;
+
+		return { nullptr };
+	}
+
 	inline void CVisualGOC::EndBlink()
 	{
 		Flags.set(2, false);

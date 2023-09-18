@@ -113,6 +113,8 @@ namespace app::Player
 
 		game::GOCAnimationScript& GetHumanAnimation() const;
 
+		const char* GetCurrentVisualName() const;
+
 		const char* GetCurrentAnimationName()
 		{
 			auto* pCharAnimation = GetHumanAnimation().m_rpCharAnimation.get();
