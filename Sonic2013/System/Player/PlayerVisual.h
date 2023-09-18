@@ -19,10 +19,8 @@ namespace app::Player
 
 	class CPlayerVisual : public fnd::ReferencedObject, public CVisualBase
 	{
-	protected:
-		const char* pVisualName{};
-
 	public:
+		const char* pVisualName{};
 		csl::ut::Bitset<ushort> Unk1{};
 		csl::ut::Bitset<ushort> Unk2{};
 		EffectList* pEffects{}; // boost::intrusive_ptr<EffectList>
