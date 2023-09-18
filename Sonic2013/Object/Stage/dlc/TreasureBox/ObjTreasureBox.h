@@ -8,7 +8,7 @@ namespace app
 		inline static const size_t ms_ModelCount = 2;
 		inline static const size_t ms_AnimationCount = 1;
 		inline static const size_t ms_ShapeCount = 2;
-		inline static const float ms_ItemGetTwinkleEffectScale = 0.7777777f;
+		inline static const float ms_ItemGetTwinkleEffectScale = 0.7f / 0.9f;
 		inline static const csl::math::Vector3 ms_ChestScale = { 0.9f, 0.9f, 0.9f };
 		inline static const csl::math::Vector3 ms_ItemScale = { 0.7f, 0.7f, 0.7f };
 		inline static const csl::math::Vector3 ms_PositionOffset = { 0.0f, 11.2f, 13.0f };
