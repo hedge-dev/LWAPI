@@ -415,7 +415,7 @@ namespace app
 	{
 		static ObjGolonRock* CreateGolonRock(csl::fnd::IAllocator* in_pAllocator, GameDocument* in_pDocument, GolonRockCreateInfo& in_rCreateInfo)
 		{
-			auto* pObject = new(in_pAllocator) ObjGolonRock(in_rCreateInfo);
+			auto* pObject = new ObjGolonRock(in_rCreateInfo);
 			if (!pObject)
 				return { nullptr };
 

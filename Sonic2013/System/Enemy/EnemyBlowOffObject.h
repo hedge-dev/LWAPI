@@ -373,7 +373,7 @@ namespace app
 
         static EnemyBlowOffObject* Create(csl::fnd::IAllocator* in_pAllocator, GameDocument& in_rDocument, const app::EnemyBlowOffObjectCInfo& in_rCreateInfo)
         {
-            auto* pObject = new(in_pAllocator) EnemyBlowOffObject(&in_rCreateInfo);
+            auto* pObject = new EnemyBlowOffObject(&in_rCreateInfo);
             if (!pObject)
                 return { nullptr };
 
