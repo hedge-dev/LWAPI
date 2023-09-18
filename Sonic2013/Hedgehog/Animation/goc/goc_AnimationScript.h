@@ -157,6 +157,11 @@ namespace app::game
 			m_rpCharAnimation->RegisterCallback(id, pCallback);
 		}
 
+		void UnregisterCallback(int in_id)
+		{
+			m_rpCharAnimation->UnregisterCallback(in_id);
+		}
+
 		void ExitLoop()
 		{
 			if (m_rpCharAnimation)

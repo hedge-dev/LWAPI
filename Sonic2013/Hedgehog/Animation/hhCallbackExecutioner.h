@@ -58,6 +58,23 @@ namespace app::animation
 			}
 		}
 
+		void UnegisterCallback(int in_id)
+		{
+			if (in_id < 0)
+			{
+				auto rpCallback = m_SystemCallbacks[in_id + 1];
+				m_SystemCallbacks[in_id + 1] = { nullptr };
+			}
+			else
+			{
+				if (m_Callbacks.size() > in_id)
+				{
+					auto rpCallback = m_Callbacks[in_id];
+					m_Callbacks[in_id] = { nullptr };
+				}
+			}
+		}
+
 		void Cleanup()
 		{
 			m_Callbacks.clear();

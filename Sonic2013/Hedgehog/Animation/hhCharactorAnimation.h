@@ -134,6 +134,11 @@ namespace app::animation
 		{
 			m_CallbackExecutor.RegisterCallback(id, pCallback);
 		}
+
+		void UnregisterCallback(int in_id)
+		{
+			m_CallbackExecutor.UnegisterCallback(in_id);
+		}
 		
 		static bool SetGlobalWeight(const AnimationClip& rClip, const char* pName, float weight)
 		{
