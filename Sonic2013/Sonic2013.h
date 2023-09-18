@@ -474,6 +474,7 @@
 #include "System/Player/HomingTargetService.h"
 #include "System/Player/PlayerVehicle.h"
 #include "System/Player/SnowBall.h"
+#include "System/Player/PlaneTornado.h"
 #include "System/Player/States.h"
 #include "System/Player/GOCReferenceHolder.h"
 #include "System/Player/CollisionGOC.h"
