@@ -55,7 +55,7 @@ namespace app::fnd
 			}
 		}
 
-		bool IsExistParent()
+		bool IsExistParent() const
 		{
 			return pParent != nullptr;
 		}
