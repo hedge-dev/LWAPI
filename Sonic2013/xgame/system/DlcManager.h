@@ -55,7 +55,7 @@ namespace app::xgame
 
 		DlcManagerImpl(csl::fnd::IAllocator* in_pAllocator) : pAllocator(in_pAllocator)
 		{
-			sizeof(DlcManagerImpl);
+
 		}
 
 		bool isComplete() const

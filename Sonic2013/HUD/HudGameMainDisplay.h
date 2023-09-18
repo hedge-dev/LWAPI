@@ -5,7 +5,7 @@ namespace app::xgame
 	inline static constexpr const char* ms_pDLCStageNames[] = { "zdlc01", "zdlc02", "zdlc03" };
 	inline static constexpr const char* ms_pHudPackNamePrefix = "ui_";
 
-	int GetDLCIndexByName(const char* in_pStageName)
+	inline int GetDLCIndexByName(const char* in_pStageName)
 	{
 		for (size_t i = 0; i < sizeof(ms_pDLCStageNames) / sizeof(ms_pDLCStageNames[0]); i++)
 			return i;

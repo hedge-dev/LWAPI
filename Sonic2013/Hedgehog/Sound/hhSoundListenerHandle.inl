@@ -3,7 +3,7 @@
 
 namespace app::fnd
 {
-	size_t SoundListenerHandle::GetIdx() const
+	inline size_t SoundListenerHandle::GetIdx() const
 	{
 		if (m_pPlayer)
 			return m_pPlayer->GetListenerBufferId(*this);

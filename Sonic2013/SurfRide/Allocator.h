@@ -17,7 +17,7 @@ namespace SurfRide
 		virtual void Free(void* memory) = 0;
 	};
 
-	void SrFree(void* mem)
+	inline void SrFree(void* mem)
 	{
 		FUNCTION_PTR(void, __cdecl, fpSrFree, ASLR(0x00C5F500), void*);
 		fpSrFree(mem);

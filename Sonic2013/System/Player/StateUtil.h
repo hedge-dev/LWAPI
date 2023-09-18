@@ -106,7 +106,7 @@ namespace app::Player::StateUtil
 		return in_rStateGoc.GetPhysics()->GetGravityController()->GetType();
 	}
 
-	void UpdateGravityForLaunch(CStateGOC& in_rStateGoc, const csl::math::Vector3& in_rOrigin)
+	static void UpdateGravityForLaunch(CStateGOC& in_rStateGoc, const csl::math::Vector3& in_rOrigin)
 	{
 		auto* pPhysics = in_rStateGoc.GetPhysics();
 		pPhysics->UpdateGravityForced(in_rOrigin);
@@ -521,8 +521,8 @@ namespace app::Player::StateUtil
 	}
 
 	void SetTerrainCollisionDisable(CStateGOC& in_rStateGoc, bool in_isDisable);
-
-	void DoSpringJump(CStateGOC& in_rStateGoc, const csl::math::Vector3* in_pOrigin, const csl::math::Vector3* in_pDirection, float in_outOfControl, float in_speedDropoffTime, const csl::ut::Bitset<uint>& in_rFlags, bool in_unk1, bool in_unk2, bool in_unk3, float in_unk4, const csl::math::Vector3* in_pYawDirection, float in_outOfParkour)
+	
+	inline static void DoSpringJump(CStateGOC& in_rStateGoc, const csl::math::Vector3* in_pOrigin, const csl::math::Vector3* in_pDirection, float in_outOfControl, float in_speedDropoffTime, const csl::ut::Bitset<uint>& in_rFlags, bool in_unk1, bool in_unk2, bool in_unk3, float in_unk4, const csl::math::Vector3* in_pYawDirection, float in_outOfParkour)
 	{
 		auto* pPhysics = in_rStateGoc.GetPhysics();
 

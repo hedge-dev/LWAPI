@@ -2,7 +2,7 @@
 
 namespace app::fnd
 {
-	class FileReader : public ReferencedObject, csl::fnd::SingletonPointer<FileReader>
+	class FileReader : public ReferencedObject, public csl::fnd::SingletonPointer<FileReader>
 	{
 	public:
 		virtual void Update() {}

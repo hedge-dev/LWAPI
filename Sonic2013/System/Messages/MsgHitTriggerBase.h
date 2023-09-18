@@ -7,7 +7,7 @@ namespace app::game
 
 namespace app::xgame
 {
-	void getContactPoint(game::ColliShape* in_pSelf, game::ColliShape* in_pOther, game::PhysicsContactPoint* out_pPoint)
+	inline static void getContactPoint(game::ColliShape* in_pSelf, game::ColliShape* in_pOther, game::PhysicsContactPoint* out_pPoint)
 	{
 
 	}

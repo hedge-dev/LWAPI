@@ -253,7 +253,7 @@ namespace app
 
             auto* pTransform = GetComponent<fnd::GOCTransform>();
             csl::math::Matrix34 trsMatrix{ pTransform->m_Frame.m_Unk3.m_Mtx };
-            auto& rRotation = trsMatrix.GetRotation();
+            auto rRotation = trsMatrix.GetRotation();
 
             csl::math::Vector3 upVector{ csl::math::Vector3::UnitY() * 10.0f };
             csl::math::Vector3 from{ trsMatrix * csl::math::Vector4(upVector, 1.0f) };

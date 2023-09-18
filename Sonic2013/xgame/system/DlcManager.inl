@@ -3,7 +3,7 @@
 
 namespace app::xgame
 {
-	DlcManager::DlcManager()
+	inline DlcManager::DlcManager()
 	{
 		pImpl = new DlcManagerImpl(m_pAllocator);
 	}

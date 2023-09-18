@@ -58,7 +58,7 @@ namespace csl::math
 	}
 
 	template<typename T>
-	inline static const T& Sqrt(const T& value)
+	inline static const T Sqrt(const T& value)
 	{
 		if (value >= 0.0f)
 			return sqrt(value);
@@ -67,7 +67,7 @@ namespace csl::math
 	}
 
 	template<typename T>
-	inline static const T& Lerp(const T& a, const T& b, float t)
+	inline static const T Lerp(const T& a, const T& b, float t)
 	{
 		return a + (b - a) * t;
 	}
@@ -203,7 +203,48 @@ namespace csl::math
 		}
 	};
 
-	class Quaternion;
+	class alignas(16) Quaternion : public Eigen::Quaternionf
+	{
+	public:
+		static const Quaternion Identity;
+
+		Quaternion() : Eigen::Quaternionf(0.0f, 0.0f, 0.0f, 1.0f)
+		{
+			setIdentity();
+		}
+
+		Quaternion(const Eigen::Quaternionf& quat) : Eigen::Quaternionf(quat)
+		{
+
+		}
+
+		Quaternion(const Matrix34& matrix);
+
+		Quaternion(float x, float y, float z, float w) : Eigen::Quaternionf(w, x, y, z)
+		{
+
+		}
+
+		Quaternion(const Eigen::AngleAxisf& angleAxis) : Eigen::Quaternionf(angleAxis)
+		{
+
+		}
+
+		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
+		{
+			return lhs.isApprox(rhs);
+		}
+
+		friend bool operator!=(const Quaternion& lhs, const Quaternion& rhs)
+		{
+			return !lhs.isApprox(rhs);
+		}
+
+		csl::math::Quaternion Normalize()
+		{
+			return { normalized() };
+		}
+	};
 
 	class alignas(16) Matrix34 : public Eigen::Matrix4f
 	{
@@ -269,7 +310,7 @@ namespace csl::math
 			return reinterpret_cast<Vector3&>(GetColumn(3));
 		}
 
-		Quaternion& GetRotation() const
+		Quaternion GetRotation() const
 		{
 			Eigen::Matrix3f rotMtx{};
 			rotMtx.col(0) = GetColumn(0);
@@ -277,7 +318,7 @@ namespace csl::math
 			rotMtx.col(2) = GetColumn(2);
 
 			Eigen::Quaternionf q(rotMtx);
-			return reinterpret_cast<Quaternion&>(q);
+			return Quaternion(q);
 		}
 
 		void SetTransVector(const Vector3& translation)
@@ -339,52 +380,6 @@ namespace csl::math
 		Vector3 operator*(const Vector4& in_rVec) const
 		{
 			return { (Eigen::Matrix4f(*this) * in_rVec).head<3>() };
-		}
-	};
-	
-	class alignas(16) Quaternion : public Eigen::Quaternionf
-	{
-	public:
-		static const Quaternion Identity;
-		
-		Quaternion() : Eigen::Quaternionf(0.0f, 0.0f, 0.0f, 1.0f)
-		{
-			setIdentity();
-		}
-
-		Quaternion(const Eigen::Quaternionf& quat) : Eigen::Quaternionf(quat)
-		{
-			
-		}
-
-		Quaternion(const Matrix34& matrix) : Eigen::Quaternionf(matrix.topLeftCorner<3, 3>())
-		{
-			
-		}
-		
-		Quaternion(float x, float y, float z, float w) : Eigen::Quaternionf(w, x, y, z)
-		{
-
-		}
-
-		Quaternion(const Eigen::AngleAxisf& angleAxis) : Eigen::Quaternionf(angleAxis)
-		{
-
-		}
-		
-		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
-		{
-			return lhs.isApprox(rhs);
-		}
-
-		friend bool operator!=(const Quaternion& lhs, const Quaternion& rhs)
-		{
-			return !lhs.isApprox(rhs);
-		}
-
-		csl::math::Quaternion Normalize()
-		{
-			return { normalized() };
 		}
 	};
 
@@ -572,6 +567,12 @@ namespace csl::math
 	{
 		return in_rLeft * in_rRight;
 	}
+
+	inline Quaternion::Quaternion(const Matrix34& matrix) : Eigen::Quaternionf(matrix.topLeftCorner<3, 3>())
+	{
+
+	}
+
 }
 
 namespace app::math
