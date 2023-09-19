@@ -537,6 +537,7 @@
 #include "xgame/gamemode/stage/StageGameStatus.h"
 #include "xgame/gamemode/stage/StatusCheckPoint.h"
 #include "xgame/gamemode/e3title/GameModeE3Title.h"
+#include "xgame/gamemode/eventmovie/GameModeEventMovie.h"
 #include "xgame/gamemode/gameover/GameOverInfo.h"
 #include "xgame/gamemode/minigame/MinigameCharacterInfo.h"
 #include "xgame/gamemode/WorldAreaMap/WorldAreaMapObjResource.h"
