@@ -27,12 +27,12 @@ namespace app::HUD
 	public:
 		struct Sinfo
 		{
-			int Unk1{};
+			int LifeCount{};
 			int Unk2{};
 			int Unk3{};
 			int Unk4{};
 			int Unk5{};
-			int Unk6{};
+			int RingCount{};
 			int Unk7{};
 			int Unk8{};
 			int Unk9{};
