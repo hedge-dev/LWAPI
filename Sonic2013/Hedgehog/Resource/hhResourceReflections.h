@@ -3,7 +3,7 @@
 #define LWAPI_STUB_POSTFIX Data
 #define LWAPI_MAKE_STUBRES(NAME, PTR) \
 	struct CONCAT2(NAME, LWAPI_STUB_POSTFIX) {}; \
-	class NAME : public app::fnd::ResCommon<CONCAT2(NAME, LWAPI_STUB_POSTFIX)> \
+	class NAME : public hh::ut::ResCommon<CONCAT2(NAME, LWAPI_STUB_POSTFIX)> \
 	{ \
 		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(PTR); \
 		public: \

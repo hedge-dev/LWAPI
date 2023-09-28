@@ -7,7 +7,7 @@ namespace app::game::res
 		// ?????????????????
 	};
 
-	class ResNameExtra : public fnd::ResCommon<ResNameExtraData>
+	class ResNameExtra : public hh::ut::ResCommon<ResNameExtraData>
 	{
 		
 	};

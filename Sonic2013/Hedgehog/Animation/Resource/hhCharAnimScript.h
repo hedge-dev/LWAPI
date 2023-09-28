@@ -222,7 +222,7 @@ namespace app::animation
 
 namespace app
 {
-	class ResCharAnimScript : public fnd::ResCommon<animation::ResCharAnimScriptData>
+	class ResCharAnimScript : public hh::ut::ResCommon<animation::ResCharAnimScriptData>
 	{
 	private:
 		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00F60FC8));
@@ -233,7 +233,7 @@ namespace app
 
 	namespace animation
 	{
-		class ResCharAnim : public fnd::ResCommon<hh::gfx::res::ResAnimSkeletonData>
+		class ResCharAnim : public hh::ut::ResCommon<hh::gfx::res::ResAnimSkeletonData>
 		{
 		public:
 			ResCharAnim& operator =(hh::gfx::res::ResAnimSkeleton in_anim)

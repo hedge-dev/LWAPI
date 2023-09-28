@@ -37,9 +37,9 @@ namespace app::fnd
 		}
 
 		template<typename T>
-		ResCommon<T> Get(const char* pName)
+		hh::ut::ResCommon<T> Get(const char* pName)
 		{
-			return ResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
+			return hh::ut::ResCommon<T>(reinterpret_cast<T*>(GetResource(pName, sizeof(T))));
 		}
 
 		void RegisterList(const ResourceCustomInfo** ppList)

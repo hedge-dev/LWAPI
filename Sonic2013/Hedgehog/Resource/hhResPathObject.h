@@ -13,7 +13,7 @@ namespace app::game
 		INSERT_PADDING(8);
 	};
 
-	class ResPathObject : public app::fnd::ResCommon<ResPathObjectData>
+	class ResPathObject : public hh::ut::ResCommon<ResPathObjectData>
 	{
 	public:
 		csl::math::Aabb GetAabb() const

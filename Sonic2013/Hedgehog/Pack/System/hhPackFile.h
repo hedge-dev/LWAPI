@@ -4,7 +4,7 @@ namespace hh::ut
 {
 	class ResourceTypeInfo;
 	
-	class PackFile : public app::fnd::ResCommon<PackFileHeaderDataTag>
+	class PackFile : public hh::ut::ResCommon<PackFileHeaderDataTag>
 	{
 	private:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsValidHeader, ASLR(0x00C1A770), const PackFile*);

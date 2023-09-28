@@ -8,7 +8,7 @@ namespace hh::gfx::res
 		const char* m_pValue{};
 	};
 
-	class ResName : public app::fnd::ResCommon<ResNameData>
+	class ResName : public hh::ut::ResCommon<ResNameData>
 	{
 		
 	};

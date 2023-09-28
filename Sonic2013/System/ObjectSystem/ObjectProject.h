@@ -2,7 +2,7 @@
 
 namespace app::SetEd
 {
-	class CObjectProject : public fnd::ReferencedObject, public fnd::ResCommon<SResObjectProjectData>
+	class CObjectProject : public fnd::ReferencedObject, public hh::ut::ResCommon<SResObjectProjectData>
 	{
 		inline static FUNCTION_PTR(SResObjectData*, __thiscall, ms_fpCreateObject, ASLR(0x004635D0), CObjectProject*, CResClass);
 

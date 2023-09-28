@@ -7,7 +7,7 @@ namespace app::res
 		
 	};
 
-	class ResShadowModel : public fnd::ResCommon<ResShadowModelData>
+	class ResShadowModel : public hh::ut::ResCommon<ResShadowModelData>
 	{
 	public:
 		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00FB6F0C));

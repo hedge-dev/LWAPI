@@ -37,7 +37,7 @@ namespace app
 			app::TArray<SParamDescData, app::dbg::Allocator<SParamDescData>> m_Params;
 		};
 
-		class CResClass : public fnd::ResCommon<SResClassData>
+		class CResClass : public hh::ut::ResCommon<SResClassData>
 		{
 		public:
 			uint GetParamSize() const
@@ -74,7 +74,7 @@ namespace app
 			csl::math::Angle3 m_LocalRotation;
 		};
 
-		class CResUnit : public fnd::ResCommon<SResUnitData>
+		class CResUnit : public hh::ut::ResCommon<SResUnitData>
 		{
 		public:
 			const csl::math::Vector3& GetPosition() const
@@ -112,7 +112,7 @@ namespace app
 			void* m_pParam;
 		};
 
-		class CResObject : public fnd::ResCommon<SResObjectData>
+		class CResObject : public hh::ut::ResCommon<SResObjectData>
 		{
 		public:
 			CResClass GetClass() const
