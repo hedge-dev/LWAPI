@@ -157,6 +157,8 @@
 #include "Hedgehog/Resource/hhResTexture.h"
 #include "Hedgehog/Resource/hhResPathObject.h"
 
+#include "Utility/ResCommon.h"
+
 #include "Hedgehog/Database/System/hhDatabaseData.h"
 
 // Hedgehog Game Messages
