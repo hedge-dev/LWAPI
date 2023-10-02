@@ -56,7 +56,7 @@ namespace app
 		};
 
 		Listener AnimListener{};
-		Camera::TreasureBoxCamera* pCamera{}; // boost::intrusive_ptr<Camera::TreasureBoxCamera>
+		ut::RefPtr<Camera::TreasureBoxCamera> rpCamera{}; // boost::intrusive_ptr<Camera::TreasureBoxCamera>
 		csl::math::Vector3 CameraPosition{};
 		csl::math::Vector3 CameraLookAt{};
 		csl::math::Matrix34 TransformMtx{};
@@ -180,7 +180,7 @@ namespace app
 
 			if (auto* pHudGoc = GetComponent<game::GOCHud>())
 			{
-				pHudGoc->Setup({ ms_pHudName, 8, 8, (char)128, 1, 20148, 0 });
+				pHudGoc->Setup({ ms_pHudName, 8, 8, (char)128, 1, 2048, 0 });
 				auto rawData = csl::fnd::Singleton<fnd::ResourceManager>::GetInstance()->Get<fnd::ResRawData>(ms_pHudPackfileName);
 				if (rawData.IsValid())
 				{
@@ -193,7 +193,7 @@ namespace app
 						if (auto rcScene = rcProject->GetScene(ms_pHudSceneName))
 						{
 							HUD::SRUtility::AllLayerHide(rcScene);
-							if (auto& rcLayer = rcScene->GetLayer(ms_pHudMaskLayerName))
+							if (auto rcLayer = rcScene->GetLayer(ms_pHudMaskLayerName))
 							{
 								pLayerController = pHudGoc->CreateLayerController({ rcLayer }, 0);
 							}
@@ -252,25 +252,25 @@ namespace app
 
 		void PushCamera()
 		{
-			if (pCamera)
+			if (rpCamera)
 				return;
 
-			if (pCamera = new Camera::TreasureBoxCamera())
+			if (rpCamera = new Camera::TreasureBoxCamera())
 			{
-				pCamera->SetCameraParameter(CameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), CameraLookAt);
-				pCamera->SetFovy(35.0f);
+				rpCamera->SetCameraParameter(CameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), CameraLookAt);
+				rpCamera->SetFovy(35.0f);
 			}
 
-			xgame::MsgPushCameraController msg{ pCamera, 0.0f, false, 4000, 1, true };
+			xgame::MsgPushCameraController msg{ rpCamera, 0.0f, false, 4000, 1, true };
 			ObjUtil::SendMessageImmToCamera(*this, msg);
 		}
 
 		void PopCamera()
 		{
-			if (!pCamera)
+			if (!rpCamera)
 				return;
 		
-			xgame::MsgPopCameraController msg{ pCamera, 0.0f, false, 1, true };
+			xgame::MsgPopCameraController msg{ rpCamera, 0.0f, false, 1, true };
 			ObjUtil::SendMessageImmToCamera(*this, msg);
 		}
 
@@ -287,8 +287,8 @@ namespace app
 			if (GetNodeTransform(ms_pCameraLookAtNodeName, &lookAtTransform))
 				lookAtPosition = lookAtTransform.m_Position;
 
-			if (pCamera)
-				pCamera->SetCameraParameter(cameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), lookAtPosition);
+			if (rpCamera)
+				rpCamera->SetCameraParameter(cameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), lookAtPosition);
 		}
 
 		void ChangeState(TiFsmState_t in_state)
@@ -462,10 +462,10 @@ namespace app
 					break;
 				}
 
-				if (frame <= 430.0f || !pCamera)
+				if (frame <= 430.0f || !rpCamera)
 					break;
 
-				pCamera->SetFovy(csl::math::Lerp(35.0f, 25.0f, csl::math::Clamp((frame - 430.0f) / 30.0f, 0.0f, 1.0f)));
+				rpCamera->SetFovy(csl::math::Lerp(35.0f, 25.0f, csl::math::Clamp((frame - 430.0f) / 30.0f, 0.0f, 1.0f)));
 				break;
 			}
 			default:
