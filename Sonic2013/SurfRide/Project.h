@@ -65,6 +65,6 @@ namespace SurfRide
             return pBinaryProject->pName;
         }
 
-        const SurfRide::ReferenceCount<Scene>& GetScene(const char* in_pSceneName) const;
+        const SurfRide::ReferenceCount<Scene> GetScene(const char* in_pSceneName) const;
     };
 }

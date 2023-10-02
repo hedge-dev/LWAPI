@@ -70,6 +70,6 @@ namespace SurfRide
 			return pBinaryScene->pName;
 		}
 
-		const ReferenceCount<Layer>& GetLayer(const char* in_pLayerName) const;
+		const ReferenceCount<Layer> GetLayer(const char* in_pLayerName) const;
 	};
 }
