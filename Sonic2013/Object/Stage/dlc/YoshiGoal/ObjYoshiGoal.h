@@ -297,7 +297,7 @@ namespace app
 					Flags.set(1);
 
 					if (auto* pSound = GetComponent<game::GOCSound>())
-						pSound->Play(ms_pRouletteSuccessSound, 0.0f);
+						SoundHandle = pSound->Play(ms_pRouletteSuccessSound, 0.0f);
 				}
 				else
 				{
