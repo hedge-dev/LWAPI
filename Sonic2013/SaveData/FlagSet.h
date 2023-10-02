@@ -14,6 +14,8 @@ namespace app::SaveData
 {
 	template<typename T = uint>
 	bool GetBit(T in_value, int in_bit);
+	template<typename T = uint>
+	void SetBit(T in_value, int in_bit, bool in_isEnable);
 	uint CalcIndexFlagMinigameUnlocked(uint in_worldIndex, uint in_minigameIndex);
 
 	class CFlagSet : CResCommon<SFlagSetData>
@@ -26,6 +28,11 @@ namespace app::SaveData
 		bool GetBitFlag(uint in_flag) const
 		{
 			return GetBit(*(int*)(*(int*)this + ((in_flag >> 3) & 0x1FFFFFFC) + 16), in_flag & 0x1F);
+		}
+		
+		void SetBitFlag(uint in_flag, bool in_isEnable)
+		{
+			return SetBit(*(int*)(*(int*)this + ((in_flag >> 3) & 0x1FFFFFFC) + 16), in_flag & 0x1F, in_isEnable);
 		}
 
 		bool GetFlagZoneUnlocked(uint in_worldIndex) const
@@ -41,6 +48,11 @@ namespace app::SaveData
 		bool GetMiniGameOpened(uint in_worldIndex, uint in_minigameIndex) const
 		{
 			return GetBitFlag(CalcIndexFlagMinigameUnlocked(in_worldIndex, in_minigameIndex));
+		}
+
+		void SetMiniGameOpened(uint in_worldIndex, uint in_minigameIndex, bool in_isEnable)
+		{
+			SetBitFlag(CalcIndexFlagMinigameUnlocked(in_worldIndex, in_minigameIndex), in_isEnable);
 		}
 	};
 }
