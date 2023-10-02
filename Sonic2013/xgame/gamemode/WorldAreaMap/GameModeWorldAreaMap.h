@@ -2,25 +2,6 @@
 
 namespace app
 {
-	struct WorldAreaMapCInfo
-	{
-	public:
-		struct Event
-		{
-			INSERT_PADDING(24);
-		};
-		
-		bool Unk1{};
-		csl::ut::MoveArray<Event> Events{};
-		bool IsRequestingChangeItem{};
-		bool IsTrialVersion{};
-
-		WorldAreaMapCInfo(csl::fnd::IAllocator* in_pAllocator) : Events(15, in_pAllocator)
-		{
-
-		}
-	};
-
 	class GameModeWorldAreaMap :
 		public GameMode,
 		public TTinyFsm<GameModeWorldAreaMap, GameModeUtil::Event<GameModeWorldAreaMap>, true>,
