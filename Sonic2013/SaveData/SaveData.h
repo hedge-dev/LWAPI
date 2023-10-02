@@ -1,27 +1,16 @@
 #pragma once
 
-namespace app
-{
-	struct SSaveDataData
-	{
-		INSERT_PADDING(4) {};
-		SGameDataData* pGameData{};
-	};
-}
-
 namespace app::SaveData
 {
-	class CSaveData : CResCommon<SSaveDataData>
+	class CSaveData
 	{
+	private:
+		inline static FUNCTION_PTR(CGameData*, __thiscall, ms_fpGetCurrentGameData, ASLR(0x00900C90), const CSaveData*, void*);
+
 	public:
-		CSaveData(SSaveDataData* in_pData) : CResCommon<SSaveDataData>(in_pData)
+		CGameData* GetCurrentGameData(void* out_pValue) const
 		{
-
-		}
-
-		CGameData GetCurrentGameData() const
-		{
-			return CGameData(ref().pGameData);
+			return ms_fpGetCurrentGameData(this, out_pValue);
 		}
 	};
 }

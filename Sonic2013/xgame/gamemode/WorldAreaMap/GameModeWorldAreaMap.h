@@ -27,7 +27,6 @@ namespace app
 		TinyFsmSetOption<TiFSM_OPTION_USE_FP_TOP>
 	{
 	public:
-		INSERT_PADDING(4) {};
 		csl::ut::FixedString<32> Unk1{ "worldmap" };
 		csl::ut::FixedString<16> Unk2{ "worldmap" };
 		csl::ut::FixedString<16> Unk3{ "worldmap" };
@@ -97,15 +96,17 @@ namespace app
 
 	inline bool IsExistNextOpenCircusStage(int in_zoneIndex, int* out_pLastOpenCircusIndex, int* out_pRedRingRequirement)
 	{
+		int save{};
+
 		if (in_zoneIndex >= 7)
 			return false;
 	
 		auto* pSaveManager = csl::fnd::Singleton<SaveData::CSaveManager>::GetInstance();
-		auto pFlagSet = pSaveManager->GetSaveData().GetCurrentGameData().GetFlagSet();
-		if (!pFlagSet.GetFlagZoneUnlocked(in_zoneIndex))
+		auto* pFlagSet = pSaveManager->GetSaveData(&save)->GetCurrentGameData(&save)->GetFlagSet(&save);
+		if (!pFlagSet->GetFlagZoneUnlocked(in_zoneIndex))
 			return false;
 	
-		int redRingCount = pFlagSet.CountRedRingZone(in_zoneIndex, 20);
+		int redRingCount = pFlagSet->CountRedRingZone(in_zoneIndex, 20);
 		if (redRingCount >= 20)
 			return false;
 	

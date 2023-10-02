@@ -1,27 +1,16 @@
 #pragma once
 
-namespace app
-{
-	struct SGameDataData
-	{
-		INSERT_PADDING(32);
-		SFlagSetData* pFlagData{};
-	};
-}
-
 namespace app::SaveData
 {
-	class CGameData : CResCommon<SGameDataData>
+	class CGameData
 	{
+	private:
+		inline static FUNCTION_PTR(CFlagSet*, __thiscall, ms_fpGetFlagSet, ASLR(0x00900B10), const CGameData*, void*);
+
 	public:
-		CGameData(SGameDataData* in_pData) : CResCommon<SGameDataData>(in_pData)
+		CFlagSet* GetFlagSet(void* out_pValue) const
 		{
-
-		}
-
-		CFlagSet GetFlagSet() const
-		{
-			return CFlagSet(ref().pFlagData);
+			return ms_fpGetFlagSet(this, out_pValue);
 		}
 	};
 }

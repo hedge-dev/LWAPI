@@ -20,17 +20,12 @@ namespace app::SaveData
 	{
 	private:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFlagZoneUnlocked, ASLR(0x008FFDC0), const CFlagSet*, uint);
-		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetRedRingZone, ASLR(0x008FFDC0), const CFlagSet*, uint, int);
+		inline static FUNCTION_PTR(int, __thiscall, ms_fpCountRedRingZone, ASLR(0x00900080), const CFlagSet*, uint, int);
 
 	public:
-		CFlagSet(SFlagSetData* in_pData) : CResCommon<SFlagSetData>(in_pData)
-		{
-
-		}
-
 		bool GetBitFlag(uint in_flag) const
 		{
-			return GetBit(this->ref().Unk1 + ((in_flag >> 3) & 0x1FFFFFFC), in_flag & 0x1F);
+			return GetBit(*(int*)(*(int*)this + ((in_flag >> 3) & 0x1FFFFFFC) + 16), in_flag & 0x1F);
 		}
 
 		bool GetFlagZoneUnlocked(uint in_worldIndex) const
@@ -40,7 +35,7 @@ namespace app::SaveData
 
 		int CountRedRingZone(uint in_worldIndex, int in_limit) const
 		{
-			return ms_fpGetRedRingZone(this, in_worldIndex, in_limit);
+			return ms_fpCountRedRingZone(this, in_worldIndex, in_limit);
 		}
 
 		bool GetMiniGameOpened(uint in_worldIndex, uint in_minigameIndex) const
