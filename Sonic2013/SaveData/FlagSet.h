@@ -4,9 +4,7 @@ namespace app
 {
 	struct SFlagSetData
 	{
-		INSERT_PADDING(16);
-		char Unk1{};
-		INSERT_PADDING(40);
+		csl::ut::Bitset<uint> Flags[21];
 	};
 }
 
@@ -27,12 +25,12 @@ namespace app::SaveData
 	public:
 		bool GetBitFlag(uint in_flag) const
 		{
-			return GetBit(*(int*)(*(int*)this + ((in_flag >> 3) & 0x1FFFFFFC) + 16), in_flag & 0x1F);
+			return ref().Flags[(((in_flag >> 3) & 0x1FFFFFFC) + 16) / 4].test(in_flag & 0x1F);
 		}
 		
 		void SetBitFlag(uint in_flag, bool in_isEnable)
 		{
-			return SetBit(*(int*)(*(int*)this + ((in_flag >> 3) & 0x1FFFFFFC) + 16), in_flag & 0x1F, in_isEnable);
+			ref().Flags[(((in_flag >> 3) & 0x1FFFFFFC) + 16) / 4].set(in_flag & 0x1F, in_isEnable);
 		}
 
 		bool GetFlagZoneUnlocked(uint in_worldIndex) const
@@ -53,6 +51,26 @@ namespace app::SaveData
 		void SetMiniGameOpened(uint in_worldIndex, uint in_minigameIndex, bool in_isEnable)
 		{
 			SetBitFlag(CalcIndexFlagMinigameUnlocked(in_worldIndex, in_minigameIndex), in_isEnable);
+		}
+
+		bool GetChaosEmeraldUnlocked(uint in_worldIndex) const
+		{
+			return GetBitFlag(in_worldIndex + 470);
+		}
+
+		void SetChaosEmeraldUnlocked(uint in_worldIndex, bool in_isUnlocked)
+		{
+			SetBitFlag(in_worldIndex + 470, in_isUnlocked);
+		}
+
+		bool GetSuperSonicUnlocked() const
+		{
+			return GetBitFlag(484);
+		}
+
+		void SetSuperSonicUnlocked(bool in_isUnlocked)
+		{
+			SetBitFlag(484, in_isUnlocked);
 		}
 	};
 }

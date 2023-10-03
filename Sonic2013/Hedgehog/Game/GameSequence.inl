@@ -32,21 +32,39 @@ namespace app
 		event.Unk1 = in_worldIndex;
 		event.RewardType = in_minigameIndex;
 		WorldMapInfo.AddEvent(event);
+		
+		int save{};
+		GetFlagSet(&save)->SetMiniGameOpened(in_worldIndex, in_minigameIndex, true);
+	}
 
-		GetFlagSet()->SetMiniGameOpened(in_worldIndex, in_minigameIndex, true);
+	inline void CGameSequence::OnChaosEmeraldUnlocked(uint in_worldIndex)
+	{
+		WorldAreaMapCInfo::Event event{};
+		event.EventType = WorldAreaMapCInfo::Event::EEventType::eEventType_EmeraldUnlocked;
+		event.Unk1 = in_worldIndex;
+		WorldMapInfo.AddEvent(event);
+
+		int save{};
+		GetFlagSet(&save)->SetChaosEmeraldUnlocked(in_worldIndex, true);
+	}
+
+	inline void CGameSequence::OnSuperSonicUnlocked()
+	{
+		WorldAreaMapCInfo::Event event{};
+		event.EventType = WorldAreaMapCInfo::Event::EEventType::eEventType_SuperSonicUnlocked;
+		WorldMapInfo.AddEvent(event);
+
+		int save{};
+		GetFlagSet(&save)->SetSuperSonicUnlocked(true);
 	}
 }
 
-inline app::SaveData::CGameData* app::GetGameData()
+inline app::SaveData::CGameData* app::GetGameData(void* out_pValue)
 {
-	int save{};
-
-	return csl::fnd::Singleton<app::SaveData::CSaveManager>::GetInstance()->GetSaveData(&save)->GetCurrentGameData(&save);
+	return csl::fnd::Singleton<app::SaveData::CSaveManager>::GetInstance()->GetSaveData(out_pValue)->GetCurrentGameData(out_pValue);
 }
 
-inline app::SaveData::CFlagSet* app::GetFlagSet()
+inline app::SaveData::CFlagSet* app::GetFlagSet(void* out_pValue)
 {
-	int save{};
-
-	return GetGameData()->GetFlagSet(&save);
+	return GetGameData(out_pValue)->GetFlagSet(out_pValue);
 }

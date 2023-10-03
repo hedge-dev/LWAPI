@@ -23,7 +23,7 @@ namespace app
 				eEventType_BattleStageUnlocked,
 				eEventType_MinigameOpened,
 				eEventType_MinigameClosed,
-				eEventType_SupersonicUnlocked,
+				eEventType_SuperSonicUnlocked,
 				eEventType_EmeraldUnlocked,
 				eEventType_MissionUnlocked,
 				eEventType_RadiconUnlocked,
@@ -117,7 +117,7 @@ namespace app
 		GameMode* m_pGameMode;
 		INSERT_PADDING(8);
 		DevData* m_pDevData;
-		INSERT_PADDING(108);
+		INSERT_PADDING(100);
 		WorldAreaMapCInfo WorldMapInfo{ m_pAllocator };
 		INSERT_PADDING(28);
 
@@ -262,6 +262,8 @@ namespace app
 		}
 
 		void OnMinigameOpened(uint in_worldIndex, uint in_minigameIndex);
+		void OnChaosEmeraldUnlocked(uint in_worldIndex);
+		void OnSuperSonicUnlocked();
 	};
 
 	enum RcType
@@ -282,6 +284,6 @@ namespace app
 		class CFlagSet;
 	}
 
-	inline SaveData::CGameData* GetGameData();
-	inline SaveData::CFlagSet* GetFlagSet();
+	inline SaveData::CGameData* GetGameData(void* out_pValue);
+	inline SaveData::CFlagSet* GetFlagSet(void* out_pValue);
 }
