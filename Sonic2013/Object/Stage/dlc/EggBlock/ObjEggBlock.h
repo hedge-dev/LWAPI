@@ -115,7 +115,7 @@ namespace app
 					SetExtUserData(eExtUserDataType_High, PopEggNum);
 
 					if (auto* pSound = GetComponent<game::GOCSound>())
-						pSound->Play(ms_pHitSoundName, 0.0f);
+						pSound->Play3D(ms_pHitSoundName, 0.0f);
 
 					return;
 				}
