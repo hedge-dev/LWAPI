@@ -167,11 +167,12 @@ namespace app
 			if (SendMessageImm(in_rMessage.m_Sender, msg))
 			{
 				GetComponent<game::GOCEffect>();
-				GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.SetColumn(3, position);
+				
+				csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+				transformMtx.SetColumn(3, position);
 			}
 
 			GetComponent<game::GOCSound>();
-
 
 			return true;
 		}
