@@ -6,6 +6,7 @@ namespace app::HUD::SRUtility
 	inline static FUNCTION_PTR(bool, __cdecl, ms_fpSetAnimationID, ASLR(0x00525100), const SurfRide::ReferenceCount<SurfRide::Layer>&, int, bool, float, bool, bool, bool);
 	inline static FUNCTION_PTR(void, __cdecl, ms_fpSetCastPatternIndex, ASLR(0x00525800), const SurfRide::ReferenceCount<SurfRide::Layer>&, const char*, int);
 	inline static FUNCTION_PTR(void, __cdecl, ms_fpAllLayerHide, ASLR(0x00526290), SurfRide::ReferenceCount<SurfRide::Scene>&);
+	inline static FUNCTION_PTR(void, __cdecl, ms_fpSetCastText, ASLR(0x005255C0), const SurfRide::ReferenceCount<SurfRide::Layer>&, const char*, const char*);
 
 	inline bool SetAnimationID(const SurfRide::ReferenceCount<SurfRide::Layer>& in_rrcLayer, int in_animationId, bool in_isLooping, float in_frame, bool in_unk2, bool in_isHide, bool in_unk4)
 	{
@@ -25,6 +26,11 @@ namespace app::HUD::SRUtility
 	inline void AllLayerHide(SurfRide::ReferenceCount<SurfRide::Scene>& in_rrcScene)
 	{
 		ms_fpAllLayerHide(in_rrcScene);
+	}
+
+	inline void SetCastText(const SurfRide::ReferenceCount<SurfRide::Layer>& in_rrcLayer, const char* in_pCastName, const char* in_pText)
+	{
+		ms_fpSetCastText(in_rrcLayer, in_pCastName, in_pText);
 	}
 }
 
