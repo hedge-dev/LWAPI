@@ -101,7 +101,7 @@ namespace app::Player
 			return GetPhysics()->GetGravityUpDirection();
 		}
 
-		fnd::ResCommon<fnd::ResRawData> GetRawData(const char* in_pName)
+		hh::ut::ResCommon<fnd::ResRawData> GetRawData(const char* in_pName)
 		{
 			return csl::fnd::Singleton<fnd::ResourceManager>::GetInstance()->Get<fnd::ResRawData>(in_pName);
 		}

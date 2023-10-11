@@ -3,7 +3,7 @@
 
 namespace SurfRide
 {
-	inline const ReferenceCount<Scene>& Project::GetScene(const char* in_pSceneName) const
+	inline const ReferenceCount<Scene> Project::GetScene(const char* in_pSceneName) const
 	{
         if (!SceneCount)
             return {};

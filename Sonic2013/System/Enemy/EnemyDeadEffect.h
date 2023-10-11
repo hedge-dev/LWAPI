@@ -17,6 +17,7 @@ namespace app::enemy
         eSoundType_ExplosionYoshiCommon,
         eSoundType_ExplosionKeese,
         eSoundType_ExplosionZeldaCommon,
+        eSoundType_ExplosionDekunuts,
         eSoundType_MAXNUM
     };
 

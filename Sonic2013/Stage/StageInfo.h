@@ -31,6 +31,9 @@ namespace app::StageInfo
 
 	class CStageInfo
 	{
+	private:
+		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetAdvStageIndex, ASLR(0x00912C30), CStageInfo*, int, int);
+
 	public:
 		inline static CStageInfo** ms_ppInstance = reinterpret_cast<CStageInfo**>(ASLR(0x00FEFD38));
 
@@ -46,7 +49,7 @@ namespace app::StageInfo
 		csl::ut::ObjectMoveArray<SStageData*> m_Stages{ m_pAllocator };
 		csl::ut::ObjectMoveArray<WorldNode*> m_Worlds[2];
 		SZoneInfo m_Zones[19];
-		csl::ut::MoveArray<const char*> m_Unk1{ m_pAllocator }; // Levels?
+		csl::ut::MoveArray<const char*> StageNames{ m_pAllocator };
 
 		[[nodiscard]] static CStageInfo* GetInstance()
 		{
@@ -273,6 +276,21 @@ namespace app::StageInfo
 					pWorlds->push_back(world);
 
 				}, &m_Worlds[worldIdx]);
+		}
+
+		const char* GetAdvStageName(int in_stageIndex)
+		{
+			return StageNames[in_stageIndex];
+		}
+
+		int GetAdvStageIndex(int in_worldIndex, int in_stageIndex)
+		{
+			return ms_fpGetAdvStageIndex(this, in_worldIndex, in_stageIndex);
+		}
+
+		SStageData* GetAdvStageData(int in_stageIndex)
+		{
+			return GetStageData(GetAdvStageName(in_stageIndex));
 		}
 	};
 

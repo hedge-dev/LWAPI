@@ -288,7 +288,7 @@ namespace app
 				Flags.set(0, GetModelType(ModelId) == 0);
 				if (Flags.test(0))
 				{
-					for (size_t i = 0; i < ms_ModelCount / 2; i++)
+					for (size_t i = 0; i < 10; i++)
 					{
 						xgame::MsgTakeObject msg{ xgame::MsgTakeObject::EType::eType_OneUp };
 						SendMessageImm(PlayerActorID, msg);
@@ -297,7 +297,7 @@ namespace app
 					Flags.set(1);
 
 					if (auto* pSound = GetComponent<game::GOCSound>())
-						pSound->Play(ms_pRouletteSuccessSound, 0.0f);
+						SoundHandle = pSound->Play(ms_pRouletteSuccessSound, 0.0f);
 				}
 				else
 				{
@@ -364,13 +364,13 @@ namespace app
 				{
 					if (auto* pSound = GetComponent<game::GOCSound>())
 						SoundHandle = pSound->Play(ms_pRouletteDisappearSound, 0.0f);
+
+					if (ModelToDisappearId == ModelId)
+						Flags.set(1);
 				}
 
 				if (ModelToDisappearId == ModelId)
-				{
-					Flags.set(1);
 					ChangeState(&ObjYoshiGoal::StateWaitYoshiExtrication);
-				}
 
 				return {};
 			}
@@ -387,10 +387,10 @@ namespace app
 			{
 				auto* pEggManager = GetDocument()->GetService<EggManager>();
 				if (!pEggManager)
-					return FSM_TOP();
+					break;
 			
 				if (!pEggManager->IsEndExtrication())
-					return FSM_TOP();
+					break;
 
 				xgame::MsgPlayerReachGoal msg{};
 				SendMessageImm(PlayerActorID, msg);
@@ -399,11 +399,13 @@ namespace app
 
 				ChangeState(&ObjYoshiGoal::StateResult);
 
-				return FSM_TOP();
+				break;
 			}
 			default:
-				return FSM_TOP();
+				break;
 			}
+
+			return FSM_TOP();
 		}
 
 		TiFsmState_t StateResult(const TiFsmBasicEvent<ObjYoshiGoal>& in_rEvent)

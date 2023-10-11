@@ -19,11 +19,11 @@ namespace hh::gfx::res
 		}
 	};
 
-	class ResTexture : public app::fnd::ResCommon<ResTextureData>
+	class ResTexture : public ut::ResCommon<ResTextureData>
 	{
-		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(0x00FCE64C);
+		inline static ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<ut::ResourceTypeInfo*>(0x00FCE64C);
 
 	public:
-		static const hh::ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
+		static const ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
 	};
 }

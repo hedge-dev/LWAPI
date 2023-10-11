@@ -163,6 +163,10 @@ namespace app
                 ObjUtil::PlaySE("enm_zeldacmn_explosion", soundPos, { HH_SOUND_DEVICE_AUTO });
                 break;
             }
+            case enemy::SoundType::eSoundType_ExplosionDekunuts:
+            {
+                break;
+            }
             default:
             {
                 ObjUtil::PlaySE("enm_cmn_explosion", soundPos, { HH_SOUND_DEVICE_AUTO });

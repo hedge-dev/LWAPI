@@ -1,6 +1,6 @@
 #pragma once
 
-namespace app::fnd
+namespace hh::ut
 {
 	template<typename T>
 	class ResCommon
@@ -11,12 +11,12 @@ namespace app::fnd
 	public:
 		ResCommon() : m_pRes(nullptr)
 		{
-			
+
 		}
 
 		ResCommon(void* pRes) : m_pRes((T*)pRes)
 		{
-			
+
 		}
 
 		bool IsValid() const
@@ -34,11 +34,11 @@ namespace app::fnd
 			return *m_pRes;
 		}
 
-		operator T*() const
+		operator T* () const
 		{
 			return m_pRes;
 		}
-		
+
 		const T& ref() const
 		{
 			return *m_pRes;
@@ -49,7 +49,10 @@ namespace app::fnd
 			return *m_pRes;
 		}
 	};
+}
 
+namespace app::fnd
+{
 	class ResRawData
 	{
 		const char* m_pName{};

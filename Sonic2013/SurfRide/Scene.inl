@@ -3,7 +3,7 @@
 
 namespace SurfRide
 {
-	inline const ReferenceCount<Layer>& Scene::GetLayer(const char* in_pLayerName) const
+	inline const ReferenceCount<Layer> Scene::GetLayer(const char* in_pLayerName) const
 	{
 		if (!LayerCount)
 			return {};

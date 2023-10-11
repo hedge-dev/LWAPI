@@ -157,6 +157,8 @@
 #include "Hedgehog/Resource/hhResTexture.h"
 #include "Hedgehog/Resource/hhResPathObject.h"
 
+#include "Utility/ResCommon.h"
+
 #include "Hedgehog/Database/System/hhDatabaseData.h"
 
 // Hedgehog Game Messages
@@ -518,6 +520,12 @@
 #include "System/Player/PlayerStateUtilEffect.inl"
 #include "System/Player/StateUtil.inl"
 
+#include "SaveData/FlagSet.h"
+#include "SaveData/FlagSet.inl"
+#include "SaveData/GameData.h"
+#include "SaveData/SaveData.h"
+#include "SaveData/SaveManager.h"
+
 // Hedgehog HUD Components
 #include "HUD/HudGameMainDisplay.h"
 
@@ -542,6 +550,8 @@
 #include "xgame/gamemode/gameover/GameOverInfo.h"
 #include "xgame/gamemode/minigame/GameModeMinigame.h"
 #include "xgame/gamemode/minigame/MinigameCharacterInfo.h"
+#include "xgame/gamemode/WorldAreaMap/WorldMapDiorama.h"
+#include "xgame/gamemode/WorldAreaMap/GameModeWorldAreaMap.h"
 #include "xgame/gamemode/WorldAreaMap/WorldAreaMapObjResource.h"
 #include "xgame/gamemode/WorldAreaMap/WorldAreaMapInfo.h"
 #include "xgame/gamemode/WorldAreaMap/worldmap_diorama.h"
