@@ -6,6 +6,7 @@ namespace app
 	{
 	protected:
 		inline static const char* ms_pHitSoundName = "obj_yossyeggblock_hit";
+		inline static const char* ms_pEggAppearSoundName = "obj_yossyegg_appear";
 		inline static csl::math::Vector3 ms_PositionOffset = { 0.0f, 5.0f, 0.0f };
 		inline static const size_t ms_ShapeCount = 3;
 		inline static const csl::math::Vector3 ms_CollisionSizes[] = { { 5.0f, 0.65f, 5.0f }, { 3.0f, 8.0f, 3.0f }, { 4.5f, 4.5f, 4.5f } };
@@ -115,7 +116,7 @@ namespace app
 					SetExtUserData(eExtUserDataType_High, PopEggNum);
 
 					if (auto* pSound = GetComponent<game::GOCSound>())
-						pSound->Play3D(ms_pHitSoundName, 0.0f);
+						pSound->Play3D(ms_pEggAppearSoundName, 0.0f);
 
 					return;
 				}
@@ -356,7 +357,7 @@ namespace app
 			InitPopEggParam({ 0.0f, 1.0f, 0.0f }, 10.0f, 40.0f, &PopEggParameter);
 
 			if (auto* pSound = GetComponent<game::GOCSound>())
-				pSound->Play(ms_pHitSoundName, 0.0f);
+				pSound->Play(ms_pEggAppearSoundName, 0.0f);
 
 			in_rMessage.SetReply(pTransform->m_Frame.m_Unk3.GetTranslation(), false);
 
