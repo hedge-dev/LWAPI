@@ -71,7 +71,7 @@ namespace app::Player
             SpinTexSrtAnimation = ObjUtil::GetTexSrtAnimationResource(ms_pSpinTexSrtAnimationName, packFile);
 
             animScript = ObjUtil::GetAnimationScriptResource(ms_pSpinAnimationScriptName, packFile);
-            loadInfo = app::animation::AnimationResContainer::LoadInfo(animScript, SpinSkeleton, nullptr);
+            loadInfo = app::animation::AnimationResContainer::LoadInfo{ animScript, SpinSkeleton, nullptr };
             SpinAnimationContainer.LoadFromBuffer(loadInfo, packFile);
 
             ShadowModel = ObjUtil::GetShadowModel(ms_pShadowModelName, packFile);

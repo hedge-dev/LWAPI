@@ -22,6 +22,7 @@ namespace hh::mr
 	class CRenderingInfrastructure : public base::CObject
 	{
 	public:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetScreenInfo, ASLR(0x00C2BBF0), CRenderingInfrastructure*, uint32_t&, uint32_t&, hh::rsdx::_RSDXFORMAT&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetShaderFromPool, ASLR(0x00C2B330), CRenderingInfrastructure*, CRenderingDevice*, ShaderType);
 		inline static FUNCTION_PTR(HRESULT, __thiscall, ms_fpCreateVertexDeclaration, ASLR(0x00C2BED0), CRenderingInfrastructure*, const rsdx::_D3DVERTEXELEMENT9*, hh::mr::CVertexDeclarationPtr*, const hhUchar*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpReleaseVertexDeclaration, ASLR(0x00C2BD70), CRenderingInfrastructure*, rsdx::RsdxVertexDeclaration9**);
@@ -35,6 +36,11 @@ namespace hh::mr
 		CRenderingInfrastructure()
 		{
 			ASSERT_OFFSETOF(CRenderingInfrastructure, m_RenderingDevice, 0x60);
+		}
+
+		void GetScreenInfo(uint32_t& out_width, uint32_t& out_height, hh::rsdx::_RSDXFORMAT& format)
+		{
+			ms_fpGetScreenInfo(this, out_width, out_height, format);
 		}
 
 		void SetShaderFromPool(CRenderingDevice* in_pDevice, ShaderType in_type)
