@@ -24,7 +24,8 @@ namespace app::fnd
 	
 	class FileLoader : public ReferencedObject, public csl::fnd::SingletonPointer<FileLoader>
 	{
-		class LoadInfo
+	public:
+		struct LoadInfo
 		{
 			INSERT_PADDING(4);
 			csl::fnd::com_ptr<FileHandleObj> m_pHandle{};
@@ -39,13 +40,19 @@ namespace app::fnd
 		INSERT_PADDING(31);
 
 	public:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpResourceJobMTExec, ASLR(0x00491140), FileLoader* This, LoadInfo*);
 		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>&, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), FileLoader* This, csl::fnd::com_ptr<FileHandleObj>&  rRet, const char* pName, const char* a3, const FileLoaderParam& params);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpPreLoadFile, ASLR(0x00491880), FileLoader* This, const char* pName, int priority);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00491CC0), FileLoader* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSync, ASLR(0x00491F00), FileLoader* This, csl::fnd::com_ptr<FileHandleObj> handle);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSyncAll, ASLR(0x00491FB0), FileLoader* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStopFileAll, ASLR(0x00490E60), FileLoader* This);
-		
+
+		void ResourceJobMTExec(LoadInfo* info)
+		{
+			ms_fpResourceJobMTExec(this, info);
+		}
+
 		bool PreLoadFile(const char* pName, int priority)
 		{
 			return ms_fpPreLoadFile(this, pName, priority);

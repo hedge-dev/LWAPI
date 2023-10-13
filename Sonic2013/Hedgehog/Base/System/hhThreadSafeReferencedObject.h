@@ -5,7 +5,7 @@ namespace app::fnd
 	class ThreadSafeReferencedObject : public ReferencedObject
 	{
 	protected:
-		size_t m_SafeRefCount;
+		size_t m_SafeRefCount{};
 
 	public:
 		ThreadSafeReferencedObject()

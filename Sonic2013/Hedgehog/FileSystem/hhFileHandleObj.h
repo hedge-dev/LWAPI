@@ -4,6 +4,18 @@ namespace app::fnd
 {
 	class FileReader;
 	class FileBinder;
+
+	enum EFileStatus : uint32_t
+	{
+		eFileStatus_Invalid,
+		eFileStatus_None,
+		eFileStatus_Request,
+		eFileStatus_Loading,
+		eFileStatus_Complete,
+		eFileStatus_Error,
+		eFileStatus_Stop,
+	};
+
 	class FileHandleObj : public ThreadSafeReferencedObject
 	{
 		friend FileReader;
@@ -13,11 +25,11 @@ namespace app::fnd
 		void* m_pBuffer{};
 		size_t m_BufferSize{};
 		size_t m_Size{};
-		size_t m_Status{};
+		EFileStatus m_Status{};
 		csl::ut::FixedString<64> m_Path{};
 		csl::ut::FixedString<48> m_Name{};
 		FileBinder* m_pBinder{};
-		void* m_Unk1{};
+		void* m_pTag{};
 		csl::fnd::IAllocator* m_pBufferAllocator{};
 		size_t m_BufferFlags{};
 
@@ -31,10 +43,10 @@ namespace app::fnd
 
 			m_pBuffer == nullptr;
 			m_pBinder = nullptr;
-			m_Unk1 = nullptr;
+			m_pTag = nullptr;
 			m_BufferSize = 0;
 			m_Size = 0;
-			m_Status = 0;
+			m_Status = eFileStatus_None;
 			m_Path[0] = 0;
 			m_Name[0] = 0;
 		}
