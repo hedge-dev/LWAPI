@@ -95,6 +95,7 @@
 #include "Hedgehog/Base/Type/hhCowData.h"
 #include "Hedgehog/Base/Type/hhSharedString.h"
 #include "Hedgehog/Base/System/hhSymbol.h"
+#include "Hedgehog/Base/hhBase.h"
 
 // Hedgehog Reflection Library
 #include "Hedgehog/Reflection/hhInternalClassMember.h"
