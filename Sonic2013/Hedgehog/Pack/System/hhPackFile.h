@@ -6,15 +6,15 @@ namespace hh::ut
 	
 	class PackFile : public hh::ut::ResCommon<PackFileHeaderDataTag>
 	{
-	private:
+	public:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsValidHeader, ASLR(0x00C1A770), const PackFile*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpBind, ASLR(0x00C18DF0), PackFile*, csl::fnd::IAllocator*, PackFile);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResource, ASLR(0x00C191E0), PackFile*, const ResourceTypeInfo&, const char*, uint*);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpGetResourceByIndex, ASLR(0x00C19230), PackFile*, const ResourceTypeInfo&, size_t, uint*);
 		inline static FUNCTION_PTR(size_t, __thiscall, ms_fpGetResourceCount, ASLR(0x00C192C0), const PackFile*, const ResourceTypeInfo&);
 		inline static FUNCTION_PTR(const char*, __thiscall, ms_fpGetResourceIDName, ASLR(0x00C19280), const PackFile*, const ResourceTypeInfo&, size_t);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x00C19090), PackFile*);
 		
-	public:
 		bool IsValidHeader() const
 		{
 			return ms_fpIsValidHeader(this);
@@ -80,6 +80,11 @@ namespace hh::ut
 		const char* GetIDName(size_t index) const
 		{
 			return GetResourceIDName(T::staticTypeInfo(), index);
+		}
+
+		void Cleanup()
+		{
+			ms_fpCleanup(this);
 		}
 	};
 }
