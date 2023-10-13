@@ -37,8 +37,8 @@ namespace app::StageInfo
 		csl::ut::FixedString<16> m_Unk1{};
 		csl::ut::FixedArray <csl::math::Vector3, 2> m_PlayerPositions{};
 		csl::ut::FixedArray <csl::math::Angle3, 2> m_PlayerRotations{};
-		char m_Unk2;
-		char m_Unk3;
+		char m_Zone{};
+		char m_Act{};
 		csl::ut::Bitset<ushort> m_PlayerFlags{};
 		csl::ut::Bitset<ushort> m_StageFlags{};
 		csl::ut::InplaceMoveArray<app::Game::EPhantomType, app::Game::EPhantomType::PHANTOM_MAX> m_Phantoms{ nullptr };

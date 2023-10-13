@@ -33,27 +33,112 @@ namespace app::StageInfo
 	{
 	private:
 		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetAdvStageIndex, ASLR(0x00912C30), CStageInfo*, int, int);
+		inline static FUNCTION_PTR(int, __cdecl, ms_fpReadZone_All, ASLR(0x00912F20), const char*, game::LuaScript&, void*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetupZoneInfo, ASLR(0x00913D60), CStageInfo*);
 
 	public:
 		inline static CStageInfo** ms_ppInstance = reinterpret_cast<CStageInfo**>(ASLR(0x00FEFD38));
 
 		struct SZoneInfo
 		{
-			uint m_Unk1{};
-			uint m_Unk2{};
+			uint m_StageOffset{}; // Starting stage offset in CStageInfo::m_Stages
+			uint m_NumMissions{};
 
 			csl::ut::FixedString<16> m_Missions[5];
 		};
 
 		csl::fnd::IAllocator* m_pAllocator{};
 		csl::ut::ObjectMoveArray<SStageData*> m_Stages{ m_pAllocator };
-		csl::ut::ObjectMoveArray<WorldNode*> m_Worlds[2];
-		SZoneInfo m_Zones[19];
-		csl::ut::MoveArray<const char*> StageNames{ m_pAllocator };
+		csl::ut::ObjectMoveArray<WorldNode*> m_Worlds[2]{ {m_pAllocator}, {m_pAllocator} };
+		csl::ut::FixedArray<SZoneInfo, 19> m_Zones{};
+		csl::ut::MoveArray<const char*> m_StageNames{ m_pAllocator };
+
+		CStageInfo(csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator)
+		{
+			
+		}
+
+		~CStageInfo()
+		{
+			for (auto& stage : m_Stages)
+			{
+				stage->Release();
+			}
+
+			for (auto& world : m_Worlds)
+			{
+				for (auto& node : world)
+				{
+					node->Release();
+				}
+			}
+		}
 
 		[[nodiscard]] static CStageInfo* GetInstance()
 		{
 			return *ms_ppInstance;
+		}
+
+		void Setup(game::LuaScript& in_rScript)
+		{
+			size_t missionCount{};
+			in_rScript.ForEach("mission_all", Mission_CountAll, &missionCount);
+			in_rScript.ForEach("test_mission_all", Mission_CountAll, &missionCount);
+
+			if (missionCount)
+			{
+				in_rScript.ForEach("mission_all", ReadMission_All, this);
+				in_rScript.ForEach("test_mission_all", ReadMission_All, this);
+			}
+
+			in_rScript.ForEach("zone_table", ReadZone_All, this);
+			SetupZoneInfo();
+		}
+
+		void SetupZoneInfo()
+		{
+			ms_fpSetupZoneInfo(this);
+		}
+
+		void AddDebugLevel(const char* in_worldName, const char* in_title, const char* in_id, size_t in_worldType = 0)
+		{
+			if (in_worldType > 1)
+			{
+				return;
+			}
+
+			auto& world = m_Worlds[in_worldType];
+			WorldNode* node{};
+
+			for (auto& worldNode : world)
+			{
+				if (!strncmp(worldNode->GetTitle(), in_worldName, strlen(in_worldName)))
+				{
+					node = worldNode;
+					break;
+				}
+			}
+
+			if (node == nullptr)
+			{
+				node = new(world.get_allocator()) WorldNode();
+				node->SetTitle(in_worldName);
+				world.push_back(node);
+
+				node->AddNode({ in_title, in_id });
+				return;
+			}
+
+			for (auto& level : node->GetStages())
+			{
+				if (level.m_Name == in_id)
+				{
+					level.m_Title = in_title;
+					return;
+				}
+			}
+
+			node->AddNode({ in_title, in_id });
 		}
 
 		SStageData* GetStageData(const char* in_pName) const
@@ -65,6 +150,26 @@ namespace app::StageInfo
 			}
 
 			return nullptr;
+		}
+
+		static void ReadZone_All(const char* in_pCat, game::LuaScript& in_rScript, void* in_pCtx)
+		{
+			ms_fpReadZone_All(in_pCat, in_rScript, in_pCtx);
+		}
+
+		static void Mission_CountAll(const char* in_pCat, game::LuaScript& in_rScript, void* in_pCtx)
+		{
+			in_rScript.ForEach("missions", Mission_CountMission, in_pCtx);
+		}
+
+		static void Mission_CountMission(const char* in_pCat, game::LuaScript& in_rScript, void* in_pCtx)
+		{
+			++*(size_t*)in_pCtx;
+		}
+
+		static void ReadMission_All(const char* in_pCat, game::LuaScript& in_rScript, void* in_pCtx)
+		{
+			in_rScript.ForEach("missions", ReadMission_Mission, in_pCtx);
 		}
 
 		static void ReadMission_Mission(const char* in_pCat, game::LuaScript& in_rScript, void* in_pCtx)
@@ -280,7 +385,7 @@ namespace app::StageInfo
 
 		const char* GetAdvStageName(int in_stageIndex)
 		{
-			return StageNames[in_stageIndex];
+			return m_StageNames[in_stageIndex];
 		}
 
 		int GetAdvStageIndex(int in_worldIndex, int in_stageIndex)

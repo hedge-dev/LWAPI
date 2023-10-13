@@ -11,12 +11,12 @@ namespace app::StageInfo
 	class WorldNode : public fnd::ReferencedObject
 	{
 		csl::ut::FixedString<64> m_Title{};
-		csl::ut::MoveArray<StageNode> m_Stages{};
+		csl::ut::MoveArray<StageNode> m_Stages{ GetAllocator() };
 
 	public:
 		WorldNode()
 		{
-			m_Stages.change_allocator(GetAllocator());
+
 		}
 		
 		void SetTitle(const char* pTitle)
@@ -29,12 +29,17 @@ namespace app::StageInfo
 			return m_Title.c_str();
 		}
 		
-		void AddNode(StageNode& node)
+		void AddNode(const StageNode& node)
 		{
 			m_Stages.push_back(node);
 		}
 
 		csl::ut::MoveArray<StageNode>& GetStages()
+		{
+			return m_Stages;
+		}
+
+		const csl::ut::MoveArray<StageNode>& GetStages() const
 		{
 			return m_Stages;
 		}

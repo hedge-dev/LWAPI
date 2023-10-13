@@ -67,14 +67,16 @@ namespace app
 			void AddRef()
 			{
 				if (m_ObjectSize)
+				{
 					++m_RefCount;
+				}
 			}
 
 			void Release()
 			{
 				if (m_ObjectSize)
 				{
-					if (m_RefCount-- == 1)
+					if (--m_RefCount == 0)
 					{
 						delete this;
 					}

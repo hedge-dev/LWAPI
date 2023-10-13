@@ -13,12 +13,12 @@ namespace csl::fnd
 		
 		void* Alloc(size_t size, int alignment) override
 		{
-			return malloc(size);
+			return _aligned_malloc(size, alignment);
 		}
 
 		void Free(void* loc) override
 		{
-			free(loc);
+			_aligned_free(loc);
 		}
 	};
 

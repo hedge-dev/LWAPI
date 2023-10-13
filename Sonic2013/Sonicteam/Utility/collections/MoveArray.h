@@ -112,7 +112,30 @@ namespace csl
 			{
 				return p_allocator;
 			}
-			
+
+			void insert(size_t i, const T& item)
+			{
+				if (i >= this->size())
+				{
+					return;
+				}
+
+				if (i == this->size() - 1 || (this->size() == 0 && i == 0))
+				{
+					push_back(item);
+					return;
+				}
+
+				this->m_length++;
+				if (this->m_length > this->capacity())
+				{
+					this->reserve(this->m_length * 2);
+				}
+
+				memmove(&this->p_buffer[i + 1], &this->p_buffer[i], (this->size() - i) * sizeof(T));
+				this->p_buffer[i] = item;
+			}
+
 			void push_back(const T& item)
 			{
 				this->m_length++;
