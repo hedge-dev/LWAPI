@@ -27,14 +27,14 @@ namespace app::fnd
 	public:
 		struct LoadInfo
 		{
-			INSERT_PADDING(4);
+			csl::fnd::IAllocator* m_pAllocator{};
 			csl::fnd::com_ptr<FileHandleObj> m_pHandle{};
 			INSERT_PADDING(28);
 		};
 
-		csl::ut::MoveArray<LoadInfo> m_PendingFiles{};
-		csl::ut::MoveArray<LoadInfo> m_Unk1{};
-		csl::ut::MoveArray<LoadInfo> m_Unk2{};
+		csl::ut::MoveArray<LoadInfo*> m_PendingFiles{};
+		csl::ut::MoveArray<LoadInfo*> m_Unk1{};
+		csl::ut::MoveArray<LoadInfo*> m_Unk2{};
 		INSERT_PADDING(12){};
 		bool m_SyncComplete{};
 		INSERT_PADDING(31);
