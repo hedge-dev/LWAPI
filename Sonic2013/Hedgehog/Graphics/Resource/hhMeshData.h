@@ -53,4 +53,9 @@ namespace hh::gfx::res
         ResNameData m_MaterialName;
         ResNameData m_SlotName;
     };
+
+    class ResMesh : public ut::ResCommon<ResMeshData>
+    {
+
+    };
 }
