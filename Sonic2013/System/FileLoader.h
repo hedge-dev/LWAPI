@@ -29,7 +29,12 @@ namespace app::fnd
 		{
 			csl::fnd::IAllocator* m_pAllocator{};
 			csl::fnd::com_ptr<FileHandleObj> m_pHandle{};
-			INSERT_PADDING(28);
+			uint32_t m_LoadFlags{};
+			uint32_t m_State{};
+			size_t m_Unk1{};
+			void* m_pLoadBuffer{}; // Owned by FileLoader::LoadBuffer
+			size_t m_BufferSize{};
+			INSERT_PADDING(8);
 		};
 
 		csl::ut::MoveArray<LoadInfo*> m_PendingFiles{};
