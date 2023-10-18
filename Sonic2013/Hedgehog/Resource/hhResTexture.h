@@ -21,7 +21,7 @@ namespace hh::gfx::res
 
 	class ResTexture : public ut::ResCommon<ResTextureData>
 	{
-		inline static ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<ut::ResourceTypeInfo*>(0x00FCE64C);
+		inline static ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<ut::ResourceTypeInfo*>(ASLR(0x00FCE64C));
 
 	public:
 		static const ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }

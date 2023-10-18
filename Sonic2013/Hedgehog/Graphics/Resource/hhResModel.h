@@ -69,7 +69,7 @@ namespace hh::gfx::res
 
 	class ResModel : public ResModelBase
 	{
-		inline static ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<ut::ResourceTypeInfo*>(0x00FCE6B4);
+		inline static ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<ut::ResourceTypeInfo*>(ASLR(0x00FCE6B4));
 
 	public:
 		static const ut::ResourceTypeInfo& staticTypeInfo() { return *ms_pTypeInfo; }
