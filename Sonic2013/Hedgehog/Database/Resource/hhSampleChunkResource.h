@@ -40,7 +40,7 @@ namespace hh::db
 			{
 				auto offset = _byteswap_ulong(offsets[i]);
 				auto* ptr = data + offset;
-				*(size_t*)ptr = _byteswap_ulong((size_t)ptr - (size_t)data); // Re-save in flipped endianness
+				*(size_t*)ptr = _byteswap_ulong(*(size_t*)ptr - (size_t)data); // Re-save in flipped endianness
 			}
 		}
 	};
