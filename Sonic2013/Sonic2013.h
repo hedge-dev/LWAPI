@@ -160,6 +160,7 @@
 
 #include "Utility/ResCommon.h"
 
+#include "Hedgehog/Database/Resource/hhSampleChunkResource.h"
 #include "Hedgehog/Database/System/hhDatabaseData.h"
 
 // Hedgehog Game Messages
