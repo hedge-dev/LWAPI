@@ -47,7 +47,7 @@ namespace hh::gfx::res
 		uint MorphTargetCount{};
 		INSERT_PADDING(8) {};
 		ResNameData Name{};
-		INSERT_PADDING(4) {}; // ResUserDataData UserData;
+		ResUserDataData UserData;
 	};
 
 	class ResModelBase : public ut::ResCommon<ResModelData>
@@ -64,6 +64,11 @@ namespace hh::gfx::res
 				return { nullptr };
 		
 			return { &m_pRes->pMeshGroups[in_index] };
+		}
+
+		ResUserData GetResUserData() const
+		{
+			return { &m_pRes->UserData };
 		}
 	};
 
