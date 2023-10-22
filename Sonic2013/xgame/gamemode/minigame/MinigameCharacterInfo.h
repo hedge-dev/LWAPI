@@ -41,7 +41,6 @@ namespace app
 
         }
 
-    protected:
         void Initialize(GameDocument& in_rDocument) override
         {
             for (size_t i = 0; i < ModelContainer.Models.size(); i++)
