@@ -1,4 +1,8 @@
 #pragma once
+#include "Resource/hhResUserData.h"
+#include "Resource/hhMeshData.h"
+#include "Resource/hhResModel.h"
+
 #include "Base/GfxObject.h"
 #include "Base/SceneNode.h"
 #include "Base/ModelNode.h"
@@ -10,9 +14,6 @@
 #include "hhRenderableContainer.h"
 #include "hhGeometry.h"
 #include "Resource/hhFxSceneParmeters.h"
-#include "Resource/hhResUserData.h"
-#include "Resource/hhMeshData.h"
-#include "Resource/hhResModel.h"
 #include "Manager/hhRenderManager.h"
 
 #include "goc/goc_Visual.h"

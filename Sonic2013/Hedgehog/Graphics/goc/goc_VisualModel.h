@@ -65,6 +65,8 @@ namespace app::fnd
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransform, ASLR(0x004951F0), const void*, NodeSpace, const char*, app::math::Transform*);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransformByIndex, ASLR(0x004951D0), const void*, NodeSpace, int, app::math::Transform*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetNodeTransform, ASLR(0x00495240), void*, NodeSpace, const char*, const app::math::Transform&);
+		inline static FUNCTION_PTR(hh::gfx::res::ResSkeleton, __thiscall, ms_fpGetSkeletonResource, ASLR(0x004952A0), GOCVisualModel*, hh::gfx::res::ResSkeleton);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCopyPose, ASLR(0x004952C0), GOCVisualModel*, const GOCVisualModel&);
 
 		static GOComponentClass* staticClass()
 		{
@@ -144,6 +146,21 @@ namespace app::fnd
 		void SetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, const app::math::Transform& in_transform)
 		{
 			ms_fpSetNodeTransform(this, in_nodeSpace, in_pNodeName, in_transform);
+		}
+
+		hh::gfx::res::ResModel GetModelResource()
+		{
+			return m_Impl.GetModelResource();
+		}
+
+		hh::gfx::res::ResSkeleton GetSkeletonResource()
+		{
+			return m_Impl.GetSkeletonResource();
+		}
+
+		void CopyPose(const GOCVisualModel& in_rOther)
+		{
+			return ms_fpCopyPose(this, in_rOther);
 		}
 	};
 

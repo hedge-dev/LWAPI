@@ -29,6 +29,18 @@ namespace app::fnd
 		m_pAnimation = in_pAnimation;
 	}
 
+	inline hh::gfx::res::ResSkeleton GOCVisualModelImpl::GetSkeletonResource()
+	{
+		if (pSkeleton)
+		{
+			return { &pSkeleton->Skeleton.ref() };
+		}
+		else
+		{
+			return { nullptr };
+		}
+	}
+
 	class GOCVisualModelImpl::Description : public GOCVisualModel::Description
 	{
 	public:

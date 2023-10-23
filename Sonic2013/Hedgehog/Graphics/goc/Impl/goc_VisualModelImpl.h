@@ -5,6 +5,11 @@ namespace app::game
 	class GOCAnimationSingle;
 }
 
+namespace app::animation
+{
+	class SkeletonBase;
+}
+
 namespace app::fnd
 {
 	class GOCVisualModel;
@@ -20,6 +25,7 @@ namespace app::fnd
 
 		hh::gfx::ModelNode* m_pModelNode{};
 		game::GOCAnimationSingle* m_pAnimation{};
+		animation::SkeletonBase* pSkeleton{};
 		INSERT_PADDING(8) {};
 		csl::fnd::IAllocator* m_pAllocator{};
 		uint m_Flags{ 0x10000 };
@@ -64,5 +70,19 @@ namespace app::fnd
 
 		void DetachAnimation(game::GOCAnimationSingle* in_pAnimation);
 		void AttachAnimation(GOCVisualModel* in_pModel, game::GOCAnimationSingle* in_pAnimation);
+
+		hh::gfx::res::ResModel GetModelResource()
+		{
+			if (m_pModelNode)
+			{
+				return { &m_pModelNode->pInstance->Model.ref() };
+			}
+			else
+			{
+				return { nullptr };
+			}
+		}
+
+		hh::gfx::res::ResSkeleton GetSkeletonResource();
 	};
 }

@@ -205,8 +205,6 @@
 // Hedgehog Game Components
 #include "Hedgehog/Game/goc/goc_Transform.h"
 #include "Hedgehog/Game/goc/goc_EnemyTarget.h"
-#include "Hedgehog/Game/goc/hud/goc_HudCollider.h"
-#include "Hedgehog/Game/goc/hud/goc_Hud.h"
 
 // Hedgehog Input Library
 #include "Hedgehog/Input/goc/goc_CharacterInput.h"
@@ -215,6 +213,7 @@
 #include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"
 
 // Hedgehog Animation Library
+#include "Hedgehog/Animation/Base/hhSkeletonBase.h"
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
 #include "Hedgehog/Animation/Base/hhAnimationNode.h"
 #include "Hedgehog/Animation/Base/hhAnimationClip.h"
@@ -336,6 +335,10 @@
 
 // Objects
 #include "Hedgehog/Game/GameObject3D.h"
+
+#include "game/goc/persistence/PersistenceObj.h"
+#include "game/goc/hud/goc_HudCollider.h"
+#include "game/goc/hud/goc_Hud.h"
 
 // SetData
 #include "System/ObjectSystem/Resource/Object.h"
