@@ -571,3 +571,22 @@
 #include "Hedgehog/Game/Game.inl"
 #include "Hedgehog/Path/PathComponent.inl"
 #include "Hedgehog/Movement/MoveBound.inl"
+
+#include "lua/lua.h"
+
+#ifdef _WIN32
+	#ifdef _DEBUG
+		#if defined(_MT) && defined(_DLL)
+			#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-mt.lib")
+		#else
+			#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-md.lib")
+		#endif
+	#else
+		#if defined(_MT) && defined(_DLL)
+			#pragma comment(lib, __FILE__"/../lua/libs/lua-release-mt.lib")
+		#else
+			#pragma comment(lib, __FILE__"/../lua/libs/lua-release-md.lib")
+		#endif
+	#endif
+	#pragma comment(lib, __FILE__"/../lua/libs/s13lua.lib")
+#endif

@@ -1,6 +1,5 @@
 #pragma once
-
-typedef void lua_State;
+#include "../../lua/lauxlib.h"
 
 namespace app::game
 {
@@ -38,12 +37,21 @@ namespace app::game
 
 		~LuaScript()
 		{
-			ms_fpDtor(this);
+			if (m_pState)
+			{
+				lua_close(m_pState);
+			}
 		}
 		
 		void Load(const char* pBuf, size_t bufSize)
 		{
-			return ms_fpLoad(this, pBuf, bufSize);
+			if (m_pState == nullptr || luaL_loadbuffer(m_pState, pBuf, bufSize, nullptr))
+			{
+				return;
+			}
+
+			lua_pcall(m_pState, 0, 0, 0);
+			m_Top = lua_gettop(m_pState);
 		}
 
 		bool OpenNode(const char* pName)
