@@ -25,8 +25,8 @@ namespace app::fnd
 
 	inline void GOCVisualModelImpl::AttachAnimation(GOCVisualModel* in_pModel, game::GOCAnimationSingle* in_pAnimation)
 	{
-		in_pAnimation->SetModel(in_pModel);
 		m_pAnimation = in_pAnimation;
+		in_pAnimation->SetModel(in_pModel);
 	}
 
 	inline hh::gfx::res::ResSkeleton GOCVisualModelImpl::GetSkeletonResource()
