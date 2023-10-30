@@ -14,7 +14,9 @@ namespace app::fnd
 		Setup(in_model, in_description);
 
 		if (pAnimation)
+		{
 			AttachAnimation(&in_model, pAnimation);
+		}
 	}
 
 	inline void GOCVisualModelImpl::DetachAnimation(game::GOCAnimationSingle* in_pAnimation)

@@ -132,6 +132,7 @@
 
 // Hedgehog Utility Library
 #include "Hedgehog/Base/Utility/hhScopedPointer.h"
+#include "Hedgehog/Base/Utility/hhScopedComPtr.h"
 #include "Hedgehog/Base/Utility/hhReferencePointer.h"
 #include "Hedgehog/Base/Utility/hhTempArray.h"
 #include "Hedgehog/Base/Utility/hhUtils.h"
@@ -208,7 +209,6 @@
 
 // Hedgehog Input Library
 #include "Hedgehog/Input/goc/goc_CharacterInput.h"
-
 #include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
 #include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"
 
@@ -274,6 +274,9 @@
 // Hedgehog Movie
 #include "Hedgehog/Movie/hhMovieSystem.h"
 #include "Hedgehog/Movie/hhMoviePlayer.h"
+
+// Hedgehog Extras
+#include "Hedgehog/Extra/Schedule/hhFxPipelineExecutor.h"
 
 // System
 #include "System/Singleton.h"

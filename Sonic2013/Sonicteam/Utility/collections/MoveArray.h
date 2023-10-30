@@ -169,7 +169,7 @@ namespace csl
 			
 			void clear()
 			{
-				if (!empty())
+				if (!this->empty())
 					this->m_length = 0;
 			}
 			

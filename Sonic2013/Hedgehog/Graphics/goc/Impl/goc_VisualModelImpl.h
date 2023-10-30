@@ -8,6 +8,7 @@ namespace app::game
 namespace app::animation
 {
 	class SkeletonBase;
+	class Pose;
 }
 
 namespace app::fnd
@@ -22,11 +23,12 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x00498060), GOCVisualModelImpl*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialColor, ASLR(0x00497530), GOCVisualModelImpl*, const float*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetMatrix, ASLR(0x00498100), const GOCVisualModelImpl*, csl::math::Matrix34*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetPoseUpdateFlag, ASLR(0x00497990), GOCVisualModelImpl*, app::fnd::GOCVisualModel&, bool);
 
 		hh::gfx::ModelNode* m_pModelNode{};
 		game::GOCAnimationSingle* m_pAnimation{};
 		animation::SkeletonBase* pSkeleton{};
-		INSERT_PADDING(8) {};
+		app::animation::Pose* pPose{};
 		csl::fnd::IAllocator* m_pAllocator{};
 		uint m_Flags{ 0x10000 };
 		INSERT_PADDING(8) {};
@@ -58,6 +60,11 @@ namespace app::fnd
 			ms_fpSetup(this, in_model, in_description);
 		}
 
+		void SetPoseUpdateFlag(app::fnd::GOCVisualModel& in_rModel, bool in_update)
+		{
+			ms_fpSetPoseUpdateFlag(this, in_rModel, in_update);
+		}
+
 		void Cleanup()
 		{
 			ms_fpCleanup(this);
@@ -70,6 +77,11 @@ namespace app::fnd
 
 		void DetachAnimation(game::GOCAnimationSingle* in_pAnimation);
 		void AttachAnimation(GOCVisualModel* in_pModel, game::GOCAnimationSingle* in_pAnimation);
+
+		void DetachAnimation()
+		{
+			DetachAnimation(m_pAnimation);
+		}
 
 		hh::gfx::res::ResModel GetModelResource()
 		{

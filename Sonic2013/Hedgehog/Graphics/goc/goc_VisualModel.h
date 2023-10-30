@@ -98,6 +98,11 @@ namespace app::fnd
 			return ms_fpSetup(this, in_description);
 		}
 
+		void SetPoseUpdateFlag(bool in_update)
+		{
+			m_Impl.SetPoseUpdateFlag(*this, in_update);
+		}
+
 		TexSrtBlenderHH* SetTexSrtBlender(const TexSrtBlenderDesc& in_description)
 		{
 			return ms_fpSetTexSrtBlender(this, in_description);
@@ -130,7 +135,17 @@ namespace app::fnd
 
 		void AttachAnimation(game::GOCAnimationSingle* in_pAnimation)
 		{
-			ms_fpAttachAnimation(this, in_pAnimation);
+			m_Impl.AttachAnimation(this, in_pAnimation);
+		}
+
+		void DetachAnimation(game::GOCAnimationSingle* in_pAnimation)
+		{
+			m_Impl.DetachAnimation(in_pAnimation);
+		}
+
+		void DetachAnimation()
+		{
+			m_Impl.DetachAnimation();
 		}
 
 		bool GetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, app::math::Transform* out_pTransform) const

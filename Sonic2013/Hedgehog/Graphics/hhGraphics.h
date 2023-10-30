@@ -24,3 +24,6 @@
 
 #include "hhRenderableEvent.inl"
 #include "hhRenderable.inl"
+
+#include "Hedgehog/MirageCore/Misc/hhRenderingDevice.inl"
+#include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"

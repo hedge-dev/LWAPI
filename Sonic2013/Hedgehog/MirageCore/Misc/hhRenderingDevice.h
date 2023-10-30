@@ -35,7 +35,7 @@ namespace hh::mr
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVertexShaderParameterF, ASLR(0x00488820), CRenderingDevice*, const base::CStringSymbol&, const float*, uint offset, uint count, CVertexShaderData*);
 
 		CRenderingInfrastructure* m_pRenderingInfrastructure;
-		IDirect3DDevice9* m_pD3DDevice;
+		hh::rsdx::RsdxDevice* m_pD3DDevice;
 		INSERT_PADDING(2788);
 		rsdx::RsdxVertexDeclaration9* m_pCurrentVertexDecl;
 		INSERT_PADDING(8);

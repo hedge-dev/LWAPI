@@ -93,6 +93,31 @@ namespace Extra::fx
 		boost::shared_ptr<hh::mr::CPixelShaderData> m_spPixelShader{};
 	};
 
+	// Size 60
+	struct STextureSurfacePair
+	{
+		hh::ut::ScopedComPtr<hh::rsdx::RsdxBaseTexture9> m_Textures[2]{};
+		hh::ut::ScopedComPtr<hh::rsdx::RsdxSurface9> m_Surfaces[2]{};
+		short m_Unk1{};
+		short m_Levels{};
+		short m_Width3{};
+		short m_Height3{};
+		uint m_Width2{};
+		uint m_Height2{};
+		uint m_Width{};
+		uint m_Height{};
+		
+		hh::rsdx::_RsdxFormat m_Format{};
+		INSERT_PADDING(12) {};
+		const char* m_pName{};
+	};
+
+	struct SResourceContext
+	{
+		SShaderPair m_Shaders[83]{};
+		STextureSurfacePair m_Textures[60]{};
+	};
+
 	inline static void GetShaderFromPackfile(SShaderPair& out_pair, hh::ut::PackFile& in_pac, const char* in_pVtxShaderName, const char* in_pPixelShaderName)
 	{
 		out_pair.m_spVertexShader = hh::mr::GetMirageVertexShaderDataFromPackfile(in_pac, in_pVtxShaderName);
