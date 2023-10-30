@@ -213,6 +213,7 @@
 #include "Hedgehog/MirageCore/RenderData/hhVertexDeclarationPtr.inl"
 
 // Hedgehog Animation Library
+#include "Hedgehog/Animation/hhAnimationObject.h"
 #include "Hedgehog/Animation/Base/hhSkeletonBase.h"
 #include "Hedgehog/Animation/Base/hhAnimationObject.h"
 #include "Hedgehog/Animation/Base/hhAnimationNode.h"
@@ -239,6 +240,8 @@
 #include "Hedgehog/Animation/hhCharactorAnimation.h"
 #include "Hedgehog/Animation/hhCharactorAnimationSingle.h"
 #include "Hedgehog/Animation/hhCharactorAnimationMultiLayer.h"
+#include "Hedgehog/Animation/hhAnimMorphTargetNode.h"
+#include "Hedgehog/Animation/hhAnimMorphTargetControl.h"
 
 // Hedgehog Animation Components
 #include "Hedgehog/Animation/goc/goc_Animation.h"

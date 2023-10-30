@@ -9,6 +9,7 @@ namespace app::fnd
 {
 	struct MatAnimBlenderDesc;
 	struct TexSrtBlenderDesc;
+	struct MorphTargetDesc;
 	struct MatAnimDesc;
 	struct TexSrtDesc;
 	class MatAnimBlenderHH;
@@ -148,6 +149,8 @@ namespace app::fnd
 			m_Impl.DetachAnimation();
 		}
 
+		hh::gfx::AnimMorphTargetControl* SetMorphAnimation(const MorphTargetDesc& in_rDesc);
+
 		bool GetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, app::math::Transform* out_pTransform) const
 		{
 			return ms_fpGetNodeTransform(this, in_nodeSpace, in_pNodeName, out_pTransform);
@@ -199,6 +202,12 @@ namespace app::fnd
 	{
 		hh::gfx::res::ResAnimTexSrt m_Animation{};
 		size_t m_Unk;
+	};
+
+	// This is made up, the API doesn't exist in the game
+	struct MorphTargetDesc
+	{
+		hh::gfx::res::ResAnimMorphTarget animation{};
 	};
 
 	class TexSrtControl

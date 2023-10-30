@@ -1,5 +1,10 @@
 #pragma once
 
+namespace hh::gfx
+{
+	class AnimMorphTargetControl;
+}
+
 namespace app::game
 {
 	class GOCAnimationSingle;
@@ -77,6 +82,7 @@ namespace app::fnd
 
 		void DetachAnimation(game::GOCAnimationSingle* in_pAnimation);
 		void AttachAnimation(GOCVisualModel* in_pModel, game::GOCAnimationSingle* in_pAnimation);
+		hh::gfx::AnimMorphTargetControl* SetMorphAnimation(GOCVisualModel* in_pModel , hh::gfx::res::ResAnimMorphTarget in_resource);
 
 		void DetachAnimation()
 		{

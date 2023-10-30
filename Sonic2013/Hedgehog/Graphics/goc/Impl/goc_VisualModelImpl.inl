@@ -31,6 +31,13 @@ namespace app::fnd
 		in_pAnimation->SetModel(in_pModel);
 	}
 
+	inline hh::gfx::AnimMorphTargetControl* GOCVisualModelImpl::SetMorphAnimation(GOCVisualModel* in_pModel, hh::gfx::res::ResAnimMorphTarget in_resource)
+	{
+		auto* control = hh::gfx::AnimMorphTargetControl::Create(in_pModel->GetAllocator(), in_resource);
+		m_pModelNode->SetAnimObject(control, 2);
+		return control;
+	}
+
 	inline hh::gfx::res::ResSkeleton GOCVisualModelImpl::GetSkeletonResource()
 	{
 		if (pSkeleton)
@@ -41,6 +48,11 @@ namespace app::fnd
 		{
 			return { nullptr };
 		}
+	}
+
+	inline hh::gfx::AnimMorphTargetControl* GOCVisualModel::SetMorphAnimation(const MorphTargetDesc& in_rDesc)
+	{
+		return m_Impl.SetMorphAnimation(this, in_rDesc.animation);
 	}
 
 	class GOCVisualModelImpl::Description : public GOCVisualModel::Description
