@@ -14,12 +14,12 @@ namespace app::animation
 			
 		}
 
-		void Setup(csl::fnd::IAllocator& in_allocator, const ResCharAnim& in_anim, bool in_stop)
+		void Setup(csl::fnd::IAllocator& in_rAllocator, const ResCharAnim& in_rAnim, bool in_stop)
 		{
 			Cleanup();
-			if (in_anim.IsValid())
+			if (in_rAnim.IsValid())
 			{
-				m_pSkelControl = SkeletonControl::Create(hh::gfx::res::ResAnimSkeleton{ in_anim }, in_stop, in_allocator);
+				m_pSkelControl = SkeletonControl::Create(hh::gfx::res::ResAnimSkeleton{ in_rAnim }, in_stop, in_rAllocator);
 				if (m_pSkelControl)
 					m_pSkelControl->SetPlaybackSpeed(0);
 			}

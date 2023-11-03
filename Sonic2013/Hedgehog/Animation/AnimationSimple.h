@@ -4,12 +4,6 @@ namespace app::animation
 {
 	class AnimationSimple : public AnimationClip
 	{
-	protected:
-		const SimpleDef* m_pDef{};
-		PlayingData m_PlayData{};
-		AnimSkeletonControl m_SkelControl{};
-		uint m_Unk1{};
-
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00416070), AnimationSimple*, float);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpProcEvent, ASLR(0x00416130), AnimationSimple*, EEvent);
@@ -22,15 +16,22 @@ namespace app::animation
 	public:
 		DEFINE_RTTI_PTR(ASLR(0x00F61178));
 
+	protected:
+		const SimpleDef* m_pDef{};
+		PlayingData m_PlayData{};
+		AnimSkeletonControl m_SkelControl{};
+		uint m_Unk1{};
+
+	public:
 		AnimationSimple()
 		{
 
 		}
 
-		void Setup(csl::fnd::IAllocator& in_allocator, const SimpleDef& in_def, const ResCharAnim& in_anim)
+		void Setup(csl::fnd::IAllocator& in_rAllocator, const SimpleDef& in_rDef, const ResCharAnim& in_rAnim)
 		{
-			m_pDef = &in_def;
-			m_SkelControl.Setup(in_allocator, in_anim, in_def.m_Data.m_Options == 0);
+			m_pDef = &in_rDef;
+			m_SkelControl.Setup(in_rAllocator, in_rAnim, in_rDef.Data.Options == 0);
 		}
 
 		const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const override { return GetRuntimeTypeInfoStatic(); }

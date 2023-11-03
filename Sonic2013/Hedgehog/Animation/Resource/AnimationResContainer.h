@@ -13,8 +13,8 @@ namespace app
 	{
 		struct MirrorBindData
 		{
-			const char* m_Unk1;
-			const char* m_Unk2;
+			const char* Unk1;
+			const char* Unk2;
 		};
 		
 		class ResCharMirrorAnim : public fnd::ReferencedObject
@@ -31,18 +31,18 @@ namespace app
 		public:
 			AnimationXMLLoader() { }
 			
-			void* CreateBuffer(size_t size)
+			void* CreateBuffer(size_t in_size)
 			{
-				void* buffer = GetAllocator()->Alloc(size, 16);
+				void* buffer = GetAllocator()->Alloc(in_size, 16);
 				m_Buffers.push_back(buffer);
 				return buffer;
 			}
 
-			const char* CreateCharBuffer(const char* pStr)
+			const char* CreateCharBuffer(const char* in_pStr)
 			{
-				const size_t len = strlen(pStr) + 1;
+				const size_t len = strlen(in_pStr) + 1;
 				void* pBuffer = CreateBuffer(len);
-				memcpy(pBuffer, pStr, len);
+				memcpy(pBuffer, in_pStr, len);
 				return static_cast<const char*>(pBuffer);
 			}
 
@@ -55,16 +55,19 @@ namespace app
 
 		class AnimationResContainer
 		{
+		private:
+			inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadFromBuffer, ASLR(0x00412CA0), AnimationResContainer*, LoadInfo&, hh::ut::PackFile);
+
 		public:
 			struct ResData
 			{
-				FileHeader* m_pFile{};
-				csl::ut::ObjectMoveArray<ResCharAnim> m_SimpleAnimations;
-				csl::ut::ObjectMoveArray<ResCharAnim> m_ComplexAnimations;
-				csl::ut::ObjectMoveArray<ut::RefPtr<ResCharMirrorAnim>> m_MirrorAnims;
+				FileHeader* pFile{};
+				csl::ut::ObjectMoveArray<ResCharAnim> SimpleAnimations;
+				csl::ut::ObjectMoveArray<ResCharAnim> ComplexAnimations;
+				csl::ut::ObjectMoveArray<ut::RefPtr<ResCharMirrorAnim>> MirrorAnims;
 
-				ResData(csl::fnd::IAllocator& in_allocator) : m_SimpleAnimations(&in_allocator),
-					m_ComplexAnimations(&in_allocator), m_MirrorAnims(&in_allocator)
+				ResData(csl::fnd::IAllocator& in_rAllocator) : SimpleAnimations(&in_rAllocator),
+					ComplexAnimations(&in_rAllocator), MirrorAnims(&in_rAllocator)
 				{
 					
 				}
@@ -72,29 +75,27 @@ namespace app
 
 			struct LoadInfo
 			{
-				ResCharAnimScript m_Script{};
-				hh::gfx::res::ResSkeleton m_Skeleton{};
-				csl::ut::MoveArray<MirrorBindData>* m_pMirrorData{};
+				ResCharAnimScript Script{};
+				hh::gfx::res::ResSkeleton Skeleton{};
+				csl::ut::MoveArray<MirrorBindData>* pMirrorData{};
 			};
 			
-			csl::fnd::IAllocator* m_pAllocator{};
-			ResData m_Data;
-			ut::RefPtr<AnimationXMLLoader> m_rpXmlLoader;
+			csl::fnd::IAllocator* pAllocator{};
+			ResData Data;
+			ut::RefPtr<AnimationXMLLoader> rpXmlLoader;
 
 		private:
-			inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadFromBuffer, ASLR(0x00412CA0), AnimationResContainer*, LoadInfo&, hh::ut::PackFile);
-
 			void PrepareMerge()
 			{
-				if (m_rpXmlLoader)
+				if (rpXmlLoader)
 					return;
 
-				m_rpXmlLoader = new(m_pAllocator) AnimationXMLLoader();
+				rpXmlLoader = new(m_pAllocator) AnimationXMLLoader();
 			}
 
 			void* CreateBuffer(size_t in_size)
 			{
-				return m_rpXmlLoader->CreateBuffer(in_size);
+				return rpXmlLoader->CreateBuffer(in_size);
 			}
 
 			template<typename T>
@@ -114,49 +115,49 @@ namespace app
 			}
 
 		public:
-			AnimationResContainer(csl::fnd::IAllocator& in_allocator) : m_pAllocator(&in_allocator), m_Data(in_allocator)
+			AnimationResContainer(csl::fnd::IAllocator& in_rAllocator) : m_pAllocator(&in_rAllocator), m_Data(in_rAllocator)
 			{
 				
 			}
 
-			void LoadFromBuffer(LoadInfo& in_info, hh::ut::PackFile in_pac)
+			void LoadFromBuffer(LoadInfo& in_rInfo, hh::ut::PackFile in_pac)
 			{
-				ms_fpLoadFromBuffer(this, in_info, in_pac);
+				ms_fpLoadFromBuffer(this, in_rInfo, in_pac);
 			}
 
-			bool MergeTransitions(const AnimationResContainer& in_other)
+			bool MergeTransitions(const AnimationResContainer& in_rOther)
 			{
-				if (!in_other.m_Data.m_pFile)
+				if (!in_rOther.Data.pFile)
 					return false;
 
-				return MergeTransitions(in_other.m_Data.m_pFile->m_pTransitions);
+				return MergeTransitions(in_rOther.Data.pFile->pTransitions);
 			}
 
-			bool MergeTransitions(const TransitionArray* in_other)
+			bool MergeTransitions(const TransitionArray* in_pOther)
 			{
-				if (!m_Data.m_pFile || !in_other)
+				if (!Data.pFile || !in_pOther)
 					return false;
 
 				PrepareMerge();
-				auto& file = *m_Data.m_pFile;
-				auto* oldTransitions = file.m_pTransitions;
-				if (!oldTransitions)
+				auto& file = *Data.pFile;
+				auto* pOldTransitions = file.pTransitions;
+				if (!pOldTransitions)
 				{
-					file.m_pTransitions = CreateBuffer<TransitionArray>();
-					*file.m_pTransitions = *in_other;
+					file.pTransitions = CreateBuffer<TransitionArray>();
+					*file.pTransitions = *in_pOther;
 
 					return true;
 				}
 
-				file.m_pTransitions = CreateBuffer<TransitionArray>();
-				file.m_pTransitions->m_Count = in_other->m_Count + oldTransitions->m_Count;
-				file.m_pTransitions->m_pTransitions = CreateBuffer<TransitionInfo>(file.m_pTransitions->m_Count);
+				file.pTransitions = CreateBuffer<TransitionArray>();
+				file.pTransitions->Count = in_pOther->Count + pOldTransitions->Count;
+				file.pTransitions->pTransitions = CreateBuffer<TransitionInfo>(file.pTransitions->Count);
 				size_t base{};
-				for (base = 0; base < oldTransitions->m_Count; ++base)
-					file.m_pTransitions->m_pTransitions[base] = oldTransitions->m_pTransitions[base];
+				for (base = 0; base < pOldTransitions->Count; ++base)
+					file.pTransitions->pTransitions[base] = pOldTransitions->pTransitions[base];
 
-				for (size_t i = 0; i < in_other->m_Count; ++i)
-					file.m_pTransitions->m_pTransitions[base + i] = in_other->m_pTransitions[i];
+				for (size_t i = 0; i < in_pOther->Count; ++i)
+					file.pTransitions->pTransitions[base + i] = in_pOther->pTransitions[i];
 
 				return true;
 			}

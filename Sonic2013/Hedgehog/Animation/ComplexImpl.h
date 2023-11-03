@@ -3,10 +3,11 @@
 namespace app::animation
 {
 	class AnimationComplex;
+	
 	class ComplexImpl : public fnd::ReferencedObject, public AnimationNode
 	{
 	public:
-		AnimationComplex* m_pParent{};
+		AnimationComplex* pParent{};
 
 		ComplexImpl()
 		{

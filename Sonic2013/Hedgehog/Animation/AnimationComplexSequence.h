@@ -3,16 +3,10 @@
 namespace app::animation
 {
 	class ComplexBlender;
+
 	class ComplexSequence : public ComplexImpl
 	{
-	public:
-		AnimationTransition m_Transition{};
-		uint m_Unk1{ 0 };
-		uint m_Unk2{ (uint)-1 };
-		uint m_Unk3{ (uint)-1 };
-		csl::ut::Bitset<uint> m_Flags{};
-		bool m_FinishLoop{};
-		
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x00417020), ComplexSequence*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00417110), AnimationNode*, float);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpProcEvent, ASLR(0x004172B0), AnimationNode*, EEvent);
@@ -21,6 +15,14 @@ namespace app::animation
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetStatus, ASLR(0x004171E0), const AnimationNode*, EPlayStatus);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetStatus, ASLR(0x00417410), AnimationNode*, EPlayStatus, bool);
 
+	public:
+		AnimationTransition Transition{};
+		uint Unk1{ 0 };
+		uint Unk2{ (uint)-1 };
+		uint Unk3{ (uint)-1 };
+		csl::ut::Bitset<uint> Flags{};
+		bool FinishLoop{};
+		
 		ComplexSequence()
 		{
 
@@ -28,7 +30,7 @@ namespace app::animation
 
 		void Setup() override
 		{
-			m_Transition.Setup(nullptr, nullptr);
+			Transition.Setup(nullptr, nullptr);
 		}
 
 		void Cleanup() override
@@ -38,7 +40,7 @@ namespace app::animation
 
 		AnimationClip* GetCurrentClip() override
 		{
-			return m_Transition.GetClip();
+			return Transition.GetClip();
 		}
 
 		void Update(float in_time) override
@@ -73,7 +75,7 @@ namespace app::animation
 
 		void ExitLoop()
 		{
-			m_FinishLoop = true;
+			FinishLoop = true;
 		}
 	};
 }

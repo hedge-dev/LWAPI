@@ -14,18 +14,18 @@ namespace app::animation
 		
 		float GetWeight() const override
 		{
-			return m_GlobalWeight;
+			return GlobalWeight;
 		}
 
-		void SetWeight(float weight) override
+		void SetWeight(float in_weight) override
 		{
-			m_GlobalWeight = weight;
+			GlobalWeight = in_weight;
 		}
 
 		void Update() override
 		{
 			if (m_pClip)
-				m_pClip->SetValue(AnimationNode::eSetEvent_Weight, m_pBaseBlender->m_GlobalWeight * m_GlobalWeight);
+				m_pClip->SetValue(AnimationNode::eSetEvent_Weight, m_pBaseBlender->GlobalWeight * GlobalWeight);
 		}
 
 		SimpleBlender* GetSimpleBlender() override

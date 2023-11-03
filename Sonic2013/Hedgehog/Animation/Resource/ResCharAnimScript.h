@@ -44,160 +44,160 @@ namespace app::animation
 
 	struct PlayModeInfo
 	{
-		EPlayMode m_Mode;
-		short m_RandomMin;
-		short m_RandomMax;
+		EPlayMode Mode;
+		short RandomMin;
+		short RandomMax;
 	};
 
 	struct BlendAddNode
 	{
-		const char* m_pName;
-		float m_Weight;
-		int m_Priority;
+		const char* pName;
+		float Weight;
+		int Priority;
 	};
 
 	// Size is 20
 	struct BlenderDef
 	{
-		size_t m_StructType{ 1 }; // Always 1
-		const char* m_pName;
-		float m_Weight;
-		size_t m_NodeCount;
-		BlendAddNode* m_pNodes;
+		size_t StructType{ 1 }; // Always 1
+		const char* pName;
+		float Weight;
+		size_t NodeCount;
+		BlendAddNode* pNodes;
 	};
 
 	struct BlenderData
 	{
-		size_t m_StructType{ 1 }; // Always 1
-		size_t m_BlenderCount;
-		BlenderDef** m_ppBlenders;
+		size_t StructType{ 1 }; // Always 1
+		size_t BlenderCount;
+		BlenderDef** ppBlenders;
 
 		bool IsValid() const
 		{
-			return m_StructType == 1;
+			return StructType == 1;
 		}
 	};
 
 	struct SeqData
 	{
-		const char* m_pName;
+		const char* pName;
 	};
 
 	struct SequenceTable
 	{
-		size_t m_StructType{ 0 }; // Always 0
-		PlayModeInfo m_PlayMode;
-		size_t m_SequenceCount;
-		SeqData* m_pSequences;
+		size_t StructType{ 0 }; // Always 0
+		PlayModeInfo PlayMode;
+		size_t SequenceCount;
+		SeqData* pSequences;
 
 		bool IsValid() const
 		{
-			return !m_StructType;
+			return !StructType;
 		}
 	};
 
 	struct TransitionInfo
 	{
-		const char* m_pFrom;
-		const char* m_pTo;
+		const char* pFrom;
+		const char* pTo;
 	};
 
 	struct TransitionArray
 	{
-		size_t m_Count;
-		TransitionInfo* m_pTransitions;
+		size_t Count;
+		TransitionInfo* pTransitions;
 	};
 
 	struct InterpolateInfo
 	{
-		EInterpolateMode m_Unk1; // Enter interpolation?
-		EInterpolateMode m_Unk2; // Exit interpolation?
-		float m_Time;
-		const char* m_From;
+		EInterpolateMode Unk1; // Enter interpolation?
+		EInterpolateMode Unk2; // Exit interpolation?
+		float Time;
+		const char* From;
 	};
 
 	struct InterpolateArray
 	{
-		size_t m_Count;
-		InterpolateInfo* m_Interpolations;
+		size_t Count;
+		InterpolateInfo* Interpolations;
 	};
 
 	typedef union
 	{
-		int m_Int;
-		float m_Float;
-		const char* m_String;
+		int Int;
+		float Float;
+		const char* String;
 	} CallbackParam;
 
 	struct TriggerInfo
 	{
-		float m_Frame;
-		uint m_ID;
-		ETriggerValueType m_ValueType;
-		CallbackParam m_Value;
+		float Frame;
+		uint ID;
+		ETriggerValueType ValueType;
+		CallbackParam Value;
 	};
 
 	struct TriggerInfoArray
 	{
-		size_t m_Count;
-		TriggerInfo* m_pEvents;
+		size_t Count;
+		TriggerInfo* pEvents;
 	};
 
 	struct AnimationDef
 	{
-		const char* m_pName;
-		EAnimationType m_Type;
-		short m_Layer;
+		const char* pName;
+		EAnimationType Type;
+		short Layer;
 	};
 
 	struct PlayData
 	{
-		float m_StartFrame;
-		float m_EndFrame;
-		float m_Speed;
-		PlayModeInfo m_PlayInfo;
-		EAnimOptions m_Options;
-		InterpolateArray m_Interpolations;
+		float StartFrame;
+		float EndFrame;
+		float Speed;
+		PlayModeInfo PlayInfo;
+		EAnimOptions Options;
+		InterpolateArray Interpolations;
 	};
 
 	struct SimpleDef : AnimationDef
 	{
-		const char* m_pResource;
-		PlayData m_Data;
-		TriggerInfoArray m_Callbacks;
+		const char* pResource;
+		PlayData Data;
+		TriggerInfoArray Callbacks;
 	};
 
 	struct ComplexData
 	{
 		union
 		{
-			BlenderData m_BlenderInfo;
-			SequenceTable m_SequenceInfo;
+			BlenderData BlenderInfo;
+			SequenceTable SequenceInfo;
 		};
 	};
 
 	struct SimpleAnimationArray
 	{
-		size_t m_Count;
-		SimpleDef* m_pAnimations;
+		size_t Count;
+		SimpleDef* pAnimations;
 	};
 
 	struct ComplexDef : AnimationDef
 	{
-		SimpleAnimationArray m_Animations;
-		ComplexData* m_pData;
+		SimpleAnimationArray Animations;
+		ComplexData* pData;
 	};
 
 	struct ComplexAnimationArray
 	{
-		size_t m_Count;
-		ComplexDef* m_pAnimations;
+		size_t Count;
+		ComplexDef* pAnimations;
 	};
 
 	struct AnimationDefArray
 	{
-		SimpleAnimationArray m_SimpleAnimations;
-		ComplexAnimationArray m_ComplexAnimations;
+		SimpleAnimationArray SimpleAnimations;
+		ComplexAnimationArray ComplexAnimations;
 	};
 
 	class FileHeader
@@ -206,17 +206,17 @@ namespace app::animation
 		const char* m_pSignature{ "ANIM" };
 		const char* m_pVersion{ "1.02" };
 	public:
-		ushort m_LayerCount{};
-		ushort m_TriggerCount{};
-		AnimationDefArray* m_pAnimations{};
-		TransitionArray* m_pTransitions{};
+		ushort LayerCount{};
+		ushort TriggerCount{};
+		AnimationDefArray* pAnimations{};
+		TransitionArray* pTransitions{};
 	};
 
 	class ResCharAnimScriptData
 	{
 	public:
-		FileHeader* m_pHeader{};
-		csl::fnd::IAllocator* m_pAllocator{};
+		FileHeader* pHeader{};
+		csl::fnd::IAllocator* pAllocator{};
 	};
 }
 

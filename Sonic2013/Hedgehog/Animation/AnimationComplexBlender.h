@@ -4,14 +4,10 @@ namespace app::animation
 {
 	class SimpleBlender;
 	class ComplexBlender;
+
 	class ComplexBlend : public ComplexImpl
 	{
-	public:
-		csl::ut::InplaceObjectMoveArray<ut::RefPtr<ComplexBlender>, 3> m_Blenders{ GetAllocator() };
-		csl::ut::StringMap<ComplexBlender*> m_BlenderMap{ GetAllocator() };
-		SimpleBlender* m_pSimple{};
-		BlenderData* m_pData{};
-
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00416420), ComplexBlend*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x004165A0), ComplexBlend*);
 		inline static FUNCTION_PTR(AnimationClip*, __thiscall, ms_fpGetCurrentClip, ASLR(0x004163A0), ComplexBlend*);
@@ -21,6 +17,12 @@ namespace app::animation
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetValue, ASLR(0x004167E0), AnimationNode*, ESetEvent, float);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetStatus, ASLR(0x00416370), const AnimationNode*, EPlayStatus);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetStatus, ASLR(0x00416840), AnimationNode*, EPlayStatus, bool);
+
+	public:
+		csl::ut::InplaceObjectMoveArray<ut::RefPtr<ComplexBlender>, 3> Blenders{ GetAllocator() };
+		csl::ut::StringMap<ComplexBlender*> BlenderMap{ GetAllocator() };
+		SimpleBlender* pSimple{};
+		BlenderData* pData{};
 
 		ComplexBlend()
 		{
@@ -76,9 +78,9 @@ namespace app::animation
 	class ComplexBlender : public fnd::ReferencedObject
 	{
 	public:
-		float m_GlobalWeight{};
+		float GlobalWeight{};
 
-		virtual void SetWeight(float weight) = 0;
+		virtual void SetWeight(float in_weight) = 0;
 		virtual float GetWeight() const = 0;
 		virtual void Update() = 0;
 		virtual void ResetParameter() = 0;

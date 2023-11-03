@@ -9,18 +9,18 @@ namespace app
 		protected:
 			enum EventType
 			{
-				EventType_Cleanup,
-				EventType_SetAnimation,
-				EventType_GoToEnd,
+				eEventType_Cleanup,
+				eEventType_SetAnimation,
+				eEventType_GoToEnd,
 			};
 
 		protected:
-			virtual void OnGOCAnimationEvent(EventType eType, const void* data) = 0;
+			virtual void OnGOCAnimationEvent(EventType in_type, const void* in_pData) = 0;
 
 		public:
-			void SetAnimation(const char* pName)
+			void SetAnimation(const char* in_pName)
 			{
-				OnGOCAnimationEvent(EventType_SetAnimation, pName);
+				OnGOCAnimationEvent(eEventType_SetAnimation, in_pName);
 			}
 		};
 	}

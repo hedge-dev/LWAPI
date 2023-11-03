@@ -3,18 +3,9 @@
 namespace app::animation
 {
 	class AnimationSimple;
+	
 	class AnimationComplex : public AnimationClip
 	{
-	public:
-		DEFINE_RTTI_PTR(ASLR(0x00F61148))
-		
-	public:
-		const ComplexDef* m_pDef{};
-		ut::RefPtr<ComplexImpl> m_pImpl{};
-		csl::ut::ObjectMoveArray<AnimationSimple> m_Animations{ nullptr };
-		csl::ut::LinkList<AnimationClip> m_Clips{ 12 };
-		uint m_Unk1{ 0 };
-
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00415E10), AnimationComplex*, float);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpProcEvent, ASLR(0x00415DC0), AnimationComplex*, EEvent);
@@ -25,40 +16,50 @@ namespace app::animation
 		inline static FUNCTION_PTR(const InterpolateArray*, __thiscall, ms_fpGetInterpolateArray, ASLR(0x00415920), const AnimationComplex*);
 
 	public:
+		DEFINE_RTTI_PTR(ASLR(0x00F61148))
+		
+	public:
+		const ComplexDef* pDef{};
+		ut::RefPtr<ComplexImpl> pImpl{};
+		csl::ut::ObjectMoveArray<AnimationSimple> Animations{ nullptr };
+		csl::ut::LinkList<AnimationClip> Clips{ 12 };
+		uint Unk1{ 0 };
+
+	public:
 		AnimationComplex()
 		{
-			sizeof(AnimationClip);
+			
 		}
 
-		void Setup(csl::fnd::IAllocator& in_allocator, const ComplexDef& in_def, const csl::ut::ObjectMoveArray<ResCharAnim>& in_anims, size_t in_animStartIdx)
+		void Setup(csl::fnd::IAllocator& in_rAllocator, const ComplexDef& in_rDef, const csl::ut::ObjectMoveArray<ResCharAnim>& in_rAnims, size_t in_animStartIdx)
 		{
-			m_pDef = &in_def;
-			m_Animations.clear();
+			pDef = &in_rDef;
+			Animations.clear();
 
-			m_Animations.change_allocator(&in_allocator);
-			m_Animations.resize(in_def.m_Animations.m_Count);
-			for(size_t i = 0; i < m_Animations.size(); ++i)
+			Animations.change_allocator(&in_rAllocator);
+			Animations.resize(in_rDef.Animations.Count);
+			for(size_t i = 0; i < Animations.size(); ++i)
 			{
-				m_Animations[i].m_pManager = m_pManager;
-				m_Animations[i].m_pOwner = m_pOwner;
-				m_Animations[i].m_pParent = this;
-				m_Animations[i].ProcEvent(eEvent_AttachExternal);
+				Animations[i].pManager = pManager;
+				Animations[i].pOwner = pOwner;
+				Animations[i].pParent = this;
+				Animations[i].ProcEvent(eEvent_AttachExternal);
 
-				m_Animations[i].Setup(in_allocator, in_def.m_Animations.m_pAnimations[i], in_anims[in_animStartIdx + i]);
+				Animations[i].Setup(in_rAllocator, in_rDef.Animations.pAnimations[i], in_rAnims[in_animStartIdx + i]);
 			}
 
-			if (m_pDef->m_pData->m_BlenderInfo.IsValid())
+			if (pDef->pData->BlenderInfo.IsValid())
 			{
-				m_pImpl = new(in_allocator) ComplexBlend();
+				pImpl = new(in_rAllocator) ComplexBlend();
 			}
 			else
 			{
-				m_pImpl = new(in_allocator) ComplexSequence();
+				pImpl = new(in_rAllocator) ComplexSequence();
 			}
 
-			m_pImpl->m_pParent = this;
-			m_pImpl->ProcEvent(eEvent_AttachExternal);
-			m_pImpl->Setup();
+			pImpl->pParent = this;
+			pImpl->ProcEvent(eEvent_AttachExternal);
+			pImpl->Setup();
 		}
 
 		void Update(float in_deltaTime) override
@@ -93,7 +94,7 @@ namespace app::animation
 
 		const ComplexDef* GetAnimationDef() const override
 		{
-			return m_pDef;
+			return pDef;
 		}
 
 		const InterpolateArray* GetInterpolateArray() const override
@@ -103,43 +104,43 @@ namespace app::animation
 
 		void Cleanup()
 		{
-			if (m_pImpl)
+			if (pImpl)
 			{
-				m_pImpl->Cleanup();
-				m_pImpl->ProcEvent(eEvent_FinishCleanup);
+				pImpl->Cleanup();
+				pImpl->ProcEvent(eEvent_FinishCleanup);
 
-				m_pImpl->m_pParent = nullptr;
-				m_pImpl = nullptr;
+				pImpl->pParent = nullptr;
+				pImpl = nullptr;
 			}
 
-			for (auto& anim : m_Animations)
+			for (auto& anim : Animations)
 			{
 				anim.Cleanup();
 				anim.ProcEvent(AnimationNode::eEvent_FinishCleanup);
 			}
 
-			m_Animations.clear();
+			Animations.clear();
 		}
 	};
 
-	inline static ComplexBlender* GetBlender(const char* pName, const AnimationClip& rClip)
+	inline static ComplexBlender* GetBlender(const char* in_pName, const AnimationClip& in_rClip)
 	{
-		auto* pComplex = csl::ut::DynamicCast<const AnimationComplex>(&rClip);
+		auto* pComplex = csl::ut::DynamicCast<const AnimationComplex>(&in_rClip);
 		if (!pComplex)
 			return nullptr;
 
-		if (!pComplex->m_pDef->m_pData->m_BlenderInfo.IsValid())
+		if (!pComplex->pDef->pData->BlenderInfo.IsValid())
 			return nullptr;
 
-		return static_cast<ComplexBlend*>(pComplex->m_pImpl.get())->m_BlenderMap.find(pName);
+		return static_cast<ComplexBlend*>(pComplex->pImpl.get())->BlenderMap.find(in_pName);
 	}
 
 	inline static ComplexImpl* GetSequence(const AnimationClip& in_rClip)
 	{
 		auto* pComplex = csl::ut::DynamicCast<const AnimationComplex>(&in_rClip);
-		if (pComplex && !*(size_t*)pComplex->m_pDef->m_pData)
+		if (pComplex && !*(size_t*)pComplex->pDef->pData)
 		{
-			return pComplex->m_pImpl.get();
+			return pComplex->pImpl.get();
 		}
 		else
 		{

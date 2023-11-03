@@ -1,4 +1,5 @@
 #pragma once
+
 namespace app::animation
 {
 	struct AnimationDef;
@@ -7,9 +8,9 @@ namespace app::animation
 	class AnimationClip : public AnimationNode
 	{
 	public:
-		csl::ut::LinkListNode m_ListNode{};
-		AnimationClip* m_pParent{};
-		uint m_State{};
+		csl::ut::LinkListNode ListNode{};
+		AnimationClip* pParent{};
+		uint State{};
 
 		AnimationClip()
 		{

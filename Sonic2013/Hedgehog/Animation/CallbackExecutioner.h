@@ -14,7 +14,7 @@ namespace app::animation
 		csl::fnd::IAllocator* m_pAlloc{};
 
 	public:
-		CallbackExecutioner(csl::fnd::IAllocator& rAlloc) : m_Callbacks(&rAlloc), m_SystemCallbacks(&rAlloc), m_pAlloc(&rAlloc)
+		CallbackExecutioner(csl::fnd::IAllocator& in_rAlloc) : m_Callbacks(&in_rAlloc), m_SystemCallbacks(&in_rAlloc), m_pAlloc(&in_rAlloc)
 		{
 			
 		}
@@ -34,27 +34,27 @@ namespace app::animation
 			m_Callbacks.resize(in_count);
 		}
 
-		void RegisterCallback(int id, AnimationCallback* pCallback)
+		void RegisterCallback(int in_id, AnimationCallback* in_pCallback)
 		{
-			if (id < 0)
+			if (in_id < 0)
 			{
-				if (m_SystemCallbacks.empty() && pCallback)
+				if (m_SystemCallbacks.empty() && in_pCallback)
 				{
-					delete pCallback;
+					delete in_pCallback;
 					return;
 				}
 
-				m_SystemCallbacks[id + 1] = pCallback;
+				m_SystemCallbacks[in_id + 1] = in_pCallback;
 			}
 			else
 			{
-				if (m_Callbacks.size() <= id && pCallback)
+				if (m_Callbacks.size() <= in_id && in_pCallback)
 				{
-					delete pCallback;
+					delete in_pCallback;
 					return;
 				}
 
-				m_Callbacks[id] = pCallback;
+				m_Callbacks[in_id] = in_pCallback;
 			}
 		}
 

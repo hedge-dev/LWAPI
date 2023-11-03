@@ -3,8 +3,14 @@
 namespace app::animation
 {
 	class TransitionArray;
+
 	class AnimationTransition
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00413A30), AnimationTransition*, float);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x00413750), AnimationTransition*, AnimationClip*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpChangeAnimation, ASLR(0x00413800), AnimationTransition*, AnimationClip*);
+
 	public:
 		enum EStatus
 		{
@@ -13,19 +19,14 @@ namespace app::animation
 			eStatus_Playing
 		};
 		
-		AnimationClip* m_pCurClip{};
-		AnimationClip* m_pLastClip{};
-		EStatus m_Status{};
-		csl::ut::Bitset<uint> m_PlaybackFlags{};
-		AnimationNodeManager* m_pManager{};
-		const TransitionArray* m_pTransitions{};
-		float m_InterpolateWeight{};
-		void* m_pUnk1{};
-
-	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x00413A30), AnimationTransition*, float);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x00413750), AnimationTransition*, AnimationClip*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpChangeAnimation, ASLR(0x00413800), AnimationTransition*, AnimationClip*);
+		AnimationClip* pCurClip{};
+		AnimationClip* pLastClip{};
+		EStatus Status{};
+		csl::ut::Bitset<uint> PlaybackFlags{};
+		AnimationNodeManager* pManager{};
+		const TransitionArray* pTransitions{};
+		float InterpolateWeight{};
+		void* pUnk1{};
 
 		void Update(float in_delta)
 		{
@@ -45,24 +46,24 @@ namespace app::animation
 		void Setup(AnimationNodeManager* in_pManager, const TransitionArray* in_pTransitions)
 		{
 			sizeof(AnimationTransition);
-			m_pManager = in_pManager;
-			m_pTransitions = in_pTransitions;
+			pManager = in_pManager;
+			pTransitions = in_pTransitions;
 		}
 
 		void ClearAll()
 		{
-			if (m_pLastClip)
+			if (pLastClip)
 			{
-				RemoveAnimation(*m_pLastClip);
-				m_pLastClip->m_State = 0;
-				m_pLastClip = nullptr;
+				RemoveAnimation(*pLastClip);
+				pLastClip->State = 0;
+				pLastClip = nullptr;
 			}
 
-			if (m_pCurClip)
+			if (pCurClip)
 			{
-				RemoveAnimation(*m_pCurClip);
-				m_pCurClip->m_State = 0;
-				m_pCurClip = nullptr;
+				RemoveAnimation(*pCurClip);
+				pCurClip->State = 0;
+				pCurClip = nullptr;
 			}
 
 			ResetInterpolateInfo();
@@ -72,56 +73,56 @@ namespace app::animation
 		void Cleanup()
 		{
 			ClearAll();
-			m_pManager = nullptr;
-			m_pTransitions = nullptr;
+			pManager = nullptr;
+			pTransitions = nullptr;
 		}
 
 		void ResetInterpolateInfo()
 		{
-			m_InterpolateWeight = 0;
-			m_pUnk1 = nullptr;
+			InterpolateWeight = 0;
+			pUnk1 = nullptr;
 		}
 
-		void RemoveAnimation(AnimationClip& in_clip)
+		void RemoveAnimation(AnimationClip& in_rClip)
 		{
-			in_clip.ProcEvent(AnimationNode::eEvent_Detach);
+			in_rClip.ProcEvent(AnimationNode::eEvent_Detach);
 		}
 
 		void ChangeStatus(EStatus in_status)
 		{
-			bool playing = m_PlaybackFlags.test(eStatus_Playing);
-			m_PlaybackFlags.reset();
-			m_PlaybackFlags.set(eStatus_Playing, playing);
+			bool playing = PlaybackFlags.test(eStatus_Playing);
+			PlaybackFlags.reset();
+			PlaybackFlags.set(eStatus_Playing, playing);
 
-			m_Status = in_status;
+			Status = in_status;
 		}
 
-		AnimationClip* GetClip(bool last = false) const
+		AnimationClip* GetClip(bool in_last = false) const
 		{
-			if (last)
-				return m_pLastClip;
+			if (in_last)
+				return pLastClip;
 
-			return m_pCurClip;
+			return pCurClip;
 		}
 
 		bool IsInterpolate() const
 		{
-			return m_Status == 2;
+			return Status == 2;
 		}
 
 		bool IsFinished() const
 		{
-			return m_PlaybackFlags.test(1);
+			return PlaybackFlags.test(1);
 		}
 
 		bool IsFinishedEdge() const
 		{
-			return m_PlaybackFlags.test(2);
+			return PlaybackFlags.test(2);
 		}
 
 		void ExitLoop()
 		{
-			m_PlaybackFlags.set(0);
+			PlaybackFlags.set(0);
 		}
 	};
 }

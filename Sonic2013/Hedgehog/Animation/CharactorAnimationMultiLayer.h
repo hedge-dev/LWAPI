@@ -13,87 +13,87 @@ namespace app::animation
 			m_Layers[0] = AnimationTransition();
 		}
 
-		AnimationClip* GetCurrentAnimationClip(size_t layer, bool last) const
+		AnimationClip* GetCurrentAnimationClip(size_t in_layer, bool in_last) const
 		{
-			return m_Layers[layer].GetClip(last);
+			return m_Layers[in_layer].GetClip(in_last);
 		}
 
-		AnimationClip* GetCurrentAnimationClip(size_t layer) const
+		AnimationClip* GetCurrentAnimationClip(size_t in_layer) const
 		{
-			return GetCurrentAnimationClip(layer, false);
+			return GetCurrentAnimationClip(in_layer, false);
 		}
 		
-		float GetFrame(size_t layer) const
+		float GetFrame(size_t in_layer) const
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
+			auto* pClip = GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return 0;
 
 			return pClip->GetValue(AnimationNode::eGetEvent_Frame);
 		}
 
-		float GetEndFrame(size_t layer) const
+		float GetEndFrame(size_t in_layer) const
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
+			auto* pClip = GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return 0;
 
 			return pClip->GetValue(AnimationNode::eGetEvent_EndFrame);
 		}
 
-		float GetSpeed(size_t layer) const
+		float GetSpeed(size_t in_layer) const
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
+			auto* pClip = GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return 0;
 
 			return pClip->GetValue(AnimationNode::eGetEvent_Speed);
 		}
 
-		void SetFrame(float frame, size_t layer)
+		void SetFrame(float in_frame, size_t in_layer)
+		{
+			auto* pClip = GetCurrentAnimationClip(in_layer);
+			if (!pClip)
+				return;
+
+			pClip->SetValue(AnimationNode::eSetEvent_Frame, in_frame);
+		}
+
+		void SetSpeed(float in_speed, size_t in_layer)
 		{
 			auto* pClip = GetCurrentAnimationClip(layer);
 			if (!pClip)
 				return;
 
-			pClip->SetValue(AnimationNode::eSetEvent_Frame, frame);
+			pClip->SetValue(AnimationNode::eSetEvent_Speed, in_speed);
 		}
 
-		void SetSpeed(float speed, size_t layer)
+		void ExitLoop(size_t in_layer)
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
-			if (!pClip)
-				return;
-
-			pClip->SetValue(AnimationNode::eSetEvent_Speed, speed);
-		}
-
-		void ExitLoop(size_t layer)
-		{
-			m_Layers[layer].ExitLoop();
+			m_Layers[in_layer].ExitLoop();
 		}
 		
-		const char* GetCurrentAnimationName(size_t layer) const
+		const char* GetCurrentAnimationName(size_t in_layer) const
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
+			auto* pClip = GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return "";
 
-			return pClip->GetAnimationDef()->m_pName;
+			return pClip->GetAnimationDef()->pName;
 		}
 
-		const char* GetPrevAnimationName(size_t layer) const
+		const char* GetPrevAnimationName(size_t in_layer) const
 		{
-			auto* pClip = GetCurrentAnimationClip(layer, true);
+			auto* pClip = GetCurrentAnimationClip(in_layer, true);
 			if (!pClip)
 				return "";
 
-			return pClip->GetAnimationDef()->m_pName;
+			return pClip->GetAnimationDef()->pName;
 		}
 
-		bool IsCurrentAnimation(const char* pName, size_t layer) const
+		bool IsCurrentAnimation(const char* in_pName, size_t in_layer) const
 		{
-			return !strcmp(GetCurrentAnimationName(layer), pName);
+			return !strcmp(GetCurrentAnimationName(in_layer), in_pName);
 		}
 	};
 }

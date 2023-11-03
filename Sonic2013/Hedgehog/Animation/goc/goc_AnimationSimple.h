@@ -8,13 +8,14 @@ namespace app::animation
 
 namespace app::game
 {
+	class AnimationControl;
+
 	enum class PlayPolicy
 	{
 		Once,
 		Loop
 	};
 	
-	class AnimationControl;
 	class AnimationControlBase
 	{
 	public:
@@ -24,18 +25,18 @@ namespace app::game
 		};
 
 		virtual ~AnimationControlBase() = default;
-		virtual void Setup(Description& description, csl::fnd::IAllocator* pAllocator) = 0;
+		virtual void Setup(Description& in_rDescription, csl::fnd::IAllocator* in_pAllocator) = 0;
 		virtual void Cleanup() = 0;
 		virtual float GetFrame() const = 0;
-		virtual void SetFrame(float frame) = 0;
+		virtual void SetFrame(float in_frame) = 0;
 		virtual float GetEndFrame() const = 0;
 		virtual float GetSpeed() const = 0;
-		virtual void SetSpeed(float speed) = 0;
-		virtual bool Compare(const char* pOther) const = 0;
+		virtual void SetSpeed(float in_speed) = 0;
+		virtual bool Compare(const char* in_pOther) const = 0;
 		virtual const char* GetName() const = 0;
 		virtual bool IsValid() const = 0;
-		virtual void Attach(animation::SkeletonBlender* pBlender) = 0;
-		virtual void Detach(animation::SkeletonBlender* pBlender) = 0;
+		virtual void Attach(animation::SkeletonBlender* in_pBlender) = 0;
+		virtual void Detach(animation::SkeletonBlender* in_pBlender) = 0;
 	};
 
 	class AnimationControlHH : public AnimationControlBase
@@ -48,60 +49,61 @@ namespace app::game
 	
 	class GOCAnimationSimple : public GOCAnimationSingle
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleaup, ASLR(0x004B3CC0), GOCAnimationSimple*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B3C80), GOCAnimationSimple*, const Description&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x004B3E50), GOCAnimationSimple*, const char*, hh::gfx::res::ResAnimSkeleton, PlayPolicy);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x004B3A80), GOCAnimationSimple*, const char*);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7534));
+
 	public:
 		struct Description
 		{
-			size_t m_AnimCount{};
+			size_t AnimCount{};
 		};
 		
 	protected:
 		csl::ut::ObjectMoveArray<AnimationControlHH> m_Controls{ GetAllocator() };
 		AnimationControlBase* m_pCurrentAnimation{};
-
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleaup, ASLR(0x004B3CC0), GOCAnimationSimple*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B3C80), GOCAnimationSimple*, const Description&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAdd, ASLR(0x004B3E50), GOCAnimationSimple*, const char*, hh::gfx::res::ResAnimSkeleton, PlayPolicy);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x004B3A80), GOCAnimationSimple*, const char*);
 		
 		void Cleanup()
 		{
 			ms_fpCleaup(this);
 		}
 
-		AnimationControlBase* FindAnimation(const char* pName) const
+		AnimationControlBase* FindAnimation(const char* in_pName) const
 		{
 			for (auto& control : m_Controls)
 			{
-				if (control.Compare(pName))
+				if (control.Compare(in_pName))
 					return &control;
 			}
 			
 			return nullptr;
 		}
+
 	public:
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7534));
-		
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 
-		void Setup(const Description& desc)
+		void Setup(const Description& in_rDesc)
 		{
-			ms_fpSetup(this, desc);
+			ms_fpSetup(this, in_rDesc);
 		}
 		
-		void Add(const char* pName, hh::gfx::res::ResAnimSkeleton animation, PlayPolicy policy)
+		void Add(const char* in_pName, hh::gfx::res::ResAnimSkeleton in_animation, PlayPolicy in_policy)
 		{
-			ms_fpAdd(this, pName, animation, policy);
+			ms_fpAdd(this, in_pName, in_animation, in_policy);
 		}
 
-		void SetAnimation(const char* pName)
+		void SetAnimation(const char* in_pName)
 		{
 			if (!m_pModel)
 				return;
 
-			auto* pAnim = FindAnimation(pName);
+			auto* pAnim = FindAnimation(in_pName);
 
 			if (!pAnim)
 				return;
@@ -115,16 +117,16 @@ namespace app::game
 			pAnim->SetFrame(0);
 		}
 
-		void SetSpeed(float speed) const
+		void SetSpeed(float in_speed) const
 		{
 			if (m_pCurrentAnimation)
-				m_pCurrentAnimation->SetSpeed(speed);
+				m_pCurrentAnimation->SetSpeed(in_speed);
 		}
 
-		void SetFrame(float frame) const
+		void SetFrame(float in_frame) const
 		{
 			if (m_pCurrentAnimation)
-				m_pCurrentAnimation->SetFrame(frame);
+				m_pCurrentAnimation->SetFrame(in_frame);
 		}
 
 		float GetSpeed() const

@@ -4,18 +4,19 @@ namespace app::game
 {
 	class GOCAnimationContainer : public GOCAnimation
 	{
+	private:
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7550));
+
 	public:
 		struct Description
 		{
-			size_t m_AnimCount;
+			size_t AnimCount;
 		};
 		
 	protected:
 		csl::ut::InplaceMoveArray<GOCAnimation*, 2> m_Animations{ GetAllocator() };
 		
 	public:
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7550));
-
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
@@ -29,36 +30,36 @@ namespace app::game
 			}
 		}
 		
-		void Setup(const Description& desc)
+		void Setup(const Description& in_rDesc)
 		{
-			m_Animations.reserve(desc.m_AnimCount);
+			m_Animations.reserve(in_rDesc.AnimCount);
 		}
 
-		void Add(GOCAnimation* pAnim)
+		void Add(GOCAnimation* in_pAnim)
 		{
 			pAnim->AddRef();
-			m_Animations.push_back(pAnim);
+			m_Animations.push_back(in_pAnim);
 		}
 
-		void Remove(GOCAnimation* pAnim)
+		void Remove(GOCAnimation* in_pAnim)
 		{
-			if (!pAnim)
+			if (!in_pAnim)
 				return;
 
-			const auto idx = m_Animations.find(pAnim);
+			const auto idx = m_Animations.find(in_pAnim);
 			if (idx != -1)
 				return;
 
 			m_Animations.remove(idx);
-			pAnim->Release();
+			in_pAnim->Release();
 		}
 
-		GOCAnimation* Get(size_t idx)
+		GOCAnimation* Get(size_t in_idx)
 		{
-			if (idx >= m_Animations.size())
+			if (in_idx >= m_Animations.size())
 				return nullptr;
 
-			return m_Animations[idx];
+			return m_Animations[in_idx];
 		}
 	};
 }

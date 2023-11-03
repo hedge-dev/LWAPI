@@ -10,155 +10,156 @@ namespace app::animation
 	class AnimationNodeManager
 	{
 		struct ExtendToken;
+
 	public:
-		csl::ut::StringMap<AnimationClip*> m_Animations;
-		AnimSkeletonBlender m_Blender{ nullptr };
-		csl::ut::ObjectMoveArray<AnimationSimple> m_SimpleAnimations;
-		csl::ut::ObjectMoveArray<AnimationComplex> m_ComplexAnimations;
-		CharactorAnimation* m_pOwner{};
-		csl::fnd::IAllocator* m_pAllocator{};
-		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimtion>> m_ExternalAnimations;
+		csl::ut::StringMap<AnimationClip*> Animations;
+		AnimSkeletonBlender Blender{ nullptr };
+		csl::ut::ObjectMoveArray<AnimationSimple> SimpleAnimations;
+		csl::ut::ObjectMoveArray<AnimationComplex> ComplexAnimations;
+		CharactorAnimation* pOwner{};
+		csl::fnd::IAllocator* pAllocator{};
+		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimtion>> ExternalAnimations;
 		
-		AnimationNodeManager(csl::fnd::IAllocator& rAlloc) : m_Animations(&rAlloc), m_SimpleAnimations(&rAlloc),
-			m_ComplexAnimations(&rAlloc), m_ExternalAnimations(&rAlloc)
+		AnimationNodeManager(csl::fnd::IAllocator& in_rAlloc) : m_Animations(&in_rAlloc), m_SimpleAnimations(&in_rAlloc),
+			m_ComplexAnimations(&in_rAlloc), m_ExternalAnimations(&in_rAlloc)
 		{
-			m_pAllocator = &rAlloc;
+			pAllocator = &in_rAlloc;
 		}
 
-		void AttachAnimSkeletonBlender(AnimSkeletonBlender& in_blender)
+		void AttachAnimSkeletonBlender(AnimSkeletonBlender& in_rBlender)
 		{
-			m_Blender = in_blender;
+			Blender = in_rBlender;
 		}
 
 		void Setup(CharactorAnimation* in_pOwner, size_t in_simpleCount, size_t in_complexCount)
 		{
-			m_pOwner = in_pOwner;
-			m_SimpleAnimations.resize(in_simpleCount);
-			for (auto& anim : m_SimpleAnimations)
+			pOwner = in_pOwner;
+			SimpleAnimations.resize(in_simpleCount);
+			for (auto& anim : SimpleAnimations)
 			{
-				anim.m_pOwner = m_pOwner;
-				anim.m_pManager = this;
+				anim.pOwner = pOwner;
+				anim.pManager = this;
 				anim.ProcEvent(AnimationNode::eEvent_AttachExternal);
 			}
 
 			m_ComplexAnimations.resize(in_complexCount);
-			for (auto& anim : m_ComplexAnimations)
+			for (auto& anim : ComplexAnimations)
 			{
-				anim.m_pOwner = m_pOwner;
-				anim.m_pManager = this;
+				anim.pOwner = pOwner;
+				anim.pManager = this;
 				anim.ProcEvent(AnimationNode::eEvent_AttachExternal);
 			}
 		}
 
 		ExtendToken SetupExtend(size_t in_simpleCount, size_t in_complexCount)
 		{
-			ExtendToken token{ m_SimpleAnimations.size(), m_ComplexAnimations.size() };
-			m_Animations.clear();
-			m_SimpleAnimations.resize(token.m_SimpleStartIdx + in_simpleCount);
-			m_ComplexAnimations.resize(token.m_ComplexStartIdx + in_complexCount);
+			ExtendToken token{ SimpleAnimations.size(), ComplexAnimations.size() };
+			Animations.clear();
+			SimpleAnimations.resize(token.SimpleStartIdx + in_simpleCount);
+			ComplexAnimations.resize(token.ComplexStartIdx + in_complexCount);
 
-			for (size_t i = token.m_SimpleStartIdx; i < m_SimpleAnimations.size(); i++)
+			for (size_t i = token.SimpleStartIdx; i < SimpleAnimations.size(); i++)
 			{
-				auto& anim = m_SimpleAnimations[i];
-				anim.m_pOwner = m_pOwner;
-				anim.m_pManager = this;
+				auto& anim = SimpleAnimations[i];
+				anim.pOwner = pOwner;
+				anim.pManager = this;
 				anim.ProcEvent(AnimationNode::eEvent_AttachExternal);
 			}
 
-			for (size_t i = token.m_ComplexStartIdx; i < m_ComplexAnimations.size(); i++)
+			for (size_t i = token.ComplexStartIdx; i < ComplexAnimations.size(); i++)
 			{
-				auto& anim = m_ComplexAnimations[i];
-				anim.m_pOwner = m_pOwner;
-				anim.m_pManager = this;
+				auto& anim = ComplexAnimations[i];
+				anim.pOwner = pOwner;
+				anim.pManager = this;
 				anim.ProcEvent(AnimationNode::eEvent_AttachExternal);
 			}
 
-			for (size_t i = 0; i < token.m_SimpleStartIdx; i++)
-				m_Animations.insert(m_SimpleAnimations[i].GetAnimationDef()->m_pName, &m_SimpleAnimations[i]);
+			for (size_t i = 0; i < token.SimpleStartIdx; i++)
+				Animations.insert(SimpleAnimations[i].GetAnimationDef()->pName, &SimpleAnimations[i]);
 
 			for (size_t i = 0; i < token.m_ComplexStartIdx; i++)
-				m_Animations.insert(m_ComplexAnimations[i].GetAnimationDef()->m_pName, &m_ComplexAnimations[i]);
+				Animations.insert(ComplexAnimations[i].GetAnimationDef()->pName, &ComplexAnimations[i]);
 
 			return token;
 		}
 
-		void ResisterAnimations(const AnimationResContainer::ResData& in_data)
+		void ResisterAnimations(const AnimationResContainer::ResData& in_rData)
 		{
-			auto& anims = in_data.m_pFile->m_pAnimations;
-			for (size_t i = 0; i < anims->m_SimpleAnimations.m_Count; ++i)
+			auto& anims = in_rData.pFile->pAnimations;
+			for (size_t i = 0; i < anims->SimpleAnimations.Count; ++i)
 			{
-				m_SimpleAnimations[i].Setup(*m_pAllocator, anims->m_SimpleAnimations.m_pAnimations[i], in_data.m_SimpleAnimations[i]);
-				m_Animations.insert(anims->m_SimpleAnimations.m_pAnimations[i].m_pName, &m_SimpleAnimations[i]);
+				SimpleAnimations[i].Setup(*pAllocator, anims->SimpleAnimations.pAnimations[i], in_rData.SimpleAnimations[i]);
+				Animations.insert(anims->SimpleAnimations.pAnimations[i].pName, &SimpleAnimations[i]);
 			}
 
 			size_t cmplxOff{};
-			for (size_t i = 0; i < anims->m_ComplexAnimations.m_Count; ++i)
+			for (size_t i = 0; i < anims->ComplexAnimations.Count; ++i)
 			{
-				m_ComplexAnimations[i].Setup(*m_pAllocator, anims->m_ComplexAnimations.m_pAnimations[i], in_data.m_ComplexAnimations, cmplxOff);
-				m_Animations.insert(anims->m_ComplexAnimations.m_pAnimations[i].m_pName, &m_ComplexAnimations[i]);
+				ComplexAnimations[i].Setup(*pAllocator, anims->m_ComplexAnimations.pAnimations[i], in_rData.ComplexAnimations, cmplxOff);
+				Animations.insert(anims->m_ComplexAnimations.pAnimations[i].pName, &ComplexAnimations[i]);
 
-				cmplxOff += anims->m_ComplexAnimations.m_pAnimations[i].m_Animations.m_Count;
+				cmplxOff += anims->ComplexAnimations.pAnimations[i].Animations.Count;
 			}
 		}
 
-		void ResisterAnimationsExtend(const AnimationResContainer::ResData& in_data, const ExtendToken& token)
+		void ResisterAnimationsExtend(const AnimationResContainer::ResData& in_rData, const ExtendToken& in_rToken)
 		{
-			auto& anims = in_data.m_pFile->m_pAnimations;
+			auto& anims = in_rData.pFile->pAnimations;
 
 			size_t idx{};
-			for (size_t i = token.m_SimpleStartIdx; i < m_SimpleAnimations.size(); ++i)
+			for (size_t i = in_rToken.SimpleStartIdx; i < SimpleAnimations.size(); ++i)
 			{
-				m_SimpleAnimations[i].Setup(*m_pAllocator, anims->m_SimpleAnimations.m_pAnimations[idx], in_data.m_SimpleAnimations[idx]);
-				m_Animations.insert(anims->m_SimpleAnimations.m_pAnimations[idx].m_pName, &m_SimpleAnimations[i]);
+				SimpleAnimations[i].Setup(*pAllocator, anims->SimpleAnimations.pAnimations[idx], in_rData.SimpleAnimations[idx]);
+				Animations.insert(anims->SimpleAnimations.pAnimations[idx].pName, &SimpleAnimations[i]);
 				++idx;
 			}
 
 			idx = 0;
 			size_t cmplxOff{};
-			for (size_t i = token.m_ComplexStartIdx; i < m_ComplexAnimations.size(); ++i)
+			for (size_t i = in_rToken.ComplexStartIdx; i < ComplexAnimations.size(); ++i)
 			{
-				m_ComplexAnimations[i].Setup(*m_pAllocator, anims->m_ComplexAnimations.m_pAnimations[idx], in_data.m_ComplexAnimations, cmplxOff);
-				m_Animations.insert(anims->m_ComplexAnimations.m_pAnimations[idx].m_pName, &m_ComplexAnimations[i]);
+				ComplexAnimations[i].Setup(*pAllocator, anims->ComplexAnimations.pAnimations[idx], in_rData.ComplexAnimations, cmplxOff);
+				Animations.insert(anims->ComplexAnimations.pAnimations[idx].pName, &ComplexAnimations[i]);
 
-				cmplxOff += anims->m_ComplexAnimations.m_pAnimations[idx].m_Animations.m_Count;
+				cmplxOff += anims->ComplexAnimations.pAnimations[idx].Animations.Count;
 			}
 		}
 
 		void Cleanup()
 		{
-			for (auto& anim : m_SimpleAnimations)
+			for (auto& anim : SimpleAnimations)
 			{
 				anim.Cleanup();
 				anim.ProcEvent(AnimationNode::eEvent_FinishCleanup);
 			}
 
-			for (auto& anim : m_ComplexAnimations)
+			for (auto& anim : ComplexAnimations)
 			{
 				anim.Cleanup();
 				anim.ProcEvent(AnimationNode::eEvent_FinishCleanup);
 			}
 
-			if (!m_SimpleAnimations.empty())
-				m_SimpleAnimations.clear();
+			if (!SimpleAnimations.empty())
+				SimpleAnimations.clear();
 
-			if (!m_ComplexAnimations.empty())
-				m_ComplexAnimations.clear();
+			if (!ComplexAnimations.empty())
+				ComplexAnimations.clear();
 		}
 
-		void SetExternal(ExternalAnimtion* pAnim)
+		void SetExternal(ExternalAnimtion* in_pAnim)
 		{
-			ut::RefPtr rpAnim = pAnim;
+			ut::RefPtr rpAnim = in_pAnim;
 			m_ExternalAnimations.push_back(rpAnim);
 
-			auto* pClip = pAnim->GetSimpleAnimation();
-			pClip->m_pManager = this;
-			pClip->m_pOwner = m_pOwner;
+			auto* pClip = in_pAnim->GetSimpleAnimation();
+			pClip->pManager = this;
+			pClip->pOwner = pOwner;
 			pClip->ProcEvent(AnimationNode::eEvent_AttachExternal);
 		}
 		
-		AnimationClip* GetAnimationClip(const char* pName) const
+		AnimationClip* GetAnimationClip(const char* in_pName) const
 		{
-			const auto result = m_Animations.find(pName);
+			const auto result = m_Animations.find(in_pName);
 			if (result == m_Animations.end())
 				return nullptr;
 
@@ -167,8 +168,8 @@ namespace app::animation
 
 		struct ExtendToken
 		{
-			size_t m_SimpleStartIdx{};
-			size_t m_ComplexStartIdx{};
+			size_t SimpleStartIdx{};
+			size_t ComplexStartIdx{};
 		};
 	};
 }

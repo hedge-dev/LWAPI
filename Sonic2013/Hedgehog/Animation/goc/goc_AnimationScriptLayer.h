@@ -4,162 +4,163 @@ namespace app::game
 {
 	class GOCAnimationScriptLayer : public GOCAnimationSingle
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B37F0), GOCAnimationScriptLayer*, const Description&);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD756C));
+
 	public:
 		struct Description
 		{
-			const animation::AnimationResContainer* m_pContainer;
+			const animation::AnimationResContainer* pContainer;
 		};
 
 	protected:
 		ut::RefPtr<animation::CharactorAnimationMultiLayer> m_rpLayerAnimation{};
 
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B37F0), GOCAnimationScriptLayer*, const Description&);
 	public:
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD756C));
-
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_rDesc)
 		{
-			ms_fpSetup(this, rDesc);
+			ms_fpSetup(this, in_rDesc);
 		}
 
-		float GetFrame(size_t layer) const
-		{
-			if (!m_rpLayerAnimation)
-				return 0;
-
-			return m_rpLayerAnimation->GetFrame(layer);
-		}
-
-		float GetEndFrame(size_t layer) const
+		float GetFrame(size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return 0;
 
-			return m_rpLayerAnimation->GetEndFrame(layer);
+			return m_rpLayerAnimation->GetFrame(in_layer);
 		}
 
-		float GetSpeed(size_t layer) const
+		float GetEndFrame(size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return 0;
 
-			return m_rpLayerAnimation->GetSpeed(layer);
+			return m_rpLayerAnimation->GetEndFrame(in_layer);
 		}
 
-		bool IsEnableCurrentBlend(const char* pName, size_t layer) const
+		float GetSpeed(size_t in_layer) const
+		{
+			if (!m_rpLayerAnimation)
+				return 0;
+
+			return m_rpLayerAnimation->GetSpeed(in_layer);
+		}
+
+		bool IsEnableCurrentBlend(const char* in_pName, size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return false;
 
-			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(layer);
+			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return false;
 
-			return abs(m_rpLayerAnimation->GetGlobalWeight(*pClip, pName)) > FLT_EPSILON;
+			return abs(m_rpLayerAnimation->GetGlobalWeight(*pClip, in_pName)) > FLT_EPSILON;
 		}
 
-		float GetCurrentBlendWeight(const char* pName, size_t layer) const
+		float GetCurrentBlendWeight(const char* in_pName, size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return 0;
 
-			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(layer);
+			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return 0;
 
-			return m_rpLayerAnimation->GetBlendWeight(*pClip, pName);
+			return m_rpLayerAnimation->GetBlendWeight(*pClip, in_pName);
 		}
 
-		void SetFrame(float frame, size_t layer)
+		void SetFrame(float in_frame, size_t in_layer)
 		{
 			if (m_rpLayerAnimation)
-				m_rpLayerAnimation->SetFrame(frame, layer);
+				m_rpLayerAnimation->SetFrame(in_frame, in_layer);
 		}
 
-		void SetSpeed(float speed, size_t layer)
+		void SetSpeed(float in_speed, size_t in_layer)
 		{
 			if (m_rpLayerAnimation)
-				m_rpLayerAnimation->SetSpeed(speed, layer);
+				m_rpLayerAnimation->SetSpeed(in_speed, in_layer);
 		}
 		
-		void SetAnimation(const char* pName)
+		void SetAnimation(const char* in_pName)
 		{
 			if (m_rpLayerAnimation)
-				m_rpLayerAnimation->SetAnimation(pName);
+				m_rpLayerAnimation->SetAnimation(in_pName);
 		}
 
-		void SetAnimation(animation::ExternalAnimtion* pAnim)
+		void SetAnimation(animation::ExternalAnimtion* in_pAnim)
 		{
-			if (m_rpLayerAnimation && pAnim)
-				m_rpLayerAnimation->SetAnimation(pAnim);
+			if (m_rpLayerAnimation && in_pAnim)
+				m_rpLayerAnimation->SetAnimation(in_pAnim);
 		}
 
-		void ChangeAnimation(const char* pName)
+		void ChangeAnimation(const char* in_pName)
 		{
 			if (m_rpLayerAnimation)
-				m_rpLayerAnimation->ChangeAnimation(pName);
+				m_rpLayerAnimation->ChangeAnimation(in_pName);
 		}
 
-		void ChangeAnimation(animation::ExternalAnimtion* pAnim)
+		void ChangeAnimation(animation::ExternalAnimtion* in_pAnim)
 		{
-			if (m_rpLayerAnimation && pAnim)
-				m_rpLayerAnimation->ChangeAnimation(pAnim);
+			if (m_rpLayerAnimation && in_pAnim)
+				m_rpLayerAnimation->ChangeAnimation(in_pAnim);
 		}
 
-		void EnableCurrentBlend(const char* pName, size_t layer)
-		{
-			if (!m_rpLayerAnimation)
-				return;
-
-			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(layer);
-			if (pClip)
-				m_rpLayerAnimation->SetGlobalWeight(*pClip, pName, 1);
-		}
-
-		void DisableCurrentBlend(const char* pName, size_t layer)
+		void EnableCurrentBlend(const char* in_pName, size_t in_layer)
 		{
 			if (!m_rpLayerAnimation)
 				return;
 
-			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(layer);
+			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(in_layer);
 			if (pClip)
-				m_rpLayerAnimation->SetGlobalWeight(*pClip, pName, 0);
+				m_rpLayerAnimation->SetGlobalWeight(*pClip, in_pName, 1);
 		}
 
-		void SetCurrentBlendWeight(const char* pName, float weight, size_t layer)
+		void DisableCurrentBlend(const char* in_pName, size_t in_layer)
 		{
 			if (!m_rpLayerAnimation)
 				return;
 
-			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(layer);
+			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(in_layer);
 			if (pClip)
-				m_rpLayerAnimation->SetBlendWeight(*pClip, pName, weight);
+				m_rpLayerAnimation->SetGlobalWeight(*pClip, in_pName, 0);
 		}
 
-		void RegisterCallback(int id, animation::AnimationCallback* pCallback)
+		void SetCurrentBlendWeight(const char* in_pName, float in_weight, size_t in_layer)
 		{
-			m_rpLayerAnimation->RegisterCallback(id, pCallback);
+			if (!m_rpLayerAnimation)
+				return;
+
+			auto* pClip = m_rpLayerAnimation->GetCurrentAnimationClip(in_layer);
+			if (pClip)
+				m_rpLayerAnimation->SetBlendWeight(*pClip, in_pName, in_weight);
 		}
 
-		const char* GetAnimation(size_t layer) const
+		void RegisterCallback(int in_id, animation::AnimationCallback* in_pCallback)
+		{
+			m_rpLayerAnimation->RegisterCallback(in_id, in_pCallback);
+		}
+
+		const char* GetAnimation(size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return "";
 
-			return m_rpLayerAnimation->GetCurrentAnimationName(layer);
+			return m_rpLayerAnimation->GetCurrentAnimationName(in_layer);
 		}
 
-		bool IsCurrentAnimation(const char* pName, size_t layer) const
+		bool IsCurrentAnimation(const char* pName, size_t in_layer) const
 		{
 			if (!m_rpLayerAnimation)
 				return false;
 
-			return m_rpLayerAnimation->IsCurrentAnimation(pName, layer);
+			return m_rpLayerAnimation->IsCurrentAnimation(pName, in_layer);
 		}
 	};
 }

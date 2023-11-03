@@ -7,23 +7,23 @@ namespace app::animation
 	{
 	public:
 		INSERT_PADDING(40) {};
-		CharactorAnimation* m_pAnimation{};
+		CharactorAnimation* pAnimation{};
 		INSERT_PADDING(8) {};
 		
 	public:
-		virtual void SetWeight(float weight) = 0;
+		virtual void SetWeight(float in_weight) = 0;
 		virtual float GetWeight() const = 0;
-		virtual void SetLocalTime(float time) = 0;
+		virtual void SetLocalTime(float in_time) = 0;
 		virtual float GetLocalTime() const = 0;
-		virtual void SetPlaybackSpeed(float speed) = 0;
+		virtual void SetPlaybackSpeed(float in_speed) = 0;
 		virtual float GetPlaybackSpeed() const = 0;
-		virtual void SetupSub(uint sub) = 0;
+		virtual void SetupSub(uint in_sub) = 0;
 		virtual void CleanupSub() = 0;
-		virtual void Update(UpdatingPhaze phase, fnd::SUpdateInfo& info) = 0;
+		virtual void Update(UpdatingPhaze phase, fnd::SUpdateInfo& in_rInfo) = 0;
 
-		void BindAnimation(CharactorAnimation& in_animation)
+		void BindAnimation(CharactorAnimation& in_rAnimation)
 		{
-			m_pAnimation = &in_animation;
+			pAnimation = in_rAnimation;
 		}
 	};
 
@@ -35,12 +35,13 @@ namespace app::animation
 
 	class SkeletonBlender : public SkeletonBlenderHavok
 	{
-	public:
+	private:
 		inline static FUNCTION_PTR(SkeletonBlender*, __cdecl, ms_fpCreate, ASLR(0x0040C470), uint, csl::fnd::IAllocator&);
 
-		static SkeletonBlender* Create(uint in_category, csl::fnd::IAllocator& in_allocator)
+	public:
+		static SkeletonBlender* Create(uint in_category, csl::fnd::IAllocator& in_rAllocator)
 		{
-			return ms_fpCreate(in_category, in_allocator);
+			return ms_fpCreate(in_category, in_rAllocator);
 		}
 	};
 	
@@ -57,12 +58,12 @@ namespace app::animation
 
 		}
 
-		void BindAnimation(CharactorAnimation& in_anim)
+		void BindAnimation(CharactorAnimation& in_rAnim)
 		{
 			if (!get())
 				return;
 
-			ref().BindAnimation(in_anim);
+			ref().BindAnimation(in_rAnim);
 		}
 	};
 }

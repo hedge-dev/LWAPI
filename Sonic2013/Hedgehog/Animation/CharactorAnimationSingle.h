@@ -4,11 +4,13 @@ namespace app::animation
 {
 	class CharactorAnimationSingle : public CharactorAnimation
 	{
+	public:
+		DEFINE_RTTI_PTR(ASLR(0x00F61088));
+
 	protected:
 		AnimationTransition m_Transition{};
 
 	public:
-		DEFINE_RTTI_PTR(ASLR(0x00F61088));
 		CharactorAnimationSingle()
 		{
 
@@ -29,9 +31,9 @@ namespace app::animation
 			m_Transition.ClearAll();
 		}
 
-		bool SetupSub(const AnimationResContainer& in_container) override
+		bool SetupSub(const AnimationResContainer& in_rContainer) override
 		{
-			m_Transition.Setup(&m_NodeManager, in_container.m_Data.m_pFile->m_pTransitions);
+			m_Transition.Setup(&NodeManager, in_rContainer.Data.pFile->pTransitions);
 			return true;
 		}
 
@@ -55,9 +57,9 @@ namespace app::animation
 			return m_Transition.m_pTransitions;
 		}
 
-		AnimationClip* GetCurrentAnimationClip(bool last = false) const
+		AnimationClip* GetCurrentAnimationClip(bool in_last = false) const
 		{
-			return m_Transition.GetClip(last);
+			return m_Transition.GetClip(in_last);
 		}
 
 		float GetFrame() const
@@ -87,22 +89,22 @@ namespace app::animation
 			return pClip->GetValue(AnimationNode::eGetEvent_Speed);
 		}
 
-		void SetFrame(float frame)
+		void SetFrame(float in_frame)
 		{
 			auto* pClip = GetCurrentAnimationClip();
 			if (!pClip)
 				return;
 
-			pClip->SetValue(AnimationNode::eSetEvent_Frame, frame);
+			pClip->SetValue(AnimationNode::eSetEvent_Frame, in_frame);
 		}
 
-		void SetSpeed(float speed)
+		void SetSpeed(float in_speed)
 		{
 			auto* pClip = GetCurrentAnimationClip();
 			if (!pClip)
 				return;
 			
-			pClip->SetValue(AnimationNode::eSetEvent_Speed, speed);
+			pClip->SetValue(AnimationNode::eSetEvent_Speed, in_speed);
 		}
 
 		void ExitLoop()
@@ -122,7 +124,7 @@ namespace app::animation
 			if (!pClip)
 				return "";
 
-			return pClip->GetAnimationDef()->m_pName;
+			return pClip->GetAnimationDef()->pName;
 		}
 
 		const char* GetPrevAnimationName() const
@@ -131,17 +133,17 @@ namespace app::animation
 			if (!pClip)
 				return "";
 
-			return pClip->GetAnimationDef()->m_pName;
+			return pClip->GetAnimationDef()->pName;
 		}
 		
-		bool IsCurrentAnimation(const char* pName) const
+		bool IsCurrentAnimation(const char* in_pName) const
 		{
-			return !strcmp(GetCurrentAnimationName(), pName);
+			return !strcmp(GetCurrentAnimationName(), in_pName);
 		}
 
 		bool IsFinished() const
 		{
-			return m_Transition.m_PlaybackFlags.test(1);
+			return m_Transition.PlaybackFlags.test(1);
 		}
 	};
 }

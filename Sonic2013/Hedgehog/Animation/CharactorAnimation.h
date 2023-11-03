@@ -9,10 +9,10 @@ namespace app::animation
 	public:
 		DEFINE_RTTI_PTR(ASLR(0x00FD3FB8));
 
-		AnimationNodeManager m_NodeManager{ *GetAllocator() };
-		CallbackExecutioner m_CallbackExecutor{ *GetAllocator() };
-		bool m_Initialized{};
-		void* m_pUnk2{};
+		AnimationNodeManager NodeManager{ *GetAllocator() };
+		CallbackExecutioner CallbackExecutor{ *GetAllocator() };
+		bool Initialized{};
+		void* pUnk2{};
 		
 		virtual const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const
 		{
@@ -23,7 +23,7 @@ namespace app::animation
 		virtual void ClearAll() = 0;
 
 	protected:
-		virtual bool SetupSub(const AnimationResContainer& in_container) = 0;
+		virtual bool SetupSub(const AnimationResContainer& in_rContainer) = 0;
 		virtual void CleanupSub() = 0;
 
 	public:
@@ -33,89 +33,89 @@ namespace app::animation
 		virtual size_t GetTransitionLayerNum() const { return 1; }
 
 	public:
-		bool Setup(const AnimationResContainer& in_container)
+		bool Setup(const AnimationResContainer& in_rContainer)
 		{
-			if (m_Initialized)
+			if (Initialized)
 				Cleanup();
 
-			if (!in_container.m_Data.m_pFile)
+			if (!in_rContainer.Data.pFile)
 				return false;
 
-			m_CallbackExecutor.Setup(this, in_container.m_Data.m_pFile->m_TriggerCount);
-			m_NodeManager.Setup(this, in_container.m_Data.m_pFile->m_pAnimations->m_SimpleAnimations.m_Count, 
-				in_container.m_Data.m_pFile->m_pAnimations->m_ComplexAnimations.m_Count);
-			m_NodeManager.ResisterAnimations(in_container.m_Data);
-			SetupSub(in_container);
+			CallbackExecutor.Setup(this, in_rContainer.Data.pFile->TriggerCount);
+			NodeManager.Setup(this, in_rContainer.Data.pFile->pAnimations->SimpleAnimations.Count, 
+				in_container.Data.pFile->pAnimations->ComplexAnimations.Count);
+			NodeManager.ResisterAnimations(in_rContainer.Data);
+			SetupSub(in_rContainer);
 
-			m_Initialized = true;
+			Initialized = true;
 			return true;
 		}
 
-		bool Extend(const AnimationResContainer& in_container)
+		bool Extend(const AnimationResContainer& in_rContainer)
 		{
-			if (!in_container.m_Data.m_pFile || !m_Initialized)
+			if (!in_rContainer.m_Data.m_pFile || !Initialized)
 				return false;
 
-			m_CallbackExecutor.Extend(in_container.m_Data.m_pFile->m_TriggerCount);
-			auto token = m_NodeManager.SetupExtend(in_container.m_Data.m_pFile->m_pAnimations->m_SimpleAnimations.m_Count,
-				in_container.m_Data.m_pFile->m_pAnimations->m_ComplexAnimations.m_Count);
-			m_NodeManager.ResisterAnimationsExtend(in_container.m_Data, token);
+			CallbackExecutor.Extend(in_rContainer.Data.pFile->TriggerCount);
+			auto token = NodeManager.SetupExtend(in_rContainer.Data.pFile->pAnimations->SimpleAnimations.Count,
+				rContainer.Data.pFile->pAnimations->ComplexAnimations.Count);
+			NodeManager.ResisterAnimationsExtend(in_rContainer.Data, token);
 
 			// Just in case someone tries to check (game doesn't)
-			m_Initialized = false;
-			SetupSub(in_container);
-			m_Initialized = true;
+			Initialized = false;
+			SetupSub(in_rContainer);
+			Initialized = true;
 
 			return true;
 		}
 
 		void Cleanup()
 		{
-			if (!m_Initialized)
+			if (!Initialized)
 				return;
 
 			CleanupSub();
-			m_NodeManager.Cleanup();
-			m_CallbackExecutor.Cleanup();
+			NodeManager.Cleanup();
+			CallbackExecutor.Cleanup();
 
-			m_Initialized = false;
+			Initialized = false;
 		}
 
-		void AttachAnimSkeletonBlender(AnimSkeletonBlender blender)
+		void AttachAnimSkeletonBlender(AnimSkeletonBlender in_blender)
 		{
 			ClearAll();
-			blender.BindAnimation(*this);
-			m_NodeManager.AttachAnimSkeletonBlender(blender);
+			in_blender.BindAnimation(*this);
+			NodeManager.AttachAnimSkeletonBlender(in_blender);
 		}
 
-		void SetAnimation(const char* pName)
+		void SetAnimation(const char* in_pName)
 		{
-			auto* pClip = m_NodeManager.GetAnimationClip(pName);
+			auto* pClip = NodeManager.GetAnimationClip(in_pName);
 			if (!pClip)
 				return;
 			
 			SetAnimtionClip(pClip);
 		}
 
-		void SetAnimation(ExternalAnimtion* pAnim)
+		void SetAnimation(ExternalAnimtion* in_pAnim)
 		{
-			m_NodeManager.SetExternal(pAnim);
-			SetAnimtionClip(pAnim->GetSimpleAnimation());
+			NodeManager.SetExternal(in_pAnim);
+			SetAnimtionClip(in_pAnim->GetSimpleAnimation());
 		}
 		
-		void ChangeAnimation(const char* pName)
+		void ChangeAnimation(const char* in_pName)
 		{
-			auto* pClip = m_NodeManager.GetAnimationClip(pName);
+			auto* pClip = NodeManager.GetAnimationClip(in_pName);
 			if (!pClip)
 				return;
 
 			ChangeAnimationClip(pClip);
 		}
 
-		void ChangeAnimation(ExternalAnimtion* pAnim)
+		void ChangeAnimation(ExternalAnimtion* in_pAnim)
 		{
-			m_NodeManager.SetExternal(pAnim);
-			ChangeAnimationClip(pAnim->GetSimpleAnimation());
+			NodeManager.SetExternal(in_pAnim);
+			ChangeAnimationClip(in_pAnim->GetSimpleAnimation());
 		}
 
 		void ExitLoopSeqInsideAnimationClip(AnimationClip* in_pClip)
@@ -123,16 +123,16 @@ namespace app::animation
 			if (!in_pClip)
 				return;
 
-			ComplexSequence* pSequence = static_cast<ComplexSequence*>(GetSequence(*in_pClip));
+			auto* pSequence = static_cast<ComplexSequence*>(GetSequence(*in_pClip));
 			if (!pSequence)
 				return;
 		
 			pSequence->ExitLoop();
 		}
 
-		void RegisterCallback(int id, AnimationCallback* pCallback)
+		void RegisterCallback(int in_id, AnimationCallback* in_pCallback)
 		{
-			m_CallbackExecutor.RegisterCallback(id, pCallback);
+			m_CallbackExecutor.RegisterCallback(in_id, in_pCallback);
 		}
 
 		void UnregisterCallback(int in_id)
@@ -140,38 +140,38 @@ namespace app::animation
 			m_CallbackExecutor.UnegisterCallback(in_id);
 		}
 		
-		static bool SetGlobalWeight(const AnimationClip& rClip, const char* pName, float weight)
+		static bool SetGlobalWeight(const AnimationClip& in_rClip, const char* in_pName, float in_weight)
 		{
-			auto* pBlender = GetBlender(pName, rClip);
+			auto* pBlender = GetBlender(in_pName, in_rClip);
 			if (!pBlender)
 				return false;
 
-			pBlender->m_GlobalWeight = weight;
+			pBlender->GlobalWeight = in_weight;
 			return true;
 		}
 
-		static bool SetBlendWeight(const AnimationClip& rClip, const char* pName, float weight)
+		static bool SetBlendWeight(const AnimationClip& in_rClip, const char* in_pName, float in_weight)
 		{
-			auto* pBlender = GetBlender(pName, rClip);
+			auto* pBlender = GetBlender(in_pName, in_rClip);
 			if (!pBlender)
 				return false;
 
-			pBlender->SetWeight(weight);
+			pBlender->SetWeight(in_weight);
 			return true;
 		}
 		
-		static float GetGlobalWeight(const AnimationClip& rClip, const char* pName)
+		static float GetGlobalWeight(const AnimationClip& in_rClip, const char* in_pName)
 		{
-			auto* pBlender = GetBlender(pName, rClip);
+			auto* pBlender = GetBlender(in_pName, in_rClip);
 			if (!pBlender)
 				return 0;
 
-			return pBlender->m_GlobalWeight;
+			return pBlender->GlobalWeight;
 		}
 
-		static float GetBlendWeight(const AnimationClip& rClip, const char* pName)
+		static float GetBlendWeight(const AnimationClip& in_rClip, const char* in_pName)
 		{
-			auto* pBlender = GetBlender(pName, rClip);
+			auto* pBlender = GetBlender(in_pName, in_rClip);
 			if (!pBlender)
 				return 0;
 

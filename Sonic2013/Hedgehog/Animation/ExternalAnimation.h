@@ -4,24 +4,25 @@ namespace app::animation
 {
 	struct CreateSimpleDefInfo
 	{
-		const char* m_pName;
-		EPlayMode m_PlayMode{ EPlayMode::ePlayMode_Stop };
-		ResCharAnim m_AnimResource{ nullptr };
+		const char* pName;
+		EPlayMode PlayMode{ EPlayMode::ePlayMode_Stop };
+		ResCharAnim AnimResource{ nullptr };
 	};
 
 	class ExternalAnimtion : public fnd::ReferencedObject
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateSimpleDefResource, ASLR(0x00415430), ExternalAnimtion*, const CreateSimpleDefInfo&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateDefaultInterpolate, ASLR(0x004156A0), ExternalAnimtion*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateSimpleClip, ASLR(0x00415610), ExternalAnimtion*);
+
 	protected:
 		csl::ut::MoveArray<void*> m_Buffers{ GetAllocator() };
 		SimpleDef* m_pAnimDef;
 		AnimationSimple* m_pClip;
 		ResCharAnim m_Animation{ nullptr };
-
-	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateSimpleDefResource, ASLR(0x00415430), ExternalAnimtion* pThis, const CreateSimpleDefInfo& rInfo);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateDefaultInterpolate, ASLR(0x004156A0), ExternalAnimtion* pThis);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateSimpleClip, ASLR(0x00415610), ExternalAnimtion* pThis);
 		
+	public:
 		ExternalAnimtion()
 		{
 			
@@ -37,9 +38,9 @@ namespace app::animation
 			return m_pClip;
 		}
 		
-		void CreateSimpleDefResource(const CreateSimpleDefInfo& rInfo)
+		void CreateSimpleDefResource(const CreateSimpleDefInfo& in_rInfo)
 		{
-			ms_fpCreateSimpleDefResource(this, rInfo);
+			ms_fpCreateSimpleDefResource(this, in_rInfo);
 		}
 
 		void CreateDefaultInterpolate()
@@ -68,13 +69,13 @@ namespace app::animation
 		}
 	};
 
-	inline static ExternalAnimtion* CreateExternalAnimation(const CreateSimpleDefInfo& rInfo, csl::fnd::IAllocator& rAlloc)
+	inline static ExternalAnimtion* CreateExternalAnimation(const CreateSimpleDefInfo& in_rInfo, csl::fnd::IAllocator& in_rAlloc)
 	{
-		ExternalAnimtion* pAnim = new(rAlloc) ExternalAnimtion();
+		ExternalAnimtion* pAnim = new(in_rAlloc) ExternalAnimtion();
 		if (!pAnim)
 			return pAnim;
 		
-		pAnim->CreateSimpleDefResource(rInfo);
+		pAnim->CreateSimpleDefResource(in_rInfo);
 		pAnim->CreateDefaultInterpolate();
 		pAnim->CreateSimpleClip();
 		

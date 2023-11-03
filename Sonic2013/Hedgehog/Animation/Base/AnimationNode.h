@@ -11,8 +11,8 @@ namespace app::animation
 		friend AnimationNodeManager;
 
 	public:
-		AnimationNodeManager* m_pManager{};
-		CharactorAnimation* m_pOwner{};
+		AnimationNodeManager* pManager{};
+		CharactorAnimation* pOwner{};
 		
 		DEFINE_RTTI_PTR(ASLR(0x00FD3FBC));
 		

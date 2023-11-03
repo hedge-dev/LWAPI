@@ -15,14 +15,14 @@ namespace app::animation
 			INSERT_PADDING(8){};
 		};
 
-		AnimationManager* m_pManager{};
-		csl::ut::LinkListNode m_ListNode{};
-		size_t m_Category{};
-		void* m_Unk1{};
-		NotifyTiming m_Timing{};
-		ut::RefPtr<DebugInfo> m_rpDebugInfo{};
+		AnimationManager* pManager{};
+		csl::ut::LinkListNode ListNode{};
+		size_t Category{};
+		void* Unk1{};
+		NotifyTiming Timing{};
+		ut::RefPtr<DebugInfo> rpDebugInfo{};
 
-		virtual void OnEvent(NotifyTiming timing) = 0;
+		virtual void OnEvent(NotifyTiming in_timing) = 0;
 
 	public:
 		AnimationListener()
