@@ -4,6 +4,9 @@ namespace app::debris
 {
 	struct SRandomSpaceDebrisInfo : public SDebrisBaseInfo
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetModelRes, ASLR(0x008475E0), SRandomSpaceDebrisInfo*, const ResRandomSpaceDebris&, uint);
+
 	public:
 		int Unk14{ -1 };
 		float Unk15{};
@@ -28,10 +31,6 @@ namespace app::debris
 		uint Unk34{};
 		uint Unk35{};
 
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetModelRes, ASLR(0x008475E0), SRandomSpaceDebrisInfo*, const ResRandomSpaceDebris&, uint);
-
-	public:
 		SRandomSpaceDebrisInfo() : SDebrisBaseInfo(0)
 		{
 			std::fill(&Unk19, &Unk35, 0);

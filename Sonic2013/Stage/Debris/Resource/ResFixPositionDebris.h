@@ -16,12 +16,12 @@ namespace app::debris
 			INSERT_PADDING(16);
 		};
 
-		csl::ut::ObjectMoveArray<SModelData> Models{};
-
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpBuild, ASLR(0x008477B0), ResFixPositionDebris*, SDesc&);
 
 	public:
+		csl::ut::ObjectMoveArray<SModelData> Models{};
+
 		ResFixPositionDebris(csl::fnd::IAllocator* in_pAllocator) : Models(in_pAllocator)
 		{
 

@@ -9,7 +9,7 @@ namespace app::res
 
 	class ResShadowModel : public hh::ut::ResCommon<ResShadowModelData>
 	{
-	public:
+	private:
 		inline static hh::ut::ResourceTypeInfo* ms_pTypeInfo = reinterpret_cast<hh::ut::ResourceTypeInfo*>(ASLR(0x00FB6F0C));
 		constexpr static hh::rsdx::_D3DVERTEXELEMENT9 ms_VtxLayout[5] = 
 		{
@@ -20,6 +20,7 @@ namespace app::res
 			D3DDECL_END()
 		};
 
+	public:
 		hh::mr::CVertexDeclarationPtr m_VertexDecl{};
 
 		ResShadowModel() : ResCommon<app::res::ResShadowModelData>(nullptr)

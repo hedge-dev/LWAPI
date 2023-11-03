@@ -4,8 +4,8 @@ namespace app::StageInfo
 {
 	struct StageNode
 	{
-		csl::ut::FixedString<64> m_Title{};
-		csl::ut::FixedString<16> m_Name{};
+		csl::ut::FixedString<64> Title{};
+		csl::ut::FixedString<16> Name{};
 	};
 	
 	class WorldNode : public fnd::ReferencedObject
@@ -19,9 +19,9 @@ namespace app::StageInfo
 
 		}
 		
-		void SetTitle(const char* pTitle)
+		void SetTitle(const char* in_pTitle)
 		{
-			m_Title = pTitle;
+			m_Title = in_pTitle;
 		}
 
 		const char* GetTitle() const
@@ -29,9 +29,9 @@ namespace app::StageInfo
 			return m_Title.c_str();
 		}
 		
-		void AddNode(const StageNode& node)
+		void AddNode(const StageNode& in_rNode)
 		{
-			m_Stages.push_back(node);
+			m_Stages.push_back(in_rNode);
 		}
 
 		csl::ut::MoveArray<StageNode>& GetStages()

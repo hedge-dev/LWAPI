@@ -14,7 +14,6 @@ namespace app::debris
 		csl::ut::FixedArray<hh::gfx::res::ResModel, 16> Models{};
 		int ModelCount{};
 
-	public:
 		ResRandomSpaceDebris()
 		{
 
