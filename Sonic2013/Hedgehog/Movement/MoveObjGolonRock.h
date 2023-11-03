@@ -259,12 +259,12 @@ namespace app::game
 			bool result = 0;
 
 			int unknown[]{ -1, -1, -1 };
-			if (!rpRaycastJob->m_Commands.empty())
+			if (!rpRaycastJob->Commands.empty())
 			{
-				for (size_t i = 0; i < rpRaycastJob->m_Commands.size(); i++)
+				for (size_t i = 0; i < rpRaycastJob->Commands.size(); i++)
 				{
 					unknown[i] = 1;
-					if (rpRaycastJob->m_Commands[i].m_IsHit)
+					if (rpRaycastJob->Commands[i].IsHit)
 						unknown[i] = 0;
 				}
 

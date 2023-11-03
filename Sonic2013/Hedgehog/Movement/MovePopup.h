@@ -38,11 +38,11 @@ namespace app::game
 		{
 			if (Unk5 <= 0.0f)
 			{
-				Unk8 += in_rUpdateInfo.deltaTime;
+				Unk8 += in_rUpdateInfo.DeltaTime;
 			}
 			else
 			{
-				Unk5 = -(Description.Unk2 * in_rUpdateInfo.deltaTime) - Unk5;
+				Unk5 = -(Description.Unk2 * in_rUpdateInfo.DeltaTime) - Unk5;
 				if (Unk5 <= 0.0f)
 					Unk5 = 0.0f;
 			}
@@ -57,12 +57,12 @@ namespace app::game
 
 			auto vecOffset = app::math::Vector3Rotate(pContextParam->Rotation, static_cast<csl::math::Vector3>(csl::math::Vector3::UnitY()));
 			pContextParam->Velocity = static_cast<csl::math::Vector3>(vecOffset * Unk5);
-			Unk6 += Unk5 * in_rUpdateInfo.deltaTime;
+			Unk6 += Unk5 * in_rUpdateInfo.DeltaTime;
 
 			pContextParam->Position = static_cast<csl::math::Vector3>(Position + (vecOffset * Unk6));
 
 			if (!Description.Unk4.test(0))
-				Unk7 = csl::math::Lerp<float>(10, 15, Unk5 / Description.Unk1) * in_rUpdateInfo.deltaTime;
+				Unk7 = csl::math::Lerp<float>(10, 15, Unk5 / Description.Unk1) * in_rUpdateInfo.DeltaTime;
 			
 			csl::math::Quaternion rotOffset(Eigen::AngleAxisf(Unk7, Eigen::Vector3f::UnitY()));
 			pContextParam->Rotation = Rotation * rotOffset;
