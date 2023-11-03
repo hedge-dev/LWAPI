@@ -14,8 +14,8 @@ namespace hh::db
 	class CDatabaseData : public base::CObject
 	{
 	public:
-        uint8_t m_Flags; // see EDatabaseDataFlags
-        base::CSharedString m_TypeAndName;
+        uint8_t Flags; // see EDatabaseDataFlags
+        base::CSharedString TypeAndName;
 
 		virtual ~CDatabaseData() = default;
         virtual bool CheckMadeAll()
@@ -25,16 +25,16 @@ namespace hh::db
 
         bool IsMadeAllInternal()
         {
-            if ((m_Flags & eDatabaseDataFlags_IsMadeOne) == 0 || !CheckMadeAll())
+            if ((Flags & eDatabaseDataFlags_IsMadeOne) == 0 || !CheckMadeAll())
                 return false;
 
-            m_Flags |= eDatabaseDataFlags_IsMadeAll;
+            Flags |= eDatabaseDataFlags_IsMadeAll;
             return true;
         }
 
         bool IsMadeAll()
         {
-            return (m_Flags & eDatabaseDataFlags_IsMadeAll) != 0 || IsMadeAllInternal();
+            return (Flags & eDatabaseDataFlags_IsMadeAll) != 0 || IsMadeAllInternal();
         }
 	};
 }
