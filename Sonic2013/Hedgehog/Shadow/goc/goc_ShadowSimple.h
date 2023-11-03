@@ -4,6 +4,13 @@ namespace app::game
 {
 	class GOCShadowSimple : public GOCShadow
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalOffsetPosition, ASLR(0x004CBEB0), GOCShadowSimple*, const csl::math::Vector3&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaxDownDist, ASLR(0x004CBE70), GOCShadowSimple*, float);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVisible, ASLR(0x004CBE50), GOCShadowSimple*, bool);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetScale, ASLR(0x004CBE90), GOCShadowSimple*, const csl::math::Vector3&);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD78EC));
+
 	public:
 		class Description
 		{
@@ -18,14 +25,6 @@ namespace app::game
 
 		ShadowShape* pShadowShape{};
 
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalOffsetPosition, ASLR(0x004CBEB0), GOCShadowSimple*, const csl::math::Vector3&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaxDownDist, ASLR(0x004CBE70), GOCShadowSimple*, float);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVisible, ASLR(0x004CBE50), GOCShadowSimple*, bool);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetScale, ASLR(0x004CBE90), GOCShadowSimple*, const csl::math::Vector3&);
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD78EC));
-
-	public:
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;

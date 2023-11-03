@@ -38,9 +38,9 @@ namespace app::game
 		csl::ut::Bitset<uint8> Unk4{};
 		GOCShadow* pShadowGoc{};
 
-		void SetUserID(size_t userID)
+		void SetUserID(size_t in_userID)
 		{
-			UserID = userID;
+			UserID = in_userID;
 		}
 
 		void SetMaxDownDist(float in_maxDownDist)
