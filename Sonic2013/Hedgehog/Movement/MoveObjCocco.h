@@ -195,10 +195,10 @@ namespace app
 				game::PhysicsRaycastOutput output{};
 				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->activeObject->GetDocument(), from, to, 0xC996))
 				{
-					if ((output.m_Attribute & 0x10) == 0)
+					if ((output.Attribute & 0x10) == 0)
 					{
 						pContextParam->Velocity -= csl::math::Vector3(upVector * pContextParam->Velocity.dot(upVector));
-						pContextParam->Position = output.m_HitPoint;
+						pContextParam->Position = output.HitPoint;
 					}
 				}
 				else
@@ -219,10 +219,10 @@ namespace app
 
 				game::PhysicsRaycastOutput output{};
 				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->activeObject->GetDocument(), from, to, 0xC996)
-					&& (output.m_Attribute & 0x10) == 0)
+					&& (output.Attribute & 0x10) == 0)
 				{
 					CurrentState = State::eState_Unk0;
-					pContextParam->Position = output.m_HitPoint;
+					pContextParam->Position = output.HitPoint;
 				}
 
 				break;

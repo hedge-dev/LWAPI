@@ -6,7 +6,7 @@ inline bool app::game::SearchPlane(csl::math::Plane* out_pPlane, app::GameDocume
 	app::game::PhysicsRaycastOutput raycastOutput{};
 	if (app::ObjUtil::RaycastNearestCollision(&raycastOutput, in_rDocument, in_rFrom, in_rTo, 0xC992))
 	{
-		*out_pPlane = csl::math::Plane::FromPointNormal(raycastOutput.m_HitPoint, raycastOutput.m_Normal);
+		*out_pPlane = csl::math::Plane::FromPointNormal(raycastOutput.HitPoint, raycastOutput.Normal);
 		return true;
 	}
 
@@ -40,8 +40,8 @@ inline bool app::game::SerachPlaneAndGrindPath(csl::math::Plane* out_pPlane, app
 	if (flags.test(0))
 	{
 		csl::math::Plane plane{};
-		plane.FromPointNormal(raycastOutput.m_HitPoint, raycastOutput.m_Normal);
-		plane.Distance = raycastOutput.m_Distance;
+		plane.FromPointNormal(raycastOutput.HitPoint, raycastOutput.Normal);
+		plane.Distance = raycastOutput.Distance;
 		return true;
 	}
 
@@ -50,8 +50,8 @@ inline bool app::game::SerachPlaneAndGrindPath(csl::math::Plane* out_pPlane, app
 		auto worldPos = pathEvaluator.GetWorldPosition(pathEvaluator.Distance);
 
 		csl::math::Plane plane{};
-		plane.FromPointNormal(worldPos, raycastOutput.m_Normal);
-		plane.Distance = raycastOutput.m_Distance;
+		plane.FromPointNormal(worldPos, raycastOutput.Normal);
+		plane.Distance = raycastOutput.Distance;
 		return true;
 	}
 

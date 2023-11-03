@@ -65,10 +65,10 @@ namespace app::game
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
 			ResetLocalFlag();
-			UpdatePlane(in_rUpdateInfo.deltaTime);
-			CalcVelocity(in_rUpdateInfo.deltaTime);
-			AdvancePosition(in_rUpdateInfo.deltaTime);
-			DetectTerrainCollision(in_rUpdateInfo.deltaTime);
+			UpdatePlane(in_rUpdateInfo.DeltaTime);
+			CalcVelocity(in_rUpdateInfo.DeltaTime);
+			AdvancePosition(in_rUpdateInfo.DeltaTime);
+			DetectTerrainCollision(in_rUpdateInfo.DeltaTime);
 		}
 
 		void ResetLocalFlag()

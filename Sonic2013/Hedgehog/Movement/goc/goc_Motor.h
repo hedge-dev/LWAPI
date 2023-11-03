@@ -29,14 +29,14 @@ namespace app::game
 			return "GOCMotor";
 		}
 
-		void Update(fnd::UpdatingPhase phase, const fnd::SUpdateInfo& updateInfo) override
+		void Update(fnd::UpdatingPhase in_phase, const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			if (!phase)
+			if (!in_phase)
 			{
-				UpdateStatus(updateInfo.deltaTime);
+				UpdateStatus(in_rUpdateInfo.DeltaTime);
 				if (IsActuate())
 				{
-					AdvanceTime(updateInfo.deltaTime);
+					AdvanceTime(in_rUpdateInfo.DeltaTime);
 					
 					math::Transform transform{};
 					Actuate(Time, &transform);
@@ -45,11 +45,11 @@ namespace app::game
 			}
 		}
 
-		void OnGOCEvent(int event, GameObject& object, void* data) override
+		void OnGOCEvent(int in_event, GameObject& in_rObject, void* in_pData) override
 		{
-			if (event >= 4)
+			if (in_event >= 4)
 			{
-				switch (event)
+				switch (in_event)
 				{
 				case 4:
 				{
@@ -60,7 +60,7 @@ namespace app::game
 				}
 				case 6:
 				{
-					RegisterTransform(object);
+					RegisterTransform(in_rObject);
 					ResetTransformForDebug();
 					break;
 				}
@@ -71,14 +71,14 @@ namespace app::game
 				}
 				}
 			}
-			else if (event)
+			else if (in_event)
 			{
-				if (event == 1)
-					m_Flags.set(0, true);
+				if (in_event == 1)
+					Flags.set(0, true);
 			}
 			else
 			{
-				RegisterTransform(object);
+				RegisterTransform(in_rObject);
 			}
 		}
 
@@ -197,9 +197,9 @@ namespace app::game
 
 	namespace motor_util
 	{
-		inline float GetGlobalTime(const GOCMotor& in_pMotor)
+		inline float GetGlobalTime(const GOCMotor& in_rMotor)
 		{
-			return in_pMotor.GetGameObject()->GetDocument()->m_GlobalTime;
+			return in_rMotor.GetGameObject()->GetDocument()->m_GlobalTime;
 		}
 	}
 }

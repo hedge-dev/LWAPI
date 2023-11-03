@@ -133,6 +133,9 @@ namespace app::game
 
 	class MoveController
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetFlag, ASLR(0x04C3DE0), MoveController*, FlagType);
+
 	public:
 		enum FlagType : uint8
 		{
@@ -146,10 +149,6 @@ namespace app::game
 			eFlagType_7,
 		};
 
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetFlag, ASLR(0x04C3DE0), MoveController*, FlagType);
-
-	public:
 		csl::ut::Enum<MoveControllerType, uint8> Type{};
 		GOCMovement* pMovement{};
 		csl::ut::Bitset<uint8> Flags{};

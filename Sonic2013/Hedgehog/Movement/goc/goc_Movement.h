@@ -24,8 +24,8 @@ namespace app::game
 
         GOCMovement() : GOComponent()
         {
-            unk1 = 3;
-            m_Flags.set(0, true);
+            Unk1 = 3;
+            Flags.set(0, true);
         }
 
         virtual void OnGOCEventInside(int in_event, GameObject& in_rObject, void* in_pData) = 0;
