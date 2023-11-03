@@ -12,7 +12,7 @@ namespace hh::mr
 	class CVertexShaderData;
 	enum ShaderType
 	{
-		ShaderType_Default, ShaderType_Error, ShaderType_FilterT, ShaderType_CopyColor
+		eShaderType_Default, eShaderType_Error, eShaderType_FilterT, eShaderType_CopyColor
 	};
 
 	class CRenderingInfrastructure;
@@ -20,7 +20,7 @@ namespace hh::mr
 	// 3588
 	class CRenderingDevice : public base::CObject
 	{
-	public:
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetShaderFromPool, ASLR(0x00C2F9E0), CRenderingDevice*, ShaderType);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetShader, ASLR(0x00488580), CRenderingDevice*, const boost::shared_ptr<CVertexShaderData>&, const boost::shared_ptr<CPixelShaderData>&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetCullMode, ASLR(0x00907D40), CRenderingDevice*, uint);
@@ -34,33 +34,34 @@ namespace hh::mr
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetPixelShaderParameterF, ASLR(0x004892A0), CRenderingDevice*, const base::CStringSymbol&, const float*, uint offset, uint count, CPixelShaderData*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVertexShaderParameterF, ASLR(0x00488820), CRenderingDevice*, const base::CStringSymbol&, const float*, uint offset, uint count, CVertexShaderData*);
 
-		CRenderingInfrastructure* m_pRenderingInfrastructure;
-		hh::rsdx::RsdxDevice* m_pD3DDevice;
+	public:
+		CRenderingInfrastructure* pRenderingInfrastructure;
+		hh::rsdx::RsdxDevice* pD3DDevice;
 		INSERT_PADDING(2788);
-		rsdx::RsdxVertexDeclaration9* m_pCurrentVertexDecl;
+		rsdx::RsdxVertexDeclaration9* pCurrentVertexDecl;
 		INSERT_PADDING(8);
-		CVertexShaderData* m_pCurrentVertexShaderData;
-		CPixelShaderData* m_pCurrentPixelShaderData;
+		CVertexShaderData* pCurrentVertexShaderData;
+		CPixelShaderData* pCurrentPixelShaderData;
 		INSERT_PADDING(639);
-		bool m_LockVertexDecl;
+		bool LockVertexDecl;
 		INSERT_PADDING(132);
 
 		CRenderingDevice()
 		{
-			ASSERT_OFFSETOF(CRenderingDevice, m_pCurrentVertexDecl, 2796);
-			ASSERT_OFFSETOF(CRenderingDevice, m_pCurrentVertexShaderData, 2808);
-			ASSERT_OFFSETOF(CRenderingDevice, m_pCurrentPixelShaderData, 2812);
-			ASSERT_OFFSETOF(CRenderingDevice, m_LockVertexDecl, 3455);
+			ASSERT_OFFSETOF(CRenderingDevice, pCurrentVertexDecl, 2796);
+			ASSERT_OFFSETOF(CRenderingDevice, pCurrentVertexShaderData, 2808);
+			ASSERT_OFFSETOF(CRenderingDevice, pCurrentPixelShaderData, 2812);
+			ASSERT_OFFSETOF(CRenderingDevice, LockVertexDecl, 3455);
 		}
 
 		void SetVertexDeclaration(rsdx::RsdxVertexDeclaration9* in_pDecl);
-		void SetPixelShaderParameterF(const base::CStringSymbol& in_name, const float* in_pData, uint in_offset, uint in_count, CPixelShaderData* in_pShader);
-		void SetVertexShaderParameterF(const base::CStringSymbol& in_name, const float* in_pData, uint in_offset, uint in_count, CVertexShaderData* in_pShader);
+		void SetPixelShaderParameterF(const base::CStringSymbol& in_rName, const float* in_pData, uint in_offset, uint in_count, CPixelShaderData* in_pShader);
+		void SetVertexShaderParameterF(const base::CStringSymbol& in_rName, const float* in_pData, uint in_offset, uint in_count, CVertexShaderData* in_pShader);
 		void SetShaderFromPool(ShaderType in_type);
-		void SetShader(const Extra::fx::SShaderPair& in_pair);
-		void SetShader(const boost::shared_ptr<CVertexShaderData>& in_vertexShader, const boost::shared_ptr<CPixelShaderData>& in_pixelShader)
+		void SetShader(const Extra::fx::SShaderPair& in_rPair);
+		void SetShader(const boost::shared_ptr<CVertexShaderData>& in_rVertexShader, const boost::shared_ptr<CPixelShaderData>& in_rPixelShader)
 		{
-			ms_fpSetShader(this, in_vertexShader, in_pixelShader);
+			ms_fpSetShader(this, in_rVertexShader, in_rPixelShader);
 		}
 
 		void SetHasBone(bool in_value)
@@ -99,27 +100,27 @@ namespace hh::mr
 		}
 
 		template<typename T>
-		void SetVertexShaderParameter(const base::CStringSymbol& in_name, const T& in_data, uint in_offset, uint in_count, CVertexShaderData* in_pShader)
+		void SetVertexShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData, uint in_offset, uint in_count, CVertexShaderData* in_pShader)
 		{
-			SetVertexShaderParameterF(in_name, reinterpret_cast<const float*>(&in_data), in_offset * sizeof(T), (sizeof(T) / sizeof(float)) * in_count, in_pShader);
+			SetVertexShaderParameterF(in_rName, reinterpret_cast<const float*>(&in_rData), in_offset * sizeof(T), (sizeof(T) / sizeof(float)) * in_count, in_pShader);
 		}
 
 		template<typename T>
-		void SetPixelShaderParameter(const base::CStringSymbol& in_name, const T& in_data, uint in_offset, uint in_count, CPixelShaderData* in_pShader)
+		void SetPixelShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData, uint in_offset, uint in_count, CPixelShaderData* in_pShader)
 		{
-			SetPixelShaderParameterF(in_name, reinterpret_cast<const float*>(&in_data), in_offset * sizeof(T), (sizeof(T) / sizeof(float)) * in_count, in_pShader);
+			SetPixelShaderParameterF(in_rName, reinterpret_cast<const float*>(&in_rData), in_offset * sizeof(T), (sizeof(T) / sizeof(float)) * in_count, in_pShader);
 		}
 
 		template<typename T>
-		void SetPixelShaderParameter(const base::CStringSymbol& in_name, const T& in_data)
+		void SetPixelShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData)
 		{
-			SetPixelShaderParameter(in_name, in_data, 0, 1, m_pCurrentPixelShaderData);
+			SetPixelShaderParameter(in_rName, in_rData, 0, 1, m_pCurrentPixelShaderData);
 		}
 
 		template<typename T>
-		void SetVertexShaderParameter(const base::CStringSymbol& in_name, const T& in_data)
+		void SetVertexShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData)
 		{
-			SetVertexShaderParameter(in_name, in_data, 0, 1, m_pCurrentVertexShaderData);
+			SetVertexShaderParameter(in_rName, in_rData, 0, 1, m_pCurrentVertexShaderData);
 		}
 	};
 }

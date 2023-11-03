@@ -6,22 +6,22 @@ namespace hh::mr
 	class CVertexDeclarationPtr : public hh::base::CObject
 	{
 	public:
-		rsdx::RsdxVertexDeclaration9* m_pDecl{};
-		CRenderingInfrastructure* m_pInfrastructure{};
+		rsdx::RsdxVertexDeclaration9* pDecl{};
+		CRenderingInfrastructure* pInfrastructure{};
 
 		CVertexDeclarationPtr()
 		{
 			
 		}
 
-		CVertexDeclarationPtr(const CVertexDeclarationPtr& in_other);
+		CVertexDeclarationPtr(const CVertexDeclarationPtr& in_rOther);
 		~CVertexDeclarationPtr();
 
 		operator rsdx::RsdxVertexDeclaration9*() const
 		{
-			return m_pDecl;
+			return pDecl;
 		}
 
-		CVertexDeclarationPtr& operator=(const CVertexDeclarationPtr& in_other);
+		CVertexDeclarationPtr& operator=(const CVertexDeclarationPtr& in_rOther);
 	};
 }
