@@ -24,12 +24,12 @@ namespace hh::ut
 		size_t m_Hash{};
 
 	public:
-		ResourceTypeInfo(const char* pName) : m_pName(pName)
+		ResourceTypeInfo(const char* in_pName) : m_pName(in_pName)
 		{
 			
 		}
 		
-		ResourceTypeInfo(const char* pName, LoaderInitializer& pInitializer) : m_pName(pName), m_pLoaderInit(&pInitializer)
+		ResourceTypeInfo(const char* in_pName, LoaderInitializer& in_rInitializer) : m_pName(in_pName), m_pLoaderInit(&in_rInitializer)
 		{
 			
 		}

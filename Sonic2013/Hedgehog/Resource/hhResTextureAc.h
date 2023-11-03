@@ -4,14 +4,14 @@ namespace hh::gfx::res
 {
 	struct ResTextureData
 	{
-		IDirect3DTexture9* m_pTexture{};
-		uint m_ArraySize{};
-		size_t m_DataSize{};
-		ResNameData m_Name{};
-		void* m_pData{};
+		IDirect3DTexture9* pTexture{};
+		uint ArraySize{};
+		size_t DataSize{};
+		ResNameData Name{};
+		void* pData{};
 		INSERT_PADDING(20) {};
-		csl::fnd::IAllocator* m_pAllocator{};
-		ResNameData m_AllocatorName{};
+		csl::fnd::IAllocator* pAllocator{};
+		ResNameData AllocatorName{};
 
 		ResTextureData()
 		{

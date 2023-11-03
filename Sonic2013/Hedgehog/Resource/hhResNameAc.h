@@ -4,8 +4,8 @@ namespace hh::gfx::res
 {
 	struct ResNameData
 	{
-		size_t m_Hash{};
-		const char* m_pValue{};
+		size_t Hash{};
+		const char* pValue{};
 	};
 
 	class ResName : public hh::ut::ResCommon<ResNameData>
