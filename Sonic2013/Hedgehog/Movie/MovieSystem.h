@@ -5,15 +5,16 @@ namespace app::fnd
 	class CMoviePlayer;
 	class CMovieSystem : public ReferencedObject, public csl::fnd::SingletonPointer<CMovieSystem>
 	{
-	public:
-		csl::ut::MoveArray<CMoviePlayer*> m_Players{ GetAllocator() };
-		csl::fnd::IAllocator* m_pPlayerAllocator{ GetAllocator() };
-		float m_MainVolume{ 1 };
-		csl::ut::FixedString<256> m_Root{};
-
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x0049C530), CMovieSystem*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetSystemPause, ASLR(0x0049C500), CMovieSystem*, bool);
 		inline static FUNCTION_PTR(CMoviePlayer*, __thiscall, ms_fpCreatePlayer, ASLR(0x0049C770), CMovieSystem*);
+
+	public:
+		csl::ut::MoveArray<CMoviePlayer*> Players{ GetAllocator() };
+		csl::fnd::IAllocator* pPlayerAllocator{ GetAllocator() };
+		float MainVolume{ 1 };
+		csl::ut::FixedString<256> Root{};
 
 		void Update()
 		{

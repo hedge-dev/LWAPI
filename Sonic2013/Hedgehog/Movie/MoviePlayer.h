@@ -4,13 +4,15 @@ namespace app::fnd
 {
 	class CMoviePlayer : public ReferencedObject
 	{
-	public:
-		INSERT_PADDING(496){}; // lmao
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpPlay, ASLR(0x0049B2A0), CMoviePlayer*, const char*, int subTrack, bool play, bool loop, bool A8R8G8B8);
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpPlay, ASLR(0x0049B2A0), CMoviePlayer*, const char*, int, bool, bool, bool);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpPlay1, ASLR(0x0049AEF0), CMoviePlayer*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpPause, ASLR(0x0049AB30), CMoviePlayer*, bool);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDraw, ASLR(0x0049C030), CMoviePlayer*, bool);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDrawPrepare, ASLR(0x0049BEF0), CMoviePlayer*);
+
+	public:
+		INSERT_PADDING(496){}; // lmao
 
 		CMoviePlayer() = delete;
 
