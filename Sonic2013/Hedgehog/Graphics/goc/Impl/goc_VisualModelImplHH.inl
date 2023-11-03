@@ -2,40 +2,40 @@
 
 namespace app::fnd
 {
-	inline void GOCVisualModelImpl::ChangeModel(GOCVisualModel& in_model, const Description& in_description)
+	inline void GOCVisualModelImpl::ChangeModel(GOCVisualModel& in_rModel, const Description& in_rDescription)
 	{
-		auto* pAnimation = m_pAnimation;
-		if (pAnimation)
-			DetachAnimation(pAnimation);
+		auto* pCurrentAnimation = pAnimation;
+		if (pCurrentAnimation)
+			DetachAnimation(pCurrentAnimation);
 
 		if (m_pModelNode)
 			Cleanup();
 
-		Setup(in_model, in_description);
+		Setup(in_rModel, in_rDescription);
 
-		if (pAnimation)
+		if (pCurrentAnimation)
 		{
-			AttachAnimation(&in_model, pAnimation);
+			AttachAnimation(&in_rModel, pCurrentAnimation);
 		}
 	}
 
 	inline void GOCVisualModelImpl::DetachAnimation(game::GOCAnimationSingle* in_pAnimation)
 	{
 		in_pAnimation->ReleaseModel();
-		m_pAnimation = nullptr;
+		pAnimation = nullptr;
 	}
 
 	inline void GOCVisualModelImpl::AttachAnimation(GOCVisualModel* in_pModel, game::GOCAnimationSingle* in_pAnimation)
 	{
-		m_pAnimation = in_pAnimation;
+		pAnimation = in_pAnimation;
 		in_pAnimation->SetModel(in_pModel);
 	}
 
 	inline hh::gfx::AnimMorphTargetControl* GOCVisualModelImpl::SetMorphAnimation(GOCVisualModel* in_pModel, hh::gfx::res::ResAnimMorphTarget in_resource)
 	{
-		auto* control = hh::gfx::AnimMorphTargetControl::Create(in_pModel->GetAllocator(), in_resource);
-		m_pModelNode->SetAnimObject(control, 2);
-		return control;
+		auto* pControl = hh::gfx::AnimMorphTargetControl::Create(in_pModel->GetAllocator(), in_resource);
+		m_pModelNode->SetAnimObject(pControl, 2);
+		return pControl;
 	}
 
 	inline hh::gfx::res::ResSkeleton GOCVisualModelImpl::GetSkeletonResource()
@@ -52,13 +52,13 @@ namespace app::fnd
 
 	inline hh::gfx::AnimMorphTargetControl* GOCVisualModel::SetMorphAnimation(const MorphTargetDesc& in_rDesc)
 	{
-		return m_Impl.SetMorphAnimation(this, in_rDesc.animation);
+		return Impl.SetMorphAnimation(this, in_rDesc.animation);
 	}
 
 	class GOCVisualModelImpl::Description : public GOCVisualModel::Description
 	{
 	public:
-		Description(const GOCVisualModel::Description& in_desc) : GOCVisualModel::Description(in_desc)
+		Description(const GOCVisualModel::Description& in_rDesc) : GOCVisualModel::Description(in_rDesc)
 		{
 			
 		}

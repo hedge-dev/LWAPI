@@ -2,8 +2,8 @@
 
 namespace app::gfx
 {
-	inline void RenderableEvent::Invoke(const hh::gfx::RenderEventParam& in_param)
+	inline void RenderableEvent::Invoke(const hh::gfx::RenderEventParam& in_rParam)
 	{
-		m_pOwner->Render(in_param);
+		pOwner->Render(in_rParam);
 	}
 }

@@ -37,6 +37,24 @@ namespace app::gfx
 
 	class RenderManager : public fnd::ReferencedObject, public csl::fnd::SingletonPointer<RenderManager>
 	{
+		typedef int eDrcRenderMode;
+
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetEnableRenderHud, ASLR(0x004E1D50), RenderManager*, bool);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGameDocument, ASLR(0x004DFF20), RenderManager*, GameDocument*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDRCRenderMode, ASLR(0x004E5F30), RenderManager*, eDrcRenderMode);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxParameter, ASLR(0x004E4240), RenderManager*, const app::FxParameter&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxConfig, ASLR(0x004DFF00), RenderManager*, const app::FxSceneConfig&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRenderable, ASLR(0x004E1E30), RenderManager*, Renderable*);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetLightFieldColor, ASLR(0x004E1D30), const RenderManager*, const csl::math::Vector3&, Extra::fx::AmbientParamLightField&);
+		inline static FUNCTION_PTR(hh::ut::PackFile&, __thiscall, ms_fpGetShaderFileResource, ASLR(0x004E6050), const RenderManager*, hh::ut::PackFile&);
+		inline static FUNCTION_PTR(hh::mr::CRenderingInfrastructure*, __thiscall, ms_fpGetRenderingDevice, ASLR(0x004E1C10), const RenderManager*);
+		inline static FUNCTION_PTR(Render::CameraParam&, __thiscall, ms_fpGetCameraParam, ASLR(0x004E1E10), const RenderManager*, int);
+		inline static FUNCTION_PTR(ushort, __thiscall, ms_fpAddLocalLight, ASLR(0x004E4190), RenderManager*, const csl::math::Vector3&, const csl::math::Vector4&, float, float, float, float);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveLocalLight, ASLR(0x004E1CF0), RenderManager*, ushort);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalLightColor, ASLR(0x004E6020), RenderManager*, ushort, const csl::math::Vector4&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalLightPosition, ASLR(0x004E5FA0), RenderManager*, ushort, const csl::math::Vector3&);
+
 		class Impl
 		{
 		public:
@@ -56,22 +74,6 @@ namespace app::gfx
 	public:
 		Impl* pImpl{};
 		INSERT_PADDING(114448){};
-
-		typedef int eDrcRenderMode;
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetEnableRenderHud, ASLR(0x004E1D50), RenderManager* pThis, bool enabled);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGameDocument, ASLR(0x004DFF20), RenderManager* pThis, GameDocument*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDRCRenderMode, ASLR(0x004E5F30), RenderManager* pThis, eDrcRenderMode);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxParameter, ASLR(0x004E4240), RenderManager* pThis, const app::FxParameter& rParameter);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFxConfig, ASLR(0x004DFF00), RenderManager* pThis, const app::FxSceneConfig& rConfig);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddRenderable, ASLR(0x004E1E30), RenderManager* pThis, Renderable* pRenderable);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetLightFieldColor, ASLR(0x004E1D30), const RenderManager* pThis, const csl::math::Vector3&, Extra::fx::AmbientParamLightField& out_param);
-		inline static FUNCTION_PTR(hh::ut::PackFile&, __thiscall, ms_fpGetShaderFileResource, ASLR(0x004E6050), const RenderManager* pThis, hh::ut::PackFile&);
-		inline static FUNCTION_PTR(hh::mr::CRenderingInfrastructure*, __thiscall, ms_fpGetRenderingDevice, ASLR(0x004E1C10), const RenderManager* pThis);
-		inline static FUNCTION_PTR(Render::CameraParam&, __thiscall, ms_fpGetCameraParam, ASLR(0x004E1E10), const RenderManager* pThis, int camera);
-		inline static FUNCTION_PTR(ushort, __thiscall, ms_fpAddLocalLight, ASLR(0x004E4190), RenderManager*, const csl::math::Vector3&, const csl::math::Vector4&, float, float, float, float);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveLocalLight, ASLR(0x004E1CF0), RenderManager*, ushort);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalLightColor, ASLR(0x004E6020), RenderManager*, ushort, const csl::math::Vector4&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetLocalLightPosition, ASLR(0x004E5FA0), RenderManager*, ushort, const csl::math::Vector3&);
 		
 		RenderManager()
 		{
@@ -96,9 +98,9 @@ namespace app::gfx
 			return result;
 		}
 
-		bool GetLightFieldColor(const csl::math::Vector3& in_point, Extra::fx::AmbientParamLightField& out_lightfield) const
+		bool GetLightFieldColor(const csl::math::Vector3& in_rPoint, Extra::fx::AmbientParamLightField& out_rLightfield) const
 		{
-			return ms_fpGetLightFieldColor(this, in_point, out_lightfield);
+			return ms_fpGetLightFieldColor(this, in_rPoint, out_rLightfield);
 		}
 
 		void SetEnableRenderHud(bool in_enabled)
@@ -111,9 +113,9 @@ namespace app::gfx
 			ms_fpSetDRCRenderMode(this, in_mode);
 		}
 
-		void SetFxParameter(const app::FxParameter& in_parameter)
+		void SetFxParameter(const app::FxParameter& in_rParameter)
 		{
-			ms_fpSetFxParameter(this, in_parameter);
+			ms_fpSetFxParameter(this, in_rParameter);
 		}
 
 		void SetGameDocument(app::GameDocument* in_pDocument)
@@ -121,9 +123,9 @@ namespace app::gfx
 			ms_fpSetGameDocument(this, in_pDocument);
 		}
 
-		void SetFxConfig(const app::FxSceneConfig& in_config)
+		void SetFxConfig(const app::FxSceneConfig& in_rConfig)
 		{
-			ms_fpSetFxConfig(this, in_config);
+			ms_fpSetFxConfig(this, in_rConfig);
 		}
 
 		const Render::CameraParam& GetCameraParam(int in_camera) const

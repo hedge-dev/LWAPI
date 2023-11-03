@@ -19,7 +19,7 @@ namespace hh::gfx::res
 	public:
 		const char* GetName()
 		{
-			return m_pRes->Name.m_pValue;
+			return m_pRes->Name.pValue;
 		}
 
 		uint GetNumResMeshes() const
@@ -55,7 +55,7 @@ namespace hh::gfx::res
 	public:
 		const char* GetName()
 		{
-			return m_pRes->Name.m_pValue;
+			return m_pRes->Name.pValue;
 		}
 
 		ResMeshGroup GetResMeshGroup(uint in_index) const

@@ -19,50 +19,53 @@ namespace app::animation
 namespace app::fnd
 {
 	class GOCVisualModel;
+	
 	class GOCVisualModelImpl
 	{
 	public:
 		class Description; // Compiler workaround
 
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00497A40), GOCVisualModelImpl*, GOCVisualModel&, const Description&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleanup, ASLR(0x00498060), GOCVisualModelImpl*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialColor, ASLR(0x00497530), GOCVisualModelImpl*, const float*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetMatrix, ASLR(0x00498100), const GOCVisualModelImpl*, csl::math::Matrix34*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetPoseUpdateFlag, ASLR(0x00497990), GOCVisualModelImpl*, app::fnd::GOCVisualModel&, bool);
 
-		hh::gfx::ModelNode* m_pModelNode{};
-		game::GOCAnimationSingle* m_pAnimation{};
+	public:
+		hh::gfx::ModelNode* pModelNode{};
+		game::GOCAnimationSingle* pAnimation{};
 		animation::SkeletonBase* pSkeleton{};
 		app::animation::Pose* pPose{};
-		csl::fnd::IAllocator* m_pAllocator{};
-		uint m_Flags{ 0x10000 };
+		csl::fnd::IAllocator* pAllocator{};
+		uint Flags{ 0x10000 };
 		INSERT_PADDING(8) {};
-		csl::math::Matrix34 m_Transform{};
+		csl::math::Matrix34 Transform{};
 
-		GOCVisualModelImpl(csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator)
+		GOCVisualModelImpl(csl::fnd::IAllocator* in_pAllocator) : pAllocator(in_pAllocator)
 		{
 
 		}
 
-		void GetMatrix(csl::math::Matrix34* out_matrix) const
+		void GetMatrix(csl::math::Matrix34* out_pMatrix) const
 		{
-			ms_fpGetMatrix(this, out_matrix);
+			ms_fpGetMatrix(this, out_pMatrix);
 		}
 
 		const csl::math::Aabb& GetBounds() const
 		{
-			return m_pModelNode->GetBounds();
+			return pModelNode->GetBounds();
 		}
 
-		void SetBounds(const csl::math::Aabb& in_bounds)
+		void SetBounds(const csl::math::Aabb& in_rBounds)
 		{
-			m_pModelNode->SetBounds(in_bounds);
+			pModelNode->SetBounds(in_rBounds);
 		}
 
-		void ChangeModel(GOCVisualModel& in_model, const Description& in_description);
-		void Setup(GOCVisualModel& in_model, const Description& in_description)
+		void ChangeModel(GOCVisualModel& in_rModel, const Description& in_rDescription);
+		void Setup(GOCVisualModel& in_rModel, const Description& in_rDescription)
 		{
-			ms_fpSetup(this, in_model, in_description);
+			ms_fpSetup(this, in_rModel, in_rDescription);
 		}
 
 		void SetPoseUpdateFlag(app::fnd::GOCVisualModel& in_rModel, bool in_update)
@@ -86,14 +89,14 @@ namespace app::fnd
 
 		void DetachAnimation()
 		{
-			DetachAnimation(m_pAnimation);
+			DetachAnimation(pAnimation);
 		}
 
 		hh::gfx::res::ResModel GetModelResource()
 		{
-			if (m_pModelNode)
+			if (pModelNode)
 			{
-				return { &m_pModelNode->pInstance->Model.ref() };
+				return { &pModelNode->pInstance->Model.ref() };
 			}
 			else
 			{

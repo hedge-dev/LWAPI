@@ -2,57 +2,57 @@
 
 namespace app::fnd
 {
-	class GOCVisualTransformed : public GOCVisual, HFrameListener
+	class GOCVisualTransformed : public GOCVisual, public HFrameListener
 	{
 	public:
-		void* m_Unk1;
-		HFrame* m_pFrame;
-		void* m_Unk2;
-		math::CalculatedTransform m_Transform;
-		bool m_Unk3;
+		void* Unk1;
+		HFrame* pFrame;
+		void* Unk2;
+		math::CalculatedTransform Transform;
+		bool Unk3;
 		INSERT_PADDING(12);
 		
 		virtual void OnGOCVisualEvent(int, uint, void*) = 0;
 
-		void SetFrame(HFrame* pFrame)
+		void SetFrame(HFrame* in_pFrame)
 		{
-			if (m_pFrame)
-				m_pFrame->RemoveHFrameListener(this);
-
-			m_pFrame = pFrame;
 			if (pFrame)
-				pFrame->AddHFrameListener(this);
+				pFrame->RemoveHFrameListener(this);
+
+			pFrame = in_pFrame;
+			if (in_pFrame)
+				in_pFrame->AddHFrameListener(this);
 		}
 
 		void MarkUpdate()
 		{
-			m_pFrame->MarkUpdate();
-			m_Unk3 = true;
+			pFrame->MarkUpdate();
+			Unk3 = true;
 		}
 
 	public:
-		void SetLocalTranslation(const csl::math::Vector3& translation)
+		void SetLocalTranslation(const csl::math::Vector3& in_rTranslation)
 		{
-			m_Transform.SetTranslation(translation);
+			Transform.SetTranslation(in_rTranslation);
 			MarkUpdate();
 		}
 
 		void SetLocalRotation(const csl::math::Quaternion& in_rRotation)
 		{
-			m_Transform.SetRotation(in_rRotation);
+			Transform.SetRotation(in_rRotation);
 			MarkUpdate();
 		}
 
 		void SetLocalRotationXYZ(float in_roll, float in_pitch, float in_yaw)
 		{
-			m_Transform.SetRotationXYZ(in_roll, in_pitch, in_yaw);
+			Transform.SetRotationXYZ(in_roll, in_pitch, in_yaw);
 			MarkUpdate();
 		}
 
-		void SetLocalScale(const csl::math::Vector3& scale)
+		void SetLocalScale(const csl::math::Vector3& in_rScale)
 		{
-			m_Transform.m_Scale = scale;
-			m_Transform.SetFlag(1);
+			Transform.Scale = in_rScale;
+			Transform.SetFlag(1);
 			MarkUpdate();
 		}
 	};

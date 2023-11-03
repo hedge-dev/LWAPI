@@ -4,42 +4,43 @@ namespace app::fnd
 {
 	class GOCVisualContainer : public GOCVisual
 	{
+	private:
+		inline static GOComponentClass* ms_pStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x00FD4254));
+
 	public:
 		struct Description
 		{
-			size_t m_VisualCount;
+			size_t VisualCount;
 		};
 		
-		csl::ut::InplaceMoveArray<GOCVisual*, 2> m_Visuals{ GetAllocator() };
-		
-		inline static GOComponentClass* ms_pStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x00FD4254));
+		csl::ut::InplaceMoveArray<GOCVisual*, 2> Visuals{ GetAllocator() };
 
 		static GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 		
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_rDesc)
 		{
-			m_Visuals.reserve(rDesc.m_VisualCount);
+			Visuals.reserve(in_rDesc.VisualCount);
 		}
 		
-		void Add(GOCVisual* pVisual)
+		void Add(GOCVisual* in_pVisual)
 		{
-			pVisual->AddRef();
-			m_Visuals.push_back(pVisual);
+			in_pVisual->AddRef();
+			Visuals.push_back(in_pVisual);
 
-			unk1 |= pVisual->unk1;
+			Unk1 |= in_pVisual->Unk1;
 		}
 
-		void Remove(GOCVisual* pVisual)
+		void Remove(GOCVisual* in_pVisual)
 		{
-			auto idx = m_Visuals.find(pVisual);
+			auto idx = Visuals.find(in_pVisual);
 			if (idx != -1)
-				m_Visuals.remove(idx);
+				Visuals.remove(idx);
 			
-			if (pVisual)
-				pVisual->Release();
+			if (in_pVisual)
+				in_pVisual->Release();
 		}
 	};
 }

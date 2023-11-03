@@ -16,31 +16,31 @@ namespace hh::gfx
 		typedef void UpdateTransformCallback_t(SceneNode* in_pObj);
 
 		INSERT_PADDING(8) {};
-		UpdateAnimationCallback_t* m_pAnimUpdateCallback{};
-		UpdateTransformCallback_t* m_pTransformUpdateCallback{};
-		UpdateViewCallback_t* m_pViewUpdateCallback{};
-		UpdateFrameCallback_t* m_pFrameUpdateCallback{};
-		uint m_Unk1{};
+		UpdateAnimationCallback_t* pAnimUpdateCallback{};
+		UpdateTransformCallback_t* pTransformUpdateCallback{};
+		UpdateViewCallback_t* pViewUpdateCallback{};
+		UpdateFrameCallback_t* pFrameUpdateCallback{};
+		uint Unk1{};
 
 		// csl::ut::Children<hh::gfx::SceneNode, hh::gfx::SceneNode, csl::ut::ChildrenDetacher<hh::gfx::SceneNode>, csl::ut::MoveArray<hh::gfx::SceneNode *>>
 		struct
 		{
 			csl::ut::MoveArray<SceneNode*> m_Container{};
 			INSERT_PADDING(8) {};
-		} m_Children;
-		uint m_Flags{ 0x81F61 };
+		} Children;
+		uint Flags{ 0x81F61 };
 		INSERT_PADDING(8) {};
 
-		SceneNode(csl::fnd::IAllocator* in_pAllocator, bool a2) : GfxObject(in_pAllocator)
+		SceneNode(csl::fnd::IAllocator* in_pAllocator, bool in_a2) : GfxObject(in_pAllocator)
 		{
 			m_Children.m_Container = { in_pAllocator };
-			if (a2)
-				m_Flags |= 0x10000;
+			if (in_a2)
+				Flags |= 0x10000;
 
-			m_pAnimUpdateCallback = UpdateAnimation;
-			m_pTransformUpdateCallback = UpdateTransform;
-			m_pViewUpdateCallback = UpdateView;
-			m_pFrameUpdateCallback = UpdateFrame;
+			pAnimUpdateCallback = UpdateAnimation;
+			pTransformUpdateCallback = UpdateTransform;
+			pViewUpdateCallback = UpdateView;
+			pFrameUpdateCallback = UpdateFrame;
 		}
 
 		inline static void UpdateAnimation(SceneNode* in_pObj, uint in_a2)

@@ -22,10 +22,10 @@ namespace app::fnd
 	public:
 		enum class LightQualityType : signed char
 		{
-			LightQualityType_VALUE0,
-			LightQualityType_VALUE1,
-			LightQualityType_VALUE2,
-			LightQualityType_MAX
+			eLightQualityType_Value0,
+			eLightQualityType_Value1,
+			eLightQualityType_Value2,
+			eLightQualityType_Max
 		};
 
 		typedef uint NodeSpace;
@@ -33,85 +33,86 @@ namespace app::fnd
 		class Description
 		{
 		public:
-			hh::gfx::res::ResModel m_Model{};
-			hh::gfx::res::ResSkeleton m_Skeleton{};
-			int field_08{}; // some kind of flags
-			uint field_0C{};
-			csl::ut::Enum<LightQualityType, signed char> m_LightQualityType{ LightQualityType::LightQualityType_MAX };
-			HFrame* m_pParent{}; // parent?
-			float zOffset{};
-			void* field_1C{}; // GI texture?
-			int field_20{};
-			int field_24{};
-			uint field_28{(uint)-1};
-			int field_2C{};
-			int field_30{};
-			int field_34{};
-			int field_38{};
+			hh::gfx::res::ResModel Model{};
+			hh::gfx::res::ResSkeleton Skeleton{};
+			int Unk1{}; // some kind of flags
+			uint Unk2{};
+			csl::ut::Enum<LightQualityType, signed char> LightQualityType{ LightQualityType::eLightQualityType_Max };
+			HFrame* pParent{}; // parent?
+			float ZOffset{};
+			void* pUnk3{}; // GI texture?
+			int Unk4{};
+			int Unk5{};
+			uint Unk6{(uint)-1};
+			int Unk7{};
+			int Unk8{};
+			int Unk9{};
+			int Unk10{};
 		};
-
-		INSERT_PADDING(32) {};
-		GOCVisualModelImpl m_Impl{ GetAllocator() };
 		
-	public:
-		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), void* This, const Description&);
-		inline static FUNCTION_PTR(TexSrtBlenderHH*, __thiscall, ms_fpSetTexSrtBlender, ASLR(0x00495930), void*, const TexSrtBlenderDesc&);
-		inline static FUNCTION_PTR(MatAnimBlenderHH*, __thiscall, ms_fpSetMatAnimBlender, ASLR(0x00495A70), void*, const MatAnimBlenderDesc&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialColor, ASLR(0x00495140), void*, const float*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialAnimation, ASLR(0x004959D0), void*, const MatAnimDesc&);
-		inline static FUNCTION_PTR(TexSrtControl*, __thiscall, ms_fpSetTexSrtAnimation, ASLR(0x00495890), void*, const TexSrtDesc&);
+	private:
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSetup, ASLR(0x00495850), GOCVisualModel*, const Description&);
+		inline static FUNCTION_PTR(TexSrtBlenderHH*, __thiscall, ms_fpSetTexSrtBlender, ASLR(0x00495930), GOCVisualModel*, const TexSrtBlenderDesc&);
+		inline static FUNCTION_PTR(MatAnimBlenderHH*, __thiscall, ms_fpSetMatAnimBlender, ASLR(0x00495A70), GOCVisualModel*, const MatAnimBlenderDesc&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialColor, ASLR(0x00495140), GOCVisualModel*, const float*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetMaterialAnimation, ASLR(0x004959D0), GOCVisualModel*, const MatAnimDesc&);
+		inline static FUNCTION_PTR(TexSrtControl*, __thiscall, ms_fpSetTexSrtAnimation, ASLR(0x00495890), GOCVisualModel*, const TexSrtDesc&);
 		inline static FUNCTION_PTR(TexSrtControl*, __thiscall, ms_fpGetTexSrtControl, ASLR(0x004954C0), const GOCVisualModel*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAttachAnimation, ASLR(0x004951B0), void*, game::GOCAnimationSingle*);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransform, ASLR(0x004951F0), const void*, NodeSpace, const char*, app::math::Transform*);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransformByIndex, ASLR(0x004951D0), const void*, NodeSpace, int, app::math::Transform*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetNodeTransform, ASLR(0x00495240), void*, NodeSpace, const char*, const app::math::Transform&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAttachAnimation, ASLR(0x004951B0), GOCVisualModel*, game::GOCAnimationSingle*);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransform, ASLR(0x004951F0), const GOCVisualModel*, NodeSpace, const char*, app::math::Transform*);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetNodeTransformByIndex, ASLR(0x004951D0), const GOCVisualModel*, NodeSpace, int, app::math::Transform*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetNodeTransform, ASLR(0x00495240), GOCVisualModel*, NodeSpace, const char*, const app::math::Transform&);
 		inline static FUNCTION_PTR(hh::gfx::res::ResSkeleton, __thiscall, ms_fpGetSkeletonResource, ASLR(0x004952A0), GOCVisualModel*, hh::gfx::res::ResSkeleton);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCopyPose, ASLR(0x004952C0), GOCVisualModel*, const GOCVisualModel&);
+		inline static GOComponentClass* ms_pGOCVisualModelStaticClass = reinterpret_cast<GOComponentClass*>(ASLR(0x0FD4238));
+
+	public:
+		INSERT_PADDING(32) {};
+		GOCVisualModelImpl Impl{ GetAllocator() };
 
 		static GOComponentClass* staticClass()
 		{
 			return ms_pGOCVisualModelStaticClass;
 		}
 
-		void GetMatrix(csl::math::Matrix34* out_matrix)
+		void GetMatrix(csl::math::Matrix34* out_pMatrix)
 		{
-			m_Impl.GetMatrix(out_matrix);
+			Impl.GetMatrix(out_pMatrix);
 		}
 
 		const csl::math::Aabb& GetBounds() 
 		{
-			return m_Impl.GetBounds();
+			return Impl.GetBounds();
 		}
 
-		void SetBounds(const csl::math::Aabb& in_bounds)
+		void SetBounds(const csl::math::Aabb& in_rBounds)
 		{
-			m_Impl.SetBounds(in_bounds);
+			Impl.SetBounds(in_rBounds);
 		}
 
-		void ChangeModel(const Description& in_description) 
+		void ChangeModel(const Description& in_rDescription) 
 		{
-			m_Impl.ChangeModel(*this, reinterpret_cast<const GOCVisualModelImpl::Description&>(in_description));
+			Impl.ChangeModel(*this, reinterpret_cast<const GOCVisualModelImpl::Description&>(in_rDescription));
 		}
 
-		bool Setup(const Description& in_description)
+		bool Setup(const Description& in_rDescription)
 		{
-			return ms_fpSetup(this, in_description);
+			return ms_fpSetup(this, in_rDescription);
 		}
 
 		void SetPoseUpdateFlag(bool in_update)
 		{
-			m_Impl.SetPoseUpdateFlag(*this, in_update);
+			Impl.SetPoseUpdateFlag(*this, in_update);
 		}
 
-		TexSrtBlenderHH* SetTexSrtBlender(const TexSrtBlenderDesc& in_description)
+		TexSrtBlenderHH* SetTexSrtBlender(const TexSrtBlenderDesc& in_rDescription)
 		{
-			return ms_fpSetTexSrtBlender(this, in_description);
+			return ms_fpSetTexSrtBlender(this, in_rDescription);
 		}
 
-		MatAnimBlenderHH* SetMatAnimBlender(const MatAnimBlenderDesc& in_description)
+		MatAnimBlenderHH* SetMatAnimBlender(const MatAnimBlenderDesc& in_rDescription)
 		{
-			return ms_fpSetMatAnimBlender(this, in_description);
+			return ms_fpSetMatAnimBlender(this, in_rDescription);
 		}
 
 		void SetMaterialColor(const float* in_pColor)
@@ -119,14 +120,14 @@ namespace app::fnd
 			ms_fpSetMaterialColor(this, in_pColor);
 		}
 
-		void SetMaterialAnimation(const MatAnimDesc& in_description)
+		void SetMaterialAnimation(const MatAnimDesc& in_rDescription)
 		{
-			ms_fpSetMaterialAnimation(this, in_description);
+			ms_fpSetMaterialAnimation(this, in_rDescription);
 		}
 
-		TexSrtControl* SetTexSrtAnimation(const TexSrtDesc& in_description)
+		TexSrtControl* SetTexSrtAnimation(const TexSrtDesc& in_rDescription)
 		{
-			return ms_fpSetTexSrtAnimation(this, in_description);
+			return ms_fpSetTexSrtAnimation(this, in_rDescription);
 		}
 
 		TexSrtControl* GetTexSrtControl() const
@@ -136,20 +137,20 @@ namespace app::fnd
 
 		void AttachAnimation(game::GOCAnimationSingle* in_pAnimation)
 		{
-			m_Impl.AttachAnimation(this, in_pAnimation);
+			Impl.AttachAnimation(this, in_pAnimation);
 		}
 
 		void DetachAnimation(game::GOCAnimationSingle* in_pAnimation)
 		{
-			m_Impl.DetachAnimation(in_pAnimation);
+			Impl.DetachAnimation(in_pAnimation);
 		}
 
 		void DetachAnimation()
 		{
-			m_Impl.DetachAnimation();
+			Impl.DetachAnimation();
 		}
 
-		hh::gfx::AnimMorphTargetControl* SetMorphAnimation(const MorphTargetDesc& in_rDesc);
+		hh::gfx::AnimMorphTargetControl* SetMorphAnimation(const MorphTargetDesc& in_rDescription);
 
 		bool GetNodeTransform(NodeSpace in_nodeSpace, const char* in_pNodeName, app::math::Transform* out_pTransform) const
 		{
@@ -168,12 +169,12 @@ namespace app::fnd
 
 		hh::gfx::res::ResModel GetModelResource()
 		{
-			return m_Impl.GetModelResource();
+			return Impl.GetModelResource();
 		}
 
 		hh::gfx::res::ResSkeleton GetSkeletonResource()
 		{
-			return m_Impl.GetSkeletonResource();
+			return Impl.GetSkeletonResource();
 		}
 
 		void CopyPose(const GOCVisualModel& in_rOther)
@@ -184,37 +185,38 @@ namespace app::fnd
 
 	struct MatAnimBlenderDesc
 	{
-		size_t m_Count;
+		size_t Count;
 	};
 
 	struct MatAnimDesc
 	{
-		hh::gfx::res::ResAnimMaterial m_Animation{};
-		size_t m_Unk;
+		hh::gfx::res::ResAnimMaterial Animation{};
+		size_t Unk;
 	};
 
 	struct TexSrtBlenderDesc
 	{
-		size_t m_Count;
+		size_t Count;
 	};
 
 	struct TexSrtDesc
 	{
-		hh::gfx::res::ResAnimTexSrt m_Animation{};
-		size_t m_Unk;
+		hh::gfx::res::ResAnimTexSrt Animation{};
+		size_t Unk;
 	};
 
 	// This is made up, the API doesn't exist in the game
 	struct MorphTargetDesc
 	{
-		hh::gfx::res::ResAnimMorphTarget animation{};
+		hh::gfx::res::ResAnimMorphTarget Animation{};
 	};
 
 	class TexSrtControl
 	{
-	public:
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetSpeed, ASLR(0x00496D40), TexSrtControl*, float);
 
+	public:
 		void SetSpeed(float in_speed)
 		{
 			ms_fpSetSpeed(this, in_speed);
@@ -225,9 +227,10 @@ namespace app::fnd
 	{
 		typedef TexSrtDesc TexSrtControlDesc;
 
-	public:
-		inline static FUNCTION_PTR(TexSrtControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x00496B40), void* This, const TexSrtControlDesc& description);
+	private:
+		inline static FUNCTION_PTR(TexSrtControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x00496B40), void*, const TexSrtControlDesc&);
 
+	public:
 		TexSrtControlHH* CreateControl(const TexSrtControlDesc& in_description)
 		{
 			return ms_fpCreateControl(this, in_description);
@@ -239,9 +242,10 @@ namespace app::fnd
 		class MatAnimControlHH;
 		typedef MatAnimDesc MatAnimControlDesc;
 
-	public:
-		inline static FUNCTION_PTR(MatAnimControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x004965A0), void* This, const MatAnimControlDesc& description);
+	private:
+		inline static FUNCTION_PTR(MatAnimControlHH*, __thiscall, ms_fpCreateControl, ASLR(0x004965A0), void*, const MatAnimControlDesc&);
 
+	public:
 		MatAnimControlHH* CreateControl(const MatAnimControlDesc& in_description)
 		{
 			return ms_fpCreateControl(this, in_description);

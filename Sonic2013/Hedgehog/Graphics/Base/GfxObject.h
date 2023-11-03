@@ -5,10 +5,10 @@ namespace hh::gfx
 	class GfxObject
 	{
 	public:
-		uint m_ObjectType{ 1 };
-		csl::fnd::IAllocator* m_pAllocator{};
+		uint ObjectType{ 1 };
+		csl::fnd::IAllocator* pAllocator{};
 
-		GfxObject(csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator)
+		GfxObject(csl::fnd::IAllocator* in_pAllocator) : pAllocator(in_pAllocator)
 		{
 			
 		}
@@ -16,15 +16,15 @@ namespace hh::gfx
 		virtual void Destroy()
 		{
 			this->~GfxObject();
-			if (m_pAllocator)
-				m_pAllocator->Free(this);
+			if (pAllocator)
+				pAllocator->Free(this);
 		}
 
 		virtual ~GfxObject() = default;
 
 		[[nodiscard]] csl::fnd::IAllocator* GetAllocator() const
 		{
-			return m_pAllocator;
+			return pAllocator;
 		}
 	};
 }

@@ -3,6 +3,7 @@
 namespace hh::gfx
 {
 	class AnimObject;
+
 	class NodeInstance
 	{
 	public:
@@ -19,22 +20,24 @@ namespace hh::gfx
 
 	class ModelNode : public SceneNode
 	{
-	public:
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimObject, ASLR(0x00C005E0), ModelNode*, AnimObject*, uint);
+		
+	public:
 		INSERT_PADDING(12) {};
 		ModelNodeInstance* pInstance{};
 		INSERT_PADDING(8) {};
-		csl::ut::FixedArray<AnimObject*, 6> animationObjects{};
+		csl::ut::FixedArray<AnimObject*, 6> AnimationObjects{};
 		INSERT_PADDING(20) {};
-		csl::math::Aabb m_Bounds{};
+		csl::math::Aabb Bounds{};
 
 		ModelNode() = delete;
 
 		void SetAnimObject(AnimObject* in_pObject, uint in_type)
 		{
-			if (in_type < animationObjects.size())
+			if (in_type < AnimationObjects.size())
 			{
-				animationObjects[in_type] = in_pObject;
+				AnimationObjects[in_type] = in_pObject;
 			}
 			else
 			{
@@ -46,12 +49,12 @@ namespace hh::gfx
 
 		const csl::math::Aabb& GetBounds() const
 		{
-			return m_Bounds;
+			return Bounds;
 		}
 
-		void SetBounds(const csl::math::Aabb& in_bounds)
+		void SetBounds(const csl::math::Aabb& in_rBounds)
 		{
-			m_Bounds = in_bounds;
+			Bounds = in_rBounds;
 		}
 	};
 }
