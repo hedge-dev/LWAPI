@@ -17,7 +17,7 @@ namespace app::game
 
 		csl::math::Vector3 GetPosition() const
 		{
-			return pTransform->m_Frame.m_Unk3.GetTranslation();
+			return pTransform->Frame.Unk3.GetTranslation();
 		}
 
 		const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const override

@@ -19,9 +19,10 @@ namespace app::game
 
 	class GravityField : public fnd::GOComponent, public fnd::HFrameListener
 	{
-	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpReadSpawner, ASLR(0x004CD480), GravityField* pThis, const void* in_pData);
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpReadSpawner, ASLR(0x004CD480), GravityField*, const void*);
 
+	public:
 		csl::ut::Enum<GravityType, uint8> Type;
 		csl::ut::Bitset<uint8> Unk1{};
 		const char Unk2{};

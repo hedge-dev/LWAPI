@@ -71,6 +71,12 @@ namespace app::game
 			csl::math::Vector3 Unk5{ 0.0f, -1.0f, 0.0f };
 		};
 		
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004BF2C0), GOCGravity*, const Description&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSimpleSetup, ASLR(0x004BF5C0), GameObject*, MotionType);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD76D8));
+		
+		public:
 		int Unk1{};
 		csl::math::Vector3 GravityDirection{};
 		GravityPhantom Phantom{};
@@ -79,12 +85,6 @@ namespace app::game
 		int Unk5{};
 		int Unk6{};
 
-	private:
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD76D8));
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004BF2C0), GOCGravity*, const Description&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSimpleSetup, ASLR(0x004BF5C0), GameObject*, MotionType);
-
-	public:
 		void Setup(const Description& in_rDescription)
 		{
 			ms_fpSetup(this, in_rDescription);

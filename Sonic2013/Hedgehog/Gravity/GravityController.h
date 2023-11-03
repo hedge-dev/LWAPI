@@ -6,11 +6,11 @@ namespace app::Player
 
 	class GravityController : public fnd::ReferencedObject
 	{
-		class MyGravityPhantomListener;
-
 	private:
 		inline static FUNCTION_PTR(csl::math::Vector3&, __thiscall, ms_fpGetUpDirectionAtPoint, ASLR(0x00853550), const GravityController*, const csl::math::Vector3&);
 		inline static FUNCTION_PTR(csl::math::Vector3&, __thiscall, ms_fpGetGravityDirectionAtPointWorld, ASLR(0x00853590), const GravityController*, const csl::math::Vector3&);
+		
+		class MyGravityPhantomListener;
 
 	public:
 		Player::CPlayer* pPlayer{};
@@ -46,14 +46,14 @@ namespace app::Player
 			return pGravityGoc->GetGravityPhantom()->GetPosition();
 		}
 
-		csl::math::Vector3& GetUpDirectionAtPoint(const csl::math::Vector3& in_point) const
+		csl::math::Vector3& GetUpDirectionAtPoint(const csl::math::Vector3& in_rPoint) const
 		{
-			return ms_fpGetUpDirectionAtPoint(this, in_point);
+			return ms_fpGetUpDirectionAtPoint(this, in_rPoint);
 		}
 
-		csl::math::Vector3& GetGravityDirectionAtPointWorld(const csl::math::Vector3& in_point) const
+		csl::math::Vector3& GetGravityDirectionAtPointWorld(const csl::math::Vector3& in_rPoint) const
 		{
-			return ms_fpGetGravityDirectionAtPointWorld(this, in_point);
+			return ms_fpGetGravityDirectionAtPointWorld(this, in_rPoint);
 		}
 
 		bool IsGravityTypeRunPath() const
