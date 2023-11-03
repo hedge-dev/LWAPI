@@ -3,10 +3,10 @@
 
 namespace app::fnd
 {
-	inline void SoundHandle::Stop(float fade)
+	inline void SoundHandle::Stop(float in_fade)
 	{
 		if (m_pPlayer)
-			m_pPlayer->Stop(*this, fade);
+			m_pPlayer->Stop(*this, in_fade);
 	}
 	
 	inline void SoundHandle::StopImm()
@@ -15,52 +15,52 @@ namespace app::fnd
 			m_pPlayer->StopImm(*this);
 	}
 	
-	inline void SoundHandle::Pause(bool imm, float fade)
+	inline void SoundHandle::Pause(bool in_imm, float in_fade)
 	{
 		if (m_pPlayer)
-			m_pPlayer->Pause(*this, imm, fade);
+			m_pPlayer->Pause(*this, in_imm, in_fade);
 	}
 	
-	inline void SoundHandle::SetVolume(float vol)
+	inline void SoundHandle::SetVolume(float in_vol)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetVolume(*this, vol);
+			m_pPlayer->SetVolume(*this, in_vol);
 	}
 	
-	inline void SoundHandle::SetBlockIdx(int idx)
+	inline void SoundHandle::SetBlockIdx(int in_idx)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetBlockIdx(*this, idx);
+			m_pPlayer->SetBlockIdx(*this, in_idx);
 	}
 	
-	inline void SoundHandle::SetPosition(const csl::math::Vector3& rPos)
+	inline void SoundHandle::SetPosition(const csl::math::Vector3& in_rPosition)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetSourcePosition(*this, rPos);
+			m_pPlayer->SetSourcePosition(*this, in_rPosition);
 	}
 	
-	inline void SoundHandle::SetVelocity(const csl::math::Vector3& rVel)
+	inline void SoundHandle::SetVelocity(const csl::math::Vector3& in_rVelocity)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetSourceVelocity(*this, rVel);
+			m_pPlayer->SetSourceVelocity(*this, in_rVelocity);
 	}
 	
-	inline void SoundHandle::SetAisac(const char* pName, float value)
+	inline void SoundHandle::SetAisac(const char* in_pName, float in_value)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetAisac(*this, pName, value);
+			m_pPlayer->SetAisac(*this, in_pName, in_value);
 	}
 	
-	inline void SoundHandle::AttachAisac(const char* pName)
+	inline void SoundHandle::AttachAisac(const char* in_pName)
 	{
 		if (m_pPlayer)
-			m_pPlayer->AttachAisac(*this, pName, 0);
+			m_pPlayer->AttachAisac(*this, in_pName, 0);
 	}
 	
-	inline void SoundHandle::DetachAisac(const char* pName)
+	inline void SoundHandle::DetachAisac(const char* in_pName)
 	{
 		if (m_pPlayer)
-			m_pPlayer->DetachAisac(*this, pName);
+			m_pPlayer->DetachAisac(*this, in_pName);
 	}
 	
 	inline void SoundHandle::DetachAisacAll()
@@ -117,10 +117,10 @@ namespace app::fnd
 		return size_t();
 	}
 	
-	inline float SoundHandle::GetDistance(const SoundListenerHandle& rListener) const
+	inline float SoundHandle::GetDistance(const SoundListenerHandle& in_rListener) const
 	{
 		if (m_pPlayer)
-			return m_pPlayer->GetListernerDistance(*this, rListener);
+			return m_pPlayer->GetListernerDistance(*this, in_rListener);
 		
 		return 0.0f;
 	}

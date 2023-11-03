@@ -13,49 +13,49 @@ namespace app::fnd
 		DEFINE_RTTI_PTR(ASLR(0x00FD431C));
 		
 		virtual const csl::ut::detail::RuntimeTypeInfo* GetRuntimeTypeInfo() const { return GetRuntimeTypeInfoStatic(); };
-		virtual SoundHandle Play(uint cue, const char* pName, const SoundParam& rParam) { return SoundHandle(nullptr); }
-		virtual SoundHandle Play3D(uint cue, const char* pName, const csl::math::Vector3& rPos, const SoundParam& rParam) { return SoundHandle(nullptr); }
-		virtual void SetListenerIdMap(const ListenerIdMapArgs& args) {}
+		virtual SoundHandle Play(uint in_cue, const char* in_pName, const SoundParam& in_rParam) { return SoundHandle(nullptr); }
+		virtual SoundHandle Play3D(uint in_cue, const char* in_pName, const csl::math::Vector3& in_rPos, const SoundParam& in_rParam) { return SoundHandle(nullptr); }
+		virtual void SetListenerIdMap(const ListenerIdMapArgs& in_rArgs) {}
 		virtual void SetSourceDafaultDistance(float, float) {}
-		virtual void SetMasterVolume(uint id, float vol) {}
-		virtual float GetMasterVolume(uint id) const { return 0; }
-		virtual void SetMasterMute(uint id, bool mute) {}
-		virtual bool IsMasterMute(uint id) const { return false; }
-		virtual bool GetCueInfoList(const char* pName, csl::ut::MoveArray<ResSoundCueInfoDataTag>& rResults) const { return false; }
-		virtual void DbgGet(csl::ut::MoveArray<dbg::SoundInfo::DataTag>& rResults) const { return; }
-		virtual void DbgGetInfo(dbg::SoundInfoEx::DataTag& rResult) const { return; }
-		virtual void Stop(const SoundHandle& rHandle, float fade) { return; }
-		virtual void StopImm(const SoundHandle& rHandle) { return; }
-		virtual void Pause(const SoundHandle& rHandle, bool imm, float fade) { return; }
-		virtual void SetVolume(const SoundHandle& rHandle, float volume) { return; }
-		virtual void SetBlockIdx(const SoundHandle& rHandle, int idx) { return; }
-		virtual size_t GetNumBlocks(const SoundHandle& rHandle) const { return 0; }
-		virtual size_t GetStatus(const SoundHandle& rHandle) const { return 0; }
-		virtual bool IsPause(const SoundHandle& rHandle) const { return false; }
-		virtual bool IsPlay(const SoundHandle& rHandle) const { return false; }
-		virtual bool IsLoop(const SoundHandle& rHandle) const { return false; }
-		virtual void SetSourcePosition(const SoundHandle& rHandle, const csl::math::Vector3& rPos) { return; }
-		virtual void SetSourceVelocity(const SoundHandle& rHandle, const csl::math::Vector3& rVel) { return; }
-		virtual float GetListernerDistance(const SoundHandle& rHandle, const SoundListenerHandle& rListener) { return 0; }
-		virtual bool IsAisac(const SoundHandle& rHandle) const { return false; }
-		virtual void SetAisac(const SoundHandle& rHandle, const char* pName, float value) { return; }
-		virtual void AttachAisac(const SoundHandle& rHandle, const char* pName, float) { return; }
-		virtual void DetachAisac(const SoundHandle& rHandle, const char* pName) { return; }
-		virtual void DetachAisacAll(const SoundHandle& rHandle) { return; }
-		virtual void ResetListener(const SoundListenerHandle& rHandle) { return; }
-		virtual size_t GetListenerBufferId(const SoundListenerHandle& rHandle) const { return 0; }
-		virtual size_t GetListenerId(const SoundListenerHandle& rHandle) const { return 0; }
-		virtual void SetListenerPosition(const SoundListenerHandle& rHandle, const csl::math::Vector3& rPos) { return; }
-		virtual void SetListenerVelocity(const SoundListenerHandle& rHandle, const csl::math::Vector3& rVel) { return; }
-		virtual void SetListenerOrientation(const SoundListenerHandle& rHandle, const csl::math::Vector3&, const csl::math::Vector3&) { return; }
-		virtual void SetListenerDistanceFactor(const SoundListenerHandle& rHandle, float) { return; }
-		virtual void SetListenerFocusPoint(const SoundListenerHandle& rHandle, const csl::math::Vector3& rPoint) { return; }
-		virtual void SetListenerDistanceFocusLevel(const SoundListenerHandle& rHandle, float level) { return; }
-		virtual void SetListenerDirectionFocusLevel(const SoundListenerHandle& rHandle, float level) { return; }
-		virtual void SystemPause(SoundHandleObj* pObj, bool, bool) { return; }
-		virtual void CategoryPause(SoundHandleObj* pObj, bool, float) { return; }
-		virtual void SetSendDevice(SoundHandleObj* pObj) { return; }
-		virtual bool IsAisacGlobal(const char* pName) const { return false; }
+		virtual void SetMasterVolume(uint in_id, float in_vol) {}
+		virtual float GetMasterVolume(uint in_id) const { return 0; }
+		virtual void SetMasterMute(uint in_id, bool in_mute) {}
+		virtual bool IsMasterMute(uint in_id) const { return false; }
+		virtual bool GetCueInfoList(const char* in_pName, csl::ut::MoveArray<ResSoundCueInfoDataTag>& in_rResults) const { return false; }
+		virtual void DbgGet(csl::ut::MoveArray<dbg::SoundInfo::DataTag>& in_rResults) const { return; }
+		virtual void DbgGetInfo(dbg::SoundInfoEx::DataTag& in_rResult) const { return; }
+		virtual void Stop(const SoundHandle& in_rHandle, float in_fade) { return; }
+		virtual void StopImm(const SoundHandle& in_rHandle) { return; }
+		virtual void Pause(const SoundHandle& in_rHandle, bool in_imm, float in_fade) { return; }
+		virtual void SetVolume(const SoundHandle& in_rHandle, float in_volume) { return; }
+		virtual void SetBlockIdx(const SoundHandle& in_rHandle, int in_idx) { return; }
+		virtual size_t GetNumBlocks(const SoundHandle& in_rHandle) const { return 0; }
+		virtual size_t GetStatus(const SoundHandle& in_rHandle) const { return 0; }
+		virtual bool IsPause(const SoundHandle& in_rHandle) const { return false; }
+		virtual bool IsPlay(const SoundHandle& in_rHandle) const { return false; }
+		virtual bool IsLoop(const SoundHandle& in_rHandle) const { return false; }
+		virtual void SetSourcePosition(const SoundHandle& in_rHandle, const csl::math::Vector3& in_rPos) { return; }
+		virtual void SetSourceVelocity(const SoundHandle& in_rHandle, const csl::math::Vector3& in_rVel) { return; }
+		virtual float GetListernerDistance(const SoundHandle& in_rHandle, const SoundListenerHandle& in_rListener) { return 0; }
+		virtual bool IsAisac(const SoundHandle& in_rHandle) const { return false; }
+		virtual void SetAisac(const SoundHandle& in_rHandle, const char* in_pName, float in_value) { return; }
+		virtual void AttachAisac(const SoundHandle& in_rHandle, const char* in_pName, float) { return; }
+		virtual void DetachAisac(const SoundHandle& in_rHandle, const char* in_pName) { return; }
+		virtual void DetachAisacAll(const SoundHandle& in_rHandle) { return; }
+		virtual void ResetListener(const SoundListenerHandle& in_rHandle) { return; }
+		virtual size_t GetListenerBufferId(const SoundListenerHandle& in_rHandle) const { return 0; }
+		virtual size_t GetListenerId(const SoundListenerHandle& in_rHandle) const { return 0; }
+		virtual void SetListenerPosition(const SoundListenerHandle& in_rHandle, const csl::math::Vector3& in_rPos) { return; }
+		virtual void SetListenerVelocity(const SoundListenerHandle& in_rHandle, const csl::math::Vector3& in_rVel) { return; }
+		virtual void SetListenerOrientation(const SoundListenerHandle& in_rHandle, const csl::math::Vector3&, const csl::math::Vector3&) { return; }
+		virtual void SetListenerDistanceFactor(const SoundListenerHandle& in_rHandle, float) { return; }
+		virtual void SetListenerFocusPoint(const SoundListenerHandle& in_rHandle, const csl::math::Vector3& in_rPoint) { return; }
+		virtual void SetListenerDistanceFocusLevel(const SoundListenerHandle& in_rHandle, float in_level) { return; }
+		virtual void SetListenerDirectionFocusLevel(const SoundListenerHandle& in_rHandle, float in_level) { return; }
+		virtual void SystemPause(SoundHandleObj* in_pObj, bool, bool) { return; }
+		virtual void CategoryPause(SoundHandleObj* in_pObj, bool, float) { return; }
+		virtual void SetSendDevice(SoundHandleObj* in_pObj) { return; }
+		virtual bool IsAisacGlobal(const char* in_pName) const { return false; }
 		virtual size_t GetCategory(void*) const { return 0; }
 	};
 }

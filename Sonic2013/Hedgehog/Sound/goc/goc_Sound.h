@@ -5,12 +5,12 @@ namespace app::game
 	enum ESoundTransType {};
 	struct SoundFollowHandleInfo
 	{
-		csl::math::Vector3 m_Position{};
-		csl::ut::Enum<ESoundTransType, char> m_TransType{};
-		csl::ut::Bitset<char> m_Flags{};
+		csl::math::Vector3 Position{};
+		csl::ut::Enum<ESoundTransType, char> TransType{};
+		csl::ut::Bitset<char> Flags{};
 		fnd::HFrame* pTransform{};
 		INSERT_PADDING(8);
-		fnd::SoundHandle m_Handle{};
+		fnd::SoundHandle Handle{};
 	};
 
 	struct SoundFollowFrameInfo
@@ -35,86 +35,85 @@ namespace app::game
 	
 	class GOCSound : public fnd::GOComponent
 	{
+	private:
+		inline static const fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<const fnd::GOComponentClass*>(ASLR(0x00FD7908));
+
 	public:
 		struct Description
 		{
-			size_t m_SoundCount{};
-			size_t m_3DSoundCount{};
+			size_t SoundCount{};
+			size_t 3DSoundCount{};
 		};
-		
-	protected:
-		inline static const fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<const fnd::GOComponentClass*>(ASLR(0x00FD7908));
 
-		fnd::SoundPlayer* m_pSoundPlayer{};
-		fnd::HFrame* m_pTransform{};
-		csl::ut::ObjectMoveArray<fnd::SoundHandle> m_PlayHandles{ GetAllocator() };
-		csl::ut::ObjectMoveArray<SoundFollowHandleInfo> m_FollowInfo{ GetAllocator() };
-
+		fnd::SoundPlayer* pSoundPlayer{};
+		fnd::HFrame* pTransform{};
+		csl::ut::ObjectMoveArray<fnd::SoundHandle> PlayHandles{ GetAllocator() };
+		csl::ut::ObjectMoveArray<SoundFollowHandleInfo> FollowInfo{ GetAllocator() };
 		
 	public:
 		GOCSound() = delete;
 		
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_rDesc)
 		{
-			m_PlayHandles.change_allocator(GetAllocator());
-			m_FollowInfo.change_allocator(GetAllocator());
+			PlayHandles.change_allocator(GetAllocator());
+			FollowInfo.change_allocator(GetAllocator());
 
-			if (rDesc.m_SoundCount)
-				m_PlayHandles.reserve(rDesc.m_SoundCount);
+			if (in_rDesc.SoundCount)
+				PlayHandles.reserve(in_rDesc.SoundCount);
 
-			if (rDesc.m_3DSoundCount)
-				m_FollowInfo.reserve(rDesc.m_3DSoundCount);
+			if (in_rDesc.3DSoundCount)
+				FollowInfo.reserve(in_rDesc.3DSoundCount);
 			
-			m_Flags.set(2, rDesc.m_SoundCount || rDesc.m_3DSoundCount);
+			Flags.set(2, in_rDesc.SoundCount || in_rDesc.3DSoundCount);
 		}
 
-		inline static void SimpleSetup(GameObject* pObject, size_t soundCount, size_t soundCount3d)
+		inline static void SimpleSetup(GameObject* in_pObject, size_t in_soundCount, size_t in_soundCount3d)
 		{
-			if (!pObject)
+			if (!in_pObject)
 				return;
 			
-			auto* pSound = pObject->GetComponent<GOCSound>();
+			auto* pSound = in_pObject->GetComponent<GOCSound>();
 			if (!pSound)
 				return;
 
-			pSound->Setup(Description{ soundCount, soundCount3d });
+			pSound->Setup(Description{ in_soundCount, in_soundCount3d });
 		}
 
 	protected:
-		void OnCreateSoundHandle(fnd::SoundHandle& rHandle)
+		void OnCreateSoundHandle(fnd::SoundHandle& in_rHandle)
 		{
-			if (rHandle && rHandle.IsLoop())
-				m_PlayHandles.push_back(rHandle);
+			if (in_rHandle && in_rHandle.IsLoop())
+				PlayHandles.push_back(in_rHandle);
 		}
 		
 	public:
-		fnd::SoundHandle CreateSoundHandle(const char* pName, float tween, fnd::SoundDeviceTag device)
+		fnd::SoundHandle CreateSoundHandle(const char* in_pName, float in_tween, fnd::SoundDeviceTag in_device)
 		{
 			fnd::SoundParam param{};
-			param.m_TweenFactor = tween;
-			param.m_Device = device;
+			param.TweenFactor = in_tween;
+			param.Device = in_device;
 			
-			fnd::SoundHandle handle = m_pSoundPlayer->Play(2, pName, param);
+			fnd::SoundHandle handle = m_pSoundPlayer->Play(2, in_pName, param);
 			OnCreateSoundHandle(handle);
 
 			return handle;
 		}
 
-		fnd::SoundHandle CreateSoundHandle3D(const char* pName, const csl::math::Vector3& rPos, float tween, fnd::SoundDeviceTag device)
+		fnd::SoundHandle CreateSoundHandle3D(const char* in_pName, const csl::math::Vector3& in_rPosition, float in_tween, fnd::SoundDeviceTag in_device)
 		{
 			fnd::SoundParam param{};
-			param.m_TweenFactor = tween;
-			param.m_Device = device;
+			param.TweenFactor = in_tween;
+			param.Device = in_device;
 
-			fnd::SoundHandle handle = m_pSoundPlayer->Play3D(2, pName, rPos, param);
+			fnd::SoundHandle handle = m_pSoundPlayer->Play3D(2, in_pName, in_rPosition, param);
 			OnCreateSoundHandle(handle);
 
 			return handle;
 		}
 
-		fnd::SoundHandle Play(const char* pName, float tween)
+		fnd::SoundHandle Play(const char* in_pName, float in_tween)
 		{
-			return CreateSoundHandle(pName, tween, { HH_SOUND_DEVICE_AUTO });
+			return CreateSoundHandle(in_pName, in_tween, { HH_SOUND_DEVICE_AUTO });
 		}
 
 		fnd::SoundHandle Play(SoundPlayInfo& in_rPlayInfo)
@@ -122,48 +121,48 @@ namespace app::game
 			return CreateSoundHandle(in_rPlayInfo.pCueName, in_rPlayInfo.Tween, in_rPlayInfo.Device);
 		}
 
-		fnd::SoundHandle PlayVoice(const char* pName)
+		fnd::SoundHandle PlayVoice(const char* in_pName)
 		{
-			return CreateSoundHandle(pName, 0, { HH_SOUND_DEVICE_AUTO });
+			return CreateSoundHandle(in_pName, 0, { HH_SOUND_DEVICE_AUTO });
 		}
 		
-		fnd::SoundHandle Play3D(const char* pName, const csl::math::Vector3& rPos, float tween)
+		fnd::SoundHandle Play3D(const char* in_pName, const csl::math::Vector3& in_rPosition, float in_tween)
 		{
-			return CreateSoundHandle3D(pName, rPos, tween, { HH_SOUND_DEVICE_AUTO });
+			return CreateSoundHandle3D(in_pName, in_rPosition, in_tween, { HH_SOUND_DEVICE_AUTO });
 		}
 
-		fnd::SoundHandle Play3D(const char* pName, float tween)
+		fnd::SoundHandle Play3D(const char* in_pName, float in_tween)
 		{
-			return CreateSoundHandle3D(pName, m_pTransform->m_Transform.GetTranslation(), tween, { HH_SOUND_DEVICE_AUTO });
+			return CreateSoundHandle3D(in_pName, pTransform->Transform.GetTranslation(), in_tween, { HH_SOUND_DEVICE_AUTO });
 		}
 
 		fnd::SoundHandle Play3D(const SoundFollowFrameInfo& in_rFollowInfo)
 		{
 			SoundFollowHandleInfo handleInfo{};
-			handleInfo.m_Flags = in_rFollowInfo.Flags;
-			if (handleInfo.m_Flags.test(1))
-				handleInfo.m_Position = in_rFollowInfo.Position;
+			handleInfo.Flags = in_rFollowInfo.Flags;
+			if (handleInfo.Flags.test(1))
+				handleInfo.Position = in_rFollowInfo.Position;
 		
-			handleInfo.m_TransType = in_rFollowInfo.TransType;
+			handleInfo.TransType = in_rFollowInfo.TransType;
 
 			handleInfo.pTransform = in_rFollowInfo.pTransform;
 			if (!handleInfo.pTransform)
-				handleInfo.pTransform = m_pTransform;
+				handleInfo.pTransform = pTransform;
 
-			auto position = handleInfo.pTransform->m_Unk3.GetTranslation();
-			if (handleInfo.m_Flags.test(1))
-				position += handleInfo.m_Position;
+			auto position = handleInfo.pTransform->Unk3.GetTranslation();
+			if (handleInfo.Flags.test(1))
+				position += handleInfo.Position;
 		
 			fnd::SoundHandle handle = CreateSoundHandle3D(in_rFollowInfo.pCueName, position, in_rFollowInfo.Tween, { HH_SOUND_DEVICE_AUTO });
-			handleInfo.m_Handle = handle;
+			handleInfo.Handle = handle;
 
-			if (m_FollowInfo.size() < m_FollowInfo.capacity())
+			if (FollowInfo.size() < FollowInfo.capacity())
 			{
-				m_FollowInfo.push_back_unchecked(handleInfo);
+				FollowInfo.push_back_unchecked(handleInfo);
 				return handle;
 			}
 
-			m_FollowInfo.push_back(handleInfo);
+			FollowInfo.push_back(handleInfo);
 			return handle;
 		}
 		

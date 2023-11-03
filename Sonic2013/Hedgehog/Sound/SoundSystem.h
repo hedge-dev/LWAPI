@@ -7,14 +7,14 @@ namespace app::fnd
 	public:
 		DEFINE_RTTI_PTR(ASLR(0x00FD4324));
 
-		csl::ut::FixedString<64> m_Root{};
-		FileBinder* m_pBinder{};
+		csl::ut::FixedString<64> Root{};
+		FileBinder* pBinder{};
 
 		virtual DEFINE_RTTI_GETTER;
-		virtual void Update(float in_delta) {}
+		virtual void Update(float in_deltaTime) {}
 		virtual void RegisterData(void* in_pData, size_t in_size) {}
 		virtual void UnregisterData() {}
-		virtual void RegisterCueData(const char* in_pName, void* in_pData, size_t in_size, const char* in_a4);
+		virtual void RegisterCueData(const char* in_pName, void* in_pData, size_t in_size, const char* in_pA4);
 		virtual void UnregisterCueData(const char* in_pName);
 	};
 }

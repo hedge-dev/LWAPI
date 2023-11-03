@@ -19,39 +19,39 @@ namespace app::fnd
 		return size_t();
 	}
 	
-	inline void SoundListenerHandle::SetPosition(const csl::math::Vector3& rPos)
+	inline void SoundListenerHandle::SetPosition(const csl::math::Vector3& in_rPosition)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerPosition(*this, rPos);
+			m_pPlayer->SetListenerPosition(*this, in_rPosition);
 	}
 	
-	inline void SoundListenerHandle::SetVelocity(const csl::math::Vector3& rVel)
+	inline void SoundListenerHandle::SetVelocity(const csl::math::Vector3& in_rVelocity)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerVelocity(*this, rVel);
+			m_pPlayer->SetListenerVelocity(*this, in_rVelocity);
 	}
 	
-	inline void SoundListenerHandle::SetFocusPoint(csl::math::Vector3& rPoint)
+	inline void SoundListenerHandle::SetFocusPoint(csl::math::Vector3& in_rPoint)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerFocusPoint(*this, rPoint);
+			m_pPlayer->SetListenerFocusPoint(*this, in_rPoint);
 	}
 	
-	inline void SoundListenerHandle::SetDirectionFocusLevel(float level)
+	inline void SoundListenerHandle::SetDirectionFocusLevel(float in_level)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerDirectionFocusLevel(*this, level);
+			m_pPlayer->SetListenerDirectionFocusLevel(*this, in_level);
 	}
 	
-	inline void SoundListenerHandle::SetDistanceFocusLevel(float level)
+	inline void SoundListenerHandle::SetDistanceFocusLevel(float in_level)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerDistanceFocusLevel(*this, level);
+			m_pPlayer->SetListenerDistanceFocusLevel(*this, in_level);
 	}
 	
-	inline void SoundListenerHandle::SetDistanceFactor(float factor)
+	inline void SoundListenerHandle::SetDistanceFactor(float in_factor)
 	{
 		if (m_pPlayer)
-			m_pPlayer->SetListenerDistanceFactor(*this, factor);
+			m_pPlayer->SetListenerDistanceFactor(*this, in_factor);
 	}
 }

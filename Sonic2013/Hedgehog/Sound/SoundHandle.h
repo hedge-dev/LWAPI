@@ -16,23 +16,23 @@ namespace app::fnd
 			
 		}
 
-		SoundHandle(SoundHandleObj* pObj) : Handle<SoundHandleObj>(pObj)
+		SoundHandle(SoundHandleObj* in_pObj) : Handle<SoundHandleObj>(in_pObj)
 		{
 			m_pPlayer = csl::fnd::Singleton<SoundPlayer>::GetInstance();
 		}
 
 		void StopImm();
-		void Stop(float fade);
-		void Pause(bool imm, float fade);
-		void SetVolume(float vol);
-		void SetBlockIdx(int idx);
+		void Stop(float in_fade);
+		void Pause(bool in_imm, float in_fade);
+		void SetVolume(float in_vol);
+		void SetBlockIdx(int in_idx);
 		
-		void SetPosition(const csl::math::Vector3& rPos);
-		void SetVelocity(const csl::math::Vector3& rVel);
+		void SetPosition(const csl::math::Vector3& in_rPosition);
+		void SetVelocity(const csl::math::Vector3& in_rVelocity);
 
-		void SetAisac(const char* pName, float value);
-		void AttachAisac(const char* pName);
-		void DetachAisac(const char* pName);
+		void SetAisac(const char* in_pName, float in_value);
+		void AttachAisac(const char* in_pName);
+		void DetachAisac(const char* in_me);
 		void DetachAisacAll();
 		
 		bool IsPlay() const;
@@ -41,6 +41,6 @@ namespace app::fnd
 		bool IsAisac() const;
 		size_t GetStatus() const;
 		size_t GetNumBlocks() const;
-		float GetDistance(const SoundListenerHandle& rListener) const;
+		float GetDistance(const SoundListenerHandle& in_rListener) const;
 	};
 }
