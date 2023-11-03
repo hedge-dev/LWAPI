@@ -13,61 +13,61 @@ namespace app::fnd
 			
 		}
 
-		const RflTypeInfo* GetTypeInfo(const char* pName) const
+		const RflTypeInfo* GetTypeInfo(const char* in_pName) const
 		{
-			auto result = m_Types[pName];
+			auto result = m_Types[in_pName];
 			if (result == m_Types.end())
 				return nullptr;
 
 			return result;
 		}
 		
-		void RegisterTypeInfo(const RflTypeInfo* pInfo)
+		void RegisterTypeInfo(const RflTypeInfo* in_pInfo)
 		{
-			m_Types.insert(pInfo->GetName(), pInfo);
+			m_Types.insert(pInfo->GetName(), in_pInfo);
 		}
 
 		/// <summary>
 		/// Register a list of type information, the list must be null terminated.
 		/// </summary>
 		/// <param name="pInfoList">Pointer to type info list</param>
-		void RegisterList(const RflTypeInfo** pInfoList)
+		void RegisterList(const RflTypeInfo** in_ppInfoList)
 		{
 			size_t i = 0;
-			while (pInfoList[i])
+			while (in_ppInfoList[i])
 			{
-				RegisterTypeInfo(pInfoList[i]);
+				RegisterTypeInfo(in_ppInfoList[i]);
 				i++;
 			}
 		}
 
-		void* ConstructObject(csl::fnd::IAllocator* pAllocator, const char* pName) const
+		void* ConstructObject(csl::fnd::IAllocator* in_pAllocator, const char* in_pName) const
 		{
-			auto pTypeInfo = GetTypeInfo(pName);
-			if (!pTypeInfo || !pAllocator)
+			auto pTypeInfo = GetTypeInfo(in_pName);
+			if (!pTypeInfo || !in_pAllocator)
 				return nullptr;
 
-			auto* pInstance = pAllocator->Alloc(pTypeInfo->GetSize(), 16);
-			pTypeInfo->ConstructObject(pInstance, pAllocator);
+			auto* pInstance = in_pAllocator->Alloc(pTypeInfo->GetSize(), 16);
+			pTypeInfo->ConstructObject(pInstance, in_pAllocator);
 			return pInstance;
 		}
 
-		void FinishLoadedObject(void* pInstance, const char* pName) const
+		void FinishLoadedObject(void* in_pInstance, const char* in_pName) const
 		{
-			auto* pTypeInfo = GetTypeInfo(pName);
+			auto* pTypeInfo = GetTypeInfo(in_pName);
 			if (!pTypeInfo)
 				return;
 
-			pTypeInfo->FinishLoadedObject(pInstance);
+			pTypeInfo->FinishLoadedObject(in_pInstance);
 		}
 
-		void CleanupLoadedObject(void* pInstance, const char* pName) const
+		void CleanupLoadedObject(void* in_pInstance, const char* in_pName) const
 		{
-			auto* pTypeInfo = GetTypeInfo(pName);
+			auto* pTypeInfo = GetTypeInfo(in_pName);
 			if (!pTypeInfo)
 				return;
 
-			pTypeInfo->CleanupLoadedObject(pInstance);
+			pTypeInfo->CleanupLoadedObject(in_pInstance);
 		}
 	};
 }

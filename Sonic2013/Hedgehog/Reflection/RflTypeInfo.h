@@ -28,24 +28,24 @@ namespace app::fnd
 			return m_pScopedName;
 		}
 
-		void ConstructObject(void* pInst, csl::fnd::IAllocator* pAllocator) const
+		void ConstructObject(void* in_pInstance, csl::fnd::IAllocator* in_pAllocator) const
 		{
 			if (!m_fpConstruct)
 				return;
 
-			m_fpConstruct(pInst, pAllocator);
+			m_fpConstruct(in_pInstance, in_pAllocator);
 		}
 
-		void FinishLoadedObject(void* pInstance) const
+		void FinishLoadedObject(void* in_pInstance) const
 		{
 			if (m_fpFinisher)
-				m_fpFinisher(pInstance);
+				m_fpFinisher(in_pInstance);
 		}
 
-		void CleanupLoadedObject(void* pInstance) const
+		void CleanupLoadedObject(void* in_pInstance) const
 		{
 			if (m_fpCleaner)
-				m_fpCleaner(pInstance);
+				m_fpCleaner(in_pInstance);
 		}
 
 		size_t GetSize() const

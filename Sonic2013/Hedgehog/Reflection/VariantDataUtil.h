@@ -5,9 +5,9 @@ namespace app::fnd
 	class VariantDataUtil
 	{
 	public:
-		static void* NewObject(const RflClass& rClass, csl::fnd::IAllocator* pAllocator)
+		static void* NewObject(const RflClass& in_rClass, csl::fnd::IAllocator* in_pAllocator)
 		{
-			return csl::fnd::Singleton<RflTypeInfoRegistry>::GetInstance()->ConstructObject(pAllocator, rClass.GetName());
+			return csl::fnd::Singleton<RflTypeInfoRegistry>::GetInstance()->ConstructObject(in_pAllocator, in_rClass.GetName());
 		}
 	};
 }

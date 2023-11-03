@@ -11,10 +11,10 @@ namespace app::fnd
 		RflTypeInfoRegistry* m_pTypeRegistry{ BuiltinTypeRegistry::GetTypeInfoRegistry() };
 
 	public:
-		DataResource(Variant& variant)
+		DataResource(Variant& in_rVariant)
 		{
-			m_pObject = variant.m_pObject;
-			m_pClass = variant.m_pClass;
+			m_pObject = in_rVariant.pObject;
+			m_pClass = in_rVariant.pClass;
 		}
 
 		~DataResource()

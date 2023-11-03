@@ -15,30 +15,30 @@ namespace app::fnd
 
 		}
 
-		const RflClass* GetClassByName(const char* pName) const
+		const RflClass* GetClassByName(const char* in_pName) const
 		{
-			auto result = m_Classes[pName];
+			auto result = m_Classes[in_pName];
 			if (result == m_Classes.end())
 				return nullptr;
 
 			return result;
 		}
 		
-		void RegisterClass(const RflClass* pClass)
+		void RegisterClass(const RflClass* in_pClass)
 		{
-			m_Classes.insert(pClass->GetName(), pClass);
+			m_Classes.insert(pClass->GetName(), in_pClass);
 		}
 
 		/// <summary>
 		/// Register a list of classes, the list must be null terminated.
 		/// </summary>
 		/// <param name="pClasses">Pointer to class list</param>
-		void RegisterList(const RflClass** pClasses)
+		void RegisterList(const RflClass** in_ppClasses)
 		{
 			size_t i = 0;
-			while (pClasses[i])
+			while (in_ppClasses[i])
 			{
-				RegisterClass(pClasses[i]);
+				RegisterClass(in_ppClasses[i]);
 				i++;
 			}
 		}

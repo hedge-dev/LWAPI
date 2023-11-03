@@ -43,10 +43,10 @@ namespace app::fnd
 
 		struct Metadata
 		{
-			Type m_Type;
-			const char* m_pName;
-			uint8 m_ByteSize;
-			uint8 m_ByteAlignment;
+			Type Type;
+			const char* pName;
+			uint8 ByteSize;
+			uint8 ByteAlignment;
 		};
 
 		static const Metadata ms_typeMetadata[];
@@ -170,12 +170,12 @@ inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 		if (underlyingType == TYPE_STRUCT)
 			underlyingSize = GetStructClass()->GetSizeInBytes();
 		else
-			underlyingSize = ms_typeMetadata[underlyingType].m_ByteSize;
+			underlyingSize = ms_typeMetadata[underlyingType].ByteSize;
 
 		if (GetCstyleArraySize())
-			return ms_typeMetadata[underlyingType].m_ByteSize * underlyingSize * GetCstyleArraySize();
+			return ms_typeMetadata[underlyingType].ByteSize * underlyingSize * GetCstyleArraySize();
 			
-		return ms_typeMetadata[underlyingType].m_ByteSize * underlyingSize;
+		return ms_typeMetadata[underlyingType].ByteSize * underlyingSize;
 	}
 
 	case TYPE_STRUCT:
@@ -183,9 +183,9 @@ inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 
 	case TYPE_ENUM:
 	case TYPE_FLAGS:
-		return ms_typeMetadata[underlyingType].m_ByteSize;
+		return ms_typeMetadata[underlyingType].ByteSize;
 		
 	default:
-		return ms_typeMetadata[type].m_ByteSize;
+		return ms_typeMetadata[type].ByteSize;
 	}
 }

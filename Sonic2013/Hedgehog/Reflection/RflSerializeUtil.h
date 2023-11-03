@@ -6,19 +6,19 @@ namespace app::fnd
 	
 	class RflSerializeUtil
 	{
-	protected:
-		inline static FUNCTION_PTR(bool, __cdecl, ms_fpSave, ASLR(0x0049FED0), const void* pData, const RflClass* pClass, IOStream* pOutStream, bool encrypt);
-		inline static FUNCTION_PTR(DataResource*, __cdecl, ms_fpLoad, ASLR(0x0049FF50), IOStream* pInStream, csl::fnd::IAllocator* pAllocator, bool encrypted);
+	private:
+		inline static FUNCTION_PTR(bool, __cdecl, ms_fpSave, ASLR(0x0049FED0), const void*, const RflClass*, IOStream*, bool);
+		inline static FUNCTION_PTR(DataResource*, __cdecl, ms_fpLoad, ASLR(0x0049FF50), IOStream*, csl::fnd::IAllocator*, bool);
 		
 	public:
-		static bool Save(Variant data, IOStream* pOutStream, bool encrypt = false)
+		static bool Save(Variant in_data, IOStream* in_pOutStream, bool in_encrypt = false)
 		{
-			return ms_fpSave(data.m_pObject, data.m_pClass, pOutStream, encrypt);
+			return ms_fpSave(in_data.pObject, in_data.pClass, in_pOutStream, in_encrypt);
 		}
 
-		static DataResource* Load(IOStream* pInStream, csl::fnd::IAllocator* pAllocator, bool encrypted = false)
+		static DataResource* Load(IOStream* in_pInStream, csl::fnd::IAllocator* in_pAllocator, bool in_encrypted = false)
 		{
-			return ms_fpLoad(pInStream, pAllocator, encrypted);
+			return ms_fpLoad(in_pInStream, in_pAllocator, in_encrypted);
 		}
 	};
 }

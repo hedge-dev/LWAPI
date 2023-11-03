@@ -35,15 +35,15 @@ namespace app::fnd
 		const size_t m_Count{};
 
 	public:
-		[[nodiscard]] const RflCustomAttribute* GetAttribute(const char* name) const
+		[[nodiscard]] const RflCustomAttribute* GetAttribute(const char* in_pName) const
 		{
 			for (size_t i = 0; i < m_Count; i++)
 			{
-				const auto* attribute = &m_pAttributes[i];
+				const auto* pAttribute = &m_pAttributes[i];
 
-				if (attribute->GetName() == name || !strcmp(attribute->GetName(), name))
+				if (pAttribute->GetName() == in_pName || !strcmp(pAttribute->GetName(), in_pName))
 				{
-					return attribute;
+					return pAttribute;
 				}
 			}
 			

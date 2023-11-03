@@ -38,21 +38,21 @@ namespace app::fnd
 			return m_MemberCount;
 		}
 
-		bool GetNameOfValue(size_t value, const char** pp_name) const
+		bool GetNameOfValue(size_t in_value, const char** in_ppName) const
 		{
 			if (m_MemberCount <= 0)
 				return false;
 
-			if (!pp_name)
+			if (!in_ppName)
 				return false;
 			
 			for (size_t i = 0; i < m_MemberCount; i++)
 			{
 				const RflClassEnumMember* p_member = &m_pValues[i];
 				
-				if (p_member->GetValue() == value)
+				if (p_member->GetValue() == in_value)
 				{
-					*pp_name = p_member->GetName();
+					*in_ppName = p_member->GetName();
 					return true;
 				}
 			}
@@ -60,21 +60,21 @@ namespace app::fnd
 			return false;
 		}
 
-		bool GetValueOfName(const char* name, size_t* p_value) const
+		bool GetValueOfName(const char* in_pName, size_t* in_pValue) const
 		{
 			if (m_MemberCount <= 0)
 				return false;
 
-			if (!p_value)
+			if (!in_pValue)
 				return false;
 
 			for (size_t i = 0; i < m_MemberCount; i++)
 			{
-				const RflClassEnumMember* p_member = &m_pValues[i];
+				const RflClassEnumMember* pMember = &m_pValues[i];
 
-				if (p_member->GetName() == name || !strcmp(p_member->GetName(), name))
+				if (pMember->GetName() == in_pName || !strcmp(pMember->GetName(), in_pName))
 				{
-					*p_value = p_member->GetValue();
+					*in_pValue = pMember->GetValue();
 					return true;
 				}
 			}
