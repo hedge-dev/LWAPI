@@ -29,13 +29,13 @@ namespace app::game
 		void Actuate(float in_time, UpdateOutput* out_pOutput) override
 		{
 			csl::math::Quaternion q(Eigen::AngleAxisf(Omega * in_time + Offset, Unk1));
-			out_pOutput->m_Rotation = Transform.m_Rotation * q;
+			out_pOutput->Rotation = Transform.Rotation * q;
 			out_pOutput->SetFlag(1);
 		}
 
 		void DrawDebugDraw() override
 		{
-			Transform.m_Position + math::Vector3Rotate(Transform.m_Rotation, Unk1) * 4.0f * 10.0f;
+			Transform.Position + math::Vector3Rotate(Transform.Rotation, Unk1) * 4.0f * 10.0f;
 		}
 
 		void SetParameters(const Description& in_rDescription)
