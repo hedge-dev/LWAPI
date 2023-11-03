@@ -22,7 +22,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCSound>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -38,10 +38,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 4;
-				collisionInfo.m_Radius = pParam->CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 4;
+				collisionInfo.Radius = pParam->CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
@@ -98,7 +98,7 @@ namespace app
 				auto pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), PlayerNo);
 				if (!pPlayerInfo)
 				{
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 					return {};
 				}
 			
@@ -111,9 +111,9 @@ namespace app
 					{
 						PlayerMatrix = math::Matrix34AffineTransformation(pPlayerInfo->Position, pPlayerInfo->Rotation);
 						xgame::MsgCatchPlayer msgCatch{};
-						msgCatch.m_Unk2 = PlayerMatrix;
-						msgCatch.m_Unk3 = 18;
-						if (ObjUtil::SendMessageImmToPlayer(*this, PlayerNo, msgCatch) && msgCatch.m_Unk4)
+						msgCatch.Unk2 = PlayerMatrix;
+						msgCatch.Unk3 = 18;
+						if (ObjUtil::SendMessageImmToPlayer(*this, PlayerNo, msgCatch) && msgCatch.Unk4)
 						{
 							IsPlayerMovedSideWays = true;
 							ChangeState(&ObjCrayPipe::StatePipeIn);
@@ -167,14 +167,14 @@ namespace app
 				auto pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), PlayerNo);
 				if (!pPlayerInfo)
 				{
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 					return {};
 				}
 
 				if (IsPlayerMovedSideWays)
 				{
 					csl::math::Vector3 objectPosition{};
-					csl::math::Matrix34 objectMatrix = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMatrix = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 					csl::math::Vector3 objectYAxis = { objectMatrix.GetColumn(1) };
 					
 					if (IsDirectionDown)
@@ -216,7 +216,7 @@ namespace app
 				static_cast<xgame::MsgGetExternalMovePosition&>(in_rEvent.getMessage()).pTrsMatrix->SetTransVector(
 					static_cast<csl::math::Matrix34*>(&playerMatrixOffset)->GetTransVector());
 
-				in_rEvent.getMessage().m_Handled = true;
+				in_rEvent.getMessage().Handled = true;
 				return {};
 			}
 			default:
@@ -277,7 +277,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCSound>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -293,10 +293,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
@@ -365,15 +365,15 @@ namespace app
 			
 				if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 				{
-					csl::math::Matrix34 objectMatrix = pTransform->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMatrix = pTransform->Frame.Unk3.Mtx;
 					float scalar = IsDirectionUp ? -1.0f : 1.0f;
 					
 					objectMatrix.SetTransVector({ objectMatrix.GetTransVector() + csl::math::Vector3(0.0f, 20.f * scalar, 0.0f) });
 
 					xgame::MsgCatchPlayer msgCatch{};
-					msgCatch.m_Unk2 = objectMatrix;
-					msgCatch.m_Unk3 = 18;
-					if (ObjUtil::SendMessageImmToPlayer(*this, PlayerNo, msgCatch) && msgCatch.m_Unk4)
+					msgCatch.Unk2 = objectMatrix;
+					msgCatch.Unk3 = 18;
+					if (ObjUtil::SendMessageImmToPlayer(*this, PlayerNo, msgCatch) && msgCatch.Unk4)
 					{
 						IsPlayerFound = false;
 						ChangeState(&ObjCrayPipeExit::StatePipeOut);
@@ -389,12 +389,12 @@ namespace app
 
 				if (GetExtUserData(eExtUserDataType_High) == 1)
 				{
-					PlayerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender);
+					PlayerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender);
 					if (PlayerNo >= 0)
 						IsPlayerFound = true;
 				}
 				
-				in_rEvent.getMessage().m_Handled = true;
+				in_rEvent.getMessage().Handled = true;
 
 				return {};
 			}
@@ -462,7 +462,7 @@ namespace app
 
 				if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 				{
-					csl::math::Matrix34 objectMatrix = pTransform->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMatrix = pTransform->Frame.Unk3.Mtx;
 
 					float scalar = IsDirectionUp ? -1.0f : 1.0f;
 					float offset = IsDirectionUp ? 0.0f : -9.0f;

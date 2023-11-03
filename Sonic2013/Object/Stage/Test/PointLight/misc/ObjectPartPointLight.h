@@ -29,7 +29,7 @@ namespace app
 			SetObjectCategory(9);
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::BeginSetup(*this);
 
@@ -40,7 +40,7 @@ namespace app
 			if (pCreateInfo->pParentTransform)
 			{
 				pTransform->SetParent(pCreateInfo->pParentTransform);
-				lightPosition = pCreateInfo->pParentTransform->m_Frame.m_Unk3.m_Mtx * csl::math::Vector4(lightPosition, 1.0f);
+				lightPosition = pCreateInfo->pParentTransform->Frame.Unk3.Mtx * csl::math::Vector4(lightPosition, 1.0f);
 			}
 
 			LifeTime = pCreateInfo->LifeTime;
@@ -56,7 +56,7 @@ namespace app
 			fnd::GOComponent::EndSetup(*this);
 		}
 
-		void RemoveCallback(GameDocument& in_rDocument) override
+		void RemoveCallback(GameDocument* in_rClass) override
 		{
 			csl::fnd::Singleton<gfx::RenderManager>::GetInstance()->RemoveLocalLight(LocalLightNo);
 		}
@@ -77,7 +77,7 @@ namespace app
 				return;
 		
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
-			csl::fnd::Singleton<gfx::RenderManager>::GetInstance()->SetLocalLightPosition(LocalLightNo, pTransform->m_Frame.m_Unk3.GetTranslation());
+			csl::fnd::Singleton<gfx::RenderManager>::GetInstance()->SetLocalLightPosition(LocalLightNo, pTransform->Frame.Unk3.GetTranslation());
 		}
 
 		void ChangeColor(csl::ut::ColorF in_color)

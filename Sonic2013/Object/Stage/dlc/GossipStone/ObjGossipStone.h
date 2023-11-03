@@ -36,7 +36,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
@@ -46,14 +46,14 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(*in_pDocument);
 			auto* pParam = GetAdapter()->GetData<SGossipStoneParam>();
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 
 				pVisualGoc->Setup(description);
 
@@ -71,33 +71,33 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliSphereShapeCInfo playerCheckCollisionInfo{};
-				playerCheckCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				playerCheckCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				playerCheckCollisionInfo.m_Unk2 |= 1;
-				playerCheckCollisionInfo.m_Radius = pParam->CheckRadius;
-				playerCheckCollisionInfo.m_ShapeID = 0;
+				playerCheckCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				playerCheckCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				playerCheckCollisionInfo.Unk2 |= 1;
+				playerCheckCollisionInfo.Radius = pParam->CheckRadius;
+				playerCheckCollisionInfo.ShapeID = 0;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk7, playerCheckCollisionInfo);
 				pColliderGoc->CreateShape(playerCheckCollisionInfo);
 
 				game::ColliCapsuleShapeCInfo bombCollisionInfo{};
-				bombCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				bombCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				bombCollisionInfo.m_Unk2 |= 1;
-				bombCollisionInfo.m_Radius = ms_BombCollisionRadius;
-				bombCollisionInfo.m_Height = ms_BombCollisionHeight;
-				bombCollisionInfo.m_ShapeID = 1;
+				bombCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				bombCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				bombCollisionInfo.Unk2 |= 1;
+				bombCollisionInfo.Radius = ms_BombCollisionRadius;
+				bombCollisionInfo.Height = ms_BombCollisionHeight;
+				bombCollisionInfo.ShapeID = 1;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, bombCollisionInfo);
 				bombCollisionInfo.SetLocalPosition(ms_BombCollisionOffset);
 				pColliderGoc->CreateShape(bombCollisionInfo);
 
 				game::ColliCapsuleShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				collisionInfo.m_Unk2 |= 0x100;
-				collisionInfo.m_Unk3 = 0x40053;
-				collisionInfo.m_Radius = ms_CollisionRadius;
-				collisionInfo.m_Height = ms_CollisionHeight;
-				collisionInfo.m_ShapeID = 2;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				collisionInfo.Unk2 |= 0x100;
+				collisionInfo.Unk3 = 0x40053;
+				collisionInfo.Radius = ms_CollisionRadius;
+				collisionInfo.Height = ms_CollisionHeight;
+				collisionInfo.ShapeID = 2;
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				pColliderGoc->CreateShape(collisionInfo);
 			}
@@ -133,34 +133,34 @@ namespace app
 
 			if (pPlayerInfo->PixieNo == static_cast<Game::EPhantomType>(-1))
 			{
-				if (in_rMessage.m_Unk3.dot(GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1)) >= 0.9f)
+				if (in_rMessage.Unk3.dot(GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx.GetColumn(1)) >= 0.9f)
 					return false;
 			}
 			
 			DispatchFSM(TiFsmEvent_t::CreateMessage(in_rMessage));
 			
-			in_rMessage.SetReply(in_rMessage.m_Unk2, false, { -in_rMessage.m_Unk3 });
-			in_rMessage.m_ReplyStatus.set(0);
+			in_rMessage.SetReply(in_rMessage.Unk2, false, { -in_rMessage.Unk3 });
+			in_rMessage.ReplyStatus.set(0);
 
 			if (pPlayerInfo->PixieNo != static_cast<Game::EPhantomType>(-1))
-				in_rMessage.m_ReplyStatus.set(5);
+				in_rMessage.ReplyStatus.set(5);
 			
 			return true;
 		}
 
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
-			if (ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 0))
+			if (ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 0))
 				return OnSnapshot();
 
-			if (!ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 1))
+			if (!ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 1))
 				return false;
 
 			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 			if (!pPlayerInfo || pPlayerInfo->IsOnGround)
 				return false;
 
-			csl::math::Vector3 upVector = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1);
+			csl::math::Vector3 upVector = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx.GetColumn(1);
 			csl::math::Vector3 contactNormal { -(*in_rMessage.GetContactPointNormal()) };
 
 			csl::math::Vector3 velocity{ contactNormal - csl::math::Vector3(upVector * upVector.dot(contactNormal)) };
@@ -168,7 +168,7 @@ namespace app
 
 			xgame::MsgAppeareKnockback msg{};
 			msg.Velocity = { csl::math::Vector3(upVector * upVector.dot(contactNormal)) + csl::math::Vector3(velocity * 30.0f * 2.0f) };
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 			
 			DispatchFSM(TiFsmEvent_t::CreateMessage(in_rMessage));
 			return true;
@@ -185,7 +185,7 @@ namespace app
 			if (!isFairyValid)
 			{
 				ObjGossipStoneFairy::CInfo createInfo{};
-				createInfo.TransformMtx = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+				createInfo.TransformMtx = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 				auto* pFairyObject = ObjGossipStoneFairy::Create(createInfo);
 				if (pFairyObject)
 				{
@@ -227,19 +227,19 @@ namespace app
 				{
 					ChangeState(&ObjGossipStone::StateShake);
 
-					msg.m_Handled = true;
+					msg.Handled = true;
 					break;
 				}
 				case xgame::MsgDamage::MessageID:
 				{
 					auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 
-					if (reinterpret_cast<xgame::MsgDamage&>(msg).m_Bonus.m_Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
+					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
 						ChangeState(&ObjGossipStone::StateCountdown);
 					else
 						ChangeState(&ObjGossipStone::StateShake);
 
-					msg.m_Handled = true;
+					msg.Handled = true;
 					return {};
 				}
 				default:
@@ -293,7 +293,7 @@ namespace app
 				{
 					ChangeState(&ObjGossipStone::StateShake);
 
-					msg.m_Handled = true;
+					msg.Handled = true;
 					break;
 				}
 				case xgame::MsgDamage::MessageID:
@@ -301,7 +301,7 @@ namespace app
 					xgame::MsgDamage msg = reinterpret_cast<xgame::MsgDamage&>(in_rEvent.getMessage());
 					auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 
-					if (reinterpret_cast<xgame::MsgDamage&>(msg).m_Bonus.m_Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
+					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
 					{
 						IsDamaged = true;
 					}
@@ -314,7 +314,7 @@ namespace app
 						}
 					}
 
-					msg.m_Handled = true;
+					msg.Handled = true;
 					break;
 				}
 				default:
@@ -402,7 +402,7 @@ namespace app
 
 				auto* pTransform = GetComponent<fnd::GOCTransform>();
 				
-				pTransform->SetLocalTranslation(pTransform->m_Frame.m_Unk3.m_Mtx * csl::math::Vector4(0.0f, VerticalPosition * in_rEvent.getFloat(), 0.0f, 1.0f));
+				pTransform->SetLocalTranslation(pTransform->Frame.Unk3.Mtx * csl::math::Vector4(0.0f, VerticalPosition * in_rEvent.getFloat(), 0.0f, 1.0f));
 				if (RocketTime >= 5.0f)
 				{
 					SetStatusRetire();

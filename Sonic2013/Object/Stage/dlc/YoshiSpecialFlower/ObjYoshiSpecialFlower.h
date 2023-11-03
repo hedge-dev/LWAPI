@@ -21,7 +21,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
@@ -34,13 +34,13 @@ namespace app
 			auto* pParam = GetAdapter()->GetData<SYoshiSpecialFlowerParam>();
 			FlowerId = pParam->FlowerId;
 			
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiSpecialFlowerInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiSpecialFlowerInfo>(*in_pDocument);
 			
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				
 				pVisualModel->Setup(description);
 			
@@ -58,10 +58,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, collisionInfo);
 				
 				pCollider->CreateShape(collisionInfo);

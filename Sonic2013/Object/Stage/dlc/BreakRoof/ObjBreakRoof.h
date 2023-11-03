@@ -19,9 +19,9 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjBreakRoofInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjBreakRoofInfo>(*in_pDocument);
 
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -34,8 +34,8 @@ namespace app
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_08 = 1;
 
 				pVisualModel->Setup(description);
@@ -46,10 +46,10 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = ms_CollisionSize;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = ms_CollisionSize;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, collisionInfo);
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				pCollider->CreateShape(collisionInfo);
@@ -60,10 +60,10 @@ namespace app
 				pPhysics->Setup({ ms_PhysicsShapeCount });
 
 				game::ColliMeshShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Mesh;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Flags = 1;
-				collisionInfo.m_Mesh = pInfo->Collision;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Mesh;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Flags = 1;
+				collisionInfo.Mesh = pInfo->Collision;
 				pPhysics->CreateShape(collisionInfo);
 			}
 
@@ -95,22 +95,22 @@ namespace app
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
 			auto* pVisualModel = GetComponent<fnd::GOCVisualModel>();
 
-			auto& upVector = pTransform->m_Frame.m_Unk3.m_Mtx.GetColumn(1);
+			auto& upVector = pTransform->Frame.Unk3.Mtx.GetColumn(1);
 			for (size_t i = 0; i < 9; i++)
 			{
 				math::Transform transform{};
 				pVisualModel->GetNodeTransform(0, i, &transform);
 
 				debris::SRandomSpaceDebrisInfo debrisInfo{};
-				debrisInfo.Transform.m_Position = { transform.m_Position };
+				debrisInfo.Transform.Position = { transform.Position };
 				debrisInfo.Transform.SetFlag(1);
-				debrisInfo.Transform.m_Rotation = pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+				debrisInfo.Transform.Rotation = pTransform->Frame.Unk3.GetRotationQuaternion();
 				debrisInfo.Transform.SetFlag(1);
 				debrisInfo.Unk1 = 400.0f;
 				debrisInfo.Unk2 = 2.0f;
 				debrisInfo.Unk3 = 0.5f;
 				debrisInfo.Unk4.set(0);
-				debrisInfo.Unk5 = in_rMessage.m_Unk2;
+				debrisInfo.Unk5 = in_rMessage.Unk2;
 				debrisInfo.Unk6 = upVector;
 				debrisInfo.Unk7 = 5.0f;
 				debrisInfo.Unk8 = 1.0f;
@@ -130,7 +130,7 @@ namespace app
 			GetComponent<game::GOCSound>()->Play3D(ms_pSoundName, 0.0f);
 			GetComponent<game::GOCEffect>()->CreateEffect(ms_pEffectName);
 
-			int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender);
+			int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender);
 			if (playerNo >= 0)
 			{
 				xgame::MsgShakeCamera msg{};
@@ -140,7 +140,7 @@ namespace app
 				ObjUtil::SendMessageImmToCamera(*this, playerNo, msg);
 			}
 
-			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->m_Transform.m_Position, true);
+			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->Transform.Position, true);
 			SetStatusRetire();
 			Kill();
 		}

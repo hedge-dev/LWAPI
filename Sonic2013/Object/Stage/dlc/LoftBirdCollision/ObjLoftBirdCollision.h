@@ -17,7 +17,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCBoxCollider>(*this);
 			
@@ -28,9 +28,9 @@ namespace app
 			if (auto* pCollider = GetComponent<game::GOCBoxCollider>())
 			{
 				game::GOCBoxColliderCinfo collisionInfo{};
-				collisionInfo.m_Size = ms_CollisionSize;
-				collisionInfo.m_Unk2 = 1;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
+				collisionInfo.Size = ms_CollisionSize;
+				collisionInfo.Unk2 = 1;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk2, collisionInfo);
 
 				pCollider->Setup(collisionInfo);
@@ -59,7 +59,7 @@ namespace app
 			if (pParam->ActionType <= 3)
 				msg.ActionType = ms_LoftBirdActionTypes[pParam->ActionType];
 			
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 
 			return true;
 		}

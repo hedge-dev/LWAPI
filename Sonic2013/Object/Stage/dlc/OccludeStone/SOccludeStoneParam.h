@@ -7,7 +7,7 @@ namespace app
 
 	};
 
-	static void paramMap_ObjOccludeStone(SetEd::CResClass rClass)
+	static void paramMap_ObjOccludeStone(SetEd::CResClass in_rClass)
 	{		
 
 	}

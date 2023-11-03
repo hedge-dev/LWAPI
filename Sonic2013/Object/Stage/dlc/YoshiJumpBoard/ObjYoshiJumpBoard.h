@@ -52,7 +52,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationScript>(*this);
@@ -68,14 +68,14 @@ namespace app
 			
 			fnd::GOComponent::BeginSetup(*this);
 			
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiJumpBoardInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiJumpBoardInfo>(*in_pDocument);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000u;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
+				description.Unk2 |= 0x400000u;
 
 				pVisualModel->Setup(description);
 				pVisualModel->SetLocalScale({ ms_Scales[(int)Type], ms_Scales[(int)Type], ms_Scales[(int)Type] });
@@ -91,11 +91,11 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliCapsuleShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = ms_CollisionRadiuses[(int)Type];
-				collisionInfo.m_Height = ms_CollisionHeights[(int)Type];
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = ms_CollisionRadiuses[(int)Type];
+				collisionInfo.Height = ms_CollisionHeights[(int)Type];
 				collisionInfo.SetLocalPosition({ 0.0f, ms_CollisionOffset[(int)Type], 0.0f});
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Default, collisionInfo);
 
@@ -120,7 +120,7 @@ namespace app
 				{
 					game::GOCLauncher::ShotInfo shotInfo{};
 
-					csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 
 					SetShotInfo(pParam->FirstSpeed, pParam->KeepVelocityDistance, pParam->OutOfControl,
 						objectMtx, (uint)Type, &shotInfo);
@@ -170,7 +170,7 @@ namespace app
 
 		csl::math::Vector3 CalcYawDirection() const
 		{
-			return math::Vector3Rotate(GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetRotationQuaternion(), { csl::math::Vector3::UnitZ() });
+			return math::Vector3Rotate(GetComponent<fnd::GOCTransform>()->Frame.Unk3.GetRotationQuaternion(), { csl::math::Vector3::UnitZ() });
 		}
 
 		csl::math::Vector3 CatchPlayerLocalPosAdjustAnim()
@@ -222,42 +222,42 @@ namespace app
 				if (in_rEvent.getMessage().GetType() != xgame::MsgHitEventCollision::MessageID)
 					return FSM_TOP();
 
-				int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender);
+				int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender);
 				if (playerNo < 0)
 				{
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 					return {};
 				}
 
 				auto pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), playerNo);
 				if (!pPlayerInfo || pPlayerInfo->PixieNo != -1)
 				{
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 					return {};
 				}
 
 				if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 				{
-					csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 					csl::math::Matrix34 playerMtx = math::Matrix34AffineTransformation(pPlayerInfo->Position, pPlayerInfo->Rotation);
 
 					xgame::MsgCatchPlayer msgCatch{};
-					msgCatch.m_Unk2 = playerMtx;
-					msgCatch.m_Unk3 = 18;
+					msgCatch.Unk2 = playerMtx;
+					msgCatch.Unk3 = 18;
 
-					if (SendMessageImm(static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender, msgCatch))
+					if (SendMessageImm(static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender, msgCatch))
 					{
 						csl::math::Matrix34Inverse(objectMtx, &objectMtx);
 						Position = { objectMtx * csl::math::Vector4(pPlayerInfo->Position, 1.0f)};
 						Rotation = pPlayerInfo->Rotation;
 						Flags.set(3, !pPlayerInfo->IsOnGround);
-						PlayerActorID = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender;
+						PlayerActorID = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender;
 
 						ChangeState(&ObjYoshiJumpBoard::StateExpansion);
 					}
 				}
 
-				in_rEvent.getMessage().m_Handled = true;
+				in_rEvent.getMessage().Handled = true;
 				return {};
 			}
 			default:
@@ -297,7 +297,7 @@ namespace app
 
 						if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 						{
-							csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+							csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 
 							auto pos = CatchPlayerLocalPosAdjustAnim();
 							xgame::MsgSpringImpulse msgImpulse{ { objectMtx * csl::math::Vector4(pos, 1.0f) }, shotInfo.Direction, shotInfo.OutOfControl, shotInfo.TravelTime };
@@ -308,9 +308,9 @@ namespace app
 							msgImpulse.YawDirection = CalcYawDirection();
 
 							if (Flags.test(FLAG_YOSHI_JUMP_BOARD_IS_PUSH_JUMP))
-								msgImpulse.m_OutOfParkour = OutOfParkour;
+								msgImpulse.OutOfParkour = OutOfParkour;
 							else
-								msgImpulse.m_OutOfParkour = 1.0f;
+								msgImpulse.OutOfParkour = 1.0f;
 
 							if (SendMessageImm(PlayerActorID, msgImpulse) && msgImpulse.IsHandled)
 							{
@@ -334,13 +334,13 @@ namespace app
 
 				if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 				{
-					csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+					csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 
 					auto pos = CatchPlayerLocalPosAdjustAnim();
 					*static_cast<xgame::MsgGetExternalMovePosition&>(in_rEvent.getMessage()).pTrsMatrix =
 						app::math::Matrix34AffineTransformation({ objectMtx * csl::math::Vector4(pos, 1.0f) }, Rotation);
 
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 				}
 
 				return {};

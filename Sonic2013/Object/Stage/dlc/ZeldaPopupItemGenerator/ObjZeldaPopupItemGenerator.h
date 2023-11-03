@@ -18,7 +18,7 @@ namespace app
 
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
 			
@@ -32,10 +32,10 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = pParam->ColliRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = pParam->ColliRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
 			}
@@ -57,11 +57,11 @@ namespace app
 
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
-			size_t playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender);
+			size_t playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender);
 			if (playerNo >= 0)
 			{
 				if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), playerNo))
-					zelda_popupitem::CreateZeldaPopupItem(GetAllocator(), *GetDocument(), { GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx, CreateItem, playerNo});
+					zelda_popupitem::CreateZeldaPopupItem(GetAllocator(), *GetDocument(), { GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx, CreateItem, playerNo});
 			}
 
 			Kill();

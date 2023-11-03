@@ -14,10 +14,10 @@ namespace app
 		Direction Direction;
 	};
 
-	static void paramMap_ObjCrayPipeExit(SetEd::CResClass rClass)
+	static void paramMap_ObjCrayPipeExit(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjCrayPipeExit, ASLR(0x00615D10), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjCrayPipeExit, ASLR(0x00615D10), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjCrayPipeExit(rClass);
+		fpparamMap_ObjCrayPipeExit(in_rClass);
 	}
 }

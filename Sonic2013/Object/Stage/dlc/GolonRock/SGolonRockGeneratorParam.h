@@ -11,10 +11,10 @@ namespace app
 		bool IsCheckFall{};
 	};
 
-	static void paramMap_ObjGolonRockGenerator(SetEd::CResClass rClass)
+	static void paramMap_ObjGolonRockGenerator(SetEd::CResClass in_rClass)
 	{		
 		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjGolonRockGenerator, ASLR(0x00624360), SetEd::CResClass);
 		
-		fpparamMap_ObjGolonRockGenerator(rClass);
+		fpparamMap_ObjGolonRockGenerator(in_rClass);
 	}
 }

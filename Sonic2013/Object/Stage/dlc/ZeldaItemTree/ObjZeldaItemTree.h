@@ -28,7 +28,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
@@ -38,15 +38,15 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaItemTreeInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaItemTreeInfo>(*in_pDocument);
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
-				description.m_LightQualityType = 1;
-				description.field_0C |= 0x400000u;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
+				description.LightQualityType = 1;
+				description.Unk2 |= 0x400000u;
 
 				pVisualGoc->Setup(description);
 
@@ -69,34 +69,34 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliSphereShapeCInfo treeTopCollisionInfo{};
-				treeTopCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				treeTopCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				treeTopCollisionInfo.m_Unk2 |= 1;
-				treeTopCollisionInfo.m_Radius = ms_TreeTopCollisionRadius;
-				treeTopCollisionInfo.m_ShapeID = 1;
+				treeTopCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				treeTopCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				treeTopCollisionInfo.Unk2 |= 1;
+				treeTopCollisionInfo.Radius = ms_TreeTopCollisionRadius;
+				treeTopCollisionInfo.ShapeID = 1;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk6, treeTopCollisionInfo);
 				treeTopCollisionInfo.SetLocalPosition(ms_TreeTopCollisionOffset);
 				pColliderGoc->CreateShape(treeTopCollisionInfo);
 
 				game::ColliCylinderShapeCInfo crownCollisionInfo{};
-				crownCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Cylinder;
-				crownCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				crownCollisionInfo.m_Unk2 |= 3;
-				crownCollisionInfo.m_Radius = ms_CrownCollisionRadius;
-				crownCollisionInfo.m_Height = ms_CrownCollisionHeight;
-				crownCollisionInfo.m_ShapeID = 2;
+				crownCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Cylinder;
+				crownCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				crownCollisionInfo.Unk2 |= 3;
+				crownCollisionInfo.Radius = ms_CrownCollisionRadius;
+				crownCollisionInfo.Height = ms_CrownCollisionHeight;
+				crownCollisionInfo.ShapeID = 2;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk6, crownCollisionInfo);
 				crownCollisionInfo.SetLocalPosition(ms_CrownCollisionOffset);
 				pColliderGoc->CreateShape(crownCollisionInfo);
 
 				game::ColliCapsuleShapeCInfo trunkCollisionInfo{};
-				trunkCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				trunkCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				trunkCollisionInfo.m_Unk2 |= 0x100;
-				trunkCollisionInfo.m_Unk3 = 0x2010000;
-				trunkCollisionInfo.m_Radius = ms_TrunkCollisionRadius;
-				trunkCollisionInfo.m_Height = ms_TrunkCollisionHeight;
-				trunkCollisionInfo.m_ShapeID = 0;
+				trunkCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				trunkCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				trunkCollisionInfo.Unk2 |= 0x100;
+				trunkCollisionInfo.Unk3 = 0x2010000;
+				trunkCollisionInfo.Radius = ms_TrunkCollisionRadius;
+				trunkCollisionInfo.Height = ms_TrunkCollisionHeight;
+				trunkCollisionInfo.ShapeID = 0;
 				trunkCollisionInfo.SetLocalPosition(ms_TrunkCollisionOffset);
 				pColliderGoc->CreateShape(trunkCollisionInfo);
 			}
@@ -120,7 +120,7 @@ namespace app
 
 		bool ProcMsgGetClimbObjectInfo(xgame::MsgGetClimbObjectInfo& in_rMessage)
 		{
-			auto& objectMtx = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+			auto& objectMtx = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 
 			Position = objectMtx.GetTransVector();
 			TreeTopPosition = objectMtx * csl::math::Vector4(0.0f, ms_TrunkCollisionRadius + ms_TrunkCollisionHeight, 0.0f, 1.0f);
@@ -134,15 +134,15 @@ namespace app
 
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
-			switch (in_rMessage.m_pSelf->m_ID)
+			switch (in_rMessage.pSelf->ID)
 			{
 			case 1:
 			{
-				auto& objectMtx = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+				auto& objectMtx = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 
 				xgame::MsgItemTreeWobblePoint msg{};
 				msg.WobblePoint = objectMtx * csl::math::Vector4(0.0f, ms_TrunkCollisionRadius + ms_TrunkCollisionHeight, 0.0f, 1.0f);
-				SendMessageImm(in_rMessage.m_Sender, msg);
+				SendMessageImm(in_rMessage.Sender, msg);
 
 				break;
 			}
@@ -164,11 +164,11 @@ namespace app
 		{
 			csl::math::Vector3 position{};
 			xgame::MsgGetPosition msg{ position };
-			if (SendMessageImm(in_rMessage.m_Sender, msg))
+			if (SendMessageImm(in_rMessage.Sender, msg))
 			{
 				GetComponent<game::GOCEffect>();
 				
-				csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+				csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx };
 				transformMtx.SetColumn(3, position);
 			}
 

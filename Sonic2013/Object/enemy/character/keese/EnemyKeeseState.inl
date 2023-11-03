@@ -17,7 +17,7 @@ namespace app
 		if (!in_rObj.GetComponent<GOCEnemyTarget>() || !in_rObj.Path.Component.IsValid() || !in_rObj.IsFindTargetGood(&targetPosition) || !pTransformGoc)
 			return false;
 
-		csl::math::Vector3 position{ pTransformGoc->m_Frame.m_Unk3.m_Mtx.GetTransVector() };
+		csl::math::Vector3 position{ pTransformGoc->Frame.Unk3.Mtx.GetTransVector() };
 
 		csl::math::Vector3 point{}, normal{}, tangent{};
 		in_rObj.Path.GetPNT(in_rObj.Path.Distance, &point, &normal, &tangent);
@@ -25,7 +25,7 @@ namespace app
 		csl::math::Vector3 offset{ csl::math::Vector3(position - point).Normalize() };
 		csl::math::Vector3 targetOffset{ csl::math::Vector3(targetPosition - point).Normalize() };
 
-		csl::math::Matrix34 centerMtx{ in_rObj.GetCenterPositionFrame()->m_Unk3.m_Mtx };
+		csl::math::Matrix34 centerMtx{ in_rObj.GetCenterPositionFrame()->Unk3.Mtx };
 		csl::math::Vector3 frontVector{ centerMtx.GetColumn(2) };
 		csl::math::Vector3 centerPosition{ centerMtx.GetTransVector() };
 		csl::math::Vector3 centerOffset{ targetPosition - centerPosition };
@@ -109,7 +109,7 @@ namespace app
 			csl::math::Vector3 point{}, normal{}, tangent{};
 			in_rObj.Path.GetPNT(in_rObj.Path.Distance, &point, &normal, &tangent);
 
-			float scalar = csl::math::Select(tangent.dot(pTransformGoc->m_Frame.m_Unk3.m_Mtx.GetColumn(2)), fabs(1.0f), csl::math::Nabs(1.0f));
+			float scalar = csl::math::Select(tangent.dot(pTransformGoc->Frame.Unk3.Mtx.GetColumn(2)), fabs(1.0f), csl::math::Nabs(1.0f));
 			in_rObj.pMovementController->SetTargetDistance((in_rObj.MoveRange * 0.5f - (in_rObj.Path.Distance - in_rObj.PathDistance) * scalar) * scalar);
 			in_rObj.pMovementController->StartMove();
 		}
@@ -142,7 +142,7 @@ namespace app
 		in_rObj.UpdateGravityPathDistance(in_rObj.MoveSpeed * in_deltaTime);
 
 		auto* pTransformGoc = in_rObj.GetComponent<fnd::GOCTransform>();
-		csl::math::Matrix34 transformMtx{ pTransformGoc->m_Frame.m_Unk3.m_Mtx };
+		csl::math::Matrix34 transformMtx{ pTransformGoc->Frame.Unk3.Mtx };
 
 		if (!Unk2)
 		{
@@ -188,7 +188,7 @@ namespace app
 				if (ObjUtil::RaycastNearestCollision(&output, *in_rObj.GetDocument(), transformMtx.GetTransVector(), to, 0xC992))
 				{
 					IsCollisionFound = true;
-					HitPoint = output.m_HitPoint;
+					HitPoint = output.HitPoint;
 					pAnimationGoc->ChangeAnimation(ms_pAnimationName);
 				}
 			}

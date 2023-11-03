@@ -49,7 +49,7 @@ namespace app
 			pCreateInfo = in_pInfo;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -63,14 +63,14 @@ namespace app
 				pTransform->SetLocalRotation(pCreateInfo->Mtx.GetRotation());
 			}
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjEggInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjEggInfo>(*in_pDocument);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->ModelContainer.Models[Type];
-				description.field_0C |= 0x400000u;
-				description.zOffset = -0.2f * pCreateInfo->ZIndex;
+				description.Model = pInfo->ModelContainer.Models[Type];
+				description.Unk2 |= 0x400000u;
+				description.ZOffset = -0.2f * pCreateInfo->ZIndex;
 
 				pVisualModel->Setup(description);
 				pVisualModel->SetLocalTranslation(ms_PositionOffset);
@@ -81,10 +81,10 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk8, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
 			}
@@ -140,10 +140,10 @@ namespace app
 			if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 			{
 				egg::EggCInfo createInfo{};
-				createInfo.Mtx = { pTransform->m_Frame.m_Unk3.m_Mtx * csl::math::Matrix34(0.0f, -3.0f, 0.0f) };
+				createInfo.Mtx = { pTransform->Frame.Unk3.Mtx * csl::math::Matrix34(0.0f, -3.0f, 0.0f) };
 				createInfo.Type = Type;
 				
-				if (!ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender))
+				if (!ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender))
 					egg::CreateEgg(*GetDocument(), createInfo);
 				
 				Kill();
@@ -165,8 +165,8 @@ namespace app
 			if (!pTransform)
 				return;
 
-			pTransform->SetLocalTranslation({ pTransform->m_Frame.m_Unk3.GetTranslation() + (colliShape->m_Transform.GetTransVector() - ColliPosition) });
-			ColliPosition = colliShape->m_Transform.GetTransVector();
+			pTransform->SetLocalTranslation({ pTransform->Frame.Unk3.GetTranslation() + (colliShape->Transform.GetTransVector() - ColliPosition) });
+			ColliPosition = colliShape->Transform.GetTransVector();
 		}
 		
 		void BoundCallback()
@@ -176,16 +176,16 @@ namespace app
 
 			if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 			{
-				csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+				csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 				csl::math::Vector3 rayFrom{ objectMtx * csl::math::Vector4(0.0f, 3.0f, 0.0f, 1.0f) };
 				csl::math::Vector3 rayTo{ objectMtx * csl::math::Vector4(0.0f, 10.0f, 0.0f, 1.0f) };
 
 				game::PhysicsRaycastOutput raycastOut{};
 				if (ObjUtil::RaycastNearestCollision(&raycastOut, *GetDocument(), rayFrom, rayTo, 0xC996) &&
-					raycastOut.m_pShape && (raycastOut.m_pShape->m_Unk3 & 0x4000) != 0)
+					raycastOut.pShape && (raycastOut.pShape->Unk3 & 0x4000) != 0)
 				{
-					ColliHandle = raycastOut.m_pShape;
-					ColliPosition = raycastOut.m_pShape->m_Transform.GetTransVector();
+					ColliHandle = raycastOut.pShape;
+					ColliPosition = raycastOut.pShape->Transform.GetTransVector();
 				}
 			}
 		}
@@ -275,7 +275,7 @@ namespace app
 
 					if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 					{
-						csl::math::Vector3 distance{ pPlayerInfo->Position - pTransform->m_Transform.m_Position };
+						csl::math::Vector3 distance{ pPlayerInfo->Position - pTransform->Transform.Position };
 						if (distance.squaredNorm() > 1000000.0f)
 							Kill();
 					}

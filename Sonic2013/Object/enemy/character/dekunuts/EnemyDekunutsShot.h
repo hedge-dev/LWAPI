@@ -47,7 +47,7 @@ namespace app
 			ObjUtil::SetPropertyLockonTarget(this);
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -66,8 +66,8 @@ namespace app
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pCreateInfo->ShotModel;
-				description.field_0C |= 0x400000;
+				description.Model = pCreateInfo->ShotModel;
+				description.Unk2 |= 0x400000;
 
 				pVisualGoc->Setup(description);
 			}
@@ -88,22 +88,22 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Unk3 = 0x20000;
-				collisionInfo.m_ShapeID = 0;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Unk3 = 0x20000;
+				collisionInfo.ShapeID = 0;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
 
 				collisionInfo = {};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_ShapeID = 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.ShapeID = 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk3, collisionInfo);
 
 				auto* pShape = pCollider->CreateShape(collisionInfo);
@@ -145,8 +145,8 @@ namespace app
 
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
-			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetTranslation(), true);
-			if (ObjUtil::CheckShapeUserID(in_rMessage.m_SenderShape, 0))
+			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->Frame.Unk3.GetTranslation(), true);
+			if (ObjUtil::CheckShapeUserID(in_rMessage.SenderShape, 0))
 				Damaged(in_rMessage);
 
 			return true;
@@ -154,7 +154,7 @@ namespace app
 
 		bool ProcMsgKick(xgame::MsgKick& in_rMessage)
 		{
-			if (!ObjUtil::CheckShapeUserID(in_rMessage.m_SenderShape, 0))
+			if (!ObjUtil::CheckShapeUserID(in_rMessage.SenderShape, 0))
 				return false;
 
 			in_rMessage.SetReplyForSucceed();
@@ -178,12 +178,12 @@ namespace app
 		{
 			if (!ObjUtil::CheckShapeUserID(in_rMessage.pTargetShape, 0) || Flags.test(FLAG_IS_DAMAGED))
 			{
-				in_rMessage.m_Flags.set(0);
+				in_rMessage.Flags.set(0);
 				return true;
 			}
 
-			in_rMessage.m_CursorPosition = GetComponent<game::GOCMovementComplex>()->GetContextParam()->Position;
-			in_rMessage.m_Flags.set(3);
+			in_rMessage.CursorPosition = GetComponent<game::GOCMovementComplex>()->GetContextParam()->Position;
+			in_rMessage.Flags.set(3);
 
 			return true;
 		}
@@ -195,17 +195,17 @@ namespace app
 
 			if (Flags.test(FLAG_IS_DAMAGED))
 			{
-				if (ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 1))
+				if (ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 1))
 				{
 					xgame::MsgDamage msg{ 2, 8, 2, in_rMessage, GetComponent<game::GOCMovementComplex>()->GetContextParam()->Velocity };
-					SendMessageImm(in_rMessage.m_Sender, msg);
+					SendMessageImm(in_rMessage.Sender, msg);
 				}
 
 				Flags.reset(FLAG_IS_EXPLODING);
 			}
 
 			xgame::MsgDamage msg{ 2, 8, 1, in_rMessage, GetComponent<game::GOCMovementComplex>()->GetContextParam()->Velocity };
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 
 			return true;
 		}
@@ -234,7 +234,7 @@ namespace app
 
 		void Damaged(xgame::MsgDamageBase& in_rMessage)
 		{
-			if (in_rMessage.m_SenderType != 1)
+			if (in_rMessage.SenderType != 1)
 				return;
 
 			if (!ObjUtil::GetPlayerInformation(*GetDocument(), in_rMessage.PlayerNo))

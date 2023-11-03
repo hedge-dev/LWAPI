@@ -12,10 +12,10 @@ namespace app
 
 	inline EggManager::EggManager() : fnd::GameService(0)
 	{
-		m_pClass = &EGG_MANAGER;
+		pClass = &EGG_MANAGER;
 	}
 
-	inline void EggManager::StartGame(bool a1)
+	inline void EggManager::StartGame(bool in_a1)
 	{
 		Loci.clear();
 		Loci.set_capacity(egg::GetMaxLocusPositionNum());
@@ -28,7 +28,7 @@ namespace app
 
 	inline void EggManager::Update(const fnd::SUpdateInfo& in_rUpdateInfo)
 	{
-		UpdateLocusPos(in_rUpdateInfo.deltaTime);
+		UpdateLocusPos(in_rUpdateInfo.DeltaTime);
 		UpdateEggSpace();
 		DoCheckReleaseAllEgg();
 		DoCheckClearAllEggEndExtrication();
@@ -111,7 +111,7 @@ namespace app
 
 	inline void EggManager::DoCheckReleaseAllEgg()
 	{
-		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*m_pOwnerDocument, 0);
+		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pOwnerDocument, 0);
 		if (!pPlayerInfo)
 			return;
 
@@ -235,7 +235,7 @@ namespace app
 	inline void EggManager::UpdateEggSpace()
 	{
 		SpaceShrinkFlags.reset(2);
-		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*m_pOwnerDocument, 0);
+		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pOwnerDocument, 0);
 		if (pPlayerInfo && pPlayerInfo->IsLandOnMovableGround)
 		{
 			SubSpaceCount();
@@ -254,7 +254,7 @@ namespace app
 
 	inline void EggManager::UpdateLocusPos(float in_delta)
 	{
-		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*m_pOwnerDocument, 0);
+		auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pOwnerDocument, 0);
 		if (!pPlayerInfo)
 			return;
 

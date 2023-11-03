@@ -5,9 +5,9 @@ namespace app::ObjCrystalFloorBaseUtil
 	inline void CreateUpDebris(const math::CalculatedTransform& in_rTransform, const csl::math::Vector3 in_rUnk1, const debris::ResRandomSpaceDebris& in_rDebris, GameDocument* in_pDocument)
 	{
 		debris::SRandomSpaceDebrisInfo debrisInfo{};
-		debrisInfo.Transform.m_Position = { in_rTransform.GetTranslation() - (math::Vector3Rotate(in_rTransform.GetRotationQuaternion(), { csl::math::Vector3::UnitY() }) * 20.0f) };
+		debrisInfo.Transform.Position = { in_rTransform.GetTranslation() - (math::Vector3Rotate(in_rTransform.GetRotationQuaternion(), { csl::math::Vector3::UnitY() }) * 20.0f) };
 		debrisInfo.Transform.SetFlag(1);
-		debrisInfo.Transform.m_Rotation = in_rTransform.GetRotationQuaternion();
+		debrisInfo.Transform.Rotation = in_rTransform.GetRotationQuaternion();
 		debrisInfo.Transform.SetFlag(1);
 		debrisInfo.Unk1 = 400.0f;
 		debrisInfo.Unk2 = 2.0f;
@@ -21,7 +21,7 @@ namespace app::ObjCrystalFloorBaseUtil
 		debrisInfo.Unk10 = 0.0f;
 		debrisInfo.Unk11 = 20.0f;
 		debrisInfo.Unk4.set(1);
-		debrisInfo.field_80 = debrisInfo.Transform.m_Position;
+		debrisInfo.field_80 = debrisInfo.Transform.Position;
 		debrisInfo.Unk9 = 1.0f;
 		debrisInfo.SetModelRes(in_rDebris, 24);
 		debrisInfo.Unk14 = 3;
@@ -34,9 +34,9 @@ namespace app::ObjCrystalFloorBaseUtil
 	inline void CreateDownDebris(const math::CalculatedTransform& in_rTransform, const csl::math::Vector3 in_rUnk1, const debris::ResRandomSpaceDebris& in_rDebris, GameDocument* in_pDocument)
 	{
 		debris::SRandomSpaceDebrisInfo debrisInfo{};
-		debrisInfo.Transform.m_Position = in_rTransform.GetTranslation();
+		debrisInfo.Transform.Position = in_rTransform.GetTranslation();
 		debrisInfo.Transform.SetFlag(1);
-		debrisInfo.Transform.m_Rotation = in_rTransform.GetRotationQuaternion();
+		debrisInfo.Transform.Rotation = in_rTransform.GetRotationQuaternion();
 		debrisInfo.Transform.SetFlag(1);
 		debrisInfo.Unk1 = 60.0f;
 		debrisInfo.Unk2 = 2.0f;
@@ -50,7 +50,7 @@ namespace app::ObjCrystalFloorBaseUtil
 		debrisInfo.Unk10 = 0.0f;
 		debrisInfo.Unk11 = 5.0f;
 		debrisInfo.Unk4.set(1);
-		debrisInfo.field_80 = debrisInfo.Transform.m_Position;
+		debrisInfo.field_80 = debrisInfo.Transform.Position;
 		debrisInfo.Unk9 = 1.0f;
 		debrisInfo.SetModelRes(in_rDebris, 24);
 		debrisInfo.Unk14 = 3;

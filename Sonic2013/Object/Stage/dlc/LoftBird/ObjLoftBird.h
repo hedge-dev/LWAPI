@@ -57,11 +57,11 @@ namespace app
 	public:
 		ObjLoftBird() : CSetObjectListener()
 		{
-			Listener.m_Timing = 2;
+			Listener.Timing = 2;
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualContainer>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationContainer>(*this);
@@ -76,7 +76,7 @@ namespace app
 			if (pParam->PointLight >= 0 && pParam->PointLight <= 1)
 				PointLightType = pParam->PointLight;
 		
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjLoftBirdInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjLoftBirdInfo>(*in_pDocument);
 
 			if (auto* pVisualContainerGoc = GetComponent<fnd::GOCVisualContainer>())
 			{
@@ -87,8 +87,8 @@ namespace app
 					auto* pVisualGoc = fnd::GOComponent::CreateSingle<fnd::GOCVisualModel>(*this);
 
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ModelContainer.Models[i];
-					description.m_Skeleton = pInfo->SkeletonContainer.Skeletons[i];
+					description.Model = pInfo->ModelContainer.Models[i];
+					description.Skeleton = pInfo->SkeletonContainer.Skeletons[i];
 
 					pVisualGoc->Setup(description);
 					pVisualContainerGoc->Add(pVisualGoc);
@@ -104,7 +104,7 @@ namespace app
 					{
 						pAnimationScriptGoc->Setup({ &pInfo->LinkAnimationContainer });
 						pAnimationContainerGoc->Add(pAnimationScriptGoc);
-						static_cast<fnd::GOCVisualModel*>(pVisualContainerGoc->m_Visuals[0])->AttachAnimation(pAnimationScriptGoc);
+						static_cast<fnd::GOCVisualModel*>(pVisualContainerGoc->Visuals[0])->AttachAnimation(pAnimationScriptGoc);
 						pAnimationScriptGoc->SetAnimation(ms_pLinkDefaultAnimationName);
 
 						pAnimationScriptGoc->RegisterCallback(-1, animation::CreateAnimCallback<ObjLoftBird>(this, &app::ObjLoftBird::AnimationChangeCallback, GetAllocator()));
@@ -114,7 +114,7 @@ namespace app
 					{
 						pAnimationScriptGoc->Setup({ &pInfo->LoftBirdAnimationContainer });
 						pAnimationContainerGoc->Add(pAnimationScriptGoc);
-						static_cast<fnd::GOCVisualModel*>(pVisualContainerGoc->m_Visuals[1])->AttachAnimation(pAnimationScriptGoc);
+						static_cast<fnd::GOCVisualModel*>(pVisualContainerGoc->Visuals[1])->AttachAnimation(pAnimationScriptGoc);
 						pAnimationScriptGoc->SetAnimation(ms_pLoftBirdDefaultAnimationName);
 
 						pAnimationScriptGoc->RegisterCallback(0, animation::CreateAnimCallback<ObjLoftBird>(this, &app::ObjLoftBird::SoundCallback, GetAllocator()));
@@ -144,8 +144,8 @@ namespace app
 			if (auto* pCollider = GetComponent<game::GOCSphereCollider>())
 			{
 				game::GOCSphereColliderCinfo collisionInfo{};
-				collisionInfo.m_Radius = ms_CollisionRadius;
-				collisionInfo.m_Unk9 = 1;
+				collisionInfo.Radius = ms_CollisionRadius;
+				collisionInfo.Unk9 = 1;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk2, collisionInfo);
 
 				pCollider->Setup(collisionInfo);
@@ -202,8 +202,8 @@ namespace app
 				return true;
 
 			auto* pVisualContainer = GetComponent<fnd::GOCVisualContainer>();
-			for (size_t i = 0; i < pVisualContainer->m_Visuals.size(); i++)
-				pVisualContainer->m_Visuals[i]->SetVisible(true);
+			for (size_t i = 0; i < pVisualContainer->Visuals.size(); i++)
+				pVisualContainer->Visuals[i]->SetVisible(true);
 
 			game::SoundFollowFrameInfo followInfo{};
 			followInfo.TransType = 1;
@@ -301,7 +301,7 @@ namespace app
 		void UpdateNodeTransform()
 		{
 			auto* pVisualContainer = GetComponent<fnd::GOCVisualContainer>();
-			auto* pLoftBirdVisualGoc = pVisualContainer->m_Visuals[1];
+			auto* pLoftBirdVisualGoc = pVisualContainer->Visuals[1];
 			if (!pLoftBirdVisualGoc)
 				return;
 
@@ -309,7 +309,7 @@ namespace app
 			if (!static_cast<fnd::GOCVisualModel*>(pLoftBirdVisualGoc)->GetNodeTransform(1, "Const_link", &transform))
 				return;
 
-			auto* pLinkVisualGoc = pVisualContainer->m_Visuals[0];
+			auto* pLinkVisualGoc = pVisualContainer->Visuals[0];
 			if (pLinkVisualGoc)
 				static_cast<fnd::GOCVisualModel*>(pLinkVisualGoc)->SetNodeTransform(1, "Reference", transform);
 
@@ -326,14 +326,14 @@ namespace app
 				if (!pLightTransform)
 					continue;
 
-				pLightTransform->SetLocalTranslation({ transform.m_Position + math::Vector3Rotate(transform.m_Rotation, ms_PointLightOffsets[2 * PointLightType + i]) });
+				pLightTransform->SetLocalTranslation({ transform.Position + math::Vector3Rotate(transform.Rotation, ms_PointLightOffsets[2 * PointLightType + i]) });
 			}
 		}
 
 		void CreatePointLight()
 		{
 			auto* pVisualContainerGoc = GetComponent<fnd::GOCVisualContainer>();
-			auto* pLoftBirdVisualGoc = pVisualContainerGoc->m_Visuals[1];
+			auto* pLoftBirdVisualGoc = pVisualContainerGoc->Visuals[1];
 			if (!pLoftBirdVisualGoc)
 				return;
 
@@ -341,7 +341,7 @@ namespace app
 			if (!static_cast<fnd::GOCVisualModel*>(pLoftBirdVisualGoc)->GetNodeTransform(1, "Const_link", &transform))
 				return;
 
-			auto* pLinkVisualGoc = pVisualContainerGoc->m_Visuals[0];
+			auto* pLinkVisualGoc = pVisualContainerGoc->Visuals[0];
 			if (!pLinkVisualGoc)
 				return;
 
@@ -350,7 +350,7 @@ namespace app
 				if (!PointLights[i].IsValid())
 				{
 					ObjectPartPointLight::CInfo createInfo{};
-					createInfo.Position = { transform.m_Position + math::Vector3Rotate(transform.m_Rotation, ms_PointLightOffsets[2 * PointLightType + i]) };
+					createInfo.Position = { transform.Position + math::Vector3Rotate(transform.Rotation, ms_PointLightOffsets[2 * PointLightType + i]) };
 					createInfo.Unk1 = ms_PointLightUnkValues[2 * PointLightType + i];
 					createInfo.LifeTime = -1.0f;
 					createInfo.pParentTransform = GetComponent<fnd::GOCTransform>();

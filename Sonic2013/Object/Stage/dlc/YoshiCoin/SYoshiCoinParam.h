@@ -24,10 +24,10 @@ namespace app
 		EventType EventType;
 	};
 
-	static void paramMap_ObjYoshiCoin(SetEd::CResClass rClass)
+	static void paramMap_ObjYoshiCoin(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjYoshiCoin, ASLR(0x00616D70), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjYoshiCoin, ASLR(0x00616D70), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjYoshiCoin(rClass);
+		fpparamMap_ObjYoshiCoin(in_rClass);
 	}
 }

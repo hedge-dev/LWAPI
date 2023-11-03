@@ -71,7 +71,7 @@ namespace app
 
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationScript>(*this);
@@ -87,7 +87,7 @@ namespace app
 
 			MoveRange = GetSpawner()->MoveRange;
 			
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjCoccoInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjCoccoInfo>(*in_pDocument);
 
 			if (Type == ActionType::eActionType_Attack)
 				GetComponent<fnd::GOCTransform>()->SetLocalTranslationAndRotation(CreateInfo.Position, CreateInfo.Rotation);
@@ -95,8 +95,8 @@ namespace app
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_0C |= 0x400000;
 
 				pVisualGoc->Setup(description);
@@ -115,13 +115,13 @@ namespace app
 			{
 				pColliderGoc->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 = 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 = 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Default, collisionInfo);
 				if (Type == ActionType::eActionType_Idle)
-					collisionInfo.m_Unk3 = 0x20000;
+					collisionInfo.Unk3 = 0x20000;
 
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				pColliderGoc->CreateShape(collisionInfo);
@@ -165,7 +165,7 @@ namespace app
 			InitFSM();
 		}
 
-		void RemoveCallback(GameDocument& in_rDocument) override
+		void RemoveCallback(GameDocument* in_pDocument) override
 		{
 			ShutdownFSM();
 		}
@@ -191,7 +191,7 @@ namespace app
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
 			DispatchFSM(TiFsmEvent_t::CreateMessage(in_rMessage));
-			in_rMessage.SetReply(in_rMessage.m_Unk2, --HealthPoint);
+			in_rMessage.SetReply(in_rMessage.Unk2, --HealthPoint);
 			Flags.set(5);
 
 			return true;
@@ -208,12 +208,12 @@ namespace app
 		{
 			if (HealthPoint <= 0)
 			{
-				in_rMessage.m_Flags.set(0);
+				in_rMessage.Flags.set(0);
 				return true;
 			}
 
-			in_rMessage.m_LockonCount = HealthPoint;
-			in_rMessage.m_CursorPosition = { GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx * csl::math::Vector4(ms_CursorOffset, 1.0f) };
+			in_rMessage.LockonCount = HealthPoint;
+			in_rMessage.CursorPosition = { GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx * csl::math::Vector4(ms_CursorOffset, 1.0f) };
 
 			return true;
 		}
@@ -362,10 +362,10 @@ namespace app
 				{
 					xgame::MsgDamage& message = static_cast<xgame::MsgDamage&>(in_rEvent.getMessage());
 
-					DamageJump(message.m_Unk3);
-					HealthPoint -= message.m_Damage;
+					DamageJump(message.Unk3);
+					HealthPoint -= message.Damage;
 
-					message.m_Handled = true;
+					message.Handled = true;
 
 					break;
 				}
@@ -373,10 +373,10 @@ namespace app
 				{
 					xgame::MsgKick& message = static_cast<xgame::MsgKick&>(in_rEvent.getMessage());
 
-					DamageJump(message.m_Unk3);
+					DamageJump(message.Unk3);
 					HealthPoint--;
 
-					message.m_Handled = true;
+					message.Handled = true;
 
 					break;
 				}
@@ -428,14 +428,14 @@ namespace app
 					auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 					if (pPlayerInfo)
 					{
-						if (fabs(pPlayerInfo->Position.z() - GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetTranslation().z() > 100.0f))
+						if (fabs(pPlayerInfo->Position.z() - GetComponent<fnd::GOCTransform>()->Frame.Unk3.GetTranslation().z() > 100.0f))
 							Kill();
 					}
 				}
 
 				if (Flags.test(0))
 				{
-					csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+					csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx };
 
 					Flags.reset(0);
 
@@ -466,9 +466,9 @@ namespace app
 					xgame::MsgHitEventCollision& message = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage());
 					
 					xgame::MsgDamage damageMsg{ 3, 8, 3, message, *csl::math::Vector3::Zero };
-					SendMessageImm(message.m_Sender, damageMsg);
+					SendMessageImm(message.Sender, damageMsg);
 
-					message.m_Handled = true;
+					message.Handled = true;
 
 					break;
 				}
@@ -572,9 +572,9 @@ namespace app
 					xgame::MsgHitEventCollision& message = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage());
 
 					xgame::MsgDamage damageMsg{ 3, 8, 3, message, *csl::math::Vector3::Zero };
-					SendMessageImm(message.m_Sender, damageMsg);
+					SendMessageImm(message.Sender, damageMsg);
 
-					message.m_Handled = true;
+					message.Handled = true;
 
 					break;
 				}
@@ -630,7 +630,7 @@ namespace app
 
 		void SetTargetOnCircle()
 		{
-			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx };
 
 			float random = SonicUSA::System::Random::GetInstance()->genrand_float32();
 			float rotationAngle = SonicUSA::System::RadianMaskS(random * MATHF_PI + (RotationAngle + MATHF_PI / 2.0f));
@@ -645,7 +645,7 @@ namespace app
 	
 		void SetTargetPlayer()
 		{
-			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx };
 			csl::math::Vector3 upVector{ transformMtx.GetColumn(1) };
 			csl::math::Vector3 frontVector{ transformMtx.GetColumn(2) };
 
@@ -693,15 +693,15 @@ namespace app
 
 		bool IsInCamera() const
 		{
-			auto* pCamera = GetDocument()->m_pWorld->GetCamera(0);
+			auto* pCamera = GetDocument()->pWorld->GetCamera(0);
 
 			csl::math::Vector3 ndc{};
-			return pCamera->TransformNDC(ndc, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetTranslation()) && fabs(ndc.x()) < 1.1f && fabs(ndc.y()) < 1.1f;
+			return pCamera->TransformNDC(ndc, GetComponent<fnd::GOCTransform>()->Frame.Unk3.GetTranslation()) && fabs(ndc.x()) < 1.1f && fabs(ndc.y()) < 1.1f;
 		}
 
 		void DamageJump(const csl::math::Vector3& in_rDamagePosition)
 		{
-			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx };
+			csl::math::Matrix34 transformMtx{ GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx };
 			csl::math::Vector3 upVector{ transformMtx.GetColumn(1) };
 
 			csl::math::Vector3 jumpDistance{ in_rDamagePosition - upVector * in_rDamagePosition.dot(upVector) };
@@ -713,12 +713,12 @@ namespace app
 			GetComponent<game::GOCAnimationScript>()->ChangeAnimation(ms_pDamageAnimationName);
 
 			game::EffectCreateInfo effectCreateInfo{};
-			effectCreateInfo.m_Unk1 = 1.0f;
-			effectCreateInfo.m_Unk2 = 1;
-			effectCreateInfo.m_pName = ms_pEffectName;
-			effectCreateInfo.m_pVisual = GetComponent<fnd::GOCVisualModel>();
-			effectCreateInfo.m_pBoneName = ms_pEffectNodeName;
-			effectCreateInfo.m_Unk9 = -1;
+			effectCreateInfo.Unk1 = 1.0f;
+			effectCreateInfo.Unk2 = 1;
+			effectCreateInfo.pName = ms_pEffectName;
+			effectCreateInfo.pVisual = GetComponent<fnd::GOCVisualModel>();
+			effectCreateInfo.pBoneName = ms_pEffectNodeName;
+			effectCreateInfo.Unk9 = -1;
 
 			GetComponent<game::GOCEffect>()->CreateEffectEx(effectCreateInfo);
 
@@ -731,7 +731,7 @@ namespace app
 			if (!pPlayerInfo)
 				return;
 		
-			csl::math::Matrix34 cameraInvMtx{ GetDocument()->m_pWorld->GetCamera(0)->GetInvViewMatrix() };
+			csl::math::Matrix34 cameraInvMtx{ GetDocument()->pWorld->GetCamera(0)->GetInvViewMatrix() };
 			
 			csl::math::Vector3 rightVector{ -cameraInvMtx.GetColumn(0) };
 			csl::math::Vector3 downVector{ -cameraInvMtx.GetColumn(1) };
@@ -787,7 +787,7 @@ namespace app
 					continue;
 
 				CInfo createInfo{};
-				createInfo.Position = { output.m_HitPoint - downVector * 10.0f };
+				createInfo.Position = { output.HitPoint - downVector * 10.0f };
 				createInfo.Rotation = rotation;
 				createInfo.pSpawner = GetSpawner();
 				createInfo.Unk1 = i;

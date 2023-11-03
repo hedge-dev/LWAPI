@@ -79,7 +79,7 @@ namespace app
 	inline bool EnemyPiranhaPlant::State::Idle::ProcMsgDamage(EnemyPiranhaPlant& in_rObj, xgame::MsgDamage& in_rMessage)
 	{
 		in_rObj.PlayerNo = in_rMessage.PlayerNo;
-		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->m_Unk3.GetTranslation(), true);
+		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->Unk3.GetTranslation(), true);
 		ChangeState(in_rObj, 4);
 
 		return true;
@@ -116,7 +116,7 @@ namespace app
 	inline bool EnemyPiranhaPlant::State::ShiftAttack::ProcMsgDamage(EnemyPiranhaPlant& in_rObj, xgame::MsgDamage& in_rMessage)
 	{
 		in_rObj.PlayerNo = in_rMessage.PlayerNo;
-		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->m_Unk3.GetTranslation(), true);
+		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->Unk3.GetTranslation(), true);
 		ChangeState(in_rObj, 4);
 
 		return true;
@@ -152,10 +152,10 @@ namespace app
 
 		auto* pTransform = in_rObj.GetComponent<fnd::GOCTransform>();
 		
-		auto up = pTransform->m_Frame.m_Unk3.m_Mtx.GetColumn(1);
-		auto front = pTransform->m_Frame.m_Unk3.m_Mtx.GetColumn(2);
+		auto up = pTransform->Frame.Unk3.Mtx.GetColumn(1);
+		auto front = pTransform->Frame.Unk3.Mtx.GetColumn(2);
 
-		auto position = in_rObj.GetCenterPositionFrame()->m_Unk3.GetTranslation();
+		auto position = in_rObj.GetCenterPositionFrame()->Unk3.GetTranslation();
 		csl::math::Vector3 offset{ targetCenter - position };
 		math::Vector3NormalizeZero(offset, &offset);
 
@@ -180,7 +180,7 @@ namespace app
 	inline bool EnemyPiranhaPlant::State::Attack::ProcMsgDamage(EnemyPiranhaPlant& in_rObj, xgame::MsgDamage& in_rMessage)
 	{
 		in_rObj.PlayerNo = in_rMessage.PlayerNo;
-		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->m_Unk3.GetTranslation(), true);
+		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->Unk3.GetTranslation(), true);
 		ChangeState(in_rObj, 4);
 
 		return true;
@@ -226,7 +226,7 @@ namespace app
 	inline bool EnemyPiranhaPlant::State::ShiftIdle::ProcMsgDamage(EnemyPiranhaPlant& in_rObj, xgame::MsgDamage& in_rMessage)
 	{
 		in_rObj.PlayerNo = in_rMessage.PlayerNo;
-		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->m_Unk3.GetTranslation(), true);
+		in_rMessage.SetReply(in_rObj.GetCenterPositionFrame()->Unk3.GetTranslation(), true);
 		ChangeState(in_rObj, 4);
 
 		return true;
@@ -299,7 +299,7 @@ namespace app
 		}
 		case SubState::eSubState_Dead:
 		{
-			auto trsMatrix = in_rObj.GetCenterPositionFrame()->m_Unk3.m_Mtx;
+			auto trsMatrix = in_rObj.GetCenterPositionFrame()->Unk3.Mtx;
 			auto position = trsMatrix.GetTransVector();
 			ObjUtil::AddScore(in_rObj, "PIRANHAPLANT", (int)in_rObj.PlayerNo, position);
 
@@ -312,7 +312,7 @@ namespace app
 			auto* pVisualModel = in_rObj.GetComponent<fnd::GOCVisualModel>();
 			if (pVisualModel && pVisualModel->GetNodeTransform(1, "Mouth", &transform))
 			{
-				transform.m_Position *= 0.2f;
+				transform.Position *= 0.2f;
 				transform.SetFlag(1);
 
 				auto mouthMatrix = transform.GetTransformMatrix();

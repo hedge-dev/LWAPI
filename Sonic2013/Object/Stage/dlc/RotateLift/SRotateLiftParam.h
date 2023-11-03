@@ -11,10 +11,10 @@ namespace app
 		bool isEventDriven;
 	};
 
-	static void paramMap_ObjRotateLift(SetEd::CResClass rClass)
+	static void paramMap_ObjRotateLift(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjRotateLift, ASLR(0x00616BE0), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjRotateLift, ASLR(0x00616BE0), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjRotateLift(rClass);
+		fpparamMap_ObjRotateLift(in_rClass);
 	}
 }

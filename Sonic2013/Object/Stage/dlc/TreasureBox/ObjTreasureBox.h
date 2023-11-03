@@ -68,10 +68,10 @@ namespace app
 	public:
 		ObjTreasureBox() : CSetObjectListener(), TTinyFsm<ObjTreasureBox>(&ObjTreasureBox::StateInitialize)
 		{
-			AnimListener.m_Timing = 2;
+			AnimListener.Timing = 2;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			ItemType = (EItemType)GetAdapter()->GetData<STreasureBoxParam>()->ItemType;
 			
@@ -85,11 +85,11 @@ namespace app
 			fnd::GOComponent::BeginSetup(*this);
 
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
-			TransformMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
-			pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+			TransformMtx = pTransform->Frame.Unk3.Mtx;
+			pTransform->Frame.Unk3.GetRotationQuaternion();
 
-			auto* pTreasureBoxInfo = ObjUtil::GetObjectInfo<ObjTreasureBoxInfo>(in_rDocument);
-			auto* pPopupItemInfo = ObjUtil::GetObjectInfo<ObjZeldaPopupItemInfo>(in_rDocument);
+			auto* pTreasureBoxInfo = ObjUtil::GetObjectInfo<ObjTreasureBoxInfo>(*in_pDocument);
+			auto* pPopupItemInfo = ObjUtil::GetObjectInfo<ObjZeldaPopupItemInfo>(*in_pDocument);
 
 			if (auto* pVisualContainerGoc = GetComponent<fnd::GOCVisualContainer>())
 			{
@@ -98,8 +98,8 @@ namespace app
 				if (auto* pVisualGoc = pVisualContainerGoc->CreateSingle<fnd::GOCVisualModel>(*this))
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pTreasureBoxInfo->Model;
-					description.m_Skeleton = pTreasureBoxInfo->Skeleton;
+					description.Model = pTreasureBoxInfo->Model;
+					description.Skeleton = pTreasureBoxInfo->Skeleton;
 				
 					pVisualGoc->Setup(description);
 					pVisualGoc->SetLocalScale(ms_ChestScale);
@@ -124,16 +124,16 @@ namespace app
 					switch (ItemType)
 					{
 					case app::ObjTreasureBox::eItemType_HeartContainer:
-						description.m_Model = pTreasureBoxInfo->HeartContainerModel;
+						description.Model = pTreasureBoxInfo->HeartContainerModel;
 						break;
 					case app::ObjTreasureBox::eItemType_RupeePurple:
-						description.m_Model = pPopupItemInfo->Models[3];
+						description.Model = pPopupItemInfo->Models[3];
 						break;
 					case app::ObjTreasureBox::eItemType_RupeeGold:
-						description.m_Model = pPopupItemInfo->Models[4];
+						description.Model = pPopupItemInfo->Models[4];
 						break;
 					default:
-						description.m_Model = pPopupItemInfo->Models[0];
+						description.Model = pPopupItemInfo->Models[0];
 						break;
 					}
 
@@ -152,24 +152,24 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo interactCollisionInfo{};
-				interactCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				interactCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				interactCollisionInfo.m_ShapeID = 0;
-				interactCollisionInfo.m_Unk2 |= 1;
-				interactCollisionInfo.m_Size = { ms_InteractCollisionSize * ms_ChestScale.y() };
+				interactCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				interactCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				interactCollisionInfo.ShapeID = 0;
+				interactCollisionInfo.Unk2 |= 1;
+				interactCollisionInfo.Size = { ms_InteractCollisionSize * ms_ChestScale.y() };
 				interactCollisionInfo.SetLocalPosition({ 0.0f, 10.0f * ms_ChestScale.y(), 0.0f });
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, interactCollisionInfo);
 				pColliderGoc->CreateShape(interactCollisionInfo);
 			
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_ShapeID = 1;
-				collisionInfo.m_Unk2 |= 0x100;
-				collisionInfo.m_Size = { ms_CollisionSize * ms_ChestScale.y() };
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.ShapeID = 1;
+				collisionInfo.Unk2 |= 0x100;
+				collisionInfo.Size = { ms_CollisionSize * ms_ChestScale.y() };
 				collisionInfo.SetLocalPosition({ 0.0f, 8.6f * ms_ChestScale.y(), 0.0f });
-				collisionInfo.m_Flags = 2;
-				collisionInfo.m_Unk3 = 3;
+				collisionInfo.Flags = 2;
+				collisionInfo.Unk3 = 3;
 				pColliderGoc->CreateShape(collisionInfo);
 			}
 
@@ -241,7 +241,7 @@ namespace app
 
 		bool GetNodeTransform(const char* in_pNodeName, math::Transform* out_pTransform)
 		{
-			return static_cast<fnd::GOCVisualModel*>(GetComponent<fnd::GOCVisualContainer>()->m_Visuals[0])->GetNodeTransform(0, in_pNodeName, out_pTransform);
+			return static_cast<fnd::GOCVisualModel*>(GetComponent<fnd::GOCVisualContainer>()->Visuals[0])->GetNodeTransform(0, in_pNodeName, out_pTransform);
 		}
 
 		bool IsPlayerPhantom()
@@ -257,7 +257,7 @@ namespace app
 
 			if (rpCamera = new Camera::TreasureBoxCamera())
 			{
-				rpCamera->SetCameraParameter(CameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), CameraLookAt);
+				rpCamera->SetCameraParameter(CameraPosition, GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx.GetColumn(1), CameraLookAt);
 				rpCamera->SetFovy(35.0f);
 			}
 
@@ -281,14 +281,14 @@ namespace app
 			
 			math::Transform cameraTransform{};
 			if (GetNodeTransform(ms_pCameraNodeName, &cameraTransform))
-				cameraPosition = cameraTransform.m_Position;
+				cameraPosition = cameraTransform.Position;
 
 			math::Transform lookAtTransform{};
 			if (GetNodeTransform(ms_pCameraLookAtNodeName, &lookAtTransform))
-				lookAtPosition = lookAtTransform.m_Position;
+				lookAtPosition = lookAtTransform.Position;
 
 			if (rpCamera)
-				rpCamera->SetCameraParameter(cameraPosition, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx.GetColumn(1), lookAtPosition);
+				rpCamera->SetCameraParameter(cameraPosition, GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx.GetColumn(1), lookAtPosition);
 		}
 
 		void ChangeState(TiFsmState_t in_state)
@@ -305,10 +305,10 @@ namespace app
 				math::Transform transform{};
 
 				if (GetNodeTransform(ms_pCameraNodeName, &transform))
-					CameraPosition = transform.m_Position;
+					CameraPosition = transform.Position;
 
 				if (GetNodeTransform(ms_pCameraLookAtNodeName, &transform))
-					CameraLookAt = transform.m_Position;
+					CameraLookAt = transform.Position;
 
 				break;
 			}
@@ -343,21 +343,21 @@ namespace app
 				auto& message = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage());
 
 				xgame::MsgCatchPlayer catchMsg{};
-				catchMsg.m_Unk2 = TransformMtx;
-				catchMsg.m_Unk3 = 19;
-				catchMsg.m_Unk4 = false;
+				catchMsg.Unk2 = TransformMtx;
+				catchMsg.Unk3 = 19;
+				catchMsg.Unk4 = false;
 
-				auto playerNo = ObjUtil::GetPlayerNo(*GetDocument(), message.m_Sender);
+				auto playerNo = ObjUtil::GetPlayerNo(*GetDocument(), message.Sender);
 				if (playerNo < 0)
 				{
-					message.m_Handled = true;
+					message.Handled = true;
 					break;
 				}
 
-				catchMsg.m_Unk1.set(5);
-				if (!ObjUtil::SendMessageImmToPlayer(*this, playerNo, catchMsg) && !catchMsg.m_Unk4)
+				catchMsg.Unk1.set(5);
+				if (!ObjUtil::SendMessageImmToPlayer(*this, playerNo, catchMsg) && !catchMsg.Unk4)
 				{
-					message.m_Handled = true;
+					message.Handled = true;
 					break;
 				}
 
@@ -390,7 +390,7 @@ namespace app
 
 				ChangeState(&ObjTreasureBox::StateOpen_ControlCamera);
 				
-				message.m_Handled = true;
+				message.Handled = true;
 				
 				return {};
 			}
@@ -447,14 +447,14 @@ namespace app
 				float frame = pAnimationGoc->GetFrame();
 				if (frame >= 460.0f)
 				{
-					GetComponent<fnd::GOCVisualContainer>()->m_Visuals[1]->SetVisible(true);
+					GetComponent<fnd::GOCVisualContainer>()->Visuals[1]->SetVisible(true);
 					GetComponent<game::GOCSound>()->Play(ms_pItemGetSoundName, 0.0f);
 
 					game::EffectCreateInfo effectInfo{};
-					effectInfo.m_pName = ms_pItemGetTwinkleEffectName;
-					effectInfo.m_Unk1 = ms_ItemGetTwinkleEffectScale;
-					effectInfo.m_Position = ms_TwinklePositionOffset;
-					effectInfo.m_Unk3 = true;
+					effectInfo.pName = ms_pItemGetTwinkleEffectName;
+					effectInfo.Unk1 = ms_ItemGetTwinkleEffectScale;
+					effectInfo.Position = ms_TwinklePositionOffset;
+					effectInfo.Unk3 = true;
 
 					GetComponent<game::GOCEffect>()->CreateEffectEx(effectInfo);
 
@@ -488,7 +488,7 @@ namespace app
 			{
 				ElapsedTime += in_rEvent.getFloat();
 
-				auto* pItemVisualGoc = static_cast<fnd::GOCVisualTransformed*>(GetComponent<fnd::GOCVisualContainer>()->m_Visuals[1]);
+				auto* pItemVisualGoc = static_cast<fnd::GOCVisualTransformed*>(GetComponent<fnd::GOCVisualContainer>()->Visuals[1]);
 				pItemVisualGoc->SetLocalRotation({ Eigen::AngleAxisf(2.2689281f * ElapsedTime, csl::math::Vector3::UnitY()) });
 
 				if (!GetComponent<game::GOCAnimationSimple>()->IsFinished())
@@ -496,8 +496,8 @@ namespace app
 				
 				auto* pTransform = GetComponent<fnd::GOCTransform>();
 
-				auto rotation = csl::math::QuaternionMultiply(pTransform->m_Frame.m_Unk3.GetRotationQuaternion(), csl::math::Quaternion(Eigen::AngleAxisf(MATHF_PI, csl::math::Vector3::UnitY())));
-				TransformMtx = math::Matrix34AffineTransformation({ pTransform->m_Frame.m_Unk3.m_Mtx * csl::math::Vector4(0.0f, 0.0f, 10.0f, 1.0f) }, csl::math::QuaternionNormalize(rotation));
+				auto rotation = csl::math::QuaternionMultiply(pTransform->Frame.Unk3.GetRotationQuaternion(), csl::math::Quaternion(Eigen::AngleAxisf(MATHF_PI, csl::math::Vector3::UnitY())));
+				TransformMtx = math::Matrix34AffineTransformation({ pTransform->Frame.Unk3.Mtx * csl::math::Vector4(0.0f, 0.0f, 10.0f, 1.0f) }, csl::math::QuaternionNormalize(rotation));
 
 				ChangeState(&ObjTreasureBox::StateOpen_End);
 
@@ -553,8 +553,8 @@ namespace app
 				}
 
 				auto* pVisualContainerGoc = GetComponent<fnd::GOCVisualContainer>();
-				pVisualContainerGoc->m_Visuals[1]->SetVisible(false);
-				pVisualContainerGoc->m_Visuals[0]->SetVisible(false);
+				pVisualContainerGoc->Visuals[1]->SetVisible(false);
+				pVisualContainerGoc->Visuals[0]->SetVisible(false);
 
 				GetComponent<game::GOCEffect>()->CreateEffect(ms_pVanishEffectName);
 
@@ -588,7 +588,7 @@ namespace app
 					break;
 
 				auto& message = static_cast<xgame::MsgGetExternalMovePosition&>(in_rEvent.getMessage());
-				message.m_Handled = true;
+				message.Handled = true;
 				ElapsedTime = 1.0f;
 				return {};
 			}

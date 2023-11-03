@@ -35,7 +35,7 @@ namespace app
 			delete pCreateInfo;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
@@ -45,7 +45,7 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<CObjOneUpInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<CObjOneUpInfo>(*in_pDocument);
 			
 			if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 			{
@@ -56,8 +56,8 @@ namespace app
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 
 				pVisualModel->Setup(description);
 
@@ -125,7 +125,7 @@ namespace app
 		
 			xgame::MsgTakeObject msg{ xgame::MsgTakeObject::EType::eType_YoshiOneUp };
 			ObjUtil::SendMessageImmToPlayer(*this, PlayerNo, msg);
-			if (msg.m_Taken)
+			if (msg.Taken)
 				ObjUtil::AddScorePlayerAction(*this, "GET_ONE_UP", PlayerNo);
 
 			if (auto* pEffect = GetComponent<game::GOCEffect>())

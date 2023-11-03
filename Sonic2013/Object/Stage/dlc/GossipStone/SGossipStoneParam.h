@@ -8,10 +8,10 @@ namespace app
 		float CheckRadius{};
 	};
 
-	static void paramMap_ObjGossipStone(SetEd::CResClass rClass)
+	static void paramMap_ObjGossipStone(SetEd::CResClass in_rClass)
 	{
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjGossipStone, ASLR(0x00616210), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjGossipStone, ASLR(0x00616210), SetEd::CResClass);
 
-		ms_fpparamMap_ObjGossipStone(rClass);
+		fpparamMap_ObjGossipStone(in_rClass);
 	}
 }

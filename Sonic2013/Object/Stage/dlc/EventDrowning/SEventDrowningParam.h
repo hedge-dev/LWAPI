@@ -11,10 +11,10 @@ namespace app
 		float EffectOffset;
 	};
 
-	static void paramMap_ObjEventDrowning(SetEd::CResClass rClass)
+	static void paramMap_ObjEventDrowning(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjEventDrowning, ASLR(0x006160B0), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjEventDrowning, ASLR(0x006160B0), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjEventDrowning(rClass);
+		fpparamMap_ObjEventDrowning(in_rClass);
 	}
 }

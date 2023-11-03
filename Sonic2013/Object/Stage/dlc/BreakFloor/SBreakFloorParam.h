@@ -2,7 +2,7 @@
 
 namespace app
 {
-	static void paramMap_ObjBreakFloor(SetEd::CResClass rClass)
+	static void paramMap_ObjBreakFloor(SetEd::CResClass in_rClass)
 	{		
 
 	}

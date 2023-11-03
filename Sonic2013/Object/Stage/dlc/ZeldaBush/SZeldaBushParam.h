@@ -8,10 +8,10 @@ namespace app
 		int CreateType{};
 	};
 
-	static void paramMap_ObjZeldaBush(SetEd::CResClass rClass)
+	static void paramMap_ObjZeldaBush(SetEd::CResClass in_rClass)
 	{
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjZeldaBush, ASLR(0x00617050), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjZeldaBush, ASLR(0x00617050), SetEd::CResClass);
 
-		ms_fpparamMap_ObjZeldaBush(rClass);
+		fpparamMap_ObjZeldaBush(in_rClass);
 	}
 }

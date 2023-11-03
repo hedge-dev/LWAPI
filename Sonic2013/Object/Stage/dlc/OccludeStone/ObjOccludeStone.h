@@ -19,7 +19,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCShadowSimple>(*this);
@@ -29,13 +29,13 @@ namespace app
 			
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjOccludeStoneInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjOccludeStoneInfo>(*in_pDocument);
 			GetAdapter()->GetData<SOccludeStoneParam>();
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
+				description.Model = pInfo->Model;
 
 				pVisualModel->Setup(description);
 			}
@@ -51,22 +51,22 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = ms_CollisionSize;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = ms_CollisionSize;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Default, collisionInfo);
 				collisionInfo.SetLocalPosition({ ms_CollisionOffset });
 				collisionInfo.SetLocalRotation({ Eigen::AngleAxisf(MATHF_PI / 7.2f, csl::math::Vector3::UnitY()) });
 				pCollider->CreateShape(collisionInfo);
 
 				game::ColliMeshShapeCInfo meshCollisionInfo{};
-				meshCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Mesh;
-				meshCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				meshCollisionInfo.m_Flags = 8;
-				meshCollisionInfo.m_Unk2 |= 0x100;
-				meshCollisionInfo.m_Unk3 = 27;
-				meshCollisionInfo.m_Mesh = pInfo->Collision;
+				meshCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Mesh;
+				meshCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				meshCollisionInfo.Flags = 8;
+				meshCollisionInfo.Unk2 |= 0x100;
+				meshCollisionInfo.Unk3 = 27;
+				meshCollisionInfo.Mesh = pInfo->Collision;
 				pCollider->CreateShape(meshCollisionInfo);
 			}
 

@@ -15,7 +15,7 @@ namespace app
 			SetUpdateFlag(0, false);
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
 			fnd::GOComponent::Create<game::GOCEffect>(*this);
@@ -30,21 +30,21 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo effectCollisionInfo{};
-				effectCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				effectCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				effectCollisionInfo.m_Unk2 |= 1;
-				effectCollisionInfo.m_Size = { pParam->CollisionWidth, pParam->CollisionDepth, pParam->CollisionHeight };
+				effectCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				effectCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				effectCollisionInfo.Unk2 |= 1;
+				effectCollisionInfo.Size = { pParam->CollisionWidth, pParam->CollisionDepth, pParam->CollisionHeight };
 				effectCollisionInfo.SetLocalPosition({ csl::math::Vector3::UnitY() * pParam->EffectOffset });
-				effectCollisionInfo.m_ShapeID = 1;
+				effectCollisionInfo.ShapeID = 1;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, effectCollisionInfo);
 				pCollider->CreateShape(effectCollisionInfo);
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = { pParam->CollisionWidth, pParam->CollisionDepth, pParam->CollisionHeight };
-				collisionInfo.m_ShapeID = 0;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = { pParam->CollisionWidth, pParam->CollisionDepth, pParam->CollisionHeight };
+				collisionInfo.ShapeID = 0;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
 			}
@@ -71,17 +71,17 @@ namespace app
 
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
-			if (!ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 1))
+			if (!ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 1))
 			{
 				xgame::MsgDead msg{ 10 };
-				SendMessageImm(in_rMessage.m_Sender, msg);
+				SendMessageImm(in_rMessage.Sender, msg);
 			
 				return true;
 			}
 
 			auto* pParam = GetAdapter()->GetData<SEventDrowningParam>();
 
-			csl::math::Matrix34 transformMtx = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+			csl::math::Matrix34 transformMtx = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 			csl::math::Vector3 upVector{ transformMtx.GetColumn(1) };
 			csl::math::Vector3 position = transformMtx.GetTransVector();
 

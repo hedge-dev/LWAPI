@@ -15,10 +15,10 @@ namespace app
 		Direction Direction{};
 	};
 
-	static void paramMap_EnemyPiranhaPlant(SetEd::CResClass rClass)
+	static void paramMap_EnemyPiranhaPlant(SetEd::CResClass in_rClass)
 	{
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_EnemyPiranhaPlant, ASLR(0x0060F0F0), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_EnemyPiranhaPlant, ASLR(0x0060F0F0), SetEd::CResClass);
 		
-		ms_fpparamMap_EnemyPiranhaPlant(rClass);
+		fpparamMap_EnemyPiranhaPlant(in_rClass);
 	}
 }

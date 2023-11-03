@@ -28,20 +28,20 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(in_pDocument);
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->FairyModel;
-				description.m_Skeleton = pInfo->FairySkeleton;
+				description.Model = pInfo->FairyModel;
+				description.Skeleton = pInfo->FairySkeleton;
 
 				pVisualGoc->Setup(description);
 

@@ -82,12 +82,12 @@ namespace app
 				if (Flags.test(FLAG_IS_YOSHI_LEVEL))
 				{
 					if (auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiCoinInfo>(in_rDocument))
-						description.m_Model = pInfo->Model;
+						description.Model = pInfo->Model;
 				}
 				else
 				{
 					if (auto* pInfo = ObjUtil::GetObjectInfo<CSharedObjInfo>(in_rDocument))
-						description.m_Model = pInfo->RingModel;
+						description.Model = pInfo->RingModel;
 				}
 
 				pVisualModel->Setup(description);
@@ -99,11 +99,11 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 = 1;
-				collisionInfo.m_ShapeID = 0;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
+				collisionInfo.Unk2 = 1;
+				collisionInfo.ShapeID = 0;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk12, collisionInfo);
 
 				auto pShape = pCollider->CreateShape(collisionInfo);
@@ -238,8 +238,8 @@ namespace app
 				return true;
 
 			xgame::MsgTakeObject msg{ xgame::MsgTakeObject::EType::eType_DroppedRing };
-			msg.SetShapeUserID(in_rMessage.m_pOther->m_ID);
-			if (!SendMessageImm(in_rMessage.m_Sender, msg) || !msg.m_Taken)
+			msg.SetShapeUserID(in_rMessage.pOther->ID);
+			if (!SendMessageImm(in_rMessage.Sender, msg) || !msg.Taken)
 				return true;
 
 			const char* pEffectName = !Flags.test(5) ? ms_pRingEffectName : ms_pYoshiCoinEffectName;
@@ -252,7 +252,7 @@ namespace app
 			if (!Flags.test(2))
 				pScoreName = !Flags.test(5) ? ms_pRingScoreName : ms_pYoshiCoinScoreName;
 
-			int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender);
+			int playerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender);
 			ObjUtil::AddScorePlayerAction(*this, pScoreName, playerNo);
 			Flags.set(6);
 			Kill();
@@ -323,7 +323,7 @@ namespace app
 					Counter = 0;
 					
 					auto* pTransform = GetComponent<fnd::GOCTransform>();
-					csl::math::Vector3 yAxis{ pTransform->m_Transform.GetTransformMatrix().GetColumn(1) };
+					csl::math::Vector3 yAxis{ pTransform->Transform.GetTransformMatrix().GetColumn(1) };
 					csl::math::Vector3 rayStartPos{ pTransform->GetLocalPosition() };
 					csl::math::Vector3 rayEndPos{ pTransform->GetLocalPosition() - (yAxis * 3.1f)};
 

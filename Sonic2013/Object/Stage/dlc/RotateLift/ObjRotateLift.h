@@ -22,7 +22,7 @@ namespace app
         }
 
     protected:
-        void AddCallback(GameDocument& in_rDocument) override
+        void AddCallback(GameDocument* in_pDocument) override
         {
             fnd::GOComponent::Create<fnd::GOCVisualContainer>(*this);
             fnd::GOComponent::Create<game::GOCSound>(*this);
@@ -31,7 +31,7 @@ namespace app
             
             fnd::GOComponent::BeginSetup(*this);
 
-            auto* pInfo = ObjUtil::GetObjectInfo<ObjRotateLiftInfo>(in_rDocument);
+            auto* pInfo = ObjUtil::GetObjectInfo<ObjRotateLiftInfo>(*in_oDocument);
             auto* pParam = GetAdapter()->GetData<SRotateLiftParam>();
             IsEventDriven = pParam->isEventDriven;
 
@@ -47,7 +47,7 @@ namespace app
                     Frames[i].SetLocalTranslation(position);
                     Frames[i].SetLocalRotation(rotation);
                     Frames[i].ResetFlag(32);
-                    pTransform->m_Frame.AddChild(&Frames[i]);
+                    pTransform->Frame.AddChild(&Frames[i]);
                 }
             }
 
@@ -61,8 +61,8 @@ namespace app
                     pVisualContainer->Add(pVisualModel);
 
                     fnd::GOCVisualModel::Description description{};
-                    description.m_Model = pInfo->ModelContainer.Models[0];
-                    description.m_pParent = &Frames[i];
+                    description.Model = pInfo->ModelContainer.Models[0];
+                    description.pParent = &Frames[i];
 
                     pVisualModel->Setup(description);
                 }
@@ -71,7 +71,7 @@ namespace app
                 pVisualContainer->Add(pVisualModel);
                 
                 fnd::GOCVisualModel::Description description{};
-                description.m_Model = pInfo->ModelContainer.Models[1];
+                description.Model = pInfo->ModelContainer.Models[1];
                 
                 pVisualModel->Setup(description);
                 pVisualModel->SetLocalRotation(csl::math::Quaternion(Eigen::AngleAxisf(MATHF_PI / 2.0f, csl::math::Vector3::UnitY())));
@@ -86,13 +86,13 @@ namespace app
                 for (size_t i = 0; i < StepCount; i++)
                 {
                     game::ColliBoxShapeCInfo collisionInfo{};
-                    collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-                    collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-                    collisionInfo.m_Flags = 14;
-                    collisionInfo.m_Unk2 |= 0x100;
-                    collisionInfo.m_Unk3 = 0x4003;
-                    collisionInfo.m_Size = ms_CollisionSize;
-                    collisionInfo.m_pParent = &Frames[i];
+                    collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+                    collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+                    collisionInfo.Flags = 14;
+                    collisionInfo.Unk2 |= 0x100;
+                    collisionInfo.Unk3 = 0x4003;
+                    collisionInfo.Size = ms_CollisionSize;
+                    collisionInfo.pParent = &Frames[i];
 
                     pCollider->CreateShape(collisionInfo);
                 }

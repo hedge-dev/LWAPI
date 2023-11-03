@@ -54,10 +54,10 @@ namespace app
 
 		EnemyDekunuts() : EnemyBase()
 		{
-			AnimListener.m_Timing = 2;
+			AnimListener.Timing = 2;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualContainer>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationContainer>(*this);
@@ -68,14 +68,14 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<EnemyDekunutsInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<EnemyDekunutsInfo>(*in_pDocument);
 			auto* pParam = GetAdapter()->GetData<SDekunutsParam>();
 
 			Flags.set(FLAG_IS_DEACTIVATED, pParam->MessageBoot);
 
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
-			pTransform->m_Frame.AddChild(&Frame);
-			csl::math::Matrix34Inverse(pTransform->m_Frame.m_Unk3.m_Mtx, &LookAtMatrix);
+			pTransform->Frame.AddChild(&Frame);
+			csl::math::Matrix34Inverse(pTransform->Frame.Unk3.Mtx, &LookAtMatrix);
 
 			if (auto* pVisualContainerGoc = GetComponent<fnd::GOCVisualContainer>())
 			{
@@ -85,8 +85,8 @@ namespace app
 				{
 					fnd::GOCVisualModel::Description description{};
 
-					description.m_Model = pInfo->ModelContainer.Models[0];
-					description.m_Skeleton = pInfo->SkeletonContainer.Skeletons[0];
+					description.Model = pInfo->ModelContainer.Models[0];
+					description.Skeleton = pInfo->SkeletonContainer.Skeletons[0];
 
 					pVisualGoc->Setup(description);
 					pVisualGoc->SetLocalScale({ 1.0f, 1.0f, 1.0f });
@@ -107,9 +107,9 @@ namespace app
 				{
 					fnd::GOCVisualModel::Description description{};
 
-					description.m_Model = pInfo->ModelContainer.Models[1];
-					description.m_Skeleton = pInfo->SkeletonContainer.Skeletons[1];
-					description.m_pParent = &Frame;
+					description.Model = pInfo->ModelContainer.Models[1];
+					description.Skeleton = pInfo->SkeletonContainer.Skeletons[1];
+					description.pParent = &Frame;
 
 					pVisualGoc->Setup(description);
 					pVisualGoc->SetLocalScale({ 1.0f, 1.0f, 1.0f });
@@ -136,30 +136,30 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo appearCollisionInfo{};
-				appearCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				appearCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				appearCollisionInfo.m_Unk2 = 6;
-				appearCollisionInfo.m_ShapeID = 0;
-				appearCollisionInfo.m_Radius = pParam->AppearRange;
+				appearCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				appearCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				appearCollisionInfo.Unk2 = 6;
+				appearCollisionInfo.ShapeID = 0;
+				appearCollisionInfo.Radius = pParam->AppearRange;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, appearCollisionInfo);
 				appearCollisionInfo.SetLocalPosition({ pParam->RangeAddX, pParam->RangeAddY, pParam->RangeAddZ });
 				pCollider->CreateShape(appearCollisionInfo);
 
 				game::ColliSphereShapeCInfo hideCollisionInfo{};
-				hideCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				hideCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				hideCollisionInfo.m_Unk2 = 6;
-				hideCollisionInfo.m_ShapeID = 1;
-				hideCollisionInfo.m_Radius = ms_HideCollisionRadius;
+				hideCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				hideCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				hideCollisionInfo.Unk2 = 6;
+				hideCollisionInfo.ShapeID = 1;
+				hideCollisionInfo.Radius = ms_HideCollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, hideCollisionInfo);
 				pCollider->CreateShape(hideCollisionInfo);
 
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 = 1;
-				collisionInfo.m_ShapeID = 2;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 = 1;
+				collisionInfo.ShapeID = 2;
+				collisionInfo.Radius = ms_CollisionRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, collisionInfo);
 				collisionInfo.SetLocalPosition({ csl::math::Vector3(0.0f, 1.0f, 0.0f) * ms_CollisionRadius });
 				pCollider->CreateShape(collisionInfo);
@@ -209,7 +209,7 @@ namespace app
 			if (Flags.test(FLAG_IS_DEACTIVATED))
 				return true;
 
-			if (!ObjUtil::CheckShapeUserID(in_rMessage.m_SenderShape, 2))
+			if (!ObjUtil::CheckShapeUserID(in_rMessage.SenderShape, 2))
 				return false;
 
 			if (!EnemyUtil::IsDamage(in_rMessage.DefensePower, 0, in_rMessage.AttackType))
@@ -218,10 +218,10 @@ namespace app
 			if (!Flags.test(FLAG_IS_BODY_COLLISION_ENABLED))
 				return false;
 
-			if (in_rMessage.m_SenderType != 2)
+			if (in_rMessage.SenderType != 2)
 				return false;
 
-			csl::math::Vector3 position{ Frame.m_Unk3.GetTranslation() };
+			csl::math::Vector3 position{ Frame.Unk3.GetTranslation() };
 			in_rMessage.SetReply(position, true);
 			ObjUtil::AddScore(*this, ms_pScoreName, 0, position);
 			
@@ -275,11 +275,11 @@ namespace app
 			if (!Flags.test(FLAG_IS_BODY_COLLISION_ENABLED))
 				return false;
 
-			if (!ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 2))
+			if (!ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 2))
 				return false;
 
 			xgame::MsgDamage msg{ 3, 8, 1, in_rMessage, { 0.0f, 0.0f, 0.0f } };
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 
 			return true;
 		}
@@ -375,16 +375,16 @@ namespace app
 		void Shot()
 		{
 			game::ColliSphereShapeCInfo collisionInfo{};
-			collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-			collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-			collisionInfo.m_Unk2 |= 1;
-			collisionInfo.m_ShapeID = 0;
-			collisionInfo.m_Radius = 3.0f;
+			collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+			collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+			collisionInfo.Unk2 |= 1;
+			collisionInfo.ShapeID = 0;
+			collisionInfo.Radius = 3.0f;
 			ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, collisionInfo);
 
 			auto* pInfo = ObjUtil::GetObjectInfo<EnemyDekunutsInfo>(*GetDocument());
 
-			auto* pVisualModel = static_cast<fnd::GOCVisualModel*>(GetComponent<fnd::GOCVisualContainer>()->m_Visuals[1]);
+			auto* pVisualModel = static_cast<fnd::GOCVisualModel*>(GetComponent<fnd::GOCVisualContainer>()->Visuals[1]);
 			if (!pVisualModel)
 				return;
 
@@ -393,7 +393,7 @@ namespace app
 				return;
 			
 			dekunuts_shot::CreateInfo createInfo{};
-			createInfo.TrasnformMtx = math::Matrix34AffineTransformation(muzzleTransform.m_Position, Frame.m_Unk3.GetRotationQuaternion());
+			createInfo.TrasnformMtx = math::Matrix34AffineTransformation(muzzleTransform.Position, Frame.Unk3.GetRotationQuaternion());
 			createInfo.ShotModel = pInfo->ShotModel;
 			createInfo.Speed = 80.0f;
 			createInfo.LifeSpan = 3.5f;

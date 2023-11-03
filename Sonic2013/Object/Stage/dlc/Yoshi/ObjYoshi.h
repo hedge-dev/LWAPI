@@ -93,7 +93,7 @@ namespace app
 			Index = in_rInfo.Index;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{	
 			fnd::GOComponent::Create<game::GOCGravity>(*this);
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
@@ -116,13 +116,13 @@ namespace app
 				pTransform->SetLocalRotation(Rotation);
 			}
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiInfo>(*in_pDocument);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->ModelContainer.Models[Type];
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->ModelContainer.Models[Type];
+				description.Skeleton = pInfo->Skeleton;
 				description.field_0C |= 0x400000u;
 
 				pVisualModel->Setup(description);
@@ -268,8 +268,8 @@ namespace app
 
 			ObjYoshiOneUp::CInfo createInfo{};
 			createInfo.PlayerNo = 0;
-			createInfo.Position = pTransform->m_Frame.m_Unk3.GetTranslation();
-			createInfo.Rotation = pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+			createInfo.Position = pTransform->Frame.Unk3.GetTranslation();
+			createInfo.Rotation = pTransform->Frame.Unk3.GetRotationQuaternion();
 
 			ObjYoshiOneUp::Create(*GetDocument(), createInfo);
 		}
@@ -299,7 +299,7 @@ namespace app
 				if (!pTransform)
 					return {};
 
-				csl::math::Vector3 upVec{ pTransform->m_Frame.m_Unk3.m_Mtx.GetColumn(1) };
+				csl::math::Vector3 upVec{ pTransform->Frame.Unk3.Mtx.GetColumn(1) };
 
 				auto* pMovement = GetComponent<game::GOCMovementComplex>();
 				if (!pMovement)
@@ -308,7 +308,7 @@ namespace app
 				if (pMovement->GetContextParam()->Velocity.dot(upVec) <= 0.0f)
 					return {};
 
-				csl::math::Vector3 from{ pTransform->m_Frame.m_Unk3.m_Mtx.GetTransVector() };
+				csl::math::Vector3 from{ pTransform->Frame.Unk3.Mtx.GetTransVector() };
 				csl::math::Vector3 to{ from + upVec * 10.0f };
 
 				if (ObjUtil::RaycastHitCollision(*GetDocument(), from, to, 0xC996))

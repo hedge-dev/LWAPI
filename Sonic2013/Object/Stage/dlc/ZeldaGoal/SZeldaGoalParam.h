@@ -14,10 +14,10 @@ namespace app
 		float OffsetDepth{};
 	};
 
-	static void paramMap_ObjZeldaGoal(SetEd::CResClass rClass)
+	static void paramMap_ObjZeldaGoal(SetEd::CResClass in_rClass)
 	{
 		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjZeldaGoal, ASLR(0x00617090), SetEd::CResClass);
 
-		fpparamMap_ObjZeldaGoal(rClass);
+		fpparamMap_ObjZeldaGoal(in_rClass);
 	}
 }

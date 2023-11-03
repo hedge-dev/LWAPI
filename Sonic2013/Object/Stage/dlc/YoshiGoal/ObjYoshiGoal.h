@@ -35,7 +35,7 @@ namespace app
 
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualContainer>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -48,7 +48,7 @@ namespace app
 			{
 				pVisualContainer->Setup({ ms_ModelCount });
 
-				auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiGoalInfo>(in_rDocument);
+				auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiGoalInfo>(*in_pDocument);
 				csl::math::Vector3 startPosition{ app::math::Vector3Rotate({ Eigen::AngleAxisf(MATHF_PI / 4.5f, csl::math::Vector3::UnitY()) }, { csl::math::Vector3::UnitZ() }) };
 			
 				for (size_t i = 0; i < ms_ModelCount; i++)
@@ -57,12 +57,12 @@ namespace app
 					fnd::GOCVisualModel::Description description{};
 					
 					Type modelType = GetModelType(i);
-					description.m_Model = pInfo->OnModelContainer.Models[modelType];
+					description.Model = pInfo->OnModelContainer.Models[modelType];
 					
 					if (i >= ms_ModelCount / 2)
 					{
 						modelType = GetModelType(i - ms_ModelCount / 2);
-						description.m_Model = pInfo->OffModelContainer.Models[modelType];
+						description.Model = pInfo->OffModelContainer.Models[modelType];
 					}
 
 					pVisual->Setup(description);
@@ -80,10 +80,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = ms_CollisionSize;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = ms_CollisionSize;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
@@ -147,16 +147,16 @@ namespace app
 				if (in_rEvent.getMessage().GetType() != xgame::MsgHitEventCollision::MessageID)
 					return FSM_TOP();
 
-				uint playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender);
+				uint playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender);
 				if (playerNo < 0)
 				{
-					in_rEvent.getMessage().m_Handled = true;
+					in_rEvent.getMessage().Handled = true;
 					return{};
 				}
 				
 				auto* pParam = GetAdapter()->GetData<SYoshiGoalParam>();
 
-				PlayerActorID = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).m_Sender;
+				PlayerActorID = static_cast<xgame::MsgHitEventCollision&>(in_rEvent.getMessage()).Sender;
 				xgame::MsgPLHoldOn msgHold{};
 				msgHold.Unk1 = 1;
 				SendMessageImm(PlayerActorID, msgHold);
@@ -338,19 +338,19 @@ namespace app
 
 				if (auto* pVisualContainer = GetComponent<fnd::GOCVisualContainer>())
 				{
-					pVisualContainer->m_Visuals[ModelToDisappearId]->SetVisible(false);
-					pVisualContainer->m_Visuals[ModelToDisappearId + ms_ModelCount / 2]->SetVisible(false);
+					pVisualContainer->Visuals[ModelToDisappearId]->SetVisible(false);
+					pVisualContainer->Visuals[ModelToDisappearId + ms_ModelCount / 2]->SetVisible(false);
 
 					if (auto* pEffect = GetComponent<game::GOCEffect>())
 					{
 						game::EffectCreateInfo effectInfo{};
-						effectInfo.m_pName = ms_pEffectName;
-						effectInfo.m_Unk1 = 1.0f;
-						effectInfo.m_Unk2 = 3;
-						effectInfo.m_pVisual = pVisualContainer->m_Visuals[ModelToDisappearId];
+						effectInfo.pName = ms_pEffectName;
+						effectInfo.Unk1 = 1.0f;
+						effectInfo.Unk2 = 3;
+						effectInfo.pVisual = pVisualContainer->Visuals[ModelToDisappearId];
 
 						if (Flags.test(0) && ModelToDisappearId == ModelId)
-							effectInfo.m_Unk1 = 2.0f;
+							effectInfo.Unk1 = 2.0f;
 
 						pEffect->CreateEffectEx(effectInfo);
 					}
@@ -448,14 +448,14 @@ namespace app
 			{
 				if (auto* pVisualContainer = GetComponent<fnd::GOCVisualContainer>())
 				{
-					pVisualContainer->m_Visuals[ModelId]->SetVisible(false);
-					pVisualContainer->m_Visuals[ModelId + ms_ModelCount / 2]->SetVisible(true);
+					pVisualContainer->Visuals[ModelId]->SetVisible(false);
+					pVisualContainer->Visuals[ModelId + ms_ModelCount / 2]->SetVisible(true);
 				
 					ModelId += 1;
 					if (ModelId >= 10)
 						ModelId = 0;
 
-					pVisualContainer->m_Visuals[ModelId]->SetVisible(true);
+					pVisualContainer->Visuals[ModelId]->SetVisible(true);
 				}
 
 				ModelUpdateTime = ElapsedTime;

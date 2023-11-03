@@ -22,7 +22,7 @@ namespace app
 
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
 			fnd::GOComponent::Create<game::GOCEffect>(*this);
@@ -46,10 +46,10 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 3;
-				collisionInfo.m_Size = ms_CollisionSize;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 3;
+				collisionInfo.Size = ms_CollisionSize;
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
@@ -76,7 +76,7 @@ namespace app
 			ElapsedTime = 0.0f;
 
 			golon_rock::GolonRockCreateInfo createInfo{};
-			createInfo.TransformMtx = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+			createInfo.TransformMtx = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 			createInfo.Speed = -Speed;
 			createInfo.IsCheckFall = Flags.test(0);
 

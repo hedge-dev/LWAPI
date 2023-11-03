@@ -42,7 +42,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualContainer>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
@@ -55,7 +55,7 @@ namespace app
 			
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjGolonRockGeneratorInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjGolonRockGeneratorInfo>(*in_pDocument);
 
 			if (auto* pTransformGoc = GetComponent<fnd::GOCTransform>())
 			{
@@ -72,9 +72,9 @@ namespace app
 				if (auto* pVisualGoc = fnd::GOComponent::CreateSingle<fnd::GOCVisualModel>(*this))
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ModelContainer.Models[0];
-					description.m_Skeleton = pInfo->Skeleton;
-					description.field_0C |= 0x400000;
+					description.Model = pInfo->ModelContainer.Models[0];
+					description.Skeleton = pInfo->Skeleton;
+					description.Unk2 |= 0x400000;
 					
 					pVisualGoc->Setup(description);
 					pVisualContainerGoc->Add(pVisualGoc);
@@ -92,8 +92,8 @@ namespace app
 				if (pRockVisualGoc = fnd::GOComponent::CreateSingle<fnd::GOCVisualModel>(*this))
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ModelContainer.Models[1];
-					description.field_0C |= 0x400000;
+					description.Model = pInfo->ModelContainer.Models[1];
+					description.Unk2 |= 0x400000;
 
 					pRockVisualGoc->Setup(description);
 					pVisualContainerGoc->Add(pRockVisualGoc);
@@ -106,21 +106,21 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliSphereShapeCInfo hitCollisionInfo{};
-				hitCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				hitCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				hitCollisionInfo.m_Unk2 |= 1;
-				hitCollisionInfo.m_Radius = ms_HitCollisionSize;
-				hitCollisionInfo.m_ShapeID = 0;
+				hitCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				hitCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				hitCollisionInfo.Unk2 |= 1;
+				hitCollisionInfo.Radius = ms_HitCollisionSize;
+				hitCollisionInfo.ShapeID = 0;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, hitCollisionInfo);
 				pColliderGoc->CreateShape(hitCollisionInfo);
 
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				collisionInfo.m_Unk2 |= 0x100;
-				collisionInfo.m_Unk3 = 3;
-				collisionInfo.m_Radius = ms_CollisionSize;
-				collisionInfo.m_ShapeID = 1;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				collisionInfo.Unk2 |= 0x100;
+				collisionInfo.Unk3 = 3;
+				collisionInfo.Radius = ms_CollisionSize;
+				collisionInfo.ShapeID = 1;
 				pColliderGoc->CreateShape(collisionInfo);
 			}
 
@@ -129,7 +129,7 @@ namespace app
 				if (pMovementController = pMovementGoc->SetMoveController<game::MoveObjGolonRock>())
 				{
 					game::MoveObjGolonRock::SetupParam setupParam{};
-					setupParam.Position = GetComponent<fnd::GOCTransform>()->m_Transform.m_Position;
+					setupParam.Position = GetComponent<fnd::GOCTransform>()->Transform.Position;
 					setupParam.YOffset = 20.0f;
 					setupParam.PopupTime = 0.3f;
 					setupParam.RollWaitTime = 0.4f;
@@ -208,7 +208,7 @@ namespace app
 			csl::math::Vector3 movementDir{ pMovementController->GetWorldMoveDir() * -1.0f };
 		
 			xgame::MsgDamage msg{ 2, 8, 3, in_rMessage, movementDir };
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 			if (msg.IsComingReply())
 			{
 				ObjUtil::SetEnableColliShape(GetComponent<game::GOCCollider>(), 1, false);
@@ -300,7 +300,7 @@ namespace app
 				ElapsedTime += in_rEvent.getFloat();
 				if (ElapsedTime > 0.6f)
 				{
-					GetComponent<fnd::GOCVisualContainer>()->m_Visuals[0]->SetVisible(false);
+					GetComponent<fnd::GOCVisualContainer>()->Visuals[0]->SetVisible(false);
 					pRockVisualGoc->SetVisible(true);
 
 					GetComponent<game::GOCShadowSimple>()->SetVisible(true);
@@ -327,10 +327,10 @@ namespace app
 				SoundHandle = GetComponent<game::GOCSound>()->Play3D(followInfo);
 
 				game::EffectCreateInfo effectInfo{};
-				effectInfo.m_pName = ms_pEffectName;
-				effectInfo.m_Unk1 = 1.0f;
-				effectInfo.m_Unk3 = true;
-				effectInfo.m_Position = ms_EffectOffset;
+				effectInfo.pName = ms_pEffectName;
+				effectInfo.Unk1 = 1.0f;
+				effectInfo.Unk3 = true;
+				effectInfo.Position = ms_EffectOffset;
 
 				GetComponent<game::GOCEffect>()->CreateEffectLoopEx(&EffectHandle, effectInfo);
 

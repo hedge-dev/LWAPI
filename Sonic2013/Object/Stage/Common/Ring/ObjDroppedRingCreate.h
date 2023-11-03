@@ -23,7 +23,7 @@ namespace app::dropped_ring
 		csl::math::Quaternion rotation{ csl::math::Quaternion::Identity };
 
 		auto* pLevelInfo = in_rDocument.GetService<CLevelInfo>();
-		bool isYoshiLevel = strcmp(pLevelInfo->m_Level, "zdlc02") == 0;
+		bool isYoshiLevel = strcmp(pLevelInfo->Level, "zdlc02") == 0;
 		if (isYoshiLevel)
 		{
 			ObjUtil::PlaySE2D("obj_yossycoin_lost", { HH_SOUND_DEVICE_AUTO });

@@ -24,9 +24,9 @@ namespace app::HUD
 			{
 				pHudGoc->Setup({ "HudMissionBanner", 8, 9, -21, 2, 2048, 0 });
 
-				SurfRide::ReferenceCount<SurfRide::Project> refCount{};
-				pHudGoc->SetupProject(&refCount, "ui_wipe_zdlc02", ObjUtil::GetPackFile("ui_zdlc02_gamemodestage.pac"));
-				pLayerController = pHudGoc->CreateLayerController({ refCount }, "ui_wipe_zdlc02", "wipe_mask", 0);
+				SurfRide::ReferenceCount<SurfRide::Project> rcProject{};
+				pHudGoc->SetupProject(&rcProject, "ui_wipe_zdlc02", ObjUtil::GetPackFile("ui_zdlc02_gamemodestage.pac"));
+				pLayerController = pHudGoc->CreateLayerController({ rcProject }, "ui_wipe_zdlc02", "wipe_mask", 0);
 
 				pLayerController->ReserveAnimation("Outro_Anim", game::HudPlayPolicy::eHudPlayPolicy_Once, 0);
 				pLayerController->PlayReservedAnimation();

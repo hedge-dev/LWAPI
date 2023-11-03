@@ -39,13 +39,13 @@ namespace app
         };
 
         csl::ut::ObjectMoveArray<GameObjectHandle<ObjEgg>> Eggs{ GetAllocator() };
-        csl::ut::CircularBuffer<LocusData> Loci{ csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_pPooledAllocator };
+        csl::ut::CircularBuffer<LocusData> Loci{ csl::fnd::Singleton<GameObjectSystem>::GetInstance()->pPooledAllocator };
         float ElapsedTime{};
         csl::ut::Bitset<uint8> SpaceShrinkFlags{};
         csl::ut::Bitset<uint8> FlowerFlags{};
 
         EggManager();
-        void StartGame(bool a1) override;
+        void StartGame(bool in_a1) override;
         void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override;
         bool AddEgg(GameObjectHandle<ObjEgg> in_egg, size_t* out_pIndex);
         void AddSpaceCount();
@@ -109,7 +109,7 @@ namespace app
             Type = in_pInfo->Type;
         }
 
-        void AddCallback(GameDocument& in_rDocument) override
+        void AddCallback(GameDocument* in_pDocument) override
         {
             fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
             fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -120,7 +120,7 @@ namespace app
             fnd::GOComponent::BeginSetup(*this);
 
             bool eggSuccess{};
-            if (auto* pEggManager = in_rDocument.GetService<EggManager>())
+            if (auto* pEggManager = in_pDocument->GetService<EggManager>())
                 eggSuccess = pEggManager->AddEgg(this, &Index);
 
             if (auto* pTransform = GetComponent<fnd::GOCTransform>())
@@ -129,14 +129,14 @@ namespace app
                 pTransform->SetLocalRotation(pCreateInfo->Mtx.GetRotation());
             }
             
-            auto* pInfo = ObjUtil::GetObjectInfo<ObjEggInfo>(in_rDocument);
+            auto* pInfo = ObjUtil::GetObjectInfo<ObjEggInfo>(*in_pDocument);
 
             if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
             {
                 fnd::GOCVisualModel::Description description{};
-                description.m_Model = pInfo->ModelContainer.Models[Type];
-                description.field_0C |= 0x400000u;
-                description.zOffset = -0.2f * Index - 2.0f;
+                description.Model = pInfo->ModelContainer.Models[Type];
+                description.Unk2 |= 0x400000u;
+                description.ZOffset = -0.2f * Index - 2.0f;
 
                 pVisualModel->Setup(description);
                 pVisualModel->SetLocalScale(ms_Scale);
@@ -150,9 +150,9 @@ namespace app
                 pCollider->Setup({ ms_ShapeCount });
 
                 game::ColliSphereShapeCInfo collisionInfo{};
-                collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-                collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-                collisionInfo.m_Radius = ms_CollisionRadius;
+                collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+                collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+                collisionInfo.Radius = ms_CollisionRadius;
                 ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk2, collisionInfo);
                 pCollider->CreateShape(collisionInfo);
             }
@@ -179,7 +179,7 @@ namespace app
             else
             {
                 xgame::MsgTakeObject msg{ xgame::MsgTakeObject::eType_OneUp };
-                if (ObjUtil::SendMessageImmToPlayer(*this, msg) && msg.m_Taken)
+                if (ObjUtil::SendMessageImmToPlayer(*this, msg) && msg.Taken)
                 {
                     if (auto* pEffect = GetComponent<game::GOCEffect>())
                         pEffect->CreateEffect(ms_pBirthEffectName);
@@ -252,7 +252,7 @@ namespace app
                 pVisual->SetVisible(false);
 
             auto* pTransform = GetComponent<fnd::GOCTransform>();
-            csl::math::Matrix34 trsMatrix{ pTransform->m_Frame.m_Unk3.m_Mtx };
+            csl::math::Matrix34 trsMatrix{ pTransform->Frame.Unk3.Mtx };
             auto rRotation = trsMatrix.GetRotation();
 
             csl::math::Vector3 upVector{ csl::math::Vector3::UnitY() * 10.0f };
@@ -325,7 +325,7 @@ namespace app
                 return;
             }
 
-            auto curRotation = pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+            auto curRotation = pTransform->Frame.Unk3.GetRotationQuaternion();
             pTransform->SetLocalRotation(curRotation.slerp(csl::math::Clamp(1.0f - Time / 0.3f, 0.0f, 1.0f), rotation));
         
             Time -= in_delta;
@@ -489,7 +489,7 @@ namespace app
                 ElapsedFrames = 0;
                 if (auto* pLevelInfo = GetDocument()->GetService<CLevelInfo>())
                 {
-                    if (pLevelInfo->m_StageFlags.test(16))
+                    if (pLevelInfo->StageFlags.test(16))
                     {
                         Time = 30.0f / 30.0f;
                     }
@@ -513,7 +513,7 @@ namespace app
 
                 auto targetLocus = pEggManager->GetTargetDataFromLocusIndex(0, nullptr, nullptr);
 
-                auto position = pTransform->m_Frame.m_Unk3.GetTranslation();
+                auto position = pTransform->Frame.Unk3.GetTranslation();
 
                 pTransform->SetLocalTranslation({ (targetLocus.Position - position) * csl::math::Clamp(ElapsedFrames / 30.0f, 0.0f, 1.0f) + position });
                 UpdateRotation(targetLocus.Rotation, in_rEvent.getFloat());
@@ -675,7 +675,7 @@ namespace app
             {
                 ElapsedFrames = 0;
 
-                auto* pCamera = GetDocument()->m_pWorld->GetCamera(0);
+                auto* pCamera = GetDocument()->pWorld->GetCamera(0);
 
                 auto* pGravity = GetComponent<game::GOCGravity>();
                 if (!pGravity)
@@ -701,7 +701,7 @@ namespace app
                 if (!pTransform)
                     return {};
 
-                auto position = pTransform->m_Frame.m_Unk3.GetTranslation();
+                auto position = pTransform->Frame.Unk3.GetTranslation();
                 
                 pTransform->SetLocalTranslation({ position + DropVelocity * in_rEvent.getFloat() });
                 if (!(ElapsedFrames % 5))

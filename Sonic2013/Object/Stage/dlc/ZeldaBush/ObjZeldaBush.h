@@ -30,7 +30,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
@@ -42,15 +42,15 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaBushInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaBushInfo>(*in_pDocument);
 			Type = ConvSpawnerToInfoType(GetAdapter()->GetData<SZeldaBushParam>()->CreateType);
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->ModelContainer.Models[Type];
-				description.m_Skeleton = pInfo->SkeletonContainer.Skeletons[Type];
-				description.field_0C |= 0x400000u;
+				description.Model = pInfo->ModelContainer.Models[Type];
+				description.Skeleton = pInfo->SkeletonContainer.Skeletons[Type];
+				description.Unk2 |= 0x400000u;
 
 				pVisualGoc->Setup(description);
 
@@ -67,10 +67,10 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = ms_CollisionSizes[Type];
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = ms_CollisionSizes[Type];
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Default, collisionInfo);
 				collisionInfo.SetLocalPosition(ms_CollisionOffsets[Type]);
 				pColliderGoc->CreateShape(collisionInfo);

@@ -30,7 +30,7 @@ namespace app
 
 				if (Param.Type == popup_item::EType::eType_OneUp)
 				{
-					auto* pCamera = in_rDocument.m_pWorld->GetCamera(0);
+					auto* pCamera = in_rDocument.pWorld->GetCamera(0);
 					pTransform->SetLocalRotation(pCamera->GetInvViewMatrix().GetRotation());
 				}
 			}
@@ -47,7 +47,7 @@ namespace app
 
 				if (Param.Type == popup_item::EType::eType_OneUp)
 				{
-					auto* pCamera = in_rDocument.m_pWorld->GetCamera(0);
+					auto* pCamera = in_rDocument.pWorld->GetCamera(0);
 					pTransform->SetLocalRotation(pCamera->GetInvViewMatrix().GetRotation());
 				}
 			}

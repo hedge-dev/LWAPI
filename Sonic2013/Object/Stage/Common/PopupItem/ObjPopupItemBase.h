@@ -20,8 +20,8 @@ namespace app
 		inline static const size_t ms_TakeType[] = { xgame::MsgTakeObject::eType_Ring, xgame::MsgTakeObject::eType_SuperRing, xgame::MsgTakeObject::eType_OneUp,
 			xgame::MsgTakeObject::eType_SpeedUp, xgame::MsgTakeObject::eType_Invincibility, xgame::MsgTakeObject::eType_SlowDown, -1,
 			xgame::MsgTakeObject::eType_Warp, xgame::MsgTakeObject::eType_StealRing, xgame::MsgTakeObject::eType_ThunderBarrier, xgame::MsgTakeObject::eType_ChangeRing,
-			Game::EPhantomType::PHANTOM_LASER, Game::EPhantomType::PHANTOM_EAGLE, Game::EPhantomType::PHANTOM_ASTEROID, Game::EPhantomType::PHANTOM_DRILL,
-			Game::EPhantomType::PHANTOM_ROCKET, Game::EPhantomType::PHANTOM_RHYTHM, Game::EPhantomType::PHANTOM_HOVER, Game::EPhantomType::PHANTOM_QUAKE };
+			Game::EPhantomType::ePhantom_Laser, Game::EPhantomType::ePhantom_Eagle, Game::EPhantomType::ePhantom_Asteroid, Game::EPhantomType::ePhantom_Drill,
+			Game::EPhantomType::ePhantom_Rocket, Game::EPhantomType::ePhantom_Rhythm, Game::EPhantomType::ePhantom_Hover, Game::EPhantomType::ePhantom_Quake };
 
 	public:
 		popup_item::EType Type{ static_cast<popup_item::EType>(-1) };
@@ -142,7 +142,7 @@ namespace app
 
 			xgame::MsgTakeObject message{ (xgame::MsgTakeObject::EType)ms_TakeType[Type] };
 			SendMessageImm(in_playerActorID, message);
-			return message.m_Taken;
+			return message.Taken;
 		}
 
 		void SetupCommonGOC(GameDocument* in_pDocument)
@@ -159,12 +159,12 @@ namespace app
 					fnd::GOCVisualModel::Description description{};
 					if (Type == popup_item::EType::eType_SuperRing)
 					{
-						description.m_Model = pInfo->SuperRingModel;
+						description.Model = pInfo->SuperRingModel;
 						pVisualModel->SetLocalScale({ 0.7f, 0.7f, 0.7f });
 					}
 					else
 					{
-						description.m_Model = pInfo->RingModel;
+						description.Model = pInfo->RingModel;
 					}
 					
 					pVisualModel->Setup(description);
@@ -178,8 +178,8 @@ namespace app
 				if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->Model;
-					description.m_Skeleton = pInfo->Skeleton;
+					description.Model = pInfo->Model;
+					description.Skeleton = pInfo->Skeleton;
 
 					pVisualModel->SetLocalScale({ 0.7f, 0.7f, 0.7f });
 					pVisualModel->Setup(description);
@@ -207,11 +207,11 @@ namespace app
 				{
 					fnd::GOCVisualModel::Description description{};
 					if (popup_item::EType::eType_SpeedUp)
-						description.m_Model = pInfo->ItemModelContainer.Models[0];
+						description.Model = pInfo->ItemModelContainer.Models[0];
 					else if (popup_item::EType::eType_Invincible)
-						description.m_Model = pInfo->ItemModelContainer.Models[1];
+						description.Model = pInfo->ItemModelContainer.Models[1];
 					else if (popup_item::EType::eType_Warp)
-						description.m_Model = pInfo->ItemModelContainer.Models[2];
+						description.Model = pInfo->ItemModelContainer.Models[2];
 
 					pVisualModel->Setup(description);
 
@@ -245,7 +245,7 @@ namespace app
 				if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ItemModelContainer.Models[Type - 1];
+					description.Model = pInfo->ItemModelContainer.Models[Type - 1];
 
 					pVisualModel->Setup(description);
 
@@ -281,8 +281,8 @@ namespace app
 				if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ModelContainer.Models[Type - 11];
-					description.m_Skeleton = pInfo->SkeletonContainer.Skeletons[Type - 11];
+					description.Model = pInfo->ModelContainer.Models[Type - 11];
+					description.Skeleton = pInfo->SkeletonContainer.Skeletons[Type - 11];
 
 					pVisualModel->Setup(description);
 
@@ -311,8 +311,8 @@ namespace app
 				if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 				{
 					fnd::GOCVisualModel::Description description{};
-					description.m_Model = pInfo->ItemModelContainer.Models[1];
-					description.m_Skeleton = pInfo->ItemSkeletonContainer.Skeletons[1];
+					description.Model = pInfo->ItemModelContainer.Models[1];
+					description.Skeleton = pInfo->ItemSkeletonContainer.Skeletons[1];
 					
 					pVisualModel->Setup(description);
 

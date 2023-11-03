@@ -10,10 +10,10 @@ namespace app
 		EActionType ActionType{};
 	};
 
-	static void paramMap_ObjLoftBirdCollision(SetEd::CResClass rClass)
+	static void paramMap_ObjLoftBirdCollision(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjLoftBirdCollision, ASLR(0x00616390), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjLoftBirdCollision, ASLR(0x00616390), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjLoftBirdCollision(rClass);
+		fpparamMap_ObjLoftBirdCollision(in_rClass);
 	}
 }

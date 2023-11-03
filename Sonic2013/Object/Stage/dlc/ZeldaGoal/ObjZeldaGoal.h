@@ -64,11 +64,11 @@ namespace app
 
 		ObjZeldaGoal() : CSetObjectListener(), TTinyFsm<ObjZeldaGoal>(&ObjZeldaGoal::StateIdle)
 		{
-			AnimListener.m_Timing = 2;
+			AnimListener.Timing = 2;
 		}
 
 	public:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationScript>(*this);
@@ -78,17 +78,17 @@ namespace app
 			fnd::GOComponent::BeginSetup(*this);
 
 			auto* pParam = GetAdapter()->GetData<SZeldaGoalParam>();
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaGoalInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaGoalInfo>(*in_pDocument);
 
 			if (auto* pTransformGoc = GetComponent<fnd::GOCTransform>())
-				TransformMtx = pTransformGoc->m_Frame.m_Unk3.m_Mtx;
+				TransformMtx = pTransformGoc->Frame.Unk3.Mtx;
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
+				description.Unk2 |= 0x400000;
 
 				pVisualGoc->Setup(description);
 				pVisualGoc->SetLocalScale(ms_ModelScale);
@@ -111,10 +111,10 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = { pParam->CollisionWidth / 2.0f, pParam->CollisionHeight / 2.0f, pParam->CollisionDepth / 2.0f };
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = { pParam->CollisionWidth / 2.0f, pParam->CollisionHeight / 2.0f, pParam->CollisionDepth / 2.0f };
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk6, collisionInfo);
 				collisionInfo.SetLocalPosition({ csl::math::Vector3(0.0f, pParam->CollisionHeight / 2.0f, 0.0f) + csl::math::Vector3(pParam->OffsetWidth, pParam->OffsetHeight, pParam->OffsetDepth) });
 				pColliderGoc->CreateShape(collisionInfo);
@@ -172,12 +172,12 @@ namespace app
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
 			xgame::MsgCatchPlayer catchMsg{};
-			catchMsg.m_Unk3 = 20;
-			if (!SendMessageImm(in_rMessage.m_Sender, catchMsg) || !catchMsg.m_Unk4)
+			catchMsg.Unk3 = 20;
+			if (!SendMessageImm(in_rMessage.Sender, catchMsg) || !catchMsg.Unk4)
 				return true;
 
 			GetComponent<game::GOCCollider>()->SetEnable(false);
-			PlayerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender);
+			PlayerNo = ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender);
 
 			CSetObjectID cameraId{ GetAdapter()->GetData<SZeldaGoalParam>()->FixCamera };
 			xgame::MsgCameraOn cameraMsg{ 0.0f, false, 3001, 1, PlayerNo, false };
@@ -335,7 +335,7 @@ namespace app
 				}
 
 				auto* pTransformGoc = GetComponent<fnd::GOCTransform>();
-				csl::math::Vector3 position{ math::Vector3Rotate(pTransformGoc->m_Transform.m_Rotation, { csl::math::Vector3::UnitY() * 3.0f * csl::math::Clamp(ElapsedTime / 1.5f, 0.0f, 1.0f) }) };
+				csl::math::Vector3 position{ math::Vector3Rotate(pTransformGoc->Transform.Rotation, { csl::math::Vector3::UnitY() * 3.0f * csl::math::Clamp(ElapsedTime / 1.5f, 0.0f, 1.0f) }) };
 				pTransformGoc->SetLocalTranslation({ TransformMtx.GetTransVector() + position });
 
 				ElapsedTime += in_rEvent.getFloat();
@@ -371,7 +371,7 @@ namespace app
 					continue;
 
 				ObjectPartPointLight::CInfo createInfo{};
-				createInfo.Position = transform.m_Position;
+				createInfo.Position = transform.Position;
 				createInfo.Unk1 = 25.0f;
 				createInfo.LifeTime = -1.0f;
 				createInfo.pParentTransform = pTransformGoc;

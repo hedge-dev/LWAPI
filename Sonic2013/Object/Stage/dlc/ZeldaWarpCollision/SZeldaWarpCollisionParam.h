@@ -12,10 +12,10 @@ namespace app
 		float CollisionDepth;
 	};
 
-	static void paramMap_ObjZeldaWarpCollision(SetEd::CResClass rClass)
+	static void paramMap_ObjZeldaWarpCollision(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjZeldaWarpCollision, ASLR(0x00608000), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjZeldaWarpCollision, ASLR(0x00608000), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjZeldaWarpCollision(rClass);
+		fpparamMap_ObjZeldaWarpCollision(in_rClass);
 	}
 }

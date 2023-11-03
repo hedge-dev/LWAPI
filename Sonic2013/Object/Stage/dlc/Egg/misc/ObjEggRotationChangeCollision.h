@@ -27,10 +27,10 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Size = { pParam->Width, pParam->Height, pParam->Depth };
-				collisionInfo.m_Unk2 |= 3;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Size = { pParam->Width, pParam->Height, pParam->Depth };
+				collisionInfo.Unk2 |= 3;
 
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk2, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
@@ -57,7 +57,7 @@ namespace app
 			xgame::MsgDlcChangeEggRotation msg{};
 			msg.IsEnter = true;
 
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 			return true;
 		}
 
@@ -66,7 +66,7 @@ namespace app
 			xgame::MsgDlcChangeEggRotation msg{};
 			msg.IsEnter = false;
 
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 			return true;
 		}
 	};

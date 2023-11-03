@@ -39,7 +39,7 @@ namespace app
 		if (pEnemyTargetGoc->IsFindTarget())
 		{
 			auto* pTransformGoc = in_rObj.GetComponent<fnd::GOCTransform>();
-			csl::math::Matrix34 transformMtx{ pTransformGoc->m_Frame.m_Unk3.m_Mtx };
+			csl::math::Matrix34 transformMtx{ pTransformGoc->Frame.Unk3.Mtx };
 			csl::math::Vector3 upVector{ transformMtx.GetColumn(1) };
 
 			csl::math::Vector3 centerPos{ *pEnemyTargetGoc->GetTargetCenterPosition(&centerPos) };
@@ -362,7 +362,7 @@ namespace app
 	inline bool EnemyStalBaby::State::IsInRangeAttack(EnemyStalBaby& in_rObj, const csl::math::Vector3& in_rTargetPosition)
 	{
 		auto* pTransformGoc = in_rObj.GetComponent<fnd::GOCTransform>();
-		csl::math::Matrix34 transformMtx{ pTransformGoc->m_Frame.m_Unk3.m_Mtx };
+		csl::math::Matrix34 transformMtx{ pTransformGoc->Frame.Unk3.Mtx };
 		csl::math::Vector3 position{ transformMtx.GetTransVector() };
 
 		csl::math::Vector3 offset{ in_rTargetPosition - position };

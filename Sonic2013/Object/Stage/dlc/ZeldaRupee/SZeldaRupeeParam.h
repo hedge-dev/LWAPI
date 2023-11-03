@@ -10,10 +10,10 @@ namespace app
 		bool IsShadowOff{};
 	};
 
-	static void paramMap_ObjZeldaRupee(SetEd::CResClass rClass)
+	static void paramMap_ObjZeldaRupee(SetEd::CResClass in_rClass)
 	{
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjZeldaRupee, ASLR(0x00617320), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjZeldaRupee, ASLR(0x00617320), SetEd::CResClass);
 
-		ms_fpparamMap_ObjZeldaRupee(rClass);
+		fpparamMap_ObjZeldaRupee(in_rClass);
 	}
 }

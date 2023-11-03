@@ -111,13 +111,13 @@ namespace app
 		if (!in_rObj.IsEndAnimation(4))
 			return true;
 
-		in_rObj.GetComponent<fnd::GOCVisualContainer>()->m_Visuals[1]->SetVisible(false);
+		in_rObj.GetComponent<fnd::GOCVisualContainer>()->Visuals[1]->SetVisible(false);
 		in_rObj.GetComponent<GOCEnemyHsm>()->SetEnableUpdate(false);
 
 		enemy::DeadEffectCInfo effectCreateInfo{};
 		effectCreateInfo.Owner = &in_rObj;
 		effectCreateInfo.SetMsgDamage({ 2, 8, 2, *csl::math::Vector3::Zero, *csl::math::Vector3::Zero });
-		effectCreateInfo.SetTransform(in_rObj.Frame.m_Unk3.m_Mtx);
+		effectCreateInfo.SetTransform(in_rObj.Frame.Unk3.Mtx);
 		effectCreateInfo.SetZeldaDekunuts();
 
 		in_rObj.CreateDeadEffect(effectCreateInfo);

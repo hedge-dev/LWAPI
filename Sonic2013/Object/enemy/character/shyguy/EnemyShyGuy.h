@@ -25,7 +25,7 @@ namespace app
 			ObjUtil::SetPropertyLockonTarget(this);
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCGravity>(*this);
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
@@ -40,7 +40,7 @@ namespace app
 			fnd::GOComponent::BeginSetup(*this);
 
 			auto* pParam = GetAdapter()->GetData<SShyGuyParam>();
-			auto* pInfo = ObjUtil::GetObjectInfo<EnemyShyGuyInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<EnemyShyGuyInfo>(*in_pDocument);
 
 			Flags.set(0, pParam->IsEventDriven);
 			Flags.set(2, pParam->Direction == SShyGuyParam::Direction::LEFT);
@@ -50,8 +50,8 @@ namespace app
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_0C |= 0x400000u;
 				description.zOffset = pParam->DepthOffset;
 
@@ -81,12 +81,12 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Unk3 = 0x20000;
-				collisionInfo.m_Radius = ms_CollisionRadius;
-				collisionInfo.m_pParent = GetCenterPositionFrame();
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_eSphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Unk3 = 0x20000;
+				collisionInfo.Radius = ms_CollisionRadius;
+				collisionInfo.pParent = GetCenterPositionFrame();
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
@@ -151,7 +151,7 @@ namespace app
 
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
-			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.GetTranslation(), 1);
+			in_rMessage.SetReply(GetComponent<fnd::GOCTransform>()->Frame.Unk3.GetTranslation(), 1);
 			ObjUtil::AddScore(*this, ms_pScoreName, in_rMessage);
 			enemy::DeadEffectCInfo deadEffectInfo{};
 			deadEffectInfo.Owner = this;
@@ -193,7 +193,7 @@ namespace app
 			blowOffInfo.Skeleton = pInfo->Skeleton;
 			blowOffInfo.Animation = pInfo->Animations[!Flags.test(2)];
 			blowOffInfo.CollisionRadius = ms_CollisionRadius;
-			blowOffInfo.TrsMatrix = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+			blowOffInfo.TrsMatrix = GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
 			blowOffInfo.Offset = { 0.0f, 5.0f, 0.0f };
 			blowOffInfo.Size = (EnemyBlowOffObjectCInfo::EffectSize)3;
 
@@ -222,7 +222,7 @@ namespace app
 			if (auto* pSound = GetComponent<game::GOCSound>())
 			{
 				pSound->Play3D(ms_pFootStepSoundName, 0.0f);
-				pSound->Play3D(ms_pStepSoundNames[in_param.m_Int], 0.0f);
+				pSound->Play3D(ms_pStepSoundNames[in_param.Int], 0.0f);
 			}
 		}
 

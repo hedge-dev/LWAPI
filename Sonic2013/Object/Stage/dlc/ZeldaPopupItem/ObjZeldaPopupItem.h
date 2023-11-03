@@ -24,14 +24,14 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCAnimationSimple>(*this);
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCEffect>(*this);
 			fnd::GOComponent::Create<game::GOCSound>(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaPopupItemInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaPopupItemInfo>(*in_pDocument);
 			pInfo->SetPopupItem(this);
 			
 			fnd::GOComponent::BeginSetup(*this);
@@ -45,11 +45,11 @@ namespace app
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Models[(int)Type];
-				description.m_Skeleton = pInfo->Skeletons[0];
+				description.Model = pInfo->Models[(int)Type];
+				description.Skeleton = pInfo->Skeletons[0];
 				if (Type == ZeldaPopupItemType::eZeldaPopupItemType_Heart)
-					description.m_Skeleton = pInfo->Skeletons[1];
-				description.field_0C |= 0x400000u;
+					description.Skeleton = pInfo->Skeletons[1];
+				description.Unk2 |= 0x400000u;
 
 				pVisualModel->Setup(description);
 
@@ -85,12 +85,12 @@ namespace app
 			if (auto* pEffect = GetComponent<game::GOCEffect>())
 			{
 				game::EffectCreateInfo effectInfo{};
-				effectInfo.m_pName = ms_pEffectName;
-				effectInfo.m_Unk1 = 1.0f;
-				effectInfo.m_Unk2 = 1;
-				effectInfo.m_pVisual = GetComponent<fnd::GOCVisualModel>();
-				effectInfo.m_pBoneName = "Body";
-				effectInfo.m_Unk9 = -1;
+				effectInfo.pName = ms_pEffectName;
+				effectInfo.Unk1 = 1.0f;
+				effectInfo.Unk2 = 1;
+				effectInfo.pVisual = GetComponent<fnd::GOCVisualModel>();
+				effectInfo.pBoneName = "Body";
+				effectInfo.Unk9 = -1;
 
 				pEffect->CreateEffectLoopEx(&EffectHandle, effectInfo);
 			}

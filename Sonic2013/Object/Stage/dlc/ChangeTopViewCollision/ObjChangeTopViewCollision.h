@@ -13,7 +13,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
 			
@@ -25,10 +25,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 3;
-				collisionInfo.m_Size = { pParam->CollisionWidth, pParam->CollisionHeight, pParam->CollisionDepth };
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 3;
+				collisionInfo.Size = { pParam->CollisionWidth, pParam->CollisionHeight, pParam->CollisionDepth };
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk7, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);

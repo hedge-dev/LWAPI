@@ -10,10 +10,10 @@ namespace app
 		float Depth{};
 	};
 
-	static void paramMap_ObjEggRotationChangeCollision(SetEd::CResClass rClass)
+	static void paramMap_ObjEggRotationChangeCollision(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjEggRotationChangeCollision, ASLR(0x00615EE0), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjEggRotationChangeCollision, ASLR(0x00615EE0), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjEggRotationChangeCollision(rClass);
+		fpparamMap_ObjEggRotationChangeCollision(in_rClass);
 	}
 }

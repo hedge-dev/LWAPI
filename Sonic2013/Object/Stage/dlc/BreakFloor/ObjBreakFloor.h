@@ -26,7 +26,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -39,15 +39,15 @@ namespace app
 			pTransform->Unk2 = false;
 
 			for (size_t i = 0; i < Frames.size(); i++)
-				pTransform->m_Frame.AddChild(&Frames[i]);
+				pTransform->Frame.AddChild(&Frames[i]);
 			
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjBreakFloorInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjBreakFloorInfo>(*in_pDocument);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_08 = 1;
 
 				pVisualModel->Setup(description);
@@ -59,27 +59,27 @@ namespace app
 				pCollider->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Size = ms_CollisionSize;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Size = ms_CollisionSize;
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk5, collisionInfo);
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 
 				for (size_t i = 0; i < ms_ShapeCount - 1; i++)
 				{
-					collisionInfo.m_ShapeID = i;
-					collisionInfo.m_pParent = &Frames[i];
+					collisionInfo.ShapeID = i;
+					collisionInfo.pParent = &Frames[i];
 					pCollider->CreateShape(collisionInfo);
 				}
 
 				game::ColliMeshShapeCInfo meshCollisionInfo{};
-				meshCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Mesh;
-				meshCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				meshCollisionInfo.m_Flags = 1;
-				meshCollisionInfo.m_Unk2 |= 0x100;
-				meshCollisionInfo.m_ShapeID = ms_ShapeCount - 1;
-				meshCollisionInfo.m_Mesh = pInfo->Collision;
+				meshCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Mesh;
+				meshCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				meshCollisionInfo.Flags = 1;
+				meshCollisionInfo.Unk2 |= 0x100;
+				meshCollisionInfo.ShapeID = ms_ShapeCount - 1;
+				meshCollisionInfo.Mesh = pInfo->Collision;
 				meshCollisionInfo.SetLocalPosition(ms_MeshCollisionOffset);
 				pCollider->CreateShape(meshCollisionInfo);
 			}
@@ -89,10 +89,10 @@ namespace app
 			if (GetComponent<game::GOCEffect>())
 				game::GOCEffect::SimpleSetup(this);
 
-			if (auto* pGravityManager = in_rDocument.GetService<game::GravityManager>())
+			if (auto* pGravityManager = in_pDocument->GetService<game::GravityManager>())
 			{
 				ObjUtil::LayoutCylinder layout{};
-				layout.Setup({ &pTransform->m_Frame, pGravityManager->GetObjectAtPoint(pTransform->m_Transform.m_Position) });
+				layout.Setup({ &pTransform->Frame, pGravityManager->GetObjectAtPoint(pTransform->Transform.Position) });
 
 				csl::math::Vector3 right = { csl::math::Vector3::UnitX() * (30.0f - 4.0f) };
 				csl::math::Vector3 forward = { -csl::math::Vector3::UnitZ() * 30.0f };
@@ -109,8 +109,8 @@ namespace app
 					for (size_t j = 0; j < blockCount; j++)
 					{
 						auto* pTransform = layout.CalcTransform({ right * j + offset });
-						Frames[currentBlock].SetLocalTranslation(pTransform->m_Position);
-						Frames[currentBlock].SetLocalRotation(pTransform->m_Rotation);
+						Frames[currentBlock].SetLocalTranslation(pTransform->Position);
+						Frames[currentBlock].SetLocalRotation(pTransform->Rotation);
 
 						currentBlock++;
 					}
@@ -134,9 +134,9 @@ namespace app
 
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
-			if (!AttackType::IsDamaged(in_rMessage.AttackType, 9) && (in_rMessage.AttackType & 0x400080) != 0x400080 && (in_rMessage.DefensePower != 3 || in_rMessage.m_SenderType != 3))
+			if (!AttackType::IsDamaged(in_rMessage.AttackType, 9) && (in_rMessage.AttackType & 0x400080) != 0x400080 && (in_rMessage.DefensePower != 3 || in_rMessage.SenderType != 3))
 			{
-				in_rMessage.m_ReplyStatus.set(4);
+				in_rMessage.ReplyStatus.set(4);
 				return true;
 			}
 
@@ -144,7 +144,7 @@ namespace app
 			GetComponent<game::GOCSound>()->Play(ms_pPuzzleSolutionSoundName, 0.0f);
 			GetComponent<game::GOCEffect>()->CreateEffect(ms_pEffectName);
 
-			in_rMessage.SetReply(in_rMessage.m_Unk2, true);
+			in_rMessage.SetReply(in_rMessage.Unk2, true);
 			ObjUtil::AddScorePlayerAction(*this, ms_pScoreName, in_rMessage.PlayerNo);
 
 			auto* pInfo = ObjUtil::GetObjectInfo<ObjBreakFloorInfo>(*GetDocument());
@@ -153,9 +153,9 @@ namespace app
 				for (size_t i = 0; i < ms_ShapeCount - 1; i++)
 				{
 					if (AttackType::And(in_rMessage.AttackType, 1))
-						ObjCrystalFloorBaseUtil::CreateUpDebris(Frames[i].m_Unk3, in_rMessage.m_Unk2, pInfo->Debris, GetDocument());
+						ObjCrystalFloorBaseUtil::CreateUpDebris(Frames[i].Unk3, in_rMessage.Unk2, pInfo->Debris, GetDocument());
 					else
-						ObjCrystalFloorBaseUtil::CreateDownDebris(Frames[i].m_Unk3, in_rMessage.m_Unk2, pInfo->Debris, GetDocument());
+						ObjCrystalFloorBaseUtil::CreateDownDebris(Frames[i].Unk3, in_rMessage.Unk2, pInfo->Debris, GetDocument());
 				}
 			}
 

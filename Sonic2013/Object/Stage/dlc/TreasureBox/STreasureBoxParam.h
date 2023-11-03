@@ -15,10 +15,10 @@ namespace app
 		char ItemType{};
 	};
 
-	static void paramMap_ObjTreasureBox(SetEd::CResClass rClass)
+	static void paramMap_ObjTreasureBox(SetEd::CResClass in_rClass)
 	{
 		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjTreasureBox, ASLR(0x00616CC0), SetEd::CResClass);
 
-		fpparamMap_ObjTreasureBox(rClass);
+		fpparamMap_ObjTreasureBox(in_rClass);
 	}
 }

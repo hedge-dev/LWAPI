@@ -22,7 +22,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			auto* pParam = GetAdapter()->GetData<SZeldaRupeeParam>();
 			CreateItem = pParam->CreateItem;
@@ -40,14 +40,14 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaRupeeInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjZeldaRupeeInfo>(*in_pDocument);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Models[CreateItem];
-				description.m_LightQualityType = 1;
-				description.field_0C |= 0x4000000;
+				description.Model = pInfo->Models[CreateItem];
+				description.LightQualityType = 1;
+				description.Unk2 |= 0x4000000;
 
 				pVisualModel->Setup(description);
 				pVisualModel->SetLocalTranslation(ms_VisualOffset);
@@ -57,10 +57,10 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk6, collisionInfo);
 
@@ -162,7 +162,7 @@ namespace app
 				}
 				case xgame::MsgHitEventCollision::MessageID:
 				{
-					size_t playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(message).m_Sender);
+					size_t playerNo = ObjUtil::GetPlayerNo(*GetDocument(), static_cast<xgame::MsgHitEventCollision&>(message).Sender);
 					if (playerNo >= 0)
 					{
 						if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), playerNo))
@@ -178,7 +178,7 @@ namespace app
 					return FSM_TOP();
 				}
 
-				message.m_Handled = true;
+				message.Handled = true;
 				return {};
 			}
 			}
@@ -209,7 +209,7 @@ namespace app
 				if (static_cast<xgame::MsgNotifyObjectEvent&>(message).GetEventType() == 1)
 					ChangeState(&ObjZeldaRupee::StateActive);
 
-				message.m_Handled = true;
+				message.Handled = true;
 				return{};
 			}
 			}

@@ -18,10 +18,10 @@ namespace app
 		float DepthOffset;
 	};
 
-	static void paramMap_EnemyShyGuy(SetEd::CResClass rClass)
+	static void paramMap_EnemyShyGuy(SetEd::CResClass in_rClass)
 	{
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_EnemyShyGuy, ASLR(0x0060FBC0), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_EnemyShyGuy, ASLR(0x0060FBC0), SetEd::CResClass);
 		
-		ms_fpparamMap_EnemyShyGuy(rClass);
+		fpparamMap_EnemyShyGuy(in_rClass);
 	}
 }

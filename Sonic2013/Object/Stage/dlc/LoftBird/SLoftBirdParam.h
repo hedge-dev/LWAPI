@@ -14,10 +14,10 @@ namespace app
 		PointLightType PointLight;
 	};
 
-	static void paramMap_ObjLoftBird(SetEd::CResClass rClass)
+	static void paramMap_ObjLoftBird(SetEd::CResClass in_rClass)
 	{		
-		FUNCTION_PTR(void, __thiscall, ms_fpparamMap_ObjLoftBird, ASLR(0x00616270), SetEd::CResClass);
+		FUNCTION_PTR(void, __thiscall, fpparamMap_ObjLoftBird, ASLR(0x00616270), SetEd::CResClass);
 		
-		ms_fpparamMap_ObjLoftBird(rClass);
+		fpparamMap_ObjLoftBird(in_rClass);
 	}
 }

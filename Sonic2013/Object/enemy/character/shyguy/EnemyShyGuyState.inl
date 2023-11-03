@@ -42,7 +42,7 @@ namespace app
 		if (!pTransform)
 			return;
 
-		Rotation = pTransform->m_Transform.m_Rotation;
+		Rotation = pTransform->Transform.Rotation;
 
 		auto* pAnimationScript = in_rObj.GetComponent<game::GOCAnimationScript>();
 		if (!pAnimationScript)
@@ -66,7 +66,7 @@ namespace app
 		if (!pTransform)
 			return;
 
-		csl::math::Matrix34 trsMatrix{ pTransform->m_Transform.GetTransformMatrix() };
+		csl::math::Matrix34 trsMatrix{ pTransform->Transform.GetTransformMatrix() };
 		pMovement->GetContextParam()->Velocity = { trsMatrix.GetColumn(2) * pParam->Speed };
 		pMovement->EnableMovementFlag(0);
 		in_rObj.Flags.flip(2);
@@ -111,7 +111,7 @@ namespace app
 
 			if (ElapsedTime > 0.1f)
 			{
-				pTransform->m_Transform.GetTransformMatrix();
+				pTransform->Transform.GetTransformMatrix();
 
 				csl::math::Quaternion rotation{ csl::math::QuaternionMultiply(Rotation, { Eigen::AngleAxisf(MATHF_PI, csl::math::Vector3::UnitY()) }) };
 				rotation.Normalize();
@@ -124,7 +124,7 @@ namespace app
 			}
 			else
 			{
-				pTransform->m_Transform.GetTransformMatrix();
+				pTransform->Transform.GetTransformMatrix();
 
 				float angle = MATHF_PI * csl::math::Clamp(ElapsedTime / 0.1f, 0.0f, 1.0f);
 				if (in_rObj.Flags.test(2) != (LookCount & 1) == 0)

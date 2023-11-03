@@ -25,7 +25,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -40,18 +40,18 @@ namespace app
 			ResetTime = pParam->ResetTime;
 			IsReset.set(0, pParam->IsReset);
 			
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiCoinInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiCoinInfo>(*in_pDocument);
 			
-			pRingManager = in_rDocument.GetService<Gimmick::CRingManager>();
+			pRingManager = in_pDocument->GetService<Gimmick::CRingManager>();
 			pRingManager->RegisterRotateRing(this);
 
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.field_0C |= 0x400000u;
-				description.m_LightQualityType = 1;
-				description.field_30 = 0x60000000;
+				description.Model = pInfo->Model;
+				description.Unk2 |= 0x400000u;
+				description.LightQualityType = 1;
+				description.Unk8 = 0x60000000;
 				
 				pVisualModel->Setup(description);
 				pVisualModel->SetLocalTranslation(ms_PositionOffset);
@@ -61,14 +61,14 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE0;
-				collisionInfo.m_Unk2 = 1;
-				collisionInfo.m_Radius = ms_CollisionRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value0;
+				collisionInfo.Unk2 = 1;
+				collisionInfo.Radius = ms_CollisionRadius;
 				collisionInfo.SetLocalPosition({ ms_PositionOffset });
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk12, collisionInfo);
 				
-				if (parentObject) collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
+				if (parentObject) collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
 
 				pCollider->CreateShape(collisionInfo);
 			}
@@ -113,24 +113,24 @@ namespace app
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
 		{
 			xgame::MsgTakeObject msg{ xgame::MsgTakeObject::EType::eType_YoshiCoin };
-			msg.SetShapeUserID(in_rMessage.m_pOther->m_ID);
-			if (!SendMessageImm(in_rMessage.m_Sender, msg) || !msg.m_Taken)
+			msg.SetShapeUserID(in_rMessage.pOther->ID);
+			if (!SendMessageImm(in_rMessage.Sender, msg) || !msg.Taken)
 				return true;
 			
 			if (auto* pEffect = GetComponent<game::GOCEffect>())
 			{
 				game::EffectCreateInfo effectInfo{};
-				effectInfo.m_pName = ms_pEffectName;
-				effectInfo.m_Unk1 = 1.0f;
-				effectInfo.m_Position = ms_PositionOffset;
-				effectInfo.m_Unk10 = true;
+				effectInfo.pName = ms_pEffectName;
+				effectInfo.Unk1 = 1.0f;
+				effectInfo.Position = ms_PositionOffset;
+				effectInfo.Unk10 = true;
 
 				pEffect->CreateEffectEx(effectInfo);
 			}
 			
 			if (auto* pSound = GetComponent<game::GOCSound>()) pSound->Play(ms_pSoundName, 0.0f);
 			
-			ObjUtil::AddScorePlayerAction(*this, ms_pScoreName, ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.m_Sender));
+			ObjUtil::AddScorePlayerAction(*this, ms_pScoreName, ObjUtil::GetPlayerNo(*GetDocument(), in_rMessage.Sender));
 			SetStatusToKill();
 		}
 
@@ -164,7 +164,7 @@ namespace app
 				pVisualModel->GetMatrix(&visualMatrix);
 				
 				auto* pTransform = GetComponent<fnd::GOCTransform>();
-				transformMatrix = pTransform->m_Frame.m_Unk3.m_Mtx;
+				transformMatrix = pTransform->Frame.Unk3.Mtx;
 
 				transformMatrix.SetTransVector(visualMatrix.GetTransVector());
 				

@@ -35,7 +35,7 @@ namespace app
 			
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<game::GOCGravity>(*this);
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
@@ -50,7 +50,7 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<EnemyStalBabyInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<EnemyStalBabyInfo>(*in_pDocument);
 			auto* pParam = GetAdapter()->GetData<SStalBabyParam>();
 
 			Speed = pParam->Speed;
@@ -62,7 +62,7 @@ namespace app
 				csl::math::Quaternion rotation{ GetAdapter()->GetRotation() };
 
 				CreateCenterPositionFrame(ms_CenterPosition);
-				pTransformGoc->m_Frame.AddChild(&Frame);
+				pTransformGoc->Frame.AddChild(&Frame);
 				Frame.SetLocalTranslation(position);
 				Frame.SetLocalRotation(rotation);
 				Frame.ResetFlag(16);
@@ -72,8 +72,8 @@ namespace app
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_0C |= 0x400000;
 
 				pVisualGoc->Setup(description);
@@ -93,27 +93,27 @@ namespace app
 			{
 				pColliderGoc->Setup({ ms_ShapeCount });
 				game::ColliCapsuleShapeCInfo bodyCollisionInfo{};
-				bodyCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				bodyCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				bodyCollisionInfo.m_Unk2 |= 1;
-				bodyCollisionInfo.m_Unk3 = 0x20000;
-				bodyCollisionInfo.m_ShapeID = 0;
-				bodyCollisionInfo.m_Radius = ms_BodyCollisionSize.x();
-				bodyCollisionInfo.m_Height = ms_BodyCollisionSize.y();
-				bodyCollisionInfo.m_pParent = GetCenterPositionFrame();
+				bodyCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				bodyCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				bodyCollisionInfo.Unk2 |= 1;
+				bodyCollisionInfo.Unk3 = 0x20000;
+				bodyCollisionInfo.ShapeID = 0;
+				bodyCollisionInfo.Radius = ms_BodyCollisionSize.x();
+				bodyCollisionInfo.Height = ms_BodyCollisionSize.y();
+				bodyCollisionInfo.pParent = GetCenterPositionFrame();
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, bodyCollisionInfo);
 
 				if (auto* pShape = pColliderGoc->CreateShape(bodyCollisionInfo))
 					ObjUtil::SetEnableColliShape(pShape, false);
 
 				game::ColliCapsuleShapeCInfo handCollisionInfo{};
-				handCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				handCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				handCollisionInfo.m_Unk2 |= 1;
-				handCollisionInfo.m_ShapeID = 1;
-				handCollisionInfo.m_Radius = ms_HandCollisionSize.x();
-				handCollisionInfo.m_Height = ms_HandCollisionSize.y();
-				handCollisionInfo.m_pParent = GetCenterPositionFrame();
+				handCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				handCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				handCollisionInfo.Unk2 |= 1;
+				handCollisionInfo.ShapeID = 1;
+				handCollisionInfo.Radius = ms_HandCollisionSize.x();
+				handCollisionInfo.Height = ms_HandCollisionSize.y();
+				handCollisionInfo.pParent = GetCenterPositionFrame();
 				handCollisionInfo.SetLocalPosition(ms_HandCollisionOffset);
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, handCollisionInfo);
 
@@ -121,21 +121,21 @@ namespace app
 					ObjUtil::SetEnableColliShape(pShape, false);
 
 				game::CharacterRigidBodyCinfo rigidBodyCollisionInfo{};
-				rigidBodyCollisionInfo.m_Unk7 = 8.0f;
-				rigidBodyCollisionInfo.m_Unk8 = 0.0f;
-				rigidBodyCollisionInfo.m_Unk10 = 300.0f;
-				rigidBodyCollisionInfo.m_Flags = 30;
-				rigidBodyCollisionInfo.m_ShapeID = 2;
+				rigidBodyCollisionInfo.Unk7 = 8.0f;
+				rigidBodyCollisionInfo.Unk8 = 0.0f;
+				rigidBodyCollisionInfo.Unk10 = 300.0f;
+				rigidBodyCollisionInfo.Flags = 30;
+				rigidBodyCollisionInfo.ShapeID = 2;
 				rigidBodyCollisionInfo.SetLocalPosition(ms_RigidBodyCollisionOffset);
 				pColliderGoc->CreateCharacterRigidBody(rigidBodyCollisionInfo);
 
 				game::ColliCapsuleShapeCInfo searchCollisionInfo{};
-				searchCollisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Capsule;
-				searchCollisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				searchCollisionInfo.m_Unk2 |= 3;
-				searchCollisionInfo.m_ShapeID = 3;
-				searchCollisionInfo.m_Radius = pParam->SearchRange;
-				searchCollisionInfo.m_Height = csl::math::Max(pParam->SearchHeight, pParam->SearchRange);
+				searchCollisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Capsule;
+				searchCollisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				searchCollisionInfo.Unk2 |= 3;
+				searchCollisionInfo.ShapeID = 3;
+				searchCollisionInfo.Radius = pParam->SearchRange;
+				searchCollisionInfo.Height = csl::math::Max(pParam->SearchHeight, pParam->SearchRange);
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, searchCollisionInfo);
 				pColliderGoc->CreateShape(searchCollisionInfo);
 			}
@@ -248,7 +248,7 @@ namespace app
 
 			if (EnemyUtil::IsFatalDamage(in_rMessage) || pEnemyHsmGoc->GetCurrentStateID() == 5)
 			{
-				in_rMessage.SetReply(pTransformGoc->m_Frame.m_Unk3.GetTranslation(), true);
+				in_rMessage.SetReply(pTransformGoc->Frame.Unk3.GetTranslation(), true);
 				enemy::DeadEffectCInfo createInfo{};
 				createInfo.Owner = this;
 				createInfo.SetMsgDamage(in_rMessage);
@@ -260,9 +260,9 @@ namespace app
 
 				pEnemyHsmGoc->ChangeState(7);
 			}
-			else if (in_rMessage.m_SenderType == 3)
+			else if (in_rMessage.SenderType == 3)
 			{
-				in_rMessage.SetReply(pTransformGoc->m_Frame.m_Unk3.GetTranslation(), true);
+				in_rMessage.SetReply(pTransformGoc->Frame.Unk3.GetTranslation(), true);
 				ObjUtil::AddScore(*this, ms_pScoreName, in_rMessage);
 			
 				enemy::DeadEffectCInfo createInfo{};
@@ -280,17 +280,17 @@ namespace app
 				if (pEnemyHsmGoc->GetCurrentStateID() == 7)
 					return true;
 			
-				auto* pSenderShape = in_rMessage.m_SenderShape.Get();
-				auto* pReceiverShape = in_rMessage.m_RecieverShape.Get();
+				auto* pSenderShape = in_rMessage.SenderShape.Get();
+				auto* pReceiverShape = in_rMessage.RecieverShape.Get();
 
 				game::PhysicsContactPoint contactPoint{};
 				if (pSenderShape && pReceiverShape && pReceiverShape->GetClosestPoint(*pSenderShape, &contactPoint))
 				{
 					if (AttackType::And(in_rMessage.AttackType, 64))
-						in_rMessage.m_ReplyStatus.set(0);
+						in_rMessage.ReplyStatus.set(0);
 
-					in_rMessage.SetReply(pTransformGoc->m_Frame.m_Unk3.GetTranslation(), 0, *csl::math::Vector3::Zero);
-					GetComponent<game::GOCEffect>()->CreateEffectWorld(ms_pEffectName, GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx, 1.0f);
+					in_rMessage.SetReply(pTransformGoc->Frame.Unk3.GetTranslation(), 0, *csl::math::Vector3::Zero);
+					GetComponent<game::GOCEffect>()->CreateEffectWorld(ms_pEffectName, GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx, 1.0f);
 				}
 
 				auto* pEnemyTarget = GetComponent<GOCEnemyTarget>();
@@ -313,7 +313,7 @@ namespace app
 			
 			Flags.set(1);
 			
-			KickPosition = in_rMessage.m_Unk3;
+			KickPosition = in_rMessage.Unk3;
 			
 			GetComponent<GOCEnemyHsm>()->ChangeState(7);
 
@@ -325,7 +325,7 @@ namespace app
 			if (Flags.test(2))
 				EnemyBase::ProcMsgPLGetHomingTargetInfo(in_rMessage);
 			else
-				in_rMessage.m_Flags.set(0);
+				in_rMessage.Flags.set(0);
 
 			return true;
 		}
@@ -383,15 +383,15 @@ namespace app
 			if (Flags.test(3))
 				return true;
 		
-			if (ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 1))
+			if (ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 1))
 			{
 				xgame::MsgDamage msg{ 3, 8, 2, in_rMessage, *csl::math::Vector3::Zero };
-				SendMessageImm(in_rMessage.m_Sender, msg);
+				SendMessageImm(in_rMessage.Sender, msg);
 				GetComponent<game::GOCSound>()->Play3D(ms_pPunchHitSoundName, 0.0f);
 			}
 			else
 			{
-				if (!ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 3))
+				if (!ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 3))
 					SendTouchDamage(in_rMessage);
 			}
 
@@ -408,9 +408,9 @@ namespace app
 			if (in_triggerType)
 				return;
 
-			if (in_param.m_Int == 1)
+			if (in_param.Int == 1)
 				ObjUtil::SetEnableColliShape(GetComponent<game::GOCCollider>(), 1, false);
-			else if (in_param.m_Int == 0)
+			else if (in_param.Int == 0)
 				ObjUtil::SetEnableColliShape(GetComponent<game::GOCCollider>(), 1, true);
 		}
 
@@ -419,9 +419,9 @@ namespace app
 			if (in_triggerType)
 				return;
 
-			if (in_param.m_Int == 1)
+			if (in_param.Int == 1)
 				GetComponent<game::GOCSound>()->Play3D(ms_pPunchSoundName, 0.0f);
-			else if (in_param.m_Int == 0)
+			else if (in_param.Int == 0)
 				GetComponent<game::GOCSound>()->Play3D(ms_pWalkSoundName, 0.0f);
 		}
 
@@ -433,7 +433,7 @@ namespace app
 		csl::math::Vector3 GetTurnDirection(const csl::math::Vector3& in_rTargetPosition, float in_deltaTime)
 		{
 			auto* pTransformGoc = GetComponent<fnd::GOCTransform>();
-			csl::math::Matrix34 transformMtx{ pTransformGoc->m_Transform.GetTransformMatrix() };
+			csl::math::Matrix34 transformMtx{ pTransformGoc->Transform.GetTransformMatrix() };
 			csl::math::Vector3 upVector{ transformMtx.GetColumn(1) };
 			csl::math::Vector3 frontVector{ transformMtx.GetColumn(2) };
 			csl::math::Vector3 leftVector{ transformMtx.GetColumn(0) };
@@ -472,12 +472,12 @@ namespace app
 			float appearOffset = SonicUSA::System::Random::GetInstance()->genrand_float32() * pParam->AppearRange;
 			float offset = SonicUSA::System::Random::GetInstance()->genrand_float32() * MATHF_PI * 2.0f;
 		
-			csl::math::Matrix34 transformMtx{ pTransformGoc->m_Frame.m_Unk3.m_Mtx };
+			csl::math::Matrix34 transformMtx{ pTransformGoc->Frame.Unk3.Mtx };
 			csl::math::Vector3 positionOffset{ transformMtx * csl::math::Vector4({ math::Vector3RotateY(offset, { csl::math::Vector3::UnitZ() }) * appearOffset }, 1.0) };
 			
 			game::PhysicsRaycastOutput output{};
 			if (ObjUtil::RaycastNearestCollision(&output, *GetDocument(), { positionOffset + transformMtx.GetColumn(1) * 50.0f }, { positionOffset - transformMtx.GetColumn(1) * 50.0f }, 0xC996))
-				pTransformGoc->SetLocalTranslation(output.m_HitPoint);
+				pTransformGoc->SetLocalTranslation(output.HitPoint);
 		}
 
 		void OnDead()

@@ -38,10 +38,10 @@ namespace app
 
 		EnemyPiranhaPlant() : EnemyBase()
 		{
-			Listener.m_Timing = 2;
+			Listener.Timing = 2;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCAnimationScript>(*this);
@@ -54,7 +54,7 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<EnemyPiranhaPlantInfo>(in_rDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<EnemyPiranhaPlantInfo>(*in_pDocument);
 			auto* pParam = GetAdapter()->GetData<SPiranhaPlantParam>();
 
 			Flags.set(0, !pParam->Direction);
@@ -76,10 +76,10 @@ namespace app
 			if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 			{
 				fnd::GOCVisualModel::Description description{};
-				description.m_Model = pInfo->Model;
-				description.m_Skeleton = pInfo->Skeleton;
+				description.Model = pInfo->Model;
+				description.Skeleton = pInfo->Skeleton;
 				description.field_0C |= 0x400000u;
-				description.m_pParent = GetCenterPositionFrame();
+				description.pParent = GetCenterPositionFrame();
 
 				pVisualModel->Setup(description);
 				auto* pTexSrtControl = pVisualModel->SetTexSrtAnimation({pInfo->TextureAnimation, 1});
@@ -121,30 +121,30 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 3;
-				collisionInfo.m_ShapeID = 0;
-				collisionInfo.m_Radius = pParam->searchRadius;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 3;
+				collisionInfo.ShapeID = 0;
+				collisionInfo.Radius = pParam->searchRadius;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk6, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
 
 				collisionInfo = {};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_ShapeID = 1;
-				collisionInfo.m_Radius = 6.0f;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.ShapeID = 1;
+				collisionInfo.Radius = 6.0f;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
 
 				collisionInfo = {};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_Unk2 |= 1;
-				collisionInfo.m_ShapeID = 2;
-				collisionInfo.m_Radius = 3.0f;
-				collisionInfo.m_pParent = &Frame;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.Unk2 |= 1;
+				collisionInfo.ShapeID = 2;
+				collisionInfo.Radius = 3.0f;
+				collisionInfo.pParent = &Frame;
 				collisionInfo.SetLocalPosition(ms_CollisionOffset);
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, collisionInfo);
 				pCollider->CreateShape(collisionInfo);
@@ -181,14 +181,14 @@ namespace app
 
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
-			if (in_rMessage.m_SenderType == 3)
+			if (in_rMessage.SenderType == 3)
 			{
 				GetComponent<GOCEnemyHsm>()->Dispatch(in_rMessage);
 			}
-			else if (in_rMessage.m_Bonus.m_Unk1 == 3)
+			else if (in_rMessage.Bonus.Unk1 == 3)
 			{
 				auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
-				if (!pPlayerInfo || pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
+				if (!pPlayerInfo || pPlayerInfo->PixieNo == Game::EPhantomType::ePhantom_Bomb)
 					return false;
 
 				GetComponent<GOCEnemyHsm>()->Dispatch(in_rMessage);
@@ -202,18 +202,18 @@ namespace app
 			if (!Flags.test(3))
 				return false;
 
-			if (ObjUtil::CheckShapeUserID(in_rMessage.m_pSelf, 0))
+			if (ObjUtil::CheckShapeUserID(in_rMessage.pSelf, 0))
 				return true;
 
 			xgame::MsgDamage msg{ 3, 8, 3, in_rMessage, { 0.0f, 0.0f, 0.0f } };
-			SendMessageImm(in_rMessage.m_Sender, msg);
+			SendMessageImm(in_rMessage.Sender, msg);
 
 			return true;
 		}
 
 		void SoundCallback(animation::CharactorAnimation* in_pAnimation, animation::ETriggerValueType in_triggerType, animation::CallbackParam in_param)
 		{
-			if (in_triggerType || in_param.m_Int)
+			if (in_triggerType || in_param.Int)
 				return;
 
 			if (auto* pSound = GetComponent<game::GOCSound>())
@@ -237,7 +237,7 @@ namespace app
 				if (!pVisualModel->GetNodeTransform(2, buff, &transform))
 					continue;
 
-				transform.m_Rotation = { Eigen::AngleAxisf(angle, csl::math::Vector3::UnitY()) };
+				transform.Rotation = { Eigen::AngleAxisf(angle, csl::math::Vector3::UnitY()) };
 				transform.SetFlag(1);
 
 				pVisualModel->SetNodeTransform(2, buff, transform);
