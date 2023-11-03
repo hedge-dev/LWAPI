@@ -95,33 +95,7 @@ namespace app
 		public TTinyFsm<CGameSequence, TiFsmBasicEvent<CGameSequence>, true>,
 		TinyFsmSetOption<TiFSM_OPTION_USE_FP_TOP>
 	{
-	public:
-		struct DevData
-		{
-			csl::ut::FixedString<32> m_Unk1{};
-			uint m_Unk2; // Language?
-			RcType m_RcType;
-			uint m_RcDesign;
-			uint m_RcLevel;
-			uint m_BattleMode;
-			uint m_RingRaceSetNo;
-			uint m_MinigameMode;
-		};
-		CGame* m_pGame;
-		void* m_pUnk1;
-		
-	public:
-		csl::ut::FixedString<16> m_StgId;
-		TiFsmState_t m_NextState;
-		INSERT_PADDING(8);
-		GameMode* m_pGameMode;
-		INSERT_PADDING(8);
-		DevData* m_pDevData;
-		INSERT_PADDING(100);
-		WorldAreaMapCInfo WorldMapInfo{ m_pAllocator };
-		INSERT_PADDING(28);
-
-	public:
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSeqGotoStage, ASLR(0x009116B0), CGameSequence*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateProduct, ASLR(0x00910850), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStateBoot, ASLR(0x00910C30), CGameSequence*, TiFsmState_t& ret, const TiFsmBasicEvent<CGameSequence>&);
@@ -135,26 +109,51 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpPushMovieEventQueue, ASLR(0x0090DBE0), CGameSequence*, short);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSaveRedRingInfo, ASLR(0x0090D5C0), CGameSequence*, uint, uint);
 
+	public:
+		struct DevData
+		{
+			csl::ut::FixedString<32> Unk1{};
+			uint Unk2; // Language?
+			RcType RcType;
+			uint RcDesign;
+			uint RcLevel;
+			uint BattleMode;
+			uint RingRaceSetNo;
+			uint MinigameMode;
+		};
+
+		CGame* pGame;
+		void* pUnk1;
+		csl::ut::FixedString<16> StgId;
+		TiFsmState_t NextState;
+		INSERT_PADDING(8);
+		GameMode* pGameMode;
+		INSERT_PADDING(8);
+		DevData* pDevData;
+		INSERT_PADDING(100);
+		WorldAreaMapCInfo WorldMapInfo{ m_pAllocator };
+		INSERT_PADDING(28);
+
 		CGameSequence()
 		{
-			ASSERT_OFFSETOF(CGameSequence, m_pGame, 56);
-			ASSERT_OFFSETOF(CGameSequence, m_pGameMode, 104);
-			ASSERT_OFFSETOF(CGameSequence, m_pDevData, 116);
+			ASSERT_OFFSETOF(CGameSequence, pGame, 56);
+			ASSERT_OFFSETOF(CGameSequence, pGameMode, 104);
+			ASSERT_OFFSETOF(CGameSequence, pDevData, 116);
 		}
 
 		DevData* GetDevData() const
 		{
-			return m_pDevData;
+			return pDevData;
 		}
 
 		GameMode* GetGameMode() const
 		{
-			return m_pGameMode;
+			return pGameMode;
 		}
 		
 		void SetDevData(DevData* in_pDevData)
 		{
-			m_pDevData = in_pDevData;
+			pDevData = in_pDevData;
 		}
 
 		void ChangeState(TiFsmState_t in_state)
@@ -188,66 +187,66 @@ namespace app
 			ms_fpPushMovieEventQueue(this, in_eventNo);
 		}
 
-		TiFsmState_t StateProduct(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateProduct(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateProduct(this, result, in_event);
+			ms_fpStateProduct(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateBoot(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateBoot(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateBoot(this, result, in_event);
+			ms_fpStateBoot(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateSegalogo(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateSegalogo(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateSegalogo(this, result, in_event);
+			ms_fpStateSegalogo(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateSaveInit(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateSaveInit(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateSaveInit(this, result, in_event);
+			ms_fpStateSaveInit(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateTitle(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateTitle(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateTitle(this, result, in_event);
+			ms_fpStateTitle(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateStage(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateStage(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateStage(this, result, in_event);
+			ms_fpStateStage(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateDevMenu(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateDevMenu(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateDevMenu(this, result, in_event);
+			ms_fpStateDevMenu(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateDevelop(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateDevelop(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateDevelop(this, result, in_event);
+			ms_fpStateDevelop(this, result, in_rEvent);
 			return result;
 		}
 
-		TiFsmState_t StateEventMovie(const TiFsmBasicEvent<CGameSequence>& in_event)
+		TiFsmState_t StateEventMovie(const TiFsmBasicEvent<CGameSequence>& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateEventMovie(this, result, in_event);
+			ms_fpStateEventMovie(this, result, in_rEvent);
 			return result;
 		}
 
@@ -268,14 +267,14 @@ namespace app
 
 	enum RcType
 	{
-		NONE = -1,
-		HELICOPTER = 0,
-		FIGTHER = 1,
-		STEALTH = 2,
-		HOVERCRAFT = 3,
-		BALLOON = 4,
-		UFO = 5,
-		OMOCHAO = 6,
+		eRcType_None = -1,
+		eRcType_Helicopter = 0,
+		eRcType_Fighter = 1,
+		eRcType_Stealth = 2,
+		eRcType_Hovercraft = 3,
+		eRcType_Balloon = 4,
+		eRcType_Ufo = 5,
+		eRcType_Omochao = 6,
 	};
 
 	namespace SaveData

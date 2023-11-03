@@ -6,14 +6,14 @@ namespace app
 	{
 		enum AnimalType
 		{
-			ANIMAL_FLICKIE,
-			ANIMAL_COOKIE,
-			ANIMAL_PECKIE,
-			ANIMAL_PICKIE,
-			ANIMAL_POCKY,
-			ANIMAL_RICKY,
-			ANIMAL_ROCKY,
-			ANIMAL_MAX,
+			eAnimal_Flickie,
+			eAnimal_Cookie,
+			eAnimal_Peckie,
+			eAnimal_Pickie,
+			eAnimal_Pocky,
+			eAnimal_Ricky,
+			eAnimal_Rocky,
+			eAnimal_Max,
 		};
 	}
 	
@@ -27,16 +27,16 @@ namespace app
 
 		enum EPhantomType
 		{
-			PHANTOM_DRILL,
-			PHANTOM_LASER,
-			PHANTOM_ROCKET,
-			PHANTOM_ASTEROID,
-			PHANTOM_EAGLE,
-			PHANTOM_RHYTHM,
-			PHANTOM_HOVER,
-			PHANTOM_BOMB,
-			PHANTOM_QUAKE,
-			PHANTOM_MAX
+			ePhantom_Drill,
+			ePhantom_Laser,
+			ePhantom_Rocket,
+			ePhantom_Asteroid,
+			ePhantom_Eagle,
+			ePhantom_Rhythm,
+			ePhantom_Hover,
+			ePhantom_Bomb,
+			ePhantom_Quake,
+			ePhantom_Max
 		};
 
 		enum EUser
@@ -51,18 +51,18 @@ namespace app
 
 		class CRecordTime
 		{
-			int Time{};
+			int m_Time{};
 		};
 	};
 
 	class GameBase : fnd::ReferencedObject
 	{
 	public:
-		virtual void Config(Application& rApp){}
-		virtual void OnSetup(Application& rApp){}
-		virtual void OnShutdown(Application& rApp){}
-		virtual void Tick(Application& rApp){}
-		virtual void Draw(Application& rApp){}
+		virtual void Config(Application& in_rApp){}
+		virtual void OnSetup(Application& in_rApp){}
+		virtual void OnShutdown(Application& in_rApp){}
+		virtual void Tick(Application& in_rApp){}
+		virtual void Draw(Application& in_rApp){}
 	};
 	
 	class CGame : public GameBase, public fnd::CBranchActor

@@ -56,30 +56,29 @@ namespace app
 	
 	class GameDocument : public fnd::ReferencedObject
 	{
-	public:
-		inline static GameDocument** ms_ppGameDocument = reinterpret_cast<GameDocument**>(ASLR(0xFEFEF4));
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument* This, GameObject* object);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), void* This, fnd::GameService* service);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), void* This);
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddGameObject, ASLR(0x0090B3C0), GameDocument*, GameObject*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddService, ASLR(0x0090B610), GameDocument*, fnd::GameService*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpShutdownPendingObjects, ASLR(0x0090B6C0), GameDocument*);
+		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), GameDocument*, uint);
+		inline static GameDocument** ms_ppGameDocument = reinterpret_cast<GameDocument**>(ASLR(0x00FEFEF4));
 		inline static constexpr const char* ms_CategoryNames[OBJECT_CATEGORY_COUNT] = 
 		{
 			"SERVER", "DEBUG", "ENVIRONMENT", "PATH", "PLATFORM", "RADIO_CONTROL", "OBJECT",
 			"ENEMY", "PLAYER", "ATTACHED", "CAMERA", "HUD", "HUD_NONSTOP", "SYSTEM", "NONSTOP"
 		};
 
-		GameMode* m_pGameMode{};
-		size_t m_GameActorID{};
-		std::unique_ptr<CWorld> m_pWorld{};
-		float m_GlobalTime{};
-		csl::ut::FixedArray<fnd::CBranchActor*, 32> m_Layers{};
-		csl::ut::MoveArray<GameObject*> m_Objects{ GetAllocator() };
-		csl::ut::MoveArray<fnd::GameService*> m_Services{ GetAllocator() };
-		csl::ut::MoveArray<GameObject*> m_ShutdownObjects{ GetAllocator() };
-		csl::ut::MoveArray<fnd::GameDocumentListener*> m_Listeners{ GetAllocator() };
+	private:
+		GameMode* pGameMode{};
+		size_t GameActorID{};
+		std::unique_ptr<CWorld> pWorld{};
+		float GlobalTime{};
+		csl::ut::FixedArray<fnd::CBranchActor*, 32> Layers{};
+		csl::ut::MoveArray<GameObject*> Objects{ GetAllocator() };
+		csl::ut::MoveArray<fnd::GameService*> Services{ GetAllocator() };
+		csl::ut::MoveArray<GameObject*> ShutdownObjects{ GetAllocator() };
+		csl::ut::MoveArray<fnd::GameDocumentListener*> Listeners{ GetAllocator() };
 		
-	public:
-		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetGroupActorID, ASLR(0x0090B2C0), void* This, uint group);
-
 		HH_FORCE_INLINE static constexpr const char* GetCategoryName(size_t in_category)
 		{
 			if (in_category >= OBJECT_CATEGORY_COUNT)
@@ -88,82 +87,82 @@ namespace app
 			return ms_CategoryNames[in_category];
 		}
 
-		HH_FORCE_INLINE void UpdateGlobalTime(const fnd::SUpdateInfo& info)
+		HH_FORCE_INLINE void UpdateGlobalTime(const fnd::SUpdateInfo& in_rUpdateInfo)
 		{
-			m_GlobalTime += info.deltaTime;
+			GlobalTime += info.DeltaTime;
 		}
 
 		HH_FORCE_INLINE GameMode* GetGameMode() const
 		{
-			return m_pGameMode;
+			return pGameMode;
 		}
 		
 		HH_FORCE_INLINE float GetGlobalTime() const
 		{
-			return m_GlobalTime;
+			return GlobalTime;
 		}
 
 		HH_FORCE_INLINE size_t GetGameActorID() const
 		{
-			return m_GameActorID;
+			return GameActorID;
 		}
 		
-		HH_FORCE_INLINE uint GetGroupActorID(uint group) const
+		HH_FORCE_INLINE uint GetGroupActorID(uint in_group) const
 		{
-			return m_Layers[group]->GetID();
+			return Layers[in_group]->GetID();
 		}
 
-		HH_FORCE_INLINE fnd::CBranchActor* GetGroupActor(uint group) const
+		HH_FORCE_INLINE fnd::CBranchActor* GetGroupActor(uint in_group) const
 		{
-			if (group > m_Layers.size())
+			if (in_group > Layers.size())
 				return nullptr;
 
-			return m_Layers[group];
+			return Layers[in_group];
 		}
 
 		HH_FORCE_INLINE const csl::ut::Array<GameObject*>& GetObjects() const
 		{
-			return m_Objects;
+			return Objects;
 		}
 
 		HH_FORCE_INLINE const csl::ut::Array<fnd::GameService*>& GetServices() const
 		{
-			return m_Services;
+			return Services;
 		}
 		
-		inline void AddGameDocumentListener(fnd::GameDocumentListener* pListener)
+		inline void AddGameDocumentListener(fnd::GameDocumentListener* in_pListener)
 		{
-			m_Listeners.push_back(pListener);
+			Listeners.push_back(in_pListener);
 		}
 
-		void RemoveGameDocumentListener(fnd::GameDocumentListener* pListener)
+		void RemoveGameDocumentListener(fnd::GameDocumentListener* in_pListener)
 		{
-			auto idx = m_Listeners.find(pListener);
+			auto idx = Listeners.find(in_pListener);
 			if (idx == -1)
 				return;
 
 			m_Listeners.remove(idx);
 		}
 		
-		void AddGameObject(GameObject* object)
+		void AddGameObject(GameObject* in_pObject)
 		{
-			ms_fpAddGameObject(this, object);
+			ms_fpAddGameObject(this, in_pObject);
 		}
 
-		void AddService(fnd::GameService* service)
+		void AddService(fnd::GameService* in_pService)
 		{
-			ms_fpAddService(this, service);
+			ms_fpAddService(this, in_pService);
 		}
 
-		fnd::GameService* CreateService(const fnd::GameServiceClass& cls, csl::fnd::IAllocator* allocator = nullptr);
+		fnd::GameService* CreateService(const fnd::GameServiceClass& in_rClass, csl::fnd::IAllocator* in_pAllocator = nullptr);
 
 		template<typename T>
-		T* CreateService(csl::fnd::IAllocator* allocator = nullptr)
+		T* CreateService(csl::fnd::IAllocator* in_pAllocator = nullptr)
 		{
-			return reinterpret_cast<T*>(CreateService(T::staticClass(), allocator));
+			return reinterpret_cast<T*>(CreateService(T::staticClass(), in_pAllocator));
 		}
 		
-		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls) const;
+		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& in_rClass) const;
 
 		template <typename T>
 		T* GetService() const
@@ -185,32 +184,32 @@ namespace app
 
 #include "GameService.h"
 
-inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameServiceClass& cls, csl::fnd::IAllocator* allocator)
+inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameServiceClass& in_rClass, csl::fnd::IAllocator* in_pAllocator)
 {
-	if (!allocator)
-		allocator = GetAllocator();
+	if (!in_pAllocator)
+		in_pAllocator = GetAllocator();
 	
-	auto* service = cls.Construct(allocator);
-	AddService(service);
+	auto* pService = in_rClass.Construct(in_pAllocator);
+	AddService(pService);
 
-	return service;
+	return pService;
 }
 
-inline app::fnd::GameService* app::GameDocument::GetServiceByClass(const app::fnd::GameServiceClass& cls) const
+inline app::fnd::GameService* app::GameDocument::GetServiceByClass(const app::fnd::GameServiceClass& in_rClass) const
 {
-	auto** begin = m_Services.begin();
-	auto** end = m_Services.end();
+	auto** ppBegin = Services.begin();
+	auto** ppEnd = Services.end();
 
-	if (begin == end)
+	if (ppBegin == ppEnd)
 		return { nullptr };
 
-	for (begin; (*begin)->m_pClass != &cls;)
+	for (ppBegin; (*ppBegin)->pClass != &in_rClass;)
 	{
-		if (++begin == m_Services.end())
+		if (++ppBegin == m_Services.end())
 			return { nullptr };
 	}
 
-	return *begin;
+	return *ppBegin;
 }
 
 #pragma pop_macro("CreateService")

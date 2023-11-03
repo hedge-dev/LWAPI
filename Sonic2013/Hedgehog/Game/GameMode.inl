@@ -5,7 +5,7 @@
 
 namespace app
 {
-	inline void GameMode::OnEnter(CGame& in_game)
+	inline void GameMode::OnEnter(CGame& in_rGame)
 	{
 		auto* pCache = fnd::FileSystem::GetInstance()->GetCache();
 		if (pCache)
@@ -14,7 +14,7 @@ namespace app
 		CreateService(ms_DefaultServices);
 	}
 
-	inline void GameMode::OnLeave(CGame& in_game)
+	inline void GameMode::OnLeave(CGame& in_rGame)
 	{
 		auto* pCache = fnd::FileSystem::GetInstance()->GetCache();
 		if (pCache)
@@ -31,15 +31,15 @@ namespace app
 		return fnd::FileLoader::GetInstance()->IsSyncCompleteAll();
 	}
 
-	inline void GameMode::LoadFile(const char* in_pName, const fnd::FileLoaderParam& in_param)
+	inline void GameMode::LoadFile(const char* in_pName, const fnd::FileLoaderParam& in_rParam)
 	{
-		fnd::FileLoader::GetInstance()->LoadFile(in_pName, in_param);
+		fnd::FileLoader::GetInstance()->LoadFile(in_pName, in_rParam);
 	}
 
-	inline void GameMode::SendToGroup(uint in_group, fnd::Message& in_msg) const
+	inline void GameMode::SendToGroup(uint in_group, fnd::Message& in_rMessage) const
 	{
-		uint actor = m_pDocument->GetGroupActorID(in_group);
-		GetGame()->BroadcastMessageImm(actor, in_msg);
+		uint actor = pDocument->GetGroupActorID(in_group);
+		GetGame()->BroadcastMessageImm(actor, in_rMessage);
 	}
 
 	inline bool GameMode::CreateService(const char* in_pName)
@@ -49,7 +49,7 @@ namespace app
 		if (!pClass)
 			return false;
 
-		m_pDocument->CreateService(*pClass);
+		pDocument->CreateService(*pClass);
 		return true;
 	}
 
@@ -57,7 +57,7 @@ namespace app
 	{
 		while(*in_ppClasses)
 		{
-			m_pDocument->CreateService(*(*in_ppClasses));
+			pDocument->CreateService(*(*in_ppClasses));
 			in_ppClasses++;
 		}
 	}

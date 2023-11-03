@@ -14,25 +14,27 @@ namespace app::game
 	public:
 		typedef void __cdecl Iterator(const char* pNode, LuaScript& script, void* pContext);
 		
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x004DECC0), LuaScript* This, csl::fnd::IAllocator* pAllocator);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x004DEBB0), LuaScript* This);
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x004DECC0), LuaScript*, csl::fnd::IAllocator*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x004DEBB0), LuaScript*);
 		
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoad, ASLR(0x004DEBC0), LuaScript* This, const char* pBuf, size_t bufSize);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpOpenNode, ASLR(0x004DED00), LuaScript* This, const char* pName);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCloseNode, ASLR(0x004DEC20), LuaScript* This);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetBool, ASLR(0x004DED60), LuaScript* This, const char* pName, bool& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetInt, ASLR(0x004DEE70), LuaScript* This, const char* pName, int& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetColor, ASLR(0x004DF470), LuaScript* This, const char* pName, csl::ut::Color8& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloat, ASLR(0x004DEDF0), LuaScript* This, const char* pName, float& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloatArray, ASLR(0x004DF070), LuaScript* This, const char* pName, csl::ut::MoveArray<float>& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetVector3, ASLR(0x004DF350), LuaScript* This, const char* pName, csl::math::Vector3& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetString, ASLR(0x004DEF00), LuaScript* This, const char* pName, const char*& result);
-		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetStringArray, ASLR(0x004DF160), LuaScript* This, const char* pName, csl::ut::MoveArray<const char*>& result);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpForEach, ASLR(0x004DF260), LuaScript* This, const char* pNode, Iterator* pIter, void* pContext);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoad, ASLR(0x004DEBC0), LuaScript*, const char*, size_t);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpOpenNode, ASLR(0x004DED00), LuaScript*, const char*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCloseNode, ASLR(0x004DEC20), LuaScript*);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetBool, ASLR(0x004DED60), LuaScript*, const char*, bool&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetInt, ASLR(0x004DEE70), LuaScript*, const char*, int&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetColor, ASLR(0x004DF470), LuaScript*, const char*, csl::ut::Color8&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloat, ASLR(0x004DEDF0), LuaScript*, const char*, float&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetFloatArray, ASLR(0x004DF070), LuaScript*, const char*, csl::ut::MoveArray<float>&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetVector3, ASLR(0x004DF350), LuaScript*, const char*, csl::math::Vector3&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetString, ASLR(0x004DEF00), LuaScript*, const char*, const char*&);
+		inline static FUNCTION_PTR(bool, __thiscall, ms_fpGetStringArray, ASLR(0x004DF160), LuaScript*, const char*, csl::ut::MoveArray<const char*>&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpForEach, ASLR(0x004DF260), LuaScript*, const char*, Iterator*, void*);
 
-		LuaScript(csl::fnd::IAllocator* pAllocator)
+	public:
+		LuaScript(csl::fnd::IAllocator* in_pAllocator)
 		{
-			ms_fpCtor(this, pAllocator);
+			ms_fpCtor(this, in_pAllocator);
 		}
 
 		~LuaScript()
@@ -43,9 +45,9 @@ namespace app::game
 			}
 		}
 		
-		void Load(const char* pBuf, size_t bufSize)
+		void Load(const char* in_pBuf, size_t in_bufSize)
 		{
-			if (m_pState == nullptr || luaL_loadbuffer(m_pState, pBuf, bufSize, nullptr))
+			if (m_pState == nullptr || luaL_loadbuffer(m_pState, in_pBuf, in_bufSize, nullptr))
 			{
 				return;
 			}
@@ -54,9 +56,9 @@ namespace app::game
 			m_Top = lua_gettop(m_pState);
 		}
 
-		bool OpenNode(const char* pName)
+		bool OpenNode(const char* in_pName)
 		{
-			return ms_fpOpenNode(this, pName);
+			return ms_fpOpenNode(this, in_pName);
 		}
 		
 		void CloseNode()
@@ -64,49 +66,49 @@ namespace app::game
 			ms_fpCloseNode(this);
 		}
 		
-		void ForEach(const char* pNode, Iterator* pIter, void* pContext)
+		void ForEach(const char* in_pNode, Iterator* in_pIter, void* in_pContext)
 		{
-			return ms_fpForEach(this, pNode, pIter, pContext);
+			return ms_fpForEach(this, in_pNode, in_pIter, in_pContext);
 		}
 
-		bool GetStringArray(const char* pName, csl::ut::MoveArray<const char*>& result)
+		bool GetStringArray(const char* in_pName, csl::ut::MoveArray<const char*>& out_rResult)
 		{
-			return ms_fpGetStringArray(this, pName, result);
+			return ms_fpGetStringArray(this, in_pName, out_rResult);
 		}
 
-		bool GetString(const char* pName, const char*& result)
+		bool GetString(const char* in_pName, const char*& out_rResult)
 		{
-			return ms_fpGetString(this, pName, result);
+			return ms_fpGetString(this, in_pName, out_rResult);
 		}
 
-		bool GetVector3(const char* pName, csl::math::Vector3& result)
+		bool GetVector3(const char* in_pName, csl::math::Vector3& out_rResult)
 		{
-			return ms_fpGetVector3(this, pName, result);
+			return ms_fpGetVector3(this, in_pName, out_rResult);
 		}
 
-		bool GetColor(const char* pName, csl::ut::Color8& result)
+		bool GetColor(const char* in_pName, csl::ut::Color8& out_rResult)
 		{
-			return ms_fpGetColor(this, pName, result);
+			return ms_fpGetColor(this, in_pName, out_rResult);
 		}
 
-		bool GetFloatArray(const char* pName, csl::ut::MoveArray<float>& result)
+		bool GetFloatArray(const char* in_pName, csl::ut::MoveArray<float>& out_rResult)
 		{
-			return ms_fpGetFloatArray(this, pName, result);
+			return ms_fpGetFloatArray(this, in_pName, out_rResult);
 		}
 
-		bool GetFloat(const char* pName, float& result)
+		bool GetFloat(const char* in_pName, float& out_rResult)
 		{
-			return ms_fpGetFloat(this, pName, result);
+			return ms_fpGetFloat(this, in_pName, out_rResult);
 		}
 
-		bool GetInt(const char* pName, int& result)
+		bool GetInt(const char* in_pName, int& out_rResult)
 		{
-			return ms_fpGetInt(this, pName, result);
+			return ms_fpGetInt(this, in_pName, out_rResult);
 		}
 
-		bool GetBool(const char* pName, bool& result)
+		bool GetBool(const char* in_pName, bool& out_rResult)
 		{
-			return ms_fpGetBool(this, pName, result);
+			return ms_fpGetBool(this, in_pName, out_rResult);
 		}
 	};
 }

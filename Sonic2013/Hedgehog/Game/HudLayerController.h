@@ -44,6 +44,10 @@ namespace app::game
 
 	class HudLayerController : public fnd::ReferencedObject
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpPlayAnimation, ASLR(0x004C0F50), HudLayerController*, const char*, bool, int);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetVisible, ASLR(0x004C0E60), HudLayerController*, bool);
+
 	public:
 		struct PlayInfo
 		{
@@ -61,17 +65,13 @@ namespace app::game
 			bool Unk1{};
 		};
 
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, f_PlayAnimation, ASLR(0x004C0F50), HudLayerController* This, const char* animationName, bool isLooping, int a3);
-		inline static FUNCTION_PTR(void, __thiscall, f_SetVisible, ASLR(0x004C0E60), HudLayerController* This, bool isVisible);
-
 	public:
 		SurfRide::ReferenceCount<SurfRide::Layer> rcLayer{};
 		byte ControllerNo{};
-		char m_Unk2{ -1 };
+		char Unk2{ -1 };
 		INSERT_PADDING(2) {};
-		csl::ut::MoveArray<AnimationInfo> m_AnimationInfo{};
-		csl::ut::Bitset<char> m_Unk3{};
+		csl::ut::MoveArray<AnimationInfo> AnimationInfo{};
+		csl::ut::Bitset<char> Unk3{};
 
 		HudLayerController(csl::fnd::IAllocator* in_pAllocator, SurfRide::ReferenceCount<SurfRide::Layer> in_rcLayer, byte in_controllerNo)
 			: rcLayer(in_rcLayer)
@@ -123,7 +123,7 @@ namespace app::game
 
 		void ReserveAnimation(const char* in_pAnimationName, HudPlayPolicy in_playPolicy, bool in_unk)
 		{
-			m_AnimationInfo.push_back({ rcLayer->GetAnimationID(in_pAnimationName), in_playPolicy, in_unk });
+			AnimationInfo.push_back({ rcLayer->GetAnimationID(in_pAnimationName), in_playPolicy, in_unk });
 		}
 
 		void PlayReservedAnimation()
@@ -131,8 +131,8 @@ namespace app::game
 			if (m_AnimationInfo.empty())
 				return;
 		
-			m_Unk2 = 0;
-			PlayAnimation(m_AnimationInfo[0].AnimationID, m_AnimationInfo[0].PlayPolicy, m_AnimationInfo[0].Unk1);
+			Unk2 = 0;
+			PlayAnimation(AnimationInfo[0].AnimationID, AnimationInfo[0].PlayPolicy, AnimationInfo[0].Unk1);
 		}
 
 		bool IsEndAnimation()
@@ -150,9 +150,9 @@ namespace app::game
 			if (rcLayer->Unk3)
 				rcLayer->SetRepeatFlag(false);
 			
-			m_AnimationInfo.clear();
-			m_Unk2 = -1;
-			m_Unk3.reset(0);
+			AnimationInfo.clear();
+			Unk2 = -1;
+			Unk3.reset(0);
 		}
 
 		void Reset()

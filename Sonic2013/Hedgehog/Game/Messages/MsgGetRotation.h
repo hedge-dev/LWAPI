@@ -5,28 +5,28 @@ namespace app::xgame
 	class MsgGetRotation : public fnd::Message
 	{
 	private:
-		csl::math::Quaternion* rotation{};
+		csl::math::Quaternion* m_pRotation{};
 		
 	public:
 		inline static unsigned int MessageID = 0x2003;
 
-		MsgGetRotation(csl::math::Quaternion& in_rRotation) : Message(MessageID), rotation(&in_rRotation)
+		MsgGetRotation(csl::math::Quaternion& in_rRotation) : Message(MessageID), m_pRotation(&in_rRotation)
 		{
 
 		}
 
-		[[nodiscard] ] csl::math::Quaternion& GetRotation() const { return *rotation; }
+		[[nodiscard] ] csl::math::Quaternion& GetRotation() const { return *m_pRotation; }
 
 		void SetRotation(csl::math::Quaternion& in_rRotation)
 		{
-			*rotation = in_rRotation;
+			*m_pRotation = in_rRotation;
 		}
 
 		Message* Clone() override
 		{
-			auto* msg = new MsgGetRotation(*this);
-			msg->SetRotation(GetRotation());
-			return msg;
+			auto* pMessage = new MsgGetRotation(*this);
+			pMessage->SetRotation(pMessage->GetRotation());
+			return pMessage;
 		}
 	};
 }

@@ -11,13 +11,13 @@ namespace app
 		class GOComponentClass
 		{
 		public:
-			const char* name;
-			unsigned int unk1;
-			const char* familyID;
-			size_t size;
-			initializeComponent* initializer;
-			unsigned short unk2;
-			size_t unk3;
+			const char* pName;
+			unsigned int Unk1;
+			const char* pFamilyID;
+			size_t Size;
+			initializeComponent* pInitializer;
+			unsigned short Unk2;
+			size_t Unk3;
 		};
 
 		class GOComponent : public RefByHandleObject
@@ -25,17 +25,17 @@ namespace app
 			friend GameObject;
 			
 		public:
-			GameObject* activeObject{};
-			unsigned short unk1{};
-			csl::ut::Bitset<char> m_Flags{};
-			char componentType{};
-			unsigned int componentStats{};
-			unsigned int unk2{};
-			csl::ut::LinkListNode visualComponentNode;
-			csl::ut::LinkListNode physicsComponentNode;
-			csl::ut::LinkListNode audibleComponentNode;
+			GameObject* pActiveObject{};
+			unsigned short Unk1{};
+			csl::ut::Bitset<char> Flags{};
+			char ComponentType{};
+			unsigned int ComponentStats{};
+			unsigned int Unk2{};
+			csl::ut::LinkListNode VisualComponentNode;
+			csl::ut::LinkListNode PhysicsComponentNode;
+			csl::ut::LinkListNode AudibleComponentNode;
 
-			GOComponent(bool skip) : RefByHandleObject()
+			GOComponent(bool in_skip) : RefByHandleObject()
 			{
 
 			}
@@ -43,102 +43,102 @@ namespace app
 		public:
 			GOComponent() : RefByHandleObject()
 			{
-				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_rpHandleManager->AddObject(*this);
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->rpHandleManager->AddObject(*this);
 			}
 
 			~GOComponent()
 			{
-				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->m_rpHandleManager->RemoveObject(*this);
+				csl::fnd::Singleton<GameObjectSystem>::GetInstance()->rpHandleManager->RemoveObject(*this);
 			}
 			
 			virtual const char* GetFamilyID() const = 0;
-			virtual void Update(UpdatingPhase phase, const SUpdateInfo& updateInfo)
+			virtual void Update(UpdatingPhase in_phase, const SUpdateInfo& in_rUpdateInfo)
 			{
 				
 			}
 			
-			virtual void OnGOCEvent(int event, GameObject& object, void* data)
+			virtual void OnGOCEvent(int in_event, GameObject& in_rObject, void* in_pData)
 			{
 				
 			}
 			
-			virtual bool ProcessMessage(const Message& message)
+			virtual bool ProcessMessage(const Message& in_rMessage)
 			{
 				return false;
 			}
 
-			void SetGameObject(GameObject* object)
+			void SetGameObject(GameObject* in_pObject)
 			{
-				activeObject = object;
+				pActiveObject = in_pObject;
 			}
 
 			GameObject* GetGameObject() const
 			{
-				return activeObject;
+				return pActiveObject;
 			}
 			
-			bool SendMessageImm(uint to, fnd::Message& msg) const;
+			bool SendMessageImm(uint in_to, fnd::Message& in_rMessage) const;
 
 			template <typename  T>
-			static T* Create(GameObject& obj);
+			static T* Create(GameObject& in_rObject);
 			template <typename  T>
-			static T* CreateSingle(GameObject& obj);
+			static T* CreateSingle(GameObject& in_rObject);
 			
-			static void BeginSetup(GameObject& obj);
-			static void EndSetup(GameObject& obj);
+			static void BeginSetup(GameObject& in_rObject);
+			static void EndSetup(GameObject& in_rObject);
 		};
 	}
 }
 
 #include "GameObject.h"
 template <typename T>
-inline T* app::fnd::GOComponent::Create(GameObject& obj)
+inline T* app::fnd::GOComponent::Create(GameObject& in_rObject)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
-	GOComponent* component = T::staticClass()->initializer(GameObject::GetAllocator());
+	GOComponent* pComponent = T::staticClass()->initializer(GameObject::GetAllocator());
 
-	if (!component)
+	if (!pComponent)
 		return nullptr;
 	
-	obj.AddComponent(component);
-	return reinterpret_cast<T*>(component);
+	in_rObject.AddComponent(pComponent);
+	return reinterpret_cast<T*>(pComponent);
 }
 
 template <typename T>
-inline T* app::fnd::GOComponent::CreateSingle(GameObject& obj)
+inline T* app::fnd::GOComponent::CreateSingle(GameObject& in_rObject)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
-	GOComponent* component = T::staticClass()->initializer(GameObject::GetAllocator());
+	GOComponent* pComponent = T::staticClass()->initializer(GameObject::GetAllocator());
 
-	if (!component)
+	if (!pComponent)
 		return nullptr;
 
-	component->SetGameObject(&obj);
-	if (component->unk1 & 1)
-		component->OnGOCEvent(0, obj, nullptr);
+	pComponent->SetGameObject(&in_rObject);
+	if (pComponent->Unk1 & 1)
+		pComponent->OnGOCEvent(0, in_rObject, nullptr);
 	
-	return reinterpret_cast<T*>(component);
+	return reinterpret_cast<T*>(pComponent);
 }
 
-inline void app::fnd::GOComponent::BeginSetup(GameObject& obj)
+inline void app::fnd::GOComponent::BeginSetup(GameObject& in_rObject)
 {
-	auto& components = obj.GetComponents();
+	auto& components = in_rObject.GetComponents();
 	for (auto* it = components.begin(); it != components.end(); it++)
 	{
-		(*it)->OnGOCEvent(0, obj, nullptr);
+		(*it)->OnGOCEvent(0, in_rObject, nullptr);
 	}
 }
 
-inline void app::fnd::GOComponent::EndSetup(GameObject& obj)
+inline void app::fnd::GOComponent::EndSetup(GameObject& in_rObject)
 {
-	auto& components = obj.GetComponents();
+	auto& components = in_rObject.GetComponents();
 	for (auto* it = components.begin(); it != components.end(); it++)
 	{
-		(*it)->OnGOCEvent(1, obj, nullptr);
+		(*it)->OnGOCEvent(1, in_rObject, nullptr);
 	}
 }
 
-inline bool app::fnd::GOComponent::SendMessageImm(uint to, fnd::Message& msg) const
+inline bool app::fnd::GOComponent::SendMessageImm(uint in_to, fnd::Message& in_rMessage) const
 {
-	return GetGameObject()->SendMessageImm(to, msg);
+	return GetGameObject()->SendMessageImm(in_to, in_rMessage);
 }

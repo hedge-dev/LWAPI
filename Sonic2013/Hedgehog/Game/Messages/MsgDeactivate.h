@@ -5,7 +5,8 @@ namespace app::xgame
 	class MsgDeactivate : public fnd::Message
 	{
 	public:
-		bool m_Handled{ true };
+		bool Handled{ true };
+		
 		inline static unsigned int MessageID = 0x4005;
 
 		MsgDeactivate() : Message(MessageID)

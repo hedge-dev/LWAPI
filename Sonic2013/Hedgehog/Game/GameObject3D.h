@@ -27,34 +27,34 @@ namespace app
 			m_pTransform->~GOCTransform();
 		}
 		
-		bool ProcessMessage(fnd::Message& msg) override
+		bool ProcessMessage(fnd::Message& in_rMessage) override
 		{
-			if (PreProcessMessage(msg))
+			if (PreProcessMessage(in_rMessage))
 				return true;
 
-			if (msg.IsOfType<xgame::MsgGetPosition>())
+			if (in_rMessage.IsOfType<xgame::MsgGetPosition>())
 			{
-				auto& msgPos = reinterpret_cast<xgame::MsgGetPosition&>(msg);
+				auto& msgPos = reinterpret_cast<xgame::MsgGetPosition&>(in_rMessage);
 				csl::math::Vector3 pos = m_Transform.GetLocalPosition();
 				msgPos.SetPosition(pos);
 				return true;
 			}
-			else if (msg.IsOfType<xgame::MsgGetRotation>())
+			else if (in_rMessage.IsOfType<xgame::MsgGetRotation>())
 			{
-				auto& msgRot = reinterpret_cast<xgame::MsgGetRotation&>(msg);
+				auto& msgRot = reinterpret_cast<xgame::MsgGetRotation&>(in_rMessage);
 				csl::math::Quaternion rot = m_Transform.GetLocalRotation();
 				msgRot.SetRotation(rot);
 				return true;
 			}
-			else if (msg.IsOfType<xgame::MsgDeactivate>())
+			else if (in_rMessage.IsOfType<xgame::MsgDeactivate>())
 			{
-				auto& msgDeactivate = reinterpret_cast<xgame::MsgDeactivate&>(msg);
+				auto& msgDeactivate = reinterpret_cast<xgame::MsgDeactivate&>(in_rMessage);
 				msgDeactivate.m_Handled = true;
 				Kill();
 				return true;
 			}
 			
-			return GameObject::ProcessMessage(msg);
+			return GameObject::ProcessMessage(in_rMessage);
 		}
 	};
 }

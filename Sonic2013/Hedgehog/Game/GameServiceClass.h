@@ -9,8 +9,8 @@ namespace app::fnd
 		RflClass* m_pClass;
 
 	public:
-		GameServiceClass(const char* pName, initializeService& rInitializer, RflClass* pClass = nullptr) : m_pName(pName),
-			m_pInitializer(&rInitializer), m_pClass(pClass)
+		GameServiceClass(const char* in_pName, initializeService& in_rInitializer, RflClass* in_pClass = nullptr) : m_pName(in_pName),
+			m_pInitializer(&in_rInitializer), m_pClass(in_pClass)
 		{
 			
 		}
@@ -20,6 +20,6 @@ namespace app::fnd
 			return m_pName;
 		}
 
-		[[nodiscard]] GameService* Construct(csl::fnd::IAllocator* allocator) const;
+		[[nodiscard]] GameService* Construct(csl::fnd::IAllocator* in_pAllocator) const;
 	};
 }

@@ -4,13 +4,7 @@ namespace app
 {
 	class GOCEnemyTarget : fnd::GOComponent
 	{
-	public:
-		struct Description
-		{
-		public:
-			bool IsEnabled{};
-		};
-		
+	private:
 		inline static fnd::GOComponentClass* ms_pGOCEnemyTargetStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FE7608));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00726510), GOCEnemyTarget*, const Description&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetColliderEyesight, ASLR(0x00726BC0), GOCEnemyTarget*, uint);
@@ -21,15 +15,21 @@ namespace app
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsFindTarget, ASLR(0x00726600), GOCEnemyTarget*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpLockTarget, ASLR(0x007266B0), GOCEnemyTarget*);
 		inline static FUNCTION_PTR(csl::math::Vector3*, __thiscall, ms_fpGetTargetCenterPosition, ASLR(0x00726610), GOCEnemyTarget*, csl::math::Vector3*);
+
+	public:
+		struct Description
+		{
+			bool IsEnabled{};
+		};
 		
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pGOCEnemyTargetStaticClass;
 		}
 
-		void Setup(const Description& description)
+		void Setup(const Description& in_rDescription)
 		{
-			ms_fpSetup(this, description);
+			ms_fpSetup(this, in_rDescription);
 		}
 
 		void SetColliderEyesight(uint in_unk)

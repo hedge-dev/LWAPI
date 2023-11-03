@@ -34,40 +34,40 @@ namespace app
 	public:
 		typedef TEvent TiFsmEvent_t;
 		typedef State_t TiFsmState_t;
-		typedef TiFsmState_t(*TiFsmHookState_t)(T& in_self, const TEvent& in_event);
+		typedef TiFsmState_t(*TiFsmHookState_t)(T& in_rSelf, const TEvent& in_rEvent);
 
 	private:
 		State_t m_Src;
 		State_t m_Cur;
 
-		State_t _top(const TEvent& e) { return {}; }
+		State_t _top(const TEvent& in_rEvent) { return {}; }
 
 		template<TiFsmHookState_t HookFunc>
-		State_t _hook(const TEvent& e) { return HookFunc(*static_cast<T*>(this), e); }
+		State_t _hook(const TEvent& in_rEvent) { return HookFunc(*static_cast<T*>(this), in_rEvent); }
 
-		State_t Trigger(const State_t& in_state, const TEvent& in_event)
+		State_t Trigger(const State_t& in_rState, const TEvent& in_rEvent)
 		{
-			return in_state(static_cast<T*>(this), in_event);
+			return in_rState(static_cast<T*>(this), in_rEvent);
 		}
 
-		State_t Super(const State_t& in_state)
+		State_t Super(const State_t& in_rState)
 		{
-			return Trigger(in_state, { TiFSM_SIGNAL_SUPER });
+			return Trigger(in_rState, { TiFSM_SIGNAL_SUPER });
 		}
 
-		State_t Init(const State_t& in_state)
+		State_t Init(const State_t& in_rState)
 		{
-			return Trigger(in_state, { TiFSM_SIGNAL_INIT });
+			return Trigger(in_rState, { TiFSM_SIGNAL_INIT });
 		}
 
-		State_t Enter(const State_t& in_state)
+		State_t Enter(const State_t& in_rState)
 		{
-			return Trigger(in_state, { TiFSM_SIGNAL_ENTER });
+			return Trigger(in_rState, { TiFSM_SIGNAL_ENTER });
 		}
 
-		State_t Leave(const State_t& in_state)
+		State_t Leave(const State_t& in_rState)
 		{
-			return Trigger(in_state, { TiFSM_SIGNAL_LEAVE });
+			return Trigger(in_statin_rStatee, { TiFSM_SIGNAL_LEAVE });
 		}
 
 		void InitCurrentState()
@@ -238,7 +238,7 @@ namespace app
 			}
 		}
 
-		void DispatchFSM(const TEvent& in_event)
+		void DispatchFSM(const TEvent& in_rEvent)
 		{
 			if constexpr (Hierarchical)
 			{
@@ -246,7 +246,7 @@ namespace app
 
 				while (m_Src)
 				{
-					State_t state = Trigger(m_Src, in_event);
+					State_t state = Trigger(m_Src, in_rEvent);
 					if (!state) break;
 
 					m_Src = Super(m_Src);
@@ -254,7 +254,7 @@ namespace app
 			}
 			else
 			{
-				Trigger(m_Cur, in_event);
+				Trigger(m_Cur, in_rEvent);
 			}
 		}
 
@@ -272,25 +272,25 @@ namespace app
 	{
 	public:
 		typedef TTinyFsmState(T::*Delegate_t)(const TEvent& e);
-		Delegate_t m_Delegate{};
+		Delegate_t Delegate{};
 
 		TTinyFsmState() = default;
-		TTinyFsmState(Delegate_t in_func) : m_Delegate(in_func) {}
+		TTinyFsmState(Delegate_t in_func) : Delegate(in_func) {}
 
 		[[nodiscard]] bool IsValid() const
 		{
-			return m_Delegate != nullptr;
+			return Delegate != nullptr;
 		}
 
 		void Clear()
 		{
-			m_Delegate = nullptr;
+			Delegate = nullptr;
 		}
 
-		TTinyFsmState Call(T* in_pObj, const TEvent& e) const
+		TTinyFsmState Call(T* in_pObj, const TEvent& in_rEvent) const
 		{
 			if (IsValid())
-				return (in_pObj->*m_Delegate)(e);
+				return (in_pObj->*Delegate)(in_rEvent);
 
 			return {};
 		}
@@ -302,32 +302,32 @@ namespace app
 
 		operator Delegate_t() const
 		{
-			return m_Delegate;
+			return Delegate;
 		}
 
-		bool operator==(const TTinyFsmState& in_other) const
+		bool operator==(const TTinyFsmState& in_rOther) const
 		{
-			return m_Delegate == in_other.m_Delegate;
+			return Delegate == in_rOther.Delegate;
 		}
 
-		bool operator!=(const TTinyFsmState& in_other)
+		bool operator!=(const TTinyFsmState& in_rOther)
 		{
-			return m_Delegate != in_other.m_Delegate;
+			return Delegate != in_rOther.Delegate;
 		}
 
-		bool operator==(const Delegate_t& in_other) const
+		bool operator==(const Delegate_t& in_rOther) const
 		{
-			return m_Delegate == in_other;
+			return Delegate == in_rOther;
 		}
 
-		bool operator!=(const Delegate_t& in_other) const
+		bool operator!=(const Delegate_t& in_rOther) const
 		{
-			return m_Delegate != in_other;
+			return Delegate != in_rOther;
 		}
 
-		TTinyFsmState operator()(T* in_pObj, const TEvent& e) const
+		TTinyFsmState operator()(T* in_pObj, const TEvent& in_rEvent) const
 		{
-			return Call(in_pObj, e);
+			return Call(in_pObj, in_rEvent);
 		}
 	};
 
@@ -335,16 +335,16 @@ namespace app
 	class TTinyFsmEvent
 	{
 	public:
-		int m_Sig{};
+		int Signal{};
 
-		TTinyFsmEvent(int in_sig) : m_Sig(in_sig)
+		TTinyFsmEvent(int in_signal) : Signal(in_signal)
 		{
 			
 		}
 
 		int getSignal() const
 		{
-			return m_Sig;
+			return Signal;
 		}
 	};
 
@@ -354,39 +354,39 @@ namespace app
 	public:
 		union
 		{
-			int m_Int;
-			float m_Float;
-			fnd::Message* m_pMessage{};
+			int Int;
+			float Float;
+			fnd::Message* pMessage{};
 		};
 
-		TiFsmBasicEvent(int in_sig) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_sig) {  }
-		TiFsmBasicEvent(int in_sig, float in_float) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_sig)
+		TiFsmBasicEvent(int in_signal) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_signal) {  }
+		TiFsmBasicEvent(int in_signal, float in_float) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_signal)
 		{
-			m_Float = in_float;
+			Float = in_float;
 		}
 
-		TiFsmBasicEvent(int in_sig, int in_int) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_sig)
+		TiFsmBasicEvent(int in_signal, int in_int) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_signal)
 		{
-			m_Int = in_int;
+			Int = in_int;
 		}
 
-		TiFsmBasicEvent(int in_sig, fnd::Message& in_msg) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_sig)
+		TiFsmBasicEvent(int in_signal, fnd::Message& in_msg) : TTinyFsmEvent<T, TiFsmBasicEvent>(in_signal)
 		{
-			m_pMessage = &in_msg;
+			pMessage = &in_msg;
 		}
 
-		[[nodiscard]] float getFloat() const { return m_Float; }
-		[[nodiscard]] int getInt() const { return m_Int; }
-		[[nodiscard]] fnd::Message& getMessage() const { return *m_pMessage; }
+		[[nodiscard]] float getFloat() const { return Float; }
+		[[nodiscard]] int getInt() const { return Int; }
+		[[nodiscard]] fnd::Message& getMessage() const { return *pMessage; }
 
 		inline static TiFsmBasicEvent CreateUpdate(float in_deltaTime)
 		{
 			return { TiFSM_SIGNAL_UPDATE, in_deltaTime };
 		}
 
-		inline static TiFsmBasicEvent CreateMessage(fnd::Message& in_msg)
+		inline static TiFsmBasicEvent CreateMessage(fnd::Message& in_rMessage)
 		{
-			return { TiFSM_SIGNAL_MESSAGE, in_msg };
+			return { TiFSM_SIGNAL_MESSAGE, in_rMessage };
 		}
 	};
 

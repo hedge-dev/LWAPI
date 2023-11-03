@@ -20,25 +20,25 @@ namespace app
 		size_t m_ObjectHandle{};
 		GameObjectTableEntry* m_pObjectEntry{};
 		csl::ut::InplaceMoveArray<fnd::GOComponent*, 8> m_Components{ GetAllocator() };
-		csl::ut::VariableString m_name{ GetAllocator() };
+		csl::ut::VariableString m_Name{ GetAllocator() };
 		csl::ut::InplaceMoveArray<fnd::Property, 2> m_Properties{ GetAllocator() };
 		unsigned int m_ComponentFlags{};
 		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ &fnd::GOComponent::visualComponentNode };
 		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ &fnd::GOComponent::physicsComponentNode };
 		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ &fnd::GOComponent::audibleComponentNode };
 
-		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& comps, const fnd::SUpdateInfo& update_info, fnd::UpdatingPhase phase)
+		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& in_rComponents, const fnd::SUpdateInfo& in_rUpdateInfo, fnd::UpdatingPhase in_phase)
 		{
-			if (!comps.size())
+			if (!in_rComponents.size())
 				return;
 
-			for (auto& component : comps)
+			for (auto& component : in_rComponents)
 			{
-				component.Update(phase, update_info);
+				component.Update(in_phase, in_rUpdateInfo);
 			}
 		}
 
-		GameObject(bool skip)
+		GameObject(bool in_skip)
 		{
 			
 		}
@@ -74,9 +74,9 @@ namespace app
 			}
 		}
 
-		void SetObjectCategory(size_t category)
+		void SetObjectCategory(size_t in_category)
 		{
-			m_Category = category;
+			m_Category = in_category;
 		}
 
 		size_t GetObjectCategory() const
@@ -84,42 +84,42 @@ namespace app
 			return m_Category;
 		}
 		
-		virtual void AddCallback(GameDocument& document)
+		virtual void AddCallback(GameDocument* in_pDocument)
 		{
 
 		}
 
-		virtual void RemoveCallback(GameDocument& document)
+		virtual void RemoveCallback(GameDocument* in_pDocument)
 		{
 
 		}
 
-		virtual void UpdatePhase(const fnd::SUpdateInfo& update_info, fnd::UpdatingPhase phase)
+		virtual void UpdatePhase(const fnd::SUpdateInfo& in_rUpdateInfo, fnd::UpdatingPhase in_phase)
 		{
 
 		}
 
-		bool ActorProc(int id, void* data) override
+		bool ActorProc(int in_id, void* in_pData) override
 		{
-			switch (id)
+			switch (in_id)
 			{
 			case 0:
 			case 1:
 			{
-				if (!m_Enabled)
+				if (!Enabled)
 					return false;
 
-				auto* msg = static_cast<fnd::Message*>(data);
+				auto* pMessage = static_cast<fnd::Message*>(in_pData);
 
-				if (m_AllowedMessageFlags & msg->mask)
+				if (m_AllowedMessageFlags & pMessage->Mask)
 				{
 					for (auto** it = m_Components.begin(); it != m_Components.end(); it++)
 					{
-						(*it)->ProcessMessage(*msg);
+						(*it)->ProcessMessage(*pMessage);
 					}
 				}
 
-				return CLeafActor::ActorProc(id, data);
+				return CLeafActor::ActorProc(in_id, in_pData);
 			}
 
 			case 3:
@@ -127,10 +127,10 @@ namespace app
 				if (m_StatusFlags.test(1))
 					return true;
 
-				if (m_updateFlags)
-					Update(*reinterpret_cast<fnd::SUpdateInfo*>(data));
+				if (UpdateFlags)
+					Update(*reinterpret_cast<fnd::SUpdateInfo*>(in_pData));
 
-				UpdateComponents(m_VisualComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 0);
+				UpdateComponents(m_VisualComponents, *reinterpret_cast<fnd::SUpdateInfo*>(in_pData), 0);
 
 				return true;
 			}
@@ -140,10 +140,10 @@ namespace app
 				if (m_StatusFlags.test(1))
 					return true;
 
-				if (m_updateFlags)
-					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
+				if (UpdateFlags)
+					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(in_pData), 1);
 
-				UpdateComponents(m_PhysicsComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 1);
+				UpdateComponents(m_PhysicsComponents, *reinterpret_cast<fnd::SUpdateInfo*>(in_pData), 1);
 
 				return true;
 			}
@@ -153,65 +153,65 @@ namespace app
 				if (m_StatusFlags.test(1))
 					return true;
 
-				if (m_updateFlags)
-					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
+				if (UpdateFlags)
+					UpdatePhase(*reinterpret_cast<fnd::SUpdateInfo*>(in_pData), 2);
 
-				UpdateComponents(m_AudibleComponents, *reinterpret_cast<fnd::SUpdateInfo*>(data), 2);
+				UpdateComponents(m_AudibleComponents, *reinterpret_cast<fnd::SUpdateInfo*>(in_pData), 2);
 
 				return true;
 			}
 
 			default:
-				return CLeafActor::ActorProc(id, data);
+				return CLeafActor::ActorProc(in_id, in_pData);
 			}
 		}
 
-		bool ProcessMessage(fnd::Message& msg) override
+		bool ProcessMessage(fnd::Message& in_rMessage) override
 		{
-			if (PreProcessMessage(msg))
+			if (PreProcessMessage(in_rMessage))
 				return true;
 			
-			if (msg.IsOfType<xgame::MsgKill>())
+			if (in_rMessage.IsOfType<xgame::MsgKill>())
 			{
 				Kill();
 				return true;
 			}
 			
-			return CLeafActor::ProcessMessage(msg);
+			return CLeafActor::ProcessMessage(in_rMessage);
 		}
 
-		void* operator new (size_t size)
+		void* operator new (size_t in_size)
 		{
-			return GetAllocator()->Alloc(size, 16);
+			return GetAllocator()->Alloc(in_size, 16);
 		}
 
-		void operator delete (void* loc)
+		void operator delete (void* in_pLoc)
 		{
-			GetAllocator()->Free(loc);
+			GetAllocator()->Free(in_pLoc);
 		}
 
-		bool AddComponent(fnd::GOComponent* component)
+		bool AddComponent(fnd::GOComponent* in_pComponent)
 		{
 			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
 			{
-				if ((*it)->GetFamilyID() == component->GetFamilyID())
+				if ((*it)->GetFamilyID() == in_pComponent->GetFamilyID())
 					return false;
 			}
 
-			m_Components.push_back(component);
-			component->AddRef();
-			component->SetGameObject(this);
-			m_ComponentFlags |= component->componentStats;
+			m_Components.push_back(in_pComponent);
+			in_pComponent->AddRef();
+			in_pComponent->SetGameObject(this);
+			m_ComponentFlags |= in_pComponent->componentStats;
 
 			return true;
 		}
 
-		fnd::GOComponent* GetComponent(const char* name) const
+		fnd::GOComponent* GetComponent(const char* in_pName) const
 		{
 			for (auto* it = m_Components.begin(); it != m_Components.end(); it++)
 			{
-				auto* family = (*it)->GetFamilyID();
-				if (family == name)
+				auto* pFamily = (*it)->GetFamilyID();
+				if (pFamily == in_pName)
 					return *it;
 			}
 
@@ -234,9 +234,9 @@ namespace app
 			return m_pOwnerDocument;
 		}
 
-		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& cls)
+		fnd::GameService* GetServiceByClass(const fnd::GameServiceClass& in_rClass)
 		{
-			return GetDocument()->GetServiceByClass(cls);
+			return GetDocument()->GetServiceByClass(in_rClass);
 		}
 
 		template <typename T>
@@ -245,23 +245,23 @@ namespace app
 			return reinterpret_cast<T*>(GetServiceByClass(T::staticClass()));
 		}
 		
-		bool BroadcastMessageImmToGroup(uint group, fnd::Message& msg)
+		bool BroadcastMessageImmToGroup(uint in_group, fnd::Message& in_rMessage)
 		{
-			uint groupActor = m_pOwnerDocument->GetGroupActorID(group);
+			uint groupActor = m_pOwnerDocument->GetGroupActorID(in_group);
 			if (!groupActor)
 				return false;
 
-			BroadcastMessageImm(groupActor, msg);
+			BroadcastMessageImm(groupActor, in_rMessage);
 		}
 
-		void SendMessageToGame(fnd::Message& msg)
+		void SendMessageToGame(fnd::Message& in_rMessage)
 		{
-			SendMessage(m_pOwnerDocument->GetGameActorID(), msg);
+			SendMessage(m_pOwnerDocument->GetGameActorID(), in_rMessage);
 		}
 		
-		bool SendMessageImmToGame(fnd::Message& msg)
+		bool SendMessageImmToGame(fnd::Message& in_rMessage)
 		{
-			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), msg);
+			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), in_rMessage);
 		}
 
 		bool SendMessageImmToGameObject(GameObject* in_pObject, fnd::Message& in_rMessage)
@@ -269,41 +269,41 @@ namespace app
 			return SendMessageImm(in_pObject->m_ActorID, in_rMessage);
 		}
 		
-		bool HasProperty(uint key) const
+		bool HasProperty(uint in_key) const
 		{
 			for (auto& prop : m_Properties)
 			{
-				if (prop.GetKey() == key)
+				if (prop.GetKey() == in_key)
 					return true;
 			}
 
 			return false;
 		}
 		
-		void AddProperty(uint key, fnd::PropertyValue value)
+		void AddProperty(uint in_key, fnd::PropertyValue in_value)
 		{
-			m_Properties.push_back(fnd::Property(key, value));
+			m_Properties.push_back(fnd::Property(in_key, in_value));
 		}
 
-		void SetProperty(uint key, fnd::PropertyValue value)
+		void SetProperty(uint in_key, fnd::PropertyValue in_value)
 		{
 			for (auto& prop : m_Properties)
 			{
-				if (prop.GetKey() == key)
+				if (prop.GetKey() == in_key)
 				{
-					prop.SetValue(value);
+					prop.SetValue(in_value);
 					return;
 				}
 			}
 			
-			AddProperty(key, value);
+			AddProperty(kin_keyey, in_value);
 		}
 
-		fnd::PropertyValue GetProperty(uint key) const
+		fnd::PropertyValue GetProperty(uint in_key) const
 		{
 			for (auto& prop : m_Properties)
 			{
-				if (prop.GetKey() == key)
+				if (prop.GetKey() == in_key)
 					return prop.GetValue();
 			}
 			
@@ -321,7 +321,7 @@ namespace app
 		if (!IsKilled())
 		{
 			m_StatusFlags.set(0);
-			m_Enabled = false;
+			Enabled = false;
 		}
 	}
 

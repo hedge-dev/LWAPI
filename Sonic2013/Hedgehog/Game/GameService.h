@@ -13,59 +13,58 @@ namespace app::fnd
 		friend GameServiceClass;
 
 	public:
-		GameDocument* m_pOwnerDocument{};
-		const GameServiceClass* m_pClass{};
-		void* m_Unk1{};
-		void* m_Unk2{};
-		unsigned int m_Flags{};
+		GameDocument* pOwnerDocument{};
+		const GameServiceClass* pClass{};
+		void* Unk1{};
+		void* Unk2{};
+		unsigned int Flags{};
 
-		GameService(ServiceType serviceType)
+		GameService(ServiceType in_serviceType)
 		{
-			if (serviceType)
+			if (in_serviceType)
 			{
-				m_Flags = serviceType > 2 ? 0 : serviceType;
+				Flags = in_serviceType > 2 ? 0 : in_serviceType;
 			}
 			else
 			{
-				m_Flags = 0x2000;
+				Flags = 0x2000;
 			}
 		}
 
-	public:
-		virtual void ResolveAccessibleService(GameDocument& document) {}
+		virtual void ResolveAccessibleService(GameDocument& in_rDocument) {}
 		virtual void Load() {}
 		virtual void EndLoad() {}
-		virtual void PrepareToStartGame(bool a1) {}
-		virtual void StartGame(bool a1) {}
-		virtual void InitByScript(app::game::LuaScript& script) {}
+		virtual void PrepareToStartGame(bool in_a1) {}
+		virtual void StartGame(bool in_a1) {}
+		virtual void InitByScript(app::game::LuaScript& in_rScript) {}
 		virtual void OnAddedToGame() {}
 		virtual void OnRemovedFromGame() {}
-		virtual void UpdateFinal(const SUpdateInfo& updatdeInfo) {}
+		virtual void UpdateFinal(const SUpdateInfo& in_rUpdatdeInfo) {}
 
-		bool ActorProc(int id, void* data) override
+		bool ActorProc(int in_id, void* in_pData) override
 		{
-			if (id != 5)
-				return CLeafActor::ActorProc(id, data);
+			if (in_id != 5)
+				return CLeafActor::ActorProc(in_id, in_pData);
 
-			UpdateFinal(*reinterpret_cast<const SUpdateInfo*>(data));
+			UpdateFinal(*reinterpret_cast<const SUpdateInfo*>(in_pData));
 			return true;
 		}
 
-		void SendMessageToGame(fnd::Message& msg)
+		void SendMessageToGame(fnd::Message& in_rMessage)
 		{
-			SendMessage(m_pOwnerDocument->GetGameActorID(), msg);
+			SendMessage(pOwnerDocument->GetGameActorID(), in_rMessage);
 		}
 
-		bool SendMessageImmToGame(fnd::Message& msg)
+		bool SendMessageImmToGame(fnd::Message& in_rMessage)
 		{
-			return SendMessageImm(m_pOwnerDocument->GetGameActorID(), msg);
+			return SendMessageImm(pOwnerDocument->GetGameActorID(), in_rMessage);
 		}
 	};
 
-	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* allocator) const
+	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* in_pAllocator) const
 	{
-		GameService* service = m_pInitializer(allocator);
-		service->m_pClass = this;
+		GameService* pService = m_pInitializer(in_pAllocator);
+		pService->pClass = this;
 
 		return service;
 	}

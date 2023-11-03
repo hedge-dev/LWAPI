@@ -6,43 +6,44 @@ namespace app
 
 	struct GameObjectTableEntry
 	{
-		size_t m_Handle{};
-		GameObject* m_pObject{};
+		size_t Handle{};
+		GameObject* pObject{};
 	};
 
 	class GameObjectSystem : public fnd::ReferencedObject, csl::fnd::SingletonPointer<GameObjectSystem>
 	{
-	public:
-		app::fnd::PooledAllocator* m_pPooledAllocator{};
-		app::fnd::PooledAllocator m_PooledAllocator{ &m_PoolList };
-		csl::fnd::LinkHeapTemplate<csl::fnd::DummyLock> m_PoolList{};
-		csl::ut::MoveArray<GameObjectTableEntry> m_Handles{ m_pPooledAllocator };
-		INSERT_PADDING(24) {}; // csl::ut::Queue<uint>
-		app::ut::RefPtr<app::fnd::HandleManagerBase> m_rpHandleManager{};
-
-		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0x00FD3FC4);
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddObject, ASLR(0x0049D9C0), GameObjectSystem* This, GameObject* object);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveObject, ASLR(0x0049DA30), GameObjectSystem* This, GameObject* object);
+		inline static GameObjectSystem** ms_ppGameObjectSystem = (GameObjectSystem**)ASLR(0x00FD3FC4);
+
+	public:
+		app::fnd::PooledAllocator* pPooledAllocator{};
+		app::fnd::PooledAllocator PooledAllocator{ &PoolList };
+		csl::fnd::LinkHeapTemplate<csl::fnd::DummyLock> PoolList{};
+		csl::ut::MoveArray<GameObjectTableEntry> Handles{ pPooledAllocator };
+		INSERT_PADDING(24) {}; // csl::ut::Queue<uint>
+		app::ut::RefPtr<app::fnd::HandleManagerBase> rpHandleManager{};
 
 		GameObjectSystem()
 		{
-			ASSERT_OFFSETOF(GameObjectSystem, m_pPooledAllocator, 12);
-			ASSERT_OFFSETOF(GameObjectSystem, m_rpHandleManager, 0x120);
+			ASSERT_OFFSETOF(GameObjectSystem, pPooledAllocator, 12);
+			ASSERT_OFFSETOF(GameObjectSystem, rpHandleManager, 0x120);
 		}
 		
-		void AddObject(GameObject* object)
+		void AddObject(GameObject* in_pObject)
 		{
-			ms_fpAddObject(this, object);
+			ms_fpAddObject(this, in_pObject);
 		}
 
-		void RemoveObject(GameObject* object)
+		void RemoveObject(GameObject* in_pObject)
 		{
-			ms_fpRemoveObject(this, object);
+			ms_fpRemoveObject(this, in_pObject);
 		}
 
 		csl::fnd::IAllocator* GetPooledAllocator() const
 		{
-			return m_pPooledAllocator;
+			return pPooledAllocator;
 		}
 	};
 }

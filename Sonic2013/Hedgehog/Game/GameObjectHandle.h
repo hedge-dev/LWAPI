@@ -8,12 +8,12 @@ namespace app
 		size_t m_ObjectHandle{};
 		GameObjectTableEntry* m_pEntry{};
 
-		void Set(const GameObject* pObj)
+		void Set(const GameObject* in_pObj)
 		{
-			if (pObj)
+			if (in_pObj)
 			{
-				m_pEntry = pObj->m_pObjectEntry;
-				m_ObjectHandle = pObj->m_ObjectHandle;
+				m_pEntry = in_pObj->m_pObjectEntry;
+				m_ObjectHandle = in_pObj->m_ObjectHandle;
 			}
 			else
 			{
@@ -28,9 +28,9 @@ namespace app
 			
 		}
 		
-		GameObjectHandleBase(const GameObject* pObj)
+		GameObjectHandleBase(const GameObject* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 		}
 
 		bool IsValid() const
@@ -38,7 +38,7 @@ namespace app
 			if (!m_pEntry)
 				return false;
 
-			return (m_pEntry->m_Handle == m_ObjectHandle) && m_pEntry->m_pObject;
+			return (m_pEntry->Handle == m_ObjectHandle) && m_pEntry->pObject;
 		}
 
 		GameObject* Get() const
@@ -46,7 +46,7 @@ namespace app
 			if (!IsValid())
 				return nullptr;
 
-			return m_pEntry->m_pObject;
+			return m_pEntry->pObject;
 		}
 
 		bool IsAlive() const
@@ -63,12 +63,12 @@ namespace app
 			return IsValid();
 		}
 
-		bool operator==(const GameObject* pObj) const
+		bool operator==(const GameObject* in_pObj) const
 		{
 			if (!IsValid())
 				return false;
 
-			return pObj->m_ObjectHandle == m_ObjectHandle;
+			return in_pObj->m_ObjectHandle == m_ObjectHandle;
 		}
 
 		bool operator==(const GameObjectHandleBase& in_rOther) const
@@ -79,14 +79,14 @@ namespace app
 			return m_ObjectHandle == in_rOther.m_ObjectHandle;
 		}
 
-		bool operator!=(const GameObject* pObj) const
+		bool operator!=(const GameObject* in_pObj) const
 		{
-			return !operator==(pObj);
+			return !operator==(in_pObj);
 		}
 
-		GameObjectHandleBase& operator=(const GameObject* pObj)
+		GameObjectHandleBase& operator=(const GameObject* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 			return *this;
 		}
 	};
@@ -96,16 +96,16 @@ namespace app
 	{
 	public:
 		GameObjectHandle() : GameObjectHandleBase(){}
-		GameObjectHandle(T* pObj) : GameObjectHandleBase(pObj){}
+		GameObjectHandle(T* in_pObj) : GameObjectHandleBase(in_pObj){}
 
 		T* Get() const
 		{
 			return reinterpret_cast<T*>(GameObjectHandleBase::Get());
 		}
 
-		GameObjectHandle<T>& operator=(T* pObj)
+		GameObjectHandle<T>& operator=(T* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 			return *this;
 		}
 
