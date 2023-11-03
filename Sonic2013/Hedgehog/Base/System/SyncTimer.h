@@ -4,12 +4,13 @@ namespace app
 {
 	class SyncTimer : public fnd::ReferencedObject, csl::fnd::SingletonPointer<SyncTimer>
 	{
-	public:
-        inline static FUNCTION_PTR(void, __thiscall, ms_fpReset, ASLR(0x004ACC70), void* This);
-        inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFPS, ASLR(0x004ACCD0), void* This, float fps);
-        inline static FUNCTION_PTR(float, __thiscall, ms_fpCalcFPS, ASLR(0x004ACD40), void* This);
-        inline static FUNCTION_PTR(void, __thiscall, ms_fpSync, ASLR(0x004ACE10), void* This);
+	private:
+        inline static FUNCTION_PTR(void, __thiscall, ms_fpReset, ASLR(0x004ACC70), SyncTimer*);
+        inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFPS, ASLR(0x004ACCD0), SyncTimer*, float);
+        inline static FUNCTION_PTR(float, __thiscall, ms_fpCalcFPS, ASLR(0x004ACD40), SyncTimer*);
+        inline static FUNCTION_PTR(void, __thiscall, ms_fpSync, ASLR(0x004ACE10), SyncTimer*);
 
+    public:
         void Reset()
         {
             ms_fpReset(this);
@@ -20,9 +21,9 @@ namespace app
             ms_fpSync(this);
         }
 
-        void SetFPS(float fps)
+        void SetFPS(float in_fps)
         {
-            ms_fpSetFPS(this, fps);
+            ms_fpSetFPS(this, in_fps);
         }
 
         float CalcFPS()

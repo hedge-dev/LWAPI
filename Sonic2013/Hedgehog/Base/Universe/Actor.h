@@ -10,7 +10,7 @@ namespace app::fnd
 	class CActorTraverser : public ReferencedObject
 	{
 	public:
-		virtual size_t Callback(CActor& actor) = 0;
+		virtual size_t Callback(CActor& in_rActor) = 0;
 	};
 
 	// CActor : boost::noncopyable
@@ -19,26 +19,26 @@ namespace app::fnd
 		friend MessageManager;
 		
 	public:
-		uint m_ActorID{};
-		MessageManager* m_pMessageManager{};
-		CActor* m_pParent{};
-		csl::ut::Bitset<uint16> m_updateFlags {};
-		char m_Flags{ 1 };
-		bool m_Enabled{ true };
-		unsigned int m_AllowedMessageFlags{ static_cast<unsigned>(-1) };
-		bool isDeactivated{};
+		uint ActorID{};
+		MessageManager* pMessageManager{};
+		CActor* pParent{};
+		csl::ut::Bitset<uint16> UpdateFlags {};
+		char Flags{ 1 };
+		bool Enabled{ true };
+		unsigned int AllowedMessageFlags{ static_cast<unsigned>(-1) };
+		bool IsDeactivated{};
 
-		void MessageSetup(uint to, fnd::Message& msg) const
+		void MessageSetup(uint in_to, fnd::Message& in_rMessage) const
 		{
-			msg.m_Receiver = to;
-			msg.m_Sender = m_ActorID;
+			in_rMessage.m_Receiver = in_to;
+			in_rMessage.m_Sender = ActorID;
 		}
 		
 	public:
 		void RemoveFromAllParents()
 		{
-			if (m_pParent)
-				m_pParent->ActorProc(2, this);
+			if (pParent)
+				pParent->ActorProc(2, this);
 		}
 
 		CActor()
@@ -49,108 +49,108 @@ namespace app::fnd
 		virtual ~CActor()
 		{
 			RemoveFromAllParents();
-			if (m_pMessageManager)
-				m_pMessageManager->Remove(this);
+			if (pMessageManager)
+				pMessageManager->Remove(this);
 		}
 		
-		virtual size_t ForEach(CActorTraverser& traverser) = 0;
+		virtual size_t ForEach(CActorTraverser& in_rTraverser) = 0;
 
 	protected:
-		virtual bool PreProcessMessage(Message& msg)
+		virtual bool PreProcessMessage(Message& in_rMessage)
 		{
 			return false;
 		}
 
-		virtual bool ProcessMessage(Message& msg)
+		virtual bool ProcessMessage(Message& in_rMessage)
 		{
-			return PreProcessMessage(msg);
+			return PreProcessMessage(in_rMessage);
 		}
 
-		virtual void Update(const SUpdateInfo& info)
+		virtual void Update(const SUpdateInfo& in_rUpdateInfo)
 		{
 
 		}
 
 	public:
-		virtual bool ActorProc(int id, void* data) = 0;
+		virtual bool ActorProc(int in_id, void* in_pData) = 0;
 
 		HH_FORCE_INLINE size_t GetID() const
 		{
-			return m_ActorID;
+			return ActorID;
 		}
 		
-		HH_FORCE_INLINE void SetUpdateFlag(uint16 flag, bool value)
+		HH_FORCE_INLINE void SetUpdateFlag(uint16 in_flag, bool in_value)
 		{
-			m_updateFlags.set(flag, value);
+			UpdateFlags.set(in_flag, in_value);
 		}
 
-		HH_FORCE_INLINE bool GetUpdateFlag(uint16 flag) const
+		HH_FORCE_INLINE bool GetUpdateFlag(uint16 in_flag) const
 		{
-			return m_updateFlags.test(flag);
+			return UpdateFlags.test(in_flag);
 		}
 
-		void SetParent(CActor* pParent)
+		void SetParent(CActor* in_pParent)
 		{
-			m_pParent = pParent;
+			pParent = in_pParent;
 		}
 		
-		bool SendMessageImm(uint to, fnd::Message& msg) const
+		bool SendMessageImm(uint in_to, fnd::Message& in_rMessage) const
 		{
-			if (msg.mask & m_AllowedMessageFlags)
+			if (in_rMessage.Mask & AllowedMessageFlags)
 			{
-				MessageSetup(to, msg);
-				CActor* actor = m_pMessageManager->GetActor(to);
+				MessageSetup(in_to, in_rMessage);
+				CActor* pActor = pMessageManager->GetActor(in_to);
 				
-				if (!actor)
+				if (!pActor)
 					return false;
 
-				return actor->ActorProc(0, &msg);
+				return pActor->ActorProc(0, &in_rMessage);
 			}
 			return false;
 		}
 
-		bool BroadcastMessageImm(uint group, fnd::Message& msg) const
+		bool BroadcastMessageImm(uint in_group, fnd::Message& in_rMessage) const
 		{
-			if (msg.mask & m_AllowedMessageFlags)
+			if (in_rMessage.Mask & AllowedMessageFlags)
 			{
-				MessageSetup(group, msg);
+				MessageSetup(in_group, in_rMessage);
 
-				CActor* actor = m_pMessageManager->GetActor(group);
+				CActor* pActor = pMessageManager->GetActor(in_group);
 
-				if (!actor)
+				if (!pActor)
 					return false;
 
-				return actor->ActorProc(1, &msg);
+				return pActor->ActorProc(1, &in_rMessage);
 			}
 			
 			return false;
 		}
 		
-		bool SendMessage(fnd::Message& msg)
+		bool SendMessage(fnd::Message& in_rMessage)
 		{
-			if (m_AllowedMessageFlags & msg.mask)
+			if (AllowedMessageFlags & in_rMessage.Mask)
 			{
-				MessageSetup(m_ActorID, msg);
-				return ActorProc(0, &msg);
+				MessageSetup(ActorID, in_rMessage);
+				return ActorProc(0, &in_rMessage);
 			}
 
 			return false;
 		}
 
-		void SendMessage(uint to, fnd::Message& msg) const
+		void SendMessage(uint in_to, fnd::Message& in_rMessage) const
 		{
-			if (m_AllowedMessageFlags & msg.mask)
+			if (m_AllowedMessageFlags & in_rMessage.Mask)
 			{
-				MessageSetup(to, msg);
-				m_pMessageManager->AddMessage(msg);
+				MessageSetup(in_to, in_rMessage);
+				m_pMessageManager->AddMessage(in_rMessage);
 			}
 		}
 
-		void BroadcastMessage(uint group, fnd::Message& msg) const
+		void BroadcastMessage(uint in_group, fnd::Message& in_rMessage) const
 		{
-			MessageSetup(group, msg);
-			msg.m_Broadcasted = true;
-			m_pMessageManager->AddMessage(msg);
+			MessageSetup(in_group, in_rMessage);
+			in_rMessage.Broadcasted = true;
+			pMessageManager->AddMessage(in_rMessage);
 		}
 	};
 }

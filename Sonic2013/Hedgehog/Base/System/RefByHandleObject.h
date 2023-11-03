@@ -6,11 +6,12 @@ namespace app::fnd
 	
 	struct HandleTableEntry
 	{
-		size_t m_Handle{};
-		RefByHandleObject* m_pObject{};
+		size_t Handle{};
+		RefByHandleObject* pObject{};
 	};
 
 	class HandleBase;
+	
 	class RefByHandleObject : public ReferencedObject
 	{
 		friend HandleBase;

@@ -10,48 +10,48 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemove, ASLR(0x0049A910), MessageManager*, CActor*);
 
 	public:
-		size_t m_NextID{};
-		csl::ut::PointerMap<size_t, CActor*> m_Actors{ GetAllocator() };
-		csl::ut::MoveArray<Message*> m_Messages{ GetAllocator() };
-		csl::ut::MoveArray<Message*> m_ExecutingMessages{ GetAllocator() };
-		void* m_Unk1{};
+		size_t NextID{};
+		csl::ut::PointerMap<size_t, CActor*> Actors{ GetAllocator() };
+		csl::ut::MoveArray<Message*> Messages{ GetAllocator() };
+		csl::ut::MoveArray<Message*> ExecutingMessages{ GetAllocator() };
+		void* pUnk1{};
 		
 		size_t GenerateID()
 		{
-			return m_NextID++;
+			return NextID++;
 		}
 		
 		MessageManager()
 		{
-			m_Actors.reserve(1024);
-			m_Messages.reserve(512);
-			m_ExecutingMessages.reserve(512);
+			Actors.reserve(1024);
+			Messages.reserve(512);
+			ExecutingMessages.reserve(512);
 		}
 		
-		void AddMessage(Message& msg)
+		void AddMessage(Message& in_rMessage)
 		{
-			auto* pMsg = msg.Clone();
+			auto* pMessage = in_rMessage.Clone();
 
-			if (pMsg)
-				m_Messages.push_back(pMsg);
+			if (pMessage)
+				Messages.push_back(pMessage);
 		}
 
 		const csl::ut::PointerMap<size_t, CActor*>& Actors() const
 		{
-			return m_Actors;
+			return Actors;
 		}
 		
 		void Update();
 		
-		void Add(CActor* actor);
+		void Add(CActor* in_pActor);
 
-		void Remove(CActor* actor);
+		void Remove(CActor* in_pActor);
 		
-		[[nodiscard]] CActor* GetActor(uint id) const
+		[[nodiscard]] CActor* GetActor(uint in_id) const
 		{
-			const auto result = m_Actors.find(id);
+			const auto result = Actors.find(in_id);
 
-			if (result != m_Actors.end())
+			if (result != Actors.end())
 				return result;
 
 			return nullptr;
@@ -60,20 +60,20 @@ namespace app::fnd
 }
 
 #include "hhActor.h"
-inline void app::fnd::MessageManager::Add(CActor* actor)
+inline void app::fnd::MessageManager::Add(CActor* in_pActor)
 {
-	if (!actor)
+	if (!in_pActor)
 		return;
 
-	actor->m_ActorID = GenerateID();
-	actor->m_pMessageManager = this;
-	m_Actors.insert(actor->m_ActorID, actor);
+	in_pActor->ActorID = GenerateID();
+	in_pActor->pMessageManager = this;
+	Actors.insert(actor->ActorID, actor);
 }
 
 
-inline void app::fnd::MessageManager::Remove(CActor* actor)
+inline void app::fnd::MessageManager::Remove(CActor* in_pActor)
 {
-	ms_fpRemove(this, actor);
+	ms_fpRemove(this, in_pActor);
 
 	// TODO: erase is broken, fix it
 	/*if (!actor)
@@ -86,24 +86,23 @@ inline void app::fnd::MessageManager::Remove(CActor* actor)
 
 inline void app::fnd::MessageManager::Update()
 {
-	if (m_Messages.empty())
+	if (Messages.empty())
 		return;
 
-	m_ExecutingMessages.swap(m_Messages);
+	ExecutingMessages.swap(Messages);
 	
-	for (Message* msg : m_ExecutingMessages)
+	for (Message* pMessage : ExecutingMessages)
 	{
-		CActor* pActor = GetActor(msg->m_Receiver);
+		CActor* pActor = GetActor(pMessage->Receiver);
 		if (pActor)
 		{
-			pActor->ActorProc(msg->m_Broadcasted != false, msg);
+			pActor->ActorProc(pMessage->Broadcasted != false, pMessage);
 		}
 
-		delete msg;
+		delete pMessage;
 	}
 
-	m_ExecutingMessages.clear();
+	ExecutingMessages.clear();
 }
-
 
 DEFINE_SINGLETONPTR(app::fnd::MessageManager, ASLR(0x00FD4300));

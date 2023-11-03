@@ -6,8 +6,8 @@ namespace app::fnd
 
 	struct SUpdateInfo
 	{
-		float deltaTime;
-		uint frame;
+		float DeltaTime;
+		uint Frame;
 	};
 
 	class Message
@@ -16,15 +16,15 @@ namespace app::fnd
 		uint m_ID{};
 
 	public:
-		uint m_Sender{};
-		uint m_Receiver{};
-		char m_Handled{};
-		bool m_Broadcasted{};
-		const uint mask{ (uint)-1 };
+		uint Sender{};
+		uint Receiver{};
+		char Handled{};
+		bool Broadcasted{};
+		const uint Mask{ (uint)-1 };
 		
-		Message(uint id_)
+		Message(uint in_id)
 		{
-			m_ID = id_;
+			m_ID = in_id;
 		}
 
 		uint GetType() const
@@ -48,17 +48,17 @@ namespace app::fnd
 
 		[[nodiscard]] bool IsBroadcast()
 		{
-			return m_Broadcasted;
+			return Broadcasted;
 		}
 		
-		inline void* operator new(size_t size)
+		inline void* operator new(size_t in_size)
 		{
-			return __HH_ALLOC(size);
+			return __HH_ALLOC(in_size);
 		}
 
-		inline void operator delete(void* mem)
+		inline void operator delete(void* in_pMem)
 		{
-			__HH_FREE(mem);
+			__HH_FREE(in_pMem);
 		}
 	};
 }

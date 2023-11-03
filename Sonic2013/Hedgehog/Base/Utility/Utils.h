@@ -13,9 +13,9 @@ namespace app
 
 	namespace fnd
 	{
-		inline static char* align_ptr(char* in_ptr, uint in_alignment)
+		inline static char* align_ptr(char* in_pPtr, uint in_alignment)
 		{
-			return (char*)ut::RoundUp((size_t)in_ptr, in_alignment);
+			return (char*)ut::RoundUp((size_t)in_pPtr, in_alignment);
 		}
 	}
 }

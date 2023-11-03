@@ -15,12 +15,12 @@ namespace app::ut
 			
 		}
 
-		ScopedPtr(T* pX) : m_pAllocator(nullptr), m_pX(pX)
+		ScopedPtr(T* in_pX) : m_pAllocator(nullptr), m_pX(in_pX)
 		{
 			
 		}
 		
-		ScopedPtr(T* pX, csl::fnd::IAllocator* pAllocator) : m_pAllocator(pAllocator), m_pX(pX)
+		ScopedPtr(T* in_pX, csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator), m_pX(in_pX)
 		{
 			
 		}
@@ -30,12 +30,12 @@ namespace app::ut
 			delete m_pX;
 		}
 		
-		void reset(T* pX)
+		void reset(T* in_pX)
 		{
 			if (m_pX)
 				delete m_pX;
 
-			m_pX = pX;
+			m_pX = in_pX;
 		}
 
 		T* get() const
@@ -53,9 +53,9 @@ namespace app::ut
 			return *get();
 		}
 
-		ScopedPtr& operator=(T* ptr)
+		ScopedPtr& operator=(T* in_pPtr)
 		{
-			reset(ptr);
+			reset(in_pPtr);
 			return *this;
 		}
 

@@ -28,40 +28,40 @@ namespace app
 
 			}
 
-			void* operator new (size_t size, csl::fnd::IAllocator* allocator)
+			void* operator new (size_t in_size, csl::fnd::IAllocator* in_pAllocator)
 			{
-				auto* object = static_cast<ReferencedObject*>(allocator->Alloc(size, 32));
+				auto* pObject = static_cast<ReferencedObject*>(in_pAllocator->Alloc(in_size, 32));
 
-				if (object)
+				if (pObject)
 				{
-					object->m_pAllocator = allocator;
-					object->m_ObjectSize = size;
-					object->m_RefCount = 0;
+					pObject->m_pAllocator = in_pAllocator;
+					pObject->m_ObjectSize = in_size;
+					pObject->m_RefCount = 0;
 				}
 
-				return object;
+				return pObject;
 			}
 
-			void* operator new (size_t size, csl::fnd::IAllocator& allocator)
+			void* operator new (size_t in_size, csl::fnd::IAllocator& in_rAllocator)
 			{
-				return operator new(size, &allocator);
+				return operator new(in_size, &in_rAllocator);
 			}
 
-			void* operator new(size_t size, void* placement)
+			void* operator new(size_t in_size, void* in_pPlacement)
 			{
-				auto* pObj = static_cast<ReferencedObject*>(placement);
-				pObj->m_pAllocator = nullptr;
-				pObj->m_ObjectSize = 0;
-				pObj->m_RefCount = 0;
-				return placement;
+				auto* pObject = static_cast<ReferencedObject*>(in_pPlacement);
+				pObject->m_pAllocator = nullptr;
+				pObject->m_ObjectSize = 0;
+				pObject->m_RefCount = 0;
+				return in_pPlacement;
 			}
 
-			void operator delete(void* loc)
+			void operator delete(void* in_pLoc)
 			{
-				auto* object = static_cast<ReferencedObject*>(loc);
+				auto* pObject = static_cast<ReferencedObject*>(in_pLoc);
 
-				if (object->m_pAllocator)
-					object->m_pAllocator->Free(object);
+				if (pObject->m_pAllocator)
+					pObject->m_pAllocator->Free(pObject);
 			}
 
 			void AddRef()
@@ -95,4 +95,33 @@ namespace app
 			}
 		};
 	}
+	
+	class ThreadSafeReferencedObject : public ReferencedObject
+	{
+	protected:
+		size_t m_SafeRefCount{};
+
+	public:
+		ThreadSafeReferencedObject()
+		{
+			
+		}
+		
+		void AddRef()
+		{
+			if (GetSize())
+				InterlockedIncrement(&m_SafeRefCount);
+		}
+
+		void Release()
+		{
+			if (GetSize())
+			{
+				if (!InterlockedDecrement(&m_SafeRefCount))
+				{
+					delete this;
+				}
+			}
+		}
+	};
 }

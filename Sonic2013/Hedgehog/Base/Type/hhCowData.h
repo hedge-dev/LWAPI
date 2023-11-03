@@ -6,15 +6,15 @@ namespace hh::base
     template<typename T>
     class CCowData
     {
+        inline static const T* ms_memStatic = reinterpret_cast<const T*>(ASLR(0x00EB29B4));
+
     protected:
         class CData
         {
         public:
-            size_t m_RefCountAndLength;
-            T m_Data[1];
+            size_t RefCountAndLength;
+            T Data[1];
         };
-
-        inline static const T* ms_memStatic = reinterpret_cast<const T*>(ASLR(0x00EB29B4));
 
         const T* m_ptr;
 
@@ -25,12 +25,12 @@ namespace hh::base
 
         CData* GetData() const
         {
-            return (CData*)((char*)m_ptr - offsetof(CData, m_Data));
+            return (CData*)((char*)m_ptr - offsetof(CData, Data));
         }
 
-        void SetData(CData* pData)
+        void SetData(CData* in_pData)
         {
-            m_ptr = (const T*)((char*)pData + offsetof(CData, m_Data));
+            m_ptr = (const T*)((char*)in_pData + offsetof(CData, Data));
         }
 
     public:
@@ -41,37 +41,37 @@ namespace hh::base
 
         void Unset()
         {
-            if (!IsMemStatic() && (uint16_t)InterlockedDecrement(&GetData()->m_RefCountAndLength) == 0)
+            if (!IsMemStatic() && (uint16_t)InterlockedDecrement(&GetData()->RefCountAndLength) == 0)
                 __HH_FREE(GetData());
 
             m_ptr = ms_memStatic;
         }
 
-        void Set(const CCowData& other)
+        void Set(const CCowData& in_rOther)
         {
-            m_ptr = other.m_ptr;
+            m_ptr = in_rOther.m_ptr;
 
             if (!IsMemStatic())
-                InterlockedIncrement(&GetData()->m_RefCountAndLength);
+                InterlockedIncrement(&GetData()->RefCountAndLength);
         }
 
-        void Set(const T* pPtr, const size_t length)
+        void Set(const T* in_pPtr, const size_t in_length)
         {
             Unset();
 
-            if (!length)
+            if (!in_length)
                 return;
 
-            const size_t memSize = offsetof(CData, m_Data) + length * sizeof(T);
+            const size_t memSize = offsetof(CData, Data) + in_length * sizeof(T);
             const size_t memSizeAligned = (memSize + 0x10) & 0xFFFFFFF0;
 
             CData* pData = (CData*)__HH_ALLOC(memSizeAligned);
-            pData->m_RefCountAndLength = (length << 16) | 1;
+            pData->RefCountAndLength = (in_length << 16) | 1;
 
-            if (pPtr)
+            if (in_pPtr)
             {
-                memcpy(pData->m_Data, pPtr, length * sizeof(T));
-                memset(&pData->m_Data[length], 0, memSizeAligned - memSize);
+                memcpy(pData->Data, in_pPtr, in_length * sizeof(T));
+                memset(&pData->Data[in_length], 0, memSizeAligned - memSize);
             }
 
             SetData(pData);
@@ -82,15 +82,15 @@ namespace hh::base
 
         }
 
-        CCowData(CCowData&& other) noexcept
+        CCowData(CCowData&& in_rrOther) noexcept
         {
-            m_ptr = other.m_ptr;
-            other.m_ptr = ms_memStatic;
+            m_ptr = in_rrOther.m_ptr;
+            in_rrOther.m_ptr = ms_memStatic;
         }
 
-        CCowData(const CCowData& other)
+        CCowData(const CCowData& in_rOther)
         {
-            Set(other);
+            Set(in_rOther);
         }
 
         ~CCowData()

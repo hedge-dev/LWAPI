@@ -17,25 +17,25 @@ namespace app::fnd
 			}
 		}
 
-		void AddChild(CActor* pActor)
+		void AddChild(CActor* in_pActor)
 		{
-			m_ChildActors.push_back(pActor);
+			m_ChildActors.push_back(in_pActor);
 			for (size_t i = 0; i < 3; i++)
-				if (pActor->GetUpdateFlag(i))
-					m_PhasedActors[i].push_back(pActor);
+				if (in_pActor->GetUpdateFlag(i))
+					m_PhasedActors[i].push_back(in_pActor);
 
-			pActor->SetParent(this);
+			in_pActor->SetParent(this);
 		}
 		
-		size_t ForEach(CActorTraverser& traverser) override
+		size_t ForEach(CActorTraverser& in_rTraverser) override
 		{
-			auto count = traverser.Callback(*this);
+			auto count = in_rTraverser.Callback(*this);
 			if (count)
 				return count == 1;
 
 			for (auto& pActor : m_ChildActors)
 			{
-				pActor->ForEach(traverser);
+				pActor->ForEach(in_rTraverser);
 			}
 			
 			return 1;

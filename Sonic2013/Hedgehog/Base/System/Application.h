@@ -16,28 +16,28 @@ namespace app
 		virtual void ShutdownBasic() = 0;
 		virtual void InitializeMain() = 0;
 		virtual void ShutdownMain() = 0;
-		virtual void RunCore(SyncTimer* timer) = 0;
+		virtual void RunCore(SyncTimer* in_pTimer) = 0;
 		
 		INSERT_PADDING(0x90) {};
-		IDirect3D9Ex* d3d{};
-		IDirect3DDevice9Ex* d3dDevice{};
+		IDirect3D9Ex* m_pDirect3D{};
+		IDirect3DDevice9Ex* m_pDirect3DDevice{};
 		INSERT_PADDING(0x44) {};
 
 		Application()
 		{
-			ASSERT_OFFSETOF(Application, d3d, 0x94);
-			ASSERT_OFFSETOF(Application, d3dDevice, 0x98);
+			ASSERT_OFFSETOF(Application, m_pDirect3D, 0x94);
+			ASSERT_OFFSETOF(Application, m_pDirect3DDevice, 0x98);
 		}
 
 	public:
 		[[nodiscard]] IDirect3D9Ex* GetDirect3D() const
 		{
-			return d3d;
+			return m_pDirect3D;
 		}
 
 		[[nodiscard]] IDirect3DDevice9Ex* GetDirect3DDevice() const
 		{
-			return d3dDevice;
+			return m_pDirect3DDevice;
 		}
 	};
 }

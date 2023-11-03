@@ -8,12 +8,12 @@ namespace app::fnd
 		size_t m_Handle{};
 		HandleTableEntry* m_pEntry{};
 
-		void Set(const RefByHandleObject* pObj)
+		void Set(const RefByHandleObject* in_pObj)
 		{
-			if (pObj)
+			if (in_pObj)
 			{
-				m_Handle = pObj->m_Handle;
-				m_pEntry = pObj->m_pHandleEntry;
+				m_Handle = in_pObj->m_Handle;
+				m_pEntry = in_pObj->m_pHandleEntry;
 			}
 		}
 		
@@ -23,9 +23,9 @@ namespace app::fnd
 			
 		}
 		
-		HandleBase(const RefByHandleObject* pObj)
+		HandleBase(const RefByHandleObject* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 		}
 
 		bool IsValid() const
@@ -33,7 +33,7 @@ namespace app::fnd
 			if (!m_pEntry)
 				return false;
 
-			return m_pEntry->m_Handle == m_Handle && m_pEntry->m_pObject;
+			return m_pEntry->Handle == m_Handle && m_pEntry->pObject;
 		}
 
 		RefByHandleObject* Get() const
@@ -41,7 +41,7 @@ namespace app::fnd
 			if (!IsValid())
 				return nullptr;
 
-			return m_pEntry->m_pObject;
+			return m_pEntry->pObject;
 		}
 
 		operator bool() const
@@ -49,22 +49,22 @@ namespace app::fnd
 			return IsValid();
 		}
 
-		bool operator==(const RefByHandleObject* pObj)
+		bool operator==(const RefByHandleObject* in_pObj)
 		{
 			if (!IsValid())
 				return false;
 
-			return m_Handle == pObj->m_Handle;
+			return m_Handle == in_pObj->Handle;
 		}
 
-		bool operator!=(const RefByHandleObject* pObj)
+		bool operator!=(const RefByHandleObject* in_pObj)
 		{
-			return !operator==(pObj);
+			return !operator==(in_pObj);
 		}
 
-		HandleBase& operator=(const RefByHandleObject* pObj)
+		HandleBase& operator=(const RefByHandleObject* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 			return *this;
 		}
 	};
@@ -78,7 +78,7 @@ namespace app::fnd
 			
 		}
 
-		Handle(const T* pObj) : HandleBase(pObj)
+		Handle(const T* in_pObj) : HandleBase(in_pObj)
 		{
 			
 		}
@@ -88,9 +88,9 @@ namespace app::fnd
 			return reinterpret_cast<T*>(HandleBase::Get());
 		}
 
-		Handle<T>& operator=(T* pObj)
+		Handle<T>& operator=(T* in_pObj)
 		{
-			Set(pObj);
+			Set(in_pObj);
 			return *this;
 		}
 

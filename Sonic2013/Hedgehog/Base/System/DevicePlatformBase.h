@@ -11,7 +11,7 @@ namespace app::hid
 	public:
 		virtual DEFINE_RTTI_GETTER;
 
-		virtual void Poll(float time)
+		virtual void Poll(float in_time)
 		{
 			
 		}
@@ -21,22 +21,22 @@ namespace app::hid
 			return 0;
 		}
 
-		virtual bool GetDeviceData(ResSendDeviceData* data, uint port)
+		virtual bool GetDeviceData(ResSendDeviceData* in_pData, uint in_port)
 		{
 			return false;
 		}
 
-		virtual bool SendDeviceData(uint a1, uint a2, const ResSendDeviceData* data, bool a4)
+		virtual bool SendDeviceData(uint in_a1, uint in_a2, const ResSendDeviceData* in_pData, bool in_a4)
 		{
 			return false;
 		}
 
-		virtual bool ChangeDeviceData(const ResDeviceData* a1, const ResDeviceData* a2, uint a3)
+		virtual bool ChangeDeviceData(const ResDeviceData* in_pA1, const ResDeviceData* in_pA2, uint in_a3)
 		{
 			return false;
 		}
 
-		virtual	bool IsActive(uint port) const
+		virtual	bool IsActive(uint in_port) const
 		{
 			return false;
 		}

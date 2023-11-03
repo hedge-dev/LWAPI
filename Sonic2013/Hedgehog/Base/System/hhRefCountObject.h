@@ -10,14 +10,14 @@ namespace hh::base
 	public:
 		virtual ~CRefCountObject() = default;
 
-		inline void* operator new(size_t size)
+		inline void* operator new(size_t in_size)
 		{
-			return __HH_ALLOC(size);
+			return __HH_ALLOC(in_size);
 		}
 
-		inline void operator delete(void* mem)
+		inline void operator delete(void* in_pMem)
 		{
-			__HH_FREE(mem);
+			__HH_FREE(in_pMem);
 		}
 		
 		void AddRef()

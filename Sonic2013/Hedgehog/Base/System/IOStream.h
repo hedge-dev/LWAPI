@@ -8,13 +8,13 @@ namespace app::fnd
 		bool m_Unk1{};
 		
 	public:
-		typedef void Callback(int, IOStream* pStream, void* pBuffer);
+		typedef void Callback(int, IOStream* in_pStream, void* in_pBuffer);
 		
 		virtual void Close() = 0;
-		virtual size_t Read(void* pBuffer, size_t bufSize) { return 0; }
-		virtual size_t ReadAsync(void* pBuffer, size_t bufSize, Callback* pCallback, void*) { return 0; }
-		virtual size_t Write(const void* pBuffer, size_t bufSize) { return 0; }
-		virtual size_t WriteAsync(void* pBuffer, size_t bufSize, Callback* pCallback, void*) { return 0; }
+		virtual size_t Read(void* in_pBuffer, size_t in_bufSize) { return 0; }
+		virtual size_t ReadAsync(void* in_pBuffer, size_t in_bufSize, Callback* in_pCallback, void*) { return 0; }
+		virtual size_t Write(const void* in_pBuffer, size_t in_bufSize) { return 0; }
+		virtual size_t WriteAsync(void* in_pBuffer, size_t in_bufSize, Callback* in_pCallback, void*) { return 0; }
 
 		virtual bool WaitAsync() const
 		{

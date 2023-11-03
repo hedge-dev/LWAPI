@@ -1,19 +1,19 @@
 #pragma once
 
-namespace hh::ut
+namespace app::ut
 {
 	template<typename T>
 	class RefCountStrategyBasic
 	{
 	public:
-		static void AddRef(T* in_obj)
+		static void AddRef(T* in_pObj)
 		{
-			in_obj->AddRef();
+			in_pObj->AddRef();
 		}
 
-		static void Release(T* in_obj)
+		static void Release(T* in_pObj)
 		{
-			in_obj->Release();
+			in_pObj->Release();
 		}
 	};
 
@@ -21,7 +21,7 @@ namespace hh::ut
 	class ScopedComPtr
 	{
 	public:
-		T* m_pObj{};
+		T* pObj{};
 
 		~ScopedComPtr()
 		{
@@ -30,31 +30,31 @@ namespace hh::ut
 
 		T* get() const
 		{
-			return m_pObj;
+			return pObj;
 		}
 
-		void resetaddref(T* in_obj)
+		void resetaddref(T* in_pObj)
 		{
-			if (m_pObj)
+			if (pObj)
 			{
-				TRefCountStrategy::Release(m_pObj);
+				TRefCountStrategy::Release(pObj);
 			}
 
-			m_pObj = in_obj;
-			if (m_pObj)
+			pObj = in_pObj;
+			if (pObj)
 			{
-				TRefCountStrategy::AddRef(m_pObj);
+				TRefCountStrategy::AddRef(pObj);
 			}
 		}
 
 		T** operator&()
 		{
-			return &m_pObj;
+			return &pObj;
 		}
 
 		T* operator->() const
 		{
-			return m_pObj;
+			return pObj;
 		}
 
 		operator T*() const

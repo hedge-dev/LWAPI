@@ -17,9 +17,9 @@ namespace hh::base
 			return __HH_ALLOCALIGN(in_size, in_alignment);
 		}
 
-		void operator delete(void* in_mem)
+		void operator delete(void* in_pMem)
 		{
-			__HH_FREE(in_mem);
+			__HH_FREE(in_pMem);
 		}
 	};
 }

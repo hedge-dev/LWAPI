@@ -5,7 +5,7 @@ namespace app::hid
 	class DeviceBase : public fnd::ReferencedObject
 	{
 	public:
-		virtual void Poll(float time)
+		virtual void Poll(float in_time)
 		{
 			
 		}
@@ -15,12 +15,12 @@ namespace app::hid
 			return 0;
 		}
 
-		virtual bool GetDeviceData(ResDeviceData* data, uint port)
+		virtual bool GetDeviceData(ResDeviceData* in_pData, uint in_port)
 		{
 			return false;
 		}
 
-		virtual bool SendDeviceData(uint a1, uint a2, const ResSendDeviceData* data)
+		virtual bool SendDeviceData(uint in_a1, uint in_a2, const ResSendDeviceData* in_pData)
 		{
 			return false;
 		}

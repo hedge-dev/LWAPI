@@ -8,31 +8,31 @@ namespace app::ut
 	protected:
 		T* m_pObj{};
 
-		void swap(T* pObj)
+		void swap(T* in_pObj)
 		{
-			if (m_pObj == pObj)
+			if (m_pObj == in_pObj)
 				return;
 
-			if (pObj)
-				pObj->AddRef();
+			if (in_pObj)
+				in_pObj->AddRef();
 			
 			if (m_pObj)
 				m_pObj->Release();
 
-			m_pObj = pObj;
+			m_pObj = in_pObj;
 		}
 
 	public:
 		RefPtr() = default;
 		
-		RefPtr(T* pObj)
+		RefPtr(T* in_pObj)
 		{
-			swap(pObj);
+			swap(in_pObj);
 		}
 
-		RefPtr(const RefPtr& rOther)
+		RefPtr(const RefPtr& in_rOther)
 		{
-			swap(rOther.get());
+			swap(in_rOther.get());
 		}
 		
 		~RefPtr()
@@ -40,18 +40,18 @@ namespace app::ut
 			swap(nullptr);
 		}
 		
-		RefPtr<T>& operator=(T* pObj)
+		RefPtr<T>& operator=(T* in_pObj)
 		{
-			swap(pObj);
+			swap(in_pObj);
 			return *this;
 		}
 
-		RefPtr<T>& operator=(const RefPtr& rOther)
+		RefPtr<T>& operator=(const RefPtr& in_rOther)
 		{
-			if (this == &rOther)
+			if (this == &in_rOther)
 				return *this;
 
-			swap(rOther.get());
+			swap(in_rOther.get());
 			return *this;
 		}
 
@@ -80,14 +80,14 @@ namespace app::ut
 			return m_pObj;
 		}
 
-		bool operator<(const RefPtr& other) const
+		bool operator<(const RefPtr& in_rOther) const
 		{
-			return m_pObj < other.m_pObj;
+			return m_pObj < in_rOther.m_pObj;
 		}
 
-		bool operator>(const RefPtr& other) const
+		bool operator>(const RefPtr& in_rOther) const
 		{
-			return m_pObj > other.m_pObj;
+			return m_pObj > in_rOther.m_pObj;
 		}
 	};
 

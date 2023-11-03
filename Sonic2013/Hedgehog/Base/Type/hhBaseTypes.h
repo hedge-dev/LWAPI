@@ -79,8 +79,8 @@ namespace app
 
 		struct Variant
 		{
-			void* m_pObject;
-			const RflClass* m_pClass;
+			void* pObject;
+			const RflClass* pClass;
 		};
 	}
 }

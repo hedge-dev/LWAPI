@@ -4,14 +4,14 @@ namespace hh::base
 {
 	struct SSymbolNode
 	{
-		SSymbolNode* m_pPrevNode{};
-		SSymbolNode* m_pNextNode{};
-		size_t m_Hash{};
-		char m_Buffer[0x10000]{};
+		SSymbolNode* pPrevNode{};
+		SSymbolNode* pNextNode{};
+		size_t Hash{};
+		char Buffer[0x10000]{};
 
 		[[nodiscard]] const char* c_str() const
 		{
-			return m_Buffer;
+			return Buffer;
 		}
 	};
 
@@ -25,21 +25,21 @@ namespace hh::base
 	class CStringSymbol
 	{
 	public:
-		SSymbolNode* m_pNode{};
+		SSymbolNode* pNode{};
 
-		CStringSymbol(const char* in_pStr) : m_pNode(MakeStringSymbol(in_pStr))
+		CStringSymbol(const char* in_pStr) : pNode(MakeStringSymbol(in_pStr))
 		{
 
 		}
 
-		CStringSymbol(const CSharedString& in_str) : m_pNode(MakeStringSymbol(in_str.c_str()))
+		CStringSymbol(const CSharedString& in_rStr) : pNode(MakeStringSymbol(in_rStr.c_str()))
 		{
 
 		}
 
 		[[nodiscard]] const char* c_str() const
 		{
-			return m_pNode->c_str();
+			return pNode->c_str();
 		}
 
 		[[nodiscard]] CSharedString DebugGetKey() const

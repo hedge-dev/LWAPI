@@ -5,27 +5,27 @@ namespace app::fnd
 	class CLeafActor : public CActor
 	{
 	public:
-		size_t ForEach(app::fnd::CActorTraverser& traverser) override
+		size_t ForEach(app::fnd::CActorTraverser& in_rTraverser) override
 		{
-			return traverser.Callback(*this);
+			return in_rTraverser.Callback(*this);
 		}
 
-		bool ActorProc(int id, void* data) override
+		bool ActorProc(int in_id, void* in_pData) override
 		{
-			if (id < 0)
+			if (in_id < 0)
 				return false;
 
-			if (id > 1)
+			if (in_id > 1)
 			{
-				if (id == 3)
-					Update(*static_cast<SUpdateInfo*>(data));
+				if (in_id == 3)
+					Update(*static_cast<SUpdateInfo*>(in_pData));
 
 				return true;
 			}
 
-			if (m_Enabled)
+			if (Enabled)
 			{
-				return ProcessMessage(*static_cast<Message*>(data));
+				return ProcessMessage(*static_cast<Message*>(in_pData));
 			}
 
 			return false;

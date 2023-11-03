@@ -38,35 +38,35 @@ namespace app::hid
 
     struct ResPadDeviceData
     {
-        ButtonStates m_HeldButtons;
-        ButtonStates m_PressedButtons;
-        ButtonStates m_ReleasedButtones;
-        csl::math::Vector2 m_LeftStick;
-        csl::math::Vector2 m_RightStick;
-        float m_LeftTrigger;
-        float m_RightTrigger;
+        ButtonStates HeldButtons;
+        ButtonStates PressedButtons;
+        ButtonStates ReleasedButtones;
+        csl::math::Vector2 LeftStick;
+        csl::math::Vector2 RightStick;
+        float LeftTrigger;
+        float RightTrigger;
         INSERT_PADDING(12);
 
-    	bool IsButtonHeld(ButtonStates buttons) const
+    	bool IsButtonHeld(ButtonStates in_buttons) const
     	{
-            return (m_HeldButtons & buttons) == buttons;
+            return (HeldButtons & in_buttons) == in_buttons;
     	}
 
-        bool IsButtonDown(ButtonStates buttons) const
+        bool IsButtonDown(ButtonStates in_buttons) const
         {
-            return (m_PressedButtons & buttons) == buttons;
+            return (PressedButtons & in_buttons) == in_buttons;
         }
 
-        bool IsButtonUp(ButtonStates buttons) const
+        bool IsButtonUp(ButtonStates in_buttons) const
         {
-            return (m_ReleasedButtones & buttons) == buttons;
+            return (ReleasedButtones & in_buttons) == in_buttons;
         }
 
-    	float ButtonToAxis(ButtonStates high, ButtonStates low) const
+    	float ButtonToAxis(ButtonStates in_high, ButtonStates in_low) const
     	{
-            if (IsButtonHeld(high))
+            if (IsButtonHeld(in_high))
                 return 1;
-            else if (IsButtonHeld(low))
+            else if (IsButtonHeld(in_low))
                 return -1;
             
             return 0;
@@ -85,11 +85,11 @@ namespace app::hid
 
     struct ResTouchDeviceData
     {
-        TouchStates m_HeldStates{};
-        TouchStates m_PressedStates{};
-        TouchStates m_ReleasedStates{};
-        csl::math::Vector2 m_Position{};
-        bool m_IsBackground{};
+        TouchStates HeldStates{};
+        TouchStates PressedStates{};
+        TouchStates ReleasedStates{};
+        csl::math::Vector2 Position{};
+        bool IsBackground{};
     };
 
     struct ResMotorDeviceData
@@ -101,16 +101,16 @@ namespace app::hid
 	{
 		struct Repeat
 		{
-            float m_Time;
-            float m_Unk1;
-            float m_Unk2;
+            float Time;
+            float Unk1;
+            float Unk2;
 		};
 		
-        ResPadDeviceData m_PadData;
-		ResGyroDeviceData m_GyroData;
-		ResAccDeviceData m_AccData;
-		ResTouchDeviceData m_TouchData;
-		ResMotorDeviceData m_MotorData;
-		Repeat m_RepeatData;
+        ResPadDeviceData PadData;
+		ResGyroDeviceData GyroData;
+		ResAccDeviceData AccData;
+		ResTouchDeviceData TouchData;
+		ResMotorDeviceData MotorData;
+		Repeat RepeatData;
 	};
 }

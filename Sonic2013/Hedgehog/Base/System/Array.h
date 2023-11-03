@@ -19,9 +19,9 @@ namespace app
 		}
 
 	protected:
-		void releaseMemory(void* mem)
+		void releaseMemory(void* in_pMem)
 		{
-			if (mem != nullptr)
+			if (in_pMem != nullptr)
 			{
 				TAllocator memAlloc{};
 				memAlloc.deallocate(m_pBuffer, m_Length);
@@ -34,17 +34,17 @@ namespace app
 				releaseMemory(m_pBuffer);
 		}
 
-		T* allocateMemory(size_t num)
+		T* allocateMemory(size_t in_num)
 		{
 			TAllocator memAlloc{};
-			return memAlloc.allocate(num);
+			return memAlloc.allocate(in_num);
 		}
 
-		void copy(T* pDest, const T* pSrc, size_t count)
+		void copy(T* in_pDest, const T* in_pSrc, size_t in_count)
 		{
-			for (size_t i = 0; i < count; i++)
+			for (size_t i = 0; i < in_count; i++)
 			{
-				pDest[i] = pSrc[i];
+				in_pDest[i] = in_pSrc[i];
 			}
 		}
 		
@@ -67,28 +67,28 @@ namespace app
 			return m_Capacity & ~csl::ut::SIGN_BIT;
 		}
 
-		const T& operator[](size_t i) const
+		const T& operator[](size_t in_index) const
 		{
-			return *get(i);
+			return *get(in_index);
 		}
 		
-		T& operator[](size_t i)
+		T& operator[](size_t in_index)
 		{
-			return *get(i);
+			return *get(in_index);
 		}
 		
-		void reserve(size_t cap)
+		void reserve(size_t in_cap)
 		{
-			if (cap < capacity())
+			if (in_cap < capacity())
 				return;
 
-			T* pMem = allocateMemory(cap);
+			T* pMem = allocateMemory(in_cap);
 			copy(pMem, m_pBuffer, m_Length);
 			releaseMemory();
 			m_pBuffer = pMem;
 		}
 
-		void push_back(const T& item)
+		void push_back(const T& in_rItem)
 		{
 			if (size() == capacity())
 			{
@@ -99,7 +99,7 @@ namespace app
 				reserve(len);
 			}
 
-			m_pBuffer[m_Length++] = item;
+			m_pBuffer[m_Length++] = in_rItem;
 		}
 	};
 }
