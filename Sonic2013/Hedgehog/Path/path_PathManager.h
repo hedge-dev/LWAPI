@@ -5,8 +5,8 @@ namespace app::game
 	class PathManager : public fnd::GameService
 	{
 	private:
-		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FD9C54));
 		inline static FUNCTION_PTR(PathComponent*, __thiscall, ms_fpGetPathObject, ASLR(0x004D9A30), const PathManager*, uint);
+		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FD9C54));
 
 	public:
 		csl::ut::PointerMap<size_t, PathComponent*> Components{ GetAllocator() };
