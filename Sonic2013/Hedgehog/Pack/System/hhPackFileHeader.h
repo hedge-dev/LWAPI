@@ -10,17 +10,18 @@ namespace hh::ut
 	
 	struct PackFileHeaderDataTag
 	{
-		size_t m_Signature{};
-		char m_Version[3]{};
-		EEndianType m_Endian{};
-		size_t m_Size{};
-		ushort m_BlockCount{};
-		char m_Status{};
-		char m_RemainingDepends{};
-
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpConvertEndian, ASLR(0x00C1A620), PackFileHeaderDataTag**);
-		
+
+	public:
+		size_t Signature{};
+		char Version[3]{};
+		EEndianType Endian{};
+		size_t Size{};
+		ushort BlockCount{};
+		char Status{};
+		char RemainingDepends{};
+
 	public:
 		void ConvertEndian()
 		{
