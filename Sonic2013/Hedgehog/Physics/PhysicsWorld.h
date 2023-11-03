@@ -4,12 +4,13 @@ namespace app
 {
 	class CPhysicsWorld : public fnd::GameService
 	{
-	public:
+	private:
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FD4040));
 
-		ut::RefPtr<game::PhysicsWorldImplBase> m_rpImpl{};
+	public:
+		ut::RefPtr<game::PhysicsWorldImplBase> rpImpl{};
 		INSERT_PADDING(4){}; // RefPtr<HandleManager<ColliShape>>
-		ut::RefPtr<game::PhysicsDebugDraw> m_rpDebugDraw{};
+		ut::RefPtr<game::PhysicsDebugDraw> rpDebugDraw{};
 
 		CPhysicsWorld() : GameService(0)
 		{
@@ -18,57 +19,57 @@ namespace app
 
 		void Collide(uint in_a1) const
 		{
-			m_rpImpl->Collide(in_a1);
+			rpImpl->Collide(in_a1);
 		}
 
 		void SetGroupFilter(int in_a1, int in_a2, bool in_a3) const
 		{
-			m_rpImpl->SetGroupFilter(in_a1, in_a2, in_a3);
+			rpImpl->SetGroupFilter(in_a1, in_a2, in_a3);
 		}
 
 		void AddRaycastJob(game::PhysicsRaycastJob* in_pJob) const
 		{
-			m_rpImpl->AddRaycastJob(in_pJob);
+			rpImpl->AddRaycastJob(in_pJob);
 		}
 
-		bool RaycastAll(const csl::math::Vector3& in_from, const csl::math::Vector3& in_to, uint in_filter, csl::ut::MoveArray<game::PhysicsRaycastOutput>* out_pOutputs) const
+		bool RaycastAll(const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, uint in_filter, csl::ut::MoveArray<game::PhysicsRaycastOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->RaycastAll(in_from, in_to, in_filter, out_pOutputs);
+			return rpImpl->RaycastAll(in_rFrom, in_rTo, in_filter, out_pOutputs);
 		}
 
-		bool Raycast(const csl::math::Vector3& in_from, const csl::math::Vector3& in_to, uint in_filter, game::PhysicsRaycastOutput* out_pOutput) const
+		bool Raycast(const csl::math::Vector3& in_rFrom, const csl::math::Vector3& in_rTo, uint in_filter, game::PhysicsRaycastOutput* out_pOutput) const
 		{
-			return m_rpImpl->Raycast(in_from, in_to, in_filter, out_pOutput);
+			return rpImpl->Raycast(in_rFrom, in_rTo, in_filter, out_pOutput);
 		}
 
-		bool OverlapSphere(const csl::math::Sphere& in_sphere, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
+		bool OverlapSphere(const csl::math::Sphere& in_rSphere, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->OverlapSphere(in_sphere, in_filter, out_pOutputs);
+			return rpImpl->OverlapSphere(in_rSphere, in_filter, out_pOutputs);
 		}
 
-		bool OverlapCapsule(const csl::math::Capsule& in_capsule, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
+		bool OverlapCapsule(const csl::math::Capsule& in_rCapsule, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->OverlapCapsule(in_capsule, in_filter, out_pOutputs);
+			return rpImpl->OverlapCapsule(in_rCapsule, in_filter, out_pOutputs);
 		}
 
-		bool OverlapAabb(const csl::math::Aabb& in_aabb, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
+		bool OverlapAabb(const csl::math::Aabb& in_rBounds, uint in_filter, csl::ut::MoveArray<game::PhysicsOverlapOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->OverlapAabb(in_aabb, in_filter, out_pOutputs);
+			return rpImpl->OverlapAabb(in_rBounds, in_filter, out_pOutputs);
 		}
 
-		bool CheckSphere(const csl::math::Sphere& in_sphere, uint in_filter) const
+		bool CheckSphere(const csl::math::Sphere& in_rSphere, uint in_filter) const
 		{
-			return m_rpImpl->CheckSphere(in_sphere, in_filter);
+			return rpImpl->CheckSphere(in_rSphere, in_filter);
 		}
 
-		bool SweepSphere(const csl::math::Sphere& in_sphere, const csl::math::Vector3& in_bounds, uint in_filter, csl::ut::MoveArray<game::PhysicsSweepOutput>* out_pOutputs) const
+		bool SweepSphere(const csl::math::Sphere& in_rSphere, const csl::math::Vector3& in_rBounds, uint in_filter, csl::ut::MoveArray<game::PhysicsSweepOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->SweepSphere(in_sphere, in_bounds, in_filter, out_pOutputs);
+			return rpImpl->SweepSphere(in_rSphere, in_rBounds, in_filter, out_pOutputs);
 		}
 
-		bool SweepCapsule(const csl::math::Capsule& in_capsule, const csl::math::Vector3& in_bounds, uint in_filter, csl::ut::MoveArray<game::PhysicsSweepOutput>* out_pOutputs) const
+		bool SweepCapsule(const csl::math::Capsule& in_rCapsule, const csl::math::Vector3& in_rBounds, uint in_filter, csl::ut::MoveArray<game::PhysicsSweepOutput>* out_pOutputs) const
 		{
-			return m_rpImpl->SweepCapsule(in_capsule, in_bounds, in_filter, out_pOutputs);
+			return rpImpl->SweepCapsule(in_rCapsule, in_rBounds, in_filter, out_pOutputs);
 		}
 
 		static fnd::GameServiceClass& staticClass()

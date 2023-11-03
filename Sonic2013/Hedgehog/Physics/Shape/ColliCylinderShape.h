@@ -5,17 +5,17 @@ namespace app::game
 	class ColliCylinderShapeBase : public ColliShape
 	{
 	public:
-		float m_Radius{};
-		float m_Height{};
+		float Radius{};
+		float Height{};
 	};
 
 	class ColliCylinderShapeCInfo : public ColliShapeCInfo
 	{
 	public:
-		float m_Radius{};
-		float m_Height{};
+		float Radius{};
+		float Height{};
 
-		ColliCylinderShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::ShapeType_Cylinder)
+		ColliCylinderShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::eShapeType_Cylinder)
 		{
 
 		}

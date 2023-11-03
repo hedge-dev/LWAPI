@@ -4,10 +4,14 @@ namespace app::game
 {
 	class GOCPhysics : public fnd::GOComponent
 	{
+	private:
+		inline static FUNCTION_PTR(ColliShape*, __thiscall, ms_fpCreateShape, ASLR(0x004CB710), GOCPhysics* pThis, const ColliShapeCInfo& rInfo);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD78B4));
+		
 	public:
 		struct Description
 		{
-			size_t m_ShapeCount;
+			size_t ShapeCount;
 		};
 
 	protected:
@@ -15,25 +19,21 @@ namespace app::game
 		fnd::HFrame* m_pFrame{};
 		CPhysicsWorld* m_pPhysicsWorld{};
 
-	public:
-		inline static FUNCTION_PTR(ColliShape*, __thiscall, ms_fpCreateShape, ASLR(0x004CB710), GOCPhysics* pThis, const ColliShapeCInfo& rInfo);
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD78B4));
-
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_rDesc)
 		{
 			m_Shapes.change_allocator(GetAllocator());
 			m_Shapes.clear();
-			m_Shapes.reserve(rDesc.m_ShapeCount);
+			m_Shapes.reserve(in_rDesc.ShapeCount);
 		}
 
-		ColliShape* CreateShape(const ColliShapeCInfo& rInfo)
+		ColliShape* CreateShape(const ColliShapeCInfo& in_rInfo)
 		{
-			return ms_fpCreateShape(this, rInfo);
+			return ms_fpCreateShape(this, in_rInfo);
 		}
 
 		ColliShape* GetShape() const
@@ -41,22 +41,22 @@ namespace app::game
 			return m_Shapes.front();
 		}
 
-		ColliShape* FindColliShape(size_t id) const
+		ColliShape* FindColliShape(size_t in_id) const
 		{
 			for (auto& shape : m_Shapes)
 			{
-				if (shape->GetID() == id)
+				if (shape->GetID() == in_id)
 					return shape;
 			}
 
 			return nullptr;
 		}
 
-		void SetEnable(bool enable)
+		void SetEnable(bool in_enable)
 		{
 			for (auto& shape : m_Shapes)
 			{
-				shape->SetEnable(enable);
+				shape->SetEnable(in_enable);
 			}
 		}
 	};

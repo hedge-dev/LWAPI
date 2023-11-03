@@ -7,13 +7,13 @@ namespace app::game
 	public:
 		enum class ShapeType : char
 		{
-			ShapeType_Sphere,
-			ShapeType_Box,
-			ShapeType_Capsule,
-			ShapeType_Cylinder,
-			ShapeType_Mesh,
-			ShapeType_RigidBody,
-			ShapeType_MAX
+			eShapeType_Sphere,
+			eShapeType_Box,
+			eShapeType_Capsule,
+			eShapeType_Cylinder,
+			eShapeType_Mesh,
+			eShapeType_RigidBody,
+			eShapeType_Max
 		};
 	};
 }

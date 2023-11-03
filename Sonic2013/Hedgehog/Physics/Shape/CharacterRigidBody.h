@@ -9,9 +9,9 @@ namespace app::game
 		csl::math::Vector3 LinearVelocity{};
 		csl::math::Quaternion Rotation{};
 
-		void SetLinearVelocity(const csl::math::Vector3 in_rLinearVelocity)
+		void SetLinearVelocity(const csl::math::Vector3 in_linearVelocity)
 		{
-			LinearVelocity = in_rLinearVelocity;
+			LinearVelocity = in_linearVelocity;
 		}
 	};
 

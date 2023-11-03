@@ -7,10 +7,10 @@ namespace app::game
 	public:
 		enum class MotionType : char
 		{
-			MotionType_VALUE0,
-			MotionType_VALUE1,
-			MotionType_VALUE2,
-			MotionType_MAX
+			eMotionType_Value0,
+			eMotionType_Value1,
+			eMotionType_Value2,
+			eMotionType_Max
 		};
 	};
 }

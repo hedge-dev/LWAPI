@@ -12,18 +12,18 @@ namespace app::game
 		INSERT_PADDING(4); // hkRefPtr<hkpWorld>
 
 	public:
-		void Init(Collision::CCollisionWorld& in_world) override {}
+		void Init(Collision::CCollisionWorld& in_rWorld) override {}
 		void Destroy() override {}
 		void Update(float in_delta) override {}
 
-		bool OverlapFrustum(const csl::math::Frustum& in_frustum, uint in_filter, MoveArray<ColliOverlapOutput>* out_pOutputs) const override
+		bool OverlapFrustum(const csl::math::Frustum& in_rFrustum, uint in_filter, MoveArray<ColliOverlapOutput>* out_pOutputs) const override
 		{
-			return ms_fpOverlapFrustum(this, in_frustum, in_filter, out_pOutputs);
+			return ms_fpOverlapFrustum(this, in_rFrustum, in_filter, out_pOutputs);
 		}
 
-		bool OverlapSphere(const Sphere& in_sphere, uint in_filter, MoveArray<ColliOverlapOutput>* out_pOutputs) const override
+		bool OverlapSphere(const Sphere& in_rSphere, uint in_filter, MoveArray<ColliOverlapOutput>* out_pOutputs) const override
 		{
-			return ms_fpOverlapSphere(this, in_sphere, in_filter, out_pOutputs);
+			return ms_fpOverlapSphere(this, in_rSphere, in_filter, out_pOutputs);
 		}
 
 		void AttachToPhysicsWorld(Collision::CCollisionWorld& in_rCollisionWorld)

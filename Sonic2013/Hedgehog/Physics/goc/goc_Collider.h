@@ -6,77 +6,77 @@ namespace app::game
 
 	class GOCCollider : public fnd::GOComponent
 	{
-	public:
-		struct Description
-		{
-			size_t m_ShapeCount;
-		};
-		
-		// app::game::ColliShape
-		csl::ut::MoveArray<ColliShape*> m_Shapes{ GetAllocator() };
-		csl::ut::MoveArray<GOCColliderListener*> m_Listeners{ GetAllocator() };
-		fnd::HFrame* m_pFrame{};
-		CPhysicsWorld* m_pPhysicsWorld{};
-
-	public:
+	private:
 		inline static FUNCTION_PTR(ColliShape*, __thiscall, ms_fpCreateShape, ASLR(0x004B6C50), GOCCollider* pThis, const ColliShapeCInfo& rInfo);
 		inline static FUNCTION_PTR(CharacterRigidBody*, __thiscall, ms_fpCreateCharacterRigidBody, ASLR(0x004B6490), GOCCollider* pThis, const CharacterRigidBodyCinfo& rInfo);
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD75A4));
+
+	public:
+		struct Description
+		{
+			size_t ShapeCount;
+		};
+		
+		// app::game::ColliShape
+		csl::ut::MoveArray<ColliShape*> Shapes{ GetAllocator() };
+		csl::ut::MoveArray<GOCColliderListener*> Listeners{ GetAllocator() };
+		fnd::HFrame* pFrame{};
+		CPhysicsWorld* pPhysicsWorld{};
 
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 
-		void Setup(const Description& rDesc)
+		void Setup(const Description& in_rDesc)
 		{
-			m_Shapes.change_allocator(GetAllocator());
-			m_Shapes.clear();
-			m_Shapes.reserve(rDesc.m_ShapeCount);
+			Shapes.change_allocator(GetAllocator());
+			Shapes.clear();
+			Shapes.reserve(in_rDesc.ShapeCount);
 		}
 
-		ColliShape* CreateShape(const ColliShapeCInfo& rInfo)
+		ColliShape* CreateShape(const ColliShapeCInfo& in_rInfo)
 		{
-			return ms_fpCreateShape(this, rInfo);
+			return ms_fpCreateShape(this, in_rInfo);
 		}
 
-		CharacterRigidBody* CreateCharacterRigidBody(const CharacterRigidBodyCinfo& rInfo)
+		CharacterRigidBody* CreateCharacterRigidBody(const CharacterRigidBodyCinfo& in_rInfo)
 		{
-			return ms_fpCreateCharacterRigidBody(this, rInfo);
+			return ms_fpCreateCharacterRigidBody(this, in_rInfo);
 		}
 
 		ColliShape* GetShape() const
 		{
-			return m_Shapes.front();
+			return Shapes.front();
 		}
 
-		ColliShape* GetShapeById(size_t id) const
+		ColliShape* GetShapeById(size_t in_id) const
 		{
-			if (m_Shapes.empty())
+			if (Shapes.empty())
 				return { nullptr };
 			
-			if (auto* pShape = FindColliShape(id))
+			if (auto* pShape = FindColliShape(in_id))
 				return pShape;
 		
 			return { nullptr };
 		}
 
-		ColliShape* FindColliShape(size_t id) const
+		ColliShape* FindColliShape(size_t in_id) const
 		{
-			for (auto& shape : m_Shapes)
+			for (auto& shape : Shapes)
 			{
-				if (shape->GetID() == id)
+				if (shape->GetID() == in_id)
 					return shape;
 			}
 
 			return nullptr;
 		}
 
-		void SetEnable(bool enable)
+		void SetEnable(bool in_enable)
 		{
-			for (auto& shape : m_Shapes)
+			for (auto& shape : Shapes)
 			{
-				shape->SetEnable(enable);
+				shape->SetEnable(in_enable);
 			}
 		}
 	};
@@ -85,8 +85,8 @@ namespace app::game
 	{
 	public:
 		virtual ~GOCColliderListener() = default;
-		virtual void OnEnter(void* rHitEventCollision) {}
-		virtual void OnStay(void* rStayTrigger) {}
-		virtual void OnLeave(void* rLeaveEventCollision) {}
+		virtual void OnEnter(void* in_pHitEventCollision) {}
+		virtual void OnStay(void* in_pStayTrigger) {}
+		virtual void OnLeave(void* in_pLeaveEventCollision) {}
 	};
 }

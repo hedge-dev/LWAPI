@@ -7,16 +7,17 @@ namespace app::game
 	public:
 		GOCBoxColliderCinfo() : ColliBoxShapeCInfo()
 		{
-			m_MotionType = PhysicsMotionType::MotionType::MotionType_VALUE2;
+			m_MotionType = PhysicsMotionType::MotionType::eMotionType_Value2;
 			m_ShapeID = 0;
 		}
 	};
 
 	class GOCBoxCollider : public GOCColliderSimple
 	{
-	public:
+	private:
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD75C0));
 
+	public:
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;

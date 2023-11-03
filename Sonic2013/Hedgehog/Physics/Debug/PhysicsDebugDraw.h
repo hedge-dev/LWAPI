@@ -5,8 +5,8 @@ namespace app::game
 	class PhysicsDebugDraw : public fnd::ReferencedObject
 	{
 	public:
-		csl::ut::Bitset<uint> m_Flags{};
-		csl::ut::MoveArray<ColliShape*> m_Shapes{ GetAllocator() };
-		csl::ut::PointerMap<ColliShape*, uint> m_ShapeMap{ GetAllocator() };
+		csl::ut::Bitset<uint> Flags{};
+		csl::ut::MoveArray<ColliShape*> Shapes{ GetAllocator() };
+		csl::ut::PointerMap<ColliShape*, uint> ShapeMap{ GetAllocator() };
 	};
 }

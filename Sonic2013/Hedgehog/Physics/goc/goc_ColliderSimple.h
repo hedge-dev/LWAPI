@@ -7,7 +7,7 @@ namespace app::game
 	public:
 		GOCColliderSimple() : GOCCollider()
 		{
-			unk1 |= 1;
+			Unk1 |= 1;
 		}
 
 		ColliShape* CreateShape(const ColliShapeCInfo& in_rCreateInfo)

@@ -26,10 +26,10 @@ namespace app::game
 	class ColliSphereShapeCInfo : public ColliShapeCInfo
 	{
 	public:
-		float m_Radius{};
-		char m_Unk9{};
+		float Radius{};
+		char Unk9{};
 
-		ColliSphereShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::ShapeType_Sphere)
+		ColliSphereShapeCInfo() : ColliShapeCInfo(CollisionShapeType::ShapeType::eShapeType_Sphere)
 		{
 
 		}

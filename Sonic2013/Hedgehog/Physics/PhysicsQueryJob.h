@@ -7,11 +7,11 @@ namespace app::game
 	public:
 		enum Type : char
 		{
-			Type_Raycast
+			eType_Raycast
 		};
 
-		csl::ut::Enum<Type, char> m_Type{};
+		csl::ut::Enum<Type, char> Type{};
 
-		PhysicsQueryJob(Type in_type) : m_Type(in_type) {}
+		PhysicsQueryJob(Type in_type) : Type(in_type) {}
 	};
 }

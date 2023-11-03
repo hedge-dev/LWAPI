@@ -4,10 +4,10 @@ namespace app::game
 {
 	inline GameObject* ColliShapeBase::GetGameObject() const
 	{
-		if (m_pOwner)
-			return m_pOwner->GetGameObject();
+		if (pOwner)
+			return pOwner->GetGameObject();
 
-		return m_pPhysicsOwner->GetGameObject();
+		return pPhysicsOwner->GetGameObject();
 	}
 
 }
