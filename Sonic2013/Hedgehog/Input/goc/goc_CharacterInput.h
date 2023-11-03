@@ -36,6 +36,9 @@ namespace app::game
 
 	class GOCCharacterInput : public fnd::GOComponent 
 	{
+	private:
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7588));
+
 	public:
 		int Unk1{ -1 };
 		int Unk2{};
@@ -77,8 +80,6 @@ namespace app::game
 		float Unk34{};
 		float Unk35{};
 		float Unk36{};
-
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7588));
 
 		static fnd::GOComponentClass* staticClass()
 		{
