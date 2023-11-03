@@ -4,22 +4,22 @@ namespace SurfRide
 {
 	struct SRS_REFERENCECAST
 	{
-		SRS_LAYER* m_pLayer{};
-		int m_Unk1{};
-		int m_AnimationID{};
-		int m_AnimationFrame{};
-		int m_Unk2{};
+		SRS_LAYER* pLayer{};
+		int Unk1{};
+		int AnimationID{};
+		int AnimationFrame{};
+		int Unk2{};
 	};
 
 	class ReferenceCast
 	{
 	public:
-		SRS_REFERENCECAST* m_pBinaryNode{};
-		Layer* m_rcLayer {}; // SurfRide::ReferenceCount<Layer>
-		int m_AnimationID{};
-		float m_AnimationFrame{};
-		int m_Unk1{};
-		int m_Unk2{};
+		SRS_REFERENCECAST* pBinaryNode{};
+		Layer* rcLayer {}; // SurfRide::ReferenceCount<Layer>
+		int AnimationID{};
+		float AnimationFrame{};
+		int Unk1{};
+		int Unk2{};
 
 		virtual ~ReferenceCast() = 0;
 	};

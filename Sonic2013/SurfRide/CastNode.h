@@ -25,13 +25,13 @@ namespace SurfRide
 
 	struct SRS_CASTNODE
 	{
-		const char* m_pName{};
-		int m_ID{};
-		int m_Flags{};
-		void* m_pData{};
-		short m_ChildIndex{};
-		short m_SiblingIndex{};
-		void* m_pUserData{};
+		const char* pName{};
+		int ID{};
+		int Flags{};
+		void* pData{};
+		short ChildIndex{};
+		short SiblingIndex{};
+		void* pUserData{};
 	};
 
 	class Transform : public Base
