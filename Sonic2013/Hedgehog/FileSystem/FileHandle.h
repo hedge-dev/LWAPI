@@ -22,33 +22,33 @@ namespace app::fnd
 		friend FileBinder;
 
 	public:
-		void* m_pBuffer{};
-		size_t m_BufferSize{};
-		size_t m_Size{};
-		EFileStatus m_Status{};
-		csl::ut::FixedString<64> m_Path{};
-		csl::ut::FixedString<48> m_Name{};
-		FileBinder* m_pBinder{};
-		void* m_pTag{};
-		csl::fnd::IAllocator* m_pBufferAllocator{};
-		size_t m_BufferFlags{};
+		void* pBuffer{};
+		size_t BufferSize{};
+		size_t Size{};
+		EFileStatus Status{};
+		csl::ut::FixedString<64> Path{};
+		csl::ut::FixedString<48> Name{};
+		FileBinder* pBinder{};
+		void* pTag{};
+		csl::fnd::IAllocator* pBufferAllocator{};
+		size_t BufferFlags{};
 
 		void Destroy()
 		{
 			if (!IsValid())
 				return;
 
-			if (!(m_BufferFlags & 1) && m_pBufferAllocator)
-				m_pBufferAllocator->Free(m_pBuffer);
+			if (!(BufferFlags & 1) && pBufferAllocator)
+				pBufferAllocator->Free(pBuffer);
 
-			m_pBuffer == nullptr;
-			m_pBinder = nullptr;
-			m_pTag = nullptr;
-			m_BufferSize = 0;
-			m_Size = 0;
-			m_Status = eFileStatus_None;
-			m_Path[0] = 0;
-			m_Name[0] = 0;
+			pBuffer == nullptr;
+			pBinder = nullptr;
+			pTag = nullptr;
+			BufferSize = 0;
+			Size = 0;
+			Status = eFileStatus_None;
+			Path[0] = 0;
+			Name[0] = 0;
 		}
 	
 	public:
@@ -65,15 +65,15 @@ namespace app::fnd
 	public:
 		bool IsValid() const
 		{
-			return m_Status != 0;
+			return Status != 0;
 		}
 	};
 
 	namespace file
 	{
-		inline static FileHandleObj* CreateHandle(csl::fnd::IAllocator* pAlloc)
+		inline static FileHandleObj* CreateHandle(csl::fnd::IAllocator* in_pAlloc)
 		{
-			return new(pAlloc) FileHandleObj();
+			return new(in_pAlloc) FileHandleObj();
 		}
 	}
 }

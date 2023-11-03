@@ -7,9 +7,9 @@ namespace app::fnd
 	class FileSystem : public ReferencedObject, public csl::fnd::SingletonPointer<FileSystem>
 	{
 	public:
-		csl::ut::FixedString<256> m_RootDir{};
-		FileCache* m_pCache{};
-		csl::ut::Bitset<size_t> m_LoadFlags{ 3 };
+		csl::ut::FixedString<256> RootDir{};
+		FileCache* pCache{};
+		csl::ut::Bitset<size_t> LoadFlags{ 3 };
 	
 		virtual void Update() {};
 		virtual FileBinder* GetDefaultBinder()
@@ -19,19 +19,19 @@ namespace app::fnd
 
 		FileCache* GetCache() const
 		{
-			return m_pCache;
+			return pCache;
 		}
 
-		static const char* GetFileName(const char* pName)
+		static const char* GetFileName(const char* in_pName)
 		{
-			const char* pEnd = strchr(pName, 0);
-			if (pEnd < pName)
-				return pName;
+			const char* pEnd = strchr(in_pName, 0);
+			if (pEnd < in_pName)
+				return in_pName;
 
 			while (*pEnd != '\\' && *pEnd != '/')
 			{
-				if (--pEnd < pName)
-					return pName;
+				if (--pEnd < in_pName)
+					return in_pName;
 			}
 
 			return pEnd + 1;

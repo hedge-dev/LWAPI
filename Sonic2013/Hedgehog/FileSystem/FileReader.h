@@ -6,23 +6,23 @@ namespace app::fnd
 	{
 	public:
 		virtual void Update() {}
-		virtual csl::fnd::com_ptr<FileHandleObj> GetFileHandle(const char* pPath) { return nullptr; }
-		virtual bool IsFileExist(const char* pName, FileBinder* pBinder) { return false; }
-		virtual size_t GetFileSize(const char* pName, FileBinder* pBinder) { return 0; }
-		virtual csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pPath, const char* pName, 
-			csl::fnd::IAllocator* pBufAloc, void* pBuf, size_t bufSize, FileBinder* pBinder) { return nullptr; }
-		virtual void StopFile(csl::fnd::com_ptr<FileHandleObj> pHandle) {}
+		virtual csl::fnd::com_ptr<FileHandleObj> GetFileHandle(const char* in_pPath) { return nullptr; }
+		virtual bool IsFileExist(const char* in_pName, FileBinder* in_pBinder) { return false; }
+		virtual size_t GetFileSize(const char* in_pName, FileBinder* in_pBinder) { return 0; }
+		virtual csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* in_pPath, const char* in_pName, 
+			csl::fnd::IAllocator* in_pBufAloc, void* in_pBuf, size_t in_bufSize, FileBinder* in_pBinder) { return nullptr; }
+		virtual void StopFile(csl::fnd::com_ptr<FileHandleObj> in_pHandle) {}
 		virtual void StopFileAll() {}
-		virtual bool UnloadFile(csl::fnd::com_ptr<FileHandleObj> pHandle) { return false; }
-		virtual bool IsSyncComplete(csl::fnd::com_ptr<FileHandleObj> pHandle) { return true; }
+		virtual bool UnloadFile(csl::fnd::com_ptr<FileHandleObj> in_pHandle) { return false; }
+		virtual bool IsSyncComplete(csl::fnd::com_ptr<FileHandleObj> in_pHandle) { return true; }
 		virtual bool IsSyncCompleteAll() { return true; }
-		virtual void WaitSync(csl::fnd::com_ptr<FileHandleObj> pHandle) {}
+		virtual void WaitSync(csl::fnd::com_ptr<FileHandleObj> in_pHandle) {}
 		virtual void WaitSyncAll() {}
-		virtual bool DbgGet(csl::ut::MoveArray<app::dbg::FileInfo::Data>& rData, bool a2) { return false; }
-		virtual csl::fnd::com_ptr<FileHandleObj> CreateHandle(const char* pPath, const char* pName,
-			csl::fnd::IAllocator* pBufAloc, void* pBuf, size_t bufSize, FileBinder* pBinder) { return nullptr; }
-		virtual void AddRequest(const csl::fnd::com_ptr<FileHandleObj>& rpHandle, void* pBuf, size_t bufSize) {}
-		virtual void AddRequest(const csl::fnd::com_ptr<FileHandleObj>& rpHandle) {}
+		virtual bool DbgGet(csl::ut::MoveArray<app::dbg::FileInfo::Data>& in_rData, bool in_a2) { return false; }
+		virtual csl::fnd::com_ptr<FileHandleObj> CreateHandle(const char* in_pPath, const char* in_pName,
+			csl::fnd::IAllocator* in_pBufAloc, void* in_pBuf, size_t in_bufSize, FileBinder* in_pBinder) { return nullptr; }
+		virtual void AddRequest(const csl::fnd::com_ptr<FileHandleObj>& in_pHandle, void* in_pBuf, size_t in_bufSize) {}
+		virtual void AddRequest(const csl::fnd::com_ptr<FileHandleObj>& in_pHandle) {}
 	};
 }
 
