@@ -4,6 +4,7 @@ namespace hh::eff
 {
 	class CEffectInstance // : public CInstance
 	{
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStop, ASLR(0x0047EEA0), CEffectInstance*, bool);
 		
 		INSERT_PADDING(752);
@@ -17,16 +18,15 @@ namespace hh::eff
 
 	struct EffectHandleTableEntry
 	{
-	public:
-		CEffectInstance* m_pHandle{};
-		size_t m_Effect{};
+		CEffectInstance* pHandle{};
+		size_t Effect{};
 	};
 
 	template <class T = CEffectInstance>
 	class CInstanceHandle
 	{
 	public:
-		EffectHandleTableEntry* m_pEntry{};
-		size_t m_EffectHandle{};
+		EffectHandleTableEntry* pEntry{};
+		size_t EffectHandle{};
 	};
 }

@@ -22,10 +22,10 @@ namespace app::Effect
 
 		bool IsValid() const
 		{
-			if (!InstanceHandle.m_pEntry)
+			if (!InstanceHandle.pEntry)
 				return false;
 
-			return InstanceHandle.m_pEntry->m_pHandle && (InstanceHandle.m_EffectHandle == InstanceHandle.m_pEntry->m_Effect);
+			return InstanceHandle.pEntry->pHandle && (InstanceHandle.EffectHandle == InstanceHandle.pEntry->Effect);
 		}
 
 		T* GetInstance() const
@@ -33,7 +33,7 @@ namespace app::Effect
 			if (!IsValid())
 				return { nullptr };
 
-			return static_cast<T*>(InstanceHandle.m_pEntry->m_pHandle);
+			return static_cast<T*>(InstanceHandle.pEntry->pHandle);
 		}
 
 		void Stop(bool in_unk)
@@ -58,7 +58,6 @@ namespace app::Effect
 		INSERT_PADDING(52);
 		csl::ut::MoveArray<const char*> EffectMaterials{};
 
-	public:
 		void SetupColorScaleMaterialList(const char** in_ppMaterialList, int in_count)
 		{
 			EffectMaterials.reserve(in_count);
@@ -81,6 +80,11 @@ namespace app::Effect
 
 	class CEffectManager : public fnd::GameService
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffect, ASLR(0x0047F5A0), CEffectManager*, CEffectHandle<hh::eff::CEffectInstance>*, const char*, const csl::math::Matrix34&, int);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetStageName, ASLR(0x00480F20), CEffectManager*, const csl::ut::FixedString<16>&);
+		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FD40CC));
+
 	public:
 		class Impl
 		{
@@ -97,11 +101,6 @@ namespace app::Effect
 			int Unk1{};
 			INSERT_PADDING(8) {};
 		};
-
-	private:
-		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FD40CC));
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffect, ASLR(0x0047F5A0), CEffectManager*, CEffectHandle<hh::eff::CEffectInstance>*, const char*, const csl::math::Matrix34&, int);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetStageName, ASLR(0x00480F20), CEffectManager*, const csl::ut::FixedString<16>&);
 		
 	public:
 		Impl* pImpl{};
@@ -136,19 +135,19 @@ namespace app::game
 
 	struct EffectCreateInfo
 	{
-		const char* m_pName{};
-		float m_Unk1{};
-		int m_Unk2{};
-		csl::math::Vector3 m_Position{};
-		csl::math::Quaternion m_Rotation{ 0, 0, 0, 1 };
-		bool m_Unk3{};
-		int m_Unk4{};
-		int m_Unk5{};
-		int m_Unk6{};
-		fnd::GOCVisual* m_pVisual{};
-		const char* m_pBoneName{};
-		int m_Unk9{};
-		int m_Unk10{};
+		const char* pName{};
+		float Unk1{};
+		int Unk2{};
+		csl::math::Vector3 Position{};
+		csl::math::Quaternion Rotation{ 0, 0, 0, 1 };
+		bool Unk3{};
+		int Unk4{};
+		int Unk5{};
+		int Unk6{};
+		fnd::GOCVisual* pVisual{};
+		const char* pBoneName{};
+		int Unk9{};
+		int Unk10{};
 	};
 
 	struct EffectFollowInfo
@@ -158,20 +157,10 @@ namespace app::game
 
 	class GOCEffect : public fnd::GOComponent
 	{
-	public:
-		int m_Unk3{};
-		fnd::HFrame* pFrame{};
-		int m_Unk5{};
-		float GlobalScaling{};
-		csl::ut::Enum<GlobalScaleType, char> m_GlobalScale{};
-		csl::ut::Enum<effect::EffectGroup, char> m_Group{};
-		csl::ut::ObjectMoveArray<EffectFollowInfo> m_FollowInfos{ m_pAllocator };
-		INSERT_PADDING(24); // csl::ut::Queue<NodeEffectRequest>
-
 	private:
-		inline static FUNCTION_PTR(void, __cdecl, ms_fpSimpleSetup, ASLR(0x004BD9D0), GameObject*, size_t a2, bool a3);
+		inline static FUNCTION_PTR(void, __cdecl, ms_fpSimpleSetup, ASLR(0x004BD9D0), GameObject*, size_t, bool);
 		inline static FUNCTION_PTR(void, __cdecl, ms_fpSimpleSetup2, ASLR(0x004BD980), GameObject*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffect, ASLR(0x004BD5F0), GOCEffect*, const char* pName);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffect, ASLR(0x004BD5F0), GOCEffect*, const char*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffectEx, ASLR(0x004BDA20), GOCEffect*, const EffectCreateInfo&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffectLoop, ASLR(0x004BDFD0), GOCEffect*, Effect::CEffectHandle<hh::eff::CEffectInstance>*, const char*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCreateEffectLoopEx, ASLR(0x004BDDC0), GOCEffect*, Effect::CEffectHandle<hh::eff::CEffectInstance>*, const EffectCreateInfo&);
@@ -179,19 +168,29 @@ namespace app::game
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7630));
 
 	public:
+		int Unk3{};
+		fnd::HFrame* pFrame{};
+		int Unk5{};
+		float GlobalScaling{};
+		csl::ut::Enum<GlobalScaleType, char> GlobalScale{};
+		csl::ut::Enum<effect::EffectGroup, char> Group{};
+		csl::ut::ObjectMoveArray<EffectFollowInfo> FollowInfos{ m_pAllocator };
+		INSERT_PADDING(24); // csl::ut::Queue<NodeEffectRequest>
+
+	public:
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;
 		}
 
-		void CreateEffect(const char* pName)
+		void CreateEffect(const char* in_pName)
 		{
-			ms_fpCreateEffect(this, pName);
+			ms_fpCreateEffect(this, in_pName);
 		}
 
-		void CreateEffectEx(const EffectCreateInfo& rInfo)
+		void CreateEffectEx(const EffectCreateInfo& in_rInfo)
 		{
-			ms_fpCreateEffectEx(this, rInfo);
+			ms_fpCreateEffectEx(this, in_rInfo);
 		}
 
 		void CreateEffectLoop(Effect::CEffectHandle<hh::eff::CEffectInstance>* out_pHandle, const char* in_pName)
@@ -214,9 +213,9 @@ namespace app::game
 			ms_fpSimpleSetup2(in_pObject);
 		}
 
-		static void SimpleSetup(GameObject* pObject, size_t a2, bool a3)
+		static void SimpleSetup(GameObject* in_pObject, size_t in_a2, bool in_a3)
 		{
-			ms_fpSimpleSetup(pObject, a2, a3);
+			ms_fpSimpleSetup(in_pObject, in_a2, in_a3);
 		}
 	};
 }
