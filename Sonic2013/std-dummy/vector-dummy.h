@@ -6,30 +6,30 @@ namespace std::dummy
 	class vector
 	{
 	protected:
-		T* first{};
-		T* last{};
-		T* capacityLast{};
-		void* pad{};
+		T* m_pFirst{};
+		T* m_pLast{};
+		T* m_pCapacityLast{};
+		void* m_pPad{};
 
 	public:
 		T* begin() const
 		{
-			return first;
+			return m_pFirst;
 		}
 
 		T* end() const
 		{
-			return last;
+			return m_pLast;
 		}
 
 		size_t size() const
 		{
-			return (reinterpret_cast<const size_t>(last) - reinterpret_cast<const size_t>(first)) / sizeof(T);
+			return (reinterpret_cast<const size_t>(m_pLast) - reinterpret_cast<const size_t>(m_pFirst)) / sizeof(T);
 		}
 
 		size_t capacity() const
 		{
-			return (reinterpret_cast<const size_t>(capacityLast) - reinterpret_cast<const size_t>(first)) / sizeof(T);
+			return (reinterpret_cast<const size_t>(m_pCapacityLast) - reinterpret_cast<const size_t>(m_pFirst)) / sizeof(T);
 		}
 	};
 }
