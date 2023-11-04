@@ -9,9 +9,9 @@ namespace csl::ut
 		UnderlayingType m_value;
 
 	public:
-		Enum(EnumType value)
+		Enum(EnumType in_value)
 		{
-			m_value = static_cast<UnderlayingType>(value);
+			m_value = static_cast<UnderlayingType>(in_value);
 		}
 
 		Enum() : Enum(EnumType{})
@@ -29,15 +29,15 @@ namespace csl::ut
 			return static_cast<EnumType>(m_value);
 		}
 		
-		Enum<EnumType, UnderlayingType>& operator=(const EnumType value)
+		Enum<EnumType, UnderlayingType>& operator=(const EnumType in_value)
 		{
-			m_value = static_cast<UnderlayingType>(value);
+			m_value = static_cast<UnderlayingType>(in_value);
 			return *this;
 		}
 
-		Enum<EnumType, UnderlayingType>& operator=(const UnderlayingType value)
+		Enum<EnumType, UnderlayingType>& operator=(const UnderlayingType in_value)
 		{
-			m_value = value;
+			m_value = in_value;
 			return *this;
 		}
 	};

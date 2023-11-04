@@ -8,23 +8,23 @@ namespace csl::fnd
 	public:
 		struct Provider
 		{
-			HeapBase* m_pHeap;
+			HeapBase* pHeap;
 		};
 
 		struct Allocation
 		{
-			const void* m_pBlock{};
-			csl::ut::FixedString<64> m_Name{};
+			const void* pBlock{};
+			csl::ut::FixedString<64> Name{};
 		};
 
-		csl::fnd::IAllocator* m_pAllocator{};
-		Provider* m_pProviders{};
-		Allocation* m_pAllocations{};
-		size_t m_Count{};
+		csl::fnd::IAllocator* pAllocator{};
+		Provider* pProviders{};
+		Allocation* pAllocations{};
+		size_t Count{};
 
 		MemorySnapshot(csl::fnd::IAllocator* in_pAllocator)
 		{
-			m_pAllocator = in_pAllocator;
+			pAllocator = in_pAllocator;
 		}
 
 		virtual ~MemorySnapshot()
@@ -34,28 +34,28 @@ namespace csl::fnd
 
 		void Allocate(size_t in_count)
 		{
-			if (m_pProviders)
+			if (pProviders)
 			{
-				m_pAllocator->Free(m_pProviders);
-				m_pAllocator->Free(m_pAllocations);
+				pAllocator->Free(pProviders);
+				pAllocator->Free(pAllocations);
 			}
 
-			m_Count = in_count;
-			m_pProviders = static_cast<Provider*>(m_pAllocator->Alloc(sizeof(Provider) * in_count, alignof(Provider)));
-			m_pAllocations = static_cast<Allocation*>(m_pAllocator->Alloc(sizeof(Allocation) * in_count, alignof(Allocation)));
+			Count = in_count;
+			pProviders = static_cast<Provider*>(pAllocator->Alloc(sizeof(Provider) * in_count, alignof(Provider)));
+			pAllocations = static_cast<Allocation*>(pAllocator->Alloc(sizeof(Allocation) * in_count, alignof(Allocation)));
 		}
 
 		void Reset()
 		{
-			if (m_pProviders)
+			if (pProviders)
 			{
-				m_pAllocator->Free(m_pProviders);
-				m_pAllocator->Free(m_pAllocations);
+				pAllocator->Free(pProviders);
+				pAllocator->Free(pAllocations);
 			}
 
-			m_pProviders = nullptr;
-			m_pAllocations = nullptr;
-			m_Count = 0;
+			pProviders = nullptr;
+			pAllocations = nullptr;
+			Count = 0;
 		}
 	};
 }

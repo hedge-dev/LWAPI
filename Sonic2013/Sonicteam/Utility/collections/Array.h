@@ -6,37 +6,37 @@ namespace csl::ut
 	class Array
 	{
 	public:
-		T* p_buffer{};
-		size_t m_length{};
-		size_t m_capacity{};
+		T* pBuffer{};
+		size_t Length{};
+		size_t Capacity{};
 
 		T* get(size_t i) const
 		{
-			if (!this->p_buffer)
+			if (!this->pBuffer)
 				return nullptr;
 
-			return &this->p_buffer[i];
+			return &this->pBuffer[i];
 		}
 
 		[[nodiscard]] T* begin() const { return get(0); }
 
-		[[nodiscard]] T* end() const { return get(this->m_length); }
+		[[nodiscard]] T* end() const { return get(this->Length); }
 
 		[[nodiscard]] T front() const { return *get(0); }
 		
 		[[nodiscard]] size_t size() const
 		{
-			return this->m_length;
+			return this->Length;
 		}
 
 		[[nodiscard]] size_t capacity() const
 		{
-			return this->m_capacity & ~csl::ut::SIGN_BIT;
+			return this->Capacity & ~csl::ut::SIGN_BIT;
 		}
 
 		bool empty() const
 		{
-			return this->m_length == 0;
+			return this->Length == 0;
 		}
 	};
 }

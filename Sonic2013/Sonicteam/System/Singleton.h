@@ -6,47 +6,47 @@ namespace csl::fnd
 	class SingletonPointer
 	{
 	protected:
-		static T** instance;
+		static T** ms_ppInstance;
 
 	public:
 		static T** GetPointer()
 		{
-			return instance;
+			return ms_ppInstance;
 		}
 		
 		static T* GetInstance()
 		{
-			return *instance;
+			return *ms_ppInstance;
 		}
 
 		static T* SwapInstance(T* inst)
 		{
-			T* pOldInstance = *instance;
-			*instance = inst;
+			T* pOldInstance = *ms_ppInstance;
+			*ms_ppInstance = inst;
 			return pOldInstance;
 		}
 
 		static void ReplaceInstance(T* inst)
 		{
-			if (*instance) delete *instance;
+			if (*ms_ppInstance) delete *ms_ppInstance;
 			
-			*instance = inst;
+			*ms_ppInstance = inst;
 		}
 
 		static bool IsInitialized()
 		{
-			return *instance == nullptr;
+			return *ms_ppInstance == nullptr;
 		}
 	};
 
 	template<typename T>
-	inline T** SingletonPointer<T>::instance{ nullptr };
+	inline T** SingletonPointer<T>::ms_ppInstance{ nullptr };
 	
 	template<typename T>
 	class Singleton
 	{
 	public:
-		inline static T* instance{};
+		inline static T* ms_ppInstance{};
 
 		[[nodiscard]] static T* GetInstance()
 		{
@@ -55,30 +55,30 @@ namespace csl::fnd
 				return SingletonPointer<T>::GetInstance();
 			}
 
-			return instance;
+			return ms_ppInstance;
 		}
 
-		static void ReplaceInstance(T* inst)
+		static void ReplaceInstance(T* in_pInstance)
 		{
 			if constexpr (std::is_base_of<SingletonPointer<T>, T>())
 			{
-				SingletonPointer<T>::ReplaceInstance(inst);
+				SingletonPointer<T>::ReplaceInstance(in_pInstance);
 				return;
 			}
 			
-			if (instance) delete instance;
-			instance = inst;
+			if (ms_ppInstance) delete ms_ppInstance;
+			ms_ppInstance = inst;
 		}
 
-		static T* SwapInstance(T* inst)
+		static T* SwapInstance(T* in_pInstance)
 		{
 			if constexpr (std::is_base_of<SingletonPointer<T>, T>())
 			{
-				return SingletonPointer<T>::SwapInstance(inst);
+				return SingletonPointer<T>::SwapInstance(in_pInstance);
 			}
 
-			T* pInst = instance;
-			instance = inst;
+			T* pInst = ms_ppInstance;
+			ms_ppInstance = in_pInstance;
 			return pInst;
 		}
 
@@ -89,9 +89,9 @@ namespace csl::fnd
 				return SingletonPointer<T>::IsInitialized();
 			}
 			
-			return instance != nullptr;
+			return ms_ppInstance != nullptr;
 		}
 	};
 }
 
-#define DEFINE_SINGLETONPTR(type, ptr) type** csl::fnd::SingletonPointer<type>::instance = reinterpret_cast<type**>(ptr);
+#define DEFINE_SINGLETONPTR(type, ptr) type** csl::fnd::SingletonPointer<type>::ms_ppInstance = reinterpret_cast<type**>(ptr);

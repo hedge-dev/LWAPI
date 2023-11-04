@@ -6,14 +6,14 @@ namespace csl::ut
 	class CircularBuffer
 	{
 	public:
-		T* m_pBuffer{};
-		T* m_pEnd{};
-		T* m_pFirst{};
-		T* m_pLast{};
-		size_t m_Size{};
-		csl::fnd::IAllocator* m_pAllocator{};
+		T* pBuffer{};
+		T* pEnd{};
+		T* pFirst{};
+		T* pLast{};
+		size_t Size{};
+		csl::fnd::IAllocator* pAllocator{};
 
-		CircularBuffer(csl::fnd::IAllocator* in_pAllocator) : m_pAllocator(in_pAllocator) { }
+		CircularBuffer(csl::fnd::IAllocator* in_pAllocator) : pAllocator(in_pAllocator) { }
 
 		//detail_iterator<CircularBuffer<T>> begin();
 
@@ -21,47 +21,47 @@ namespace csl::ut
 
 		constexpr T& at(size_t in_index)
 		{
-			if (in_index >= (m_pEnd - m_pFirst))
+			if (in_index >= (pEnd - pFirst))
 			{
 				in_index -= capacity();
 			}
 
-			return m_pFirst[in_index];
+			return pFirst[in_index];
 		}
 
 		constexpr const T& at(size_t in_index) const
 		{
-			if (in_index >= (m_pEnd - m_pFirst))
+			if (in_index >= (pEnd - pFirst))
 			{
 				in_index -= capacity();
 			}
 
-			return m_pFirst[in_index];
+			return pFirst[in_index];
 		}
 
 		constexpr T& front()
 		{
-			return *m_pFirst;
+			return *pFirst;
 		}
 
 		constexpr T& back()
 		{
-			return *((m_pLast == m_pBuffer ? m_pEnd : m_pLast) - 1);
+			return *((pLast == pBuffer ? pEnd : pLast) - 1);
 		}
 
 		constexpr const T& front() const
 		{
-			return *m_pFirst;
+			return *pFirst;
 		}
 
 		constexpr const T& back() const
 		{
-			return *((m_pLast == m_pBuffer ? m_pEnd : m_pLast) - 1);
+			return *((pLast == pBuffer ? pEnd : pLast) - 1);
 		}
 
 		constexpr size_t size() const
 		{
-			return m_Size;
+			return Size;
 		}
 
 		constexpr bool empty() const
@@ -76,7 +76,7 @@ namespace csl::ut
 
 		constexpr size_t capacity() const
 		{
-			return m_pEnd - m_pBuffer;
+			return pEnd - pBuffer;
 		}
 
 		constexpr void set_capacity(size_t in_capacity)
@@ -86,27 +86,27 @@ namespace csl::ut
 		
 			T* buff = static_cast<T*>(AllocateMemory(in_capacity));
 
-			size_t size = m_Size;
+			size_t size = Size;
 			if (in_capacity < size)
 				size = in_capacity;
 
 			for (size_t i = 0; i < size; i++)
 			{
 				size_t index = i;
-				if (i >= (m_pEnd - m_pFirst) / sizeof(T))
+				if (i >= (pEnd - pFirst) / sizeof(T))
 					index = i - capacity();
 
-				*buff = m_pFirst[index];
+				*buff = pFirst[index];
 				buff++;
 			}
 
 			ReleaseMemory();
 			
-			m_pFirst = buff;
-			m_pBuffer = buff;
-			m_Size = size;
-			m_pLast = &buff[size];
-			m_pEnd = &buff[in_capacity];
+			pFirst = buff;
+			pBuffer = buff;
+			Size = size;
+			pLast = &buff[size];
+			pEnd = &buff[in_capacity];
 		}
 
 		constexpr void push_back(const T& in_rItem)
@@ -116,27 +116,27 @@ namespace csl::ut
 				if (empty())
 					return;
 
-				*m_pLast = in_rItem;
-				++m_pLast;
+				*pLast = in_rItem;
+				++pLast;
 
-				if (m_pLast == m_pEnd)
+				if (pLast == pEnd)
 				{
-					m_pLast = m_pBuffer;
+					pLast = pBuffer;
 				}
 
-				m_pFirst = m_pLast;
+				pFirst = pLast;
 			}
 			else
 			{
-				*m_pLast = in_rItem;
-				++m_pLast;
+				*pLast = in_rItem;
+				++pLast;
 
-				if (m_pLast == m_pEnd)
+				if (pLast == pEnd)
 				{
-					m_pLast = m_pBuffer;
+					pLast = pBuffer;
 				}
 
-				++m_Size;
+				++Size;
 			}
 		}
 
@@ -147,81 +147,81 @@ namespace csl::ut
 				if (empty())
 					return;
 
-				if (m_pFirst == m_pBuffer)
+				if (pFirst == pBuffer)
 				{
-					m_pFirst = m_pEnd;
+					pFirst = pEnd;
 				}
 
-				--m_pFirst;
-				*m_pFirst = in_rItem;
-				m_pLast = m_pFirst;
+				--pFirst;
+				*pFirst = in_rItem;
+				pLast = pFirst;
 			}
 			else
 			{
-				if (m_pFirst == m_pBuffer)
+				if (pFirst == pBuffer)
 				{
-					m_pFirst = m_pEnd;
+					pFirst = pEnd;
 				}
 
-				--m_pFirst;
-				*m_pFirst = in_rItem;
-				++m_Size;
+				--pFirst;
+				*pFirst = in_rItem;
+				++Size;
 			}
 		}
 		
 		constexpr void pop_back()
 		{
-			if (m_pLast == m_pBuffer)
-				m_pLast = m_pEnd;
+			if (pLast == pBuffer)
+				pLast = pEnd;
 
-			--m_pLast;
-			--m_Size;
+			--pLast;
+			--Size;
 		}
 
 		constexpr void pop_front()
 		{
-			++m_pFirst;
-			if (m_pFirst == m_pEnd)
-				m_pFirst = m_pBuffer;
+			++pFirst;
+			if (pFirst == pEnd)
+				pFirst = pBuffer;
 			
-			--m_Size;
+			--Size;
 		}
 
 		constexpr void clear()
 		{
-			if (m_Size)
+			if (Size)
 			{
 				DestroyContent();
-				m_Size = 0;
+				Size = 0;
 			}
 		}
 
 		void* AllocateMemory(size_t in_capacity)
 		{
-			if (m_pAllocator)
-				return m_pAllocator->Alloc(in_capacity * sizeof(T), 16);
+			if (pAllocator)
+				return pAllocator->Alloc(in_capacity * sizeof(T), 16);
 			else
 				return { nullptr };
 		}
 
 		void ReleaseMemory()
 		{
-			if (m_pAllocator && m_pBuffer)
+			if (pAllocator && pBuffer)
 			{
-				m_pAllocator->Free(m_pBuffer);
+				pAllocator->Free(pBuffer);
 			}
 
-			m_pBuffer = nullptr;
+			pBuffer = nullptr;
 		}
 
 		void DestroyContent()
 		{
-			for (size_t i = 0; i < m_Size; i++)
+			for (size_t i = 0; i < Size; i++)
 			{
-				m_pFirst++;
+				pFirst++;
 
-				if (m_pFirst == m_pEnd)
-					m_pFirst = m_pBuffer;
+				if (pFirst == pEnd)
+					pFirst = pBuffer;
 			}
 		}
 	};

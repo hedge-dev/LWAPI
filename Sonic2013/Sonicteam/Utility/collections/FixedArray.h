@@ -33,22 +33,22 @@ namespace csl::ut
 			return &m_Items[Len];
 		}
 
-		constexpr void assign(const T& value)
+		constexpr void assign(const T& in_rValue)
 		{
 			for (size_t i = 0; i < Len; i++)
 			{
-				m_Items[i] = value;
+				m_Items[i] = in_rValue;
 			}
 		}
 		
-		constexpr T operator[] (size_t i) const
+		constexpr T operator[] (size_t in_index) const
 		{
-			return m_Items[i];
+			return m_Items[in_index];
 		}
 
-		constexpr T& operator[] (size_t i)
+		constexpr T& operator[] (size_t in_index)
 		{
-			return m_Items[i];
+			return m_Items[in_index];
 		}
 	};
 }

@@ -8,11 +8,11 @@ namespace csl::fnd
 		DEFINE_RTTI_PTR(ASLR(0x00FBABC4));
 
 		typedef size_t HeapIndex;
-		csl::ut::FixedArray<HeapBase*, 12> m_Heaps{};
+		csl::ut::FixedArray<HeapBase*, 12> Heaps{};
 
 		LinkHeapBase()
 		{
-			for (auto& pHeap : m_Heaps)
+			for (auto& pHeap : Heaps)
 				pHeap = nullptr;
 
 			AttachToLinkList(nullptr);
@@ -42,7 +42,7 @@ namespace csl::fnd
 
 		void Free(void* in_pMemory) override
 		{
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap && pHeap->IsIn(in_pMemory))
 				{
@@ -54,7 +54,7 @@ namespace csl::fnd
 
 		bool IsIn(void* in_pMemory) const override
 		{
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap && pHeap->IsIn(in_pMemory))
 					return true;
@@ -65,7 +65,7 @@ namespace csl::fnd
 
 		size_t GetBlockSize(void* in_pMemory) const override
 		{
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap && pHeap->IsIn(in_pMemory))
 					return pHeap->GetBlockSize(in_pMemory);
@@ -77,7 +77,7 @@ namespace csl::fnd
 		void CollectHeapInformation(csl::fnd::HeapInformation* out_pInfo) const override
 		{
 			out_pInfo->m_LargestBlockSize = 0;
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap)
 				{
@@ -108,7 +108,7 @@ namespace csl::fnd
 		{
 			size_t count{};
 
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap)
 					count += pHeap->GetCurrentAllocateCount();
@@ -121,7 +121,7 @@ namespace csl::fnd
 		{
 			size_t count{};
 
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap)
 					count += pHeap->GetCallAllocateTime();
@@ -135,30 +135,30 @@ namespace csl::fnd
 			return false;
 		}
 
-		void ForEachAllocatedBlock(MemoryBlockFunction& in_func) override
+		void ForEachAllocatedBlock(MemoryBlockFunction& in_rFunc) override
 		{
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap)
-					pHeap->ForEachAllocatedBlock(in_func);
+					pHeap->ForEachAllocatedBlock(in_rFunc);
 			}
 		}
 
 		void PrintDebugInformation() override
 		{
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap)
 					pHeap->PrintDebugInformation();
 			}
 		}
 
-		void GetMemorySnapshot(MemorySnapshot& out_snapshot) const override
+		void GetMemorySnapshot(MemorySnapshot& out_rSnapshot) const override
 		{
-			out_snapshot.Reset();
+			out_rSnapshot.Reset();
 			size_t totalAllocations{};
 
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (pHeap && pHeap->m_pAllocations)
 					totalAllocations += pHeap->GetCallAllocateTime();
@@ -167,10 +167,10 @@ namespace csl::fnd
 			if (!totalAllocations)
 				return;
 
-			out_snapshot.Allocate(totalAllocations);
+			out_rSnapshot.Allocate(totalAllocations);
 
 			size_t idx{};
-			for (const auto& pHeap : m_Heaps)
+			for (const auto& pHeap : Heaps)
 			{
 				if (!pHeap || !pHeap->m_pAllocations)
 					continue;
@@ -179,10 +179,10 @@ namespace csl::fnd
 
 				while (pAllocation)
 				{
-					out_snapshot.m_pProviders[idx].m_pHeap = pAllocation->m_pSource;
+					out_rSnapshot.m_pProviders[idx].m_pHeap = pAllocation->m_pSource;
 
-					out_snapshot.m_pAllocations[idx].m_Name = pAllocation->m_Name;
-					out_snapshot.m_pAllocations[idx].m_pBlock = pAllocation->m_pBlock;
+					out_rSnapshot.m_pAllocations[idx].m_Name = pAllocation->m_Name;
+					out_rSnapshot.m_pAllocations[idx].m_pBlock = pAllocation->m_pBlock;
 
 					idx++;
 					pAllocation = pAllocation->m_pNextAllocation;
@@ -193,7 +193,7 @@ namespace csl::fnd
 		virtual void* AllocCore(size_t in_size, size_t in_alignment, bool in_bottom)
 		{
 			HeapIndex idx = GetHeapIndex(in_size);
-			HeapBase* pHeap = m_Heaps[idx];
+			HeapBase* pHeap = Heaps[idx];
 			void* pMemory = nullptr;
 
 			if (idx != 11 && pHeap)
@@ -203,7 +203,7 @@ namespace csl::fnd
 					return pMemory;
 			}
 
-			pHeap = m_Heaps[11];
+			pHeap = Heaps[11];
 			pMemory = in_bottom ? pHeap->AllocBottom(in_size, in_alignment) : pHeap->Alloc(in_size, in_alignment);
 
 			return pMemory;
@@ -211,7 +211,7 @@ namespace csl::fnd
 
 		inline void SetHeap(HeapIndex in_idx, HeapBase* in_pHeap)
 		{
-			m_Heaps[in_idx] = in_pHeap;
+			Heaps[in_idx] = in_pHeap;
 		}
 
 		inline void SetPoolHeap(size_t in_size, PoolHeapBase* in_pHeap)
@@ -251,6 +251,38 @@ namespace csl::fnd
 				idx = 11;
 
 			return idx;
+		}
+	};
+	
+	template<typename TLock>
+	class LinkHeapTemplate : public LinkHeapBase
+	{
+	public:
+		TLock Lock{};
+
+		void* Alloc(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = LinkHeapBase::Alloc(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void* AllocBottom(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = LinkHeapBase::AllocBottom(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void Free(void* in_pMemory) override
+		{
+			Lock.Lock();
+			LinkHeapBase::Free(in_pMemory);
+			Lock.Unlock();
 		}
 	};
 }

@@ -6,7 +6,7 @@ namespace csl::hio
 	class HioClient : public HioServer
 	{
 	public:
-		HioClient(fnd::IAllocator* pAlloc) : HioServer(pAlloc)
+		HioClient(fnd::IAllocator* in_pAlloc) : HioServer(in_pAlloc)
 		{
 			SetServer(false);
 		}

@@ -16,7 +16,7 @@ namespace csl::ut
 			size_t m_NodeOffset;
 
 		public:
-			iterator(LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
+			iterator(LinkListNode* in_pNode, size_t in_nodeOffset) : m_pCurNode(in_pNode), m_NodeOffset(in_nodeOffset)
 			{
 				
 			}
@@ -31,14 +31,14 @@ namespace csl::ut
 				return *operator->();
 			}
 			
-			friend bool operator==(const iterator& lhs, const iterator& rhs)
+			friend bool operator==(const iterator& in_rLhs, const iterator& in_rRhs)
 			{
-				return lhs.m_pCurNode == rhs.m_pCurNode;
+				return in_rLhs.m_pCurNode == in_rRhs.m_pCurNode;
 			}
 
-			friend bool operator!=(const iterator& lhs, const iterator& rhs)
+			friend bool operator!=(const iterator& in_rLhs, const iterator& in_rRhs)
 			{
-				return lhs.m_pCurNode != rhs.m_pCurNode;
+				return in_rLhs.m_pCurNode != in_rRhs.m_pCurNode;
 			}
 
 			iterator& operator++()
@@ -69,7 +69,7 @@ namespace csl::ut
 			size_t m_NodeOffset;
 
 		public:
-			const_iterator(const LinkListNode* pNode, size_t nodeOffset) : m_pCurNode(pNode), m_NodeOffset(nodeOffset)
+			const_iterator(const LinkListNode* in_pNode, size_t in_nodeOffset) : m_pCurNode(in_pNode), m_NodeOffset(in_nodeOffset)
 			{
 
 			}
@@ -84,14 +84,14 @@ namespace csl::ut
 				return *operator->();
 			}
 
-			friend bool operator==(const const_iterator& lhs, const const_iterator& rhs)
+			friend bool operator==(const const_iterator& in_rLhs, const const_iterator& in_rRhs)
 			{
-				return lhs.m_pCurNode == rhs.m_pCurNode;
+				return in_rLhs.m_pCurNode == in_rRhs.m_pCurNode;
 			}
 
-			friend bool operator!=(const const_iterator& lhs, const const_iterator& rhs)
+			friend bool operator!=(const const_iterator& lhs, const const_iterator& in_rRhs)
 			{
-				return lhs.m_pCurNode != rhs.m_pCurNode;
+				return in_rLhs.m_pCurNode != in_rRhs.m_pCurNode;
 			}
 
 			const_iterator& operator++()
@@ -112,9 +112,9 @@ namespace csl::ut
 			}
 		};
 
-		void init(LinkListNode(T::* nodeOffset))
+		void init(LinkListNode(T::* in_pNodeOffset))
 		{
-			m_NodeOffset = reinterpret_cast<size_t>(*reinterpret_cast<size_t**>(&nodeOffset));
+			m_NodeOffset = reinterpret_cast<size_t>(*reinterpret_cast<size_t**>(&in_pNodeOffset));
 		}
 		
 		LinkList()
@@ -122,37 +122,37 @@ namespace csl::ut
 			
 		}
 
-		LinkList(size_t nodeOffset)
+		LinkList(size_t in_nodeOffset)
 		{
-			m_NodeOffset = nodeOffset;
+			m_NodeOffset = in_nodeOffset;
 		}
 
-		LinkList(LinkListNode(T::*nodeOffset))
+		LinkList(LinkListNode(T::*in_pNodeOffset))
 		{
-			init(nodeOffset);
+			init(in_pNodeOffset);
 		}
 
 	private:
-		LinkListNode* GetNode(T* pItem)
+		LinkListNode* GetNode(T* in_pItem)
 		{
-			return reinterpret_cast<LinkListNode*>(reinterpret_cast<size_t>(pItem) + m_NodeOffset);
+			return reinterpret_cast<LinkListNode*>(reinterpret_cast<size_t>(in_pItem) + m_NodeOffset);
 		}
 		
 	public:
-		void push_back(T* pItem)
+		void push_back(T* in_pItem)
 		{
-			LinkListImpl::insert({ m_pEnd, m_NodeOffset }, GetNode(pItem));
+			LinkListImpl::insert({ m_pEnd, m_NodeOffset }, GetNode(in_pItem));
 		}
 
-		void erase(T* pItem)
+		void erase(T* in_pItem)
 		{
-			LinkListImpl::erase(GetNode(pItem));
+			LinkListImpl::erase(GetNode(in_pItem));
 		}
 
-		void erase(iterator<T> start, iterator<T> finish)
+		void erase(iterator<T> in_start, iterator<T> in_finish)
 		{
-			LinkListNode* pCurNode = start.m_pCurNode;
-			while (pCurNode != finish.m_pCurNode)
+			LinkListNode* pCurNode = in_start.m_pCurNode;
+			while (pCurNode != in_finish.m_pCurNode)
 			{
 				pCurNode = LinkListImpl::erase(pCurNode);
 			}

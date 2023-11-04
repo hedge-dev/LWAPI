@@ -43,29 +43,29 @@ namespace csl::hio
 	public:
 		virtual ~HioCore() = default;
 
-		HioCore(csl::fnd::IAllocator* pAlloc)
+		HioCore(csl::fnd::IAllocator* in_pAlloc)
 		{
-			m_pAllocator = pAlloc;
+			m_pAllocator = in_pAlloc;
 		}
 	
 	protected:
-		inline void SetFlag(uint flag, bool value)
+		inline void SetFlag(uint in_flag, bool in_value)
 		{
-			if (value)
-				m_Flags |= flag;
+			if (in_value)
+				m_Flags |= in_flag;
 			else
-				m_Flags &= ~flag;
+				m_Flags &= ~in_flag;
 		}
 
-		inline void SetServer(bool value)
+		inline void SetServer(bool in_value)
 		{
-			SetFlag(HIO_FLAG_SERVER, value);
+			SetFlag(HIO_FLAG_SERVER, in_value);
 		}
 	
 	public:
-		inline bool TestFlag(uint flag) const
+		inline bool TestFlag(uint in_flag) const
 		{
-			return m_Flags & flag;
+			return m_Flags & in_flag;
 		}
 
 	protected:
@@ -74,7 +74,7 @@ namespace csl::hio
 			return HIO_ERROR_OK;
 		};
 
-		virtual HioError StartupCore(const char* pAddress, ushort port)
+		virtual HioError StartupCore(const char* in_pAddress, ushort in_port)
 		{
 			return HIO_ERROR_OK;
 		}
@@ -92,9 +92,9 @@ namespace csl::hio
 		inline bool IsInit() const              { return TestFlag(HIO_FLAG_INIT);   }
 		inline bool IsInitEx() const            { return TestFlag(HIO_FLAG_INITEX); }
 		
-		bool Startup(const char* pAddress, ushort port)
+		bool Startup(const char* in_pAddress, ushort in_port)
 		{
-			m_LastError = StartupCore(pAddress, port);
+			m_LastError = StartupCore(in_pAddress, in_port);
 			return m_LastError == HIO_ERROR_OK;
 		}
 
@@ -128,19 +128,19 @@ namespace csl::hio
 			return result;
 		}
 		
-		HioError ConnectSocket(const char* pAddress, ushort port)
+		HioError ConnectSocket(const char* in_pAddress, ushort in_port)
 		{
 			if (TestFlag(HIO_FLAG_SOCKCONNECTED))
 				return HIO_ERROR_OK;
 
-			m_Port = port;
+			m_Port = in_port;
 			NetworkSocket sock = socket(AF_INET, SOCK_STREAM, 0);
 			if (sock == -1)
 				return HIO_ERROR_SOCKOPEN;
 
 			sockaddr_in addr{};
 			addr.sin_family = AF_INET;
-			addr.sin_port = htons(port);
+			addr.sin_port = htons(in_port);
 
 			if (IsServer())
 			{
@@ -158,7 +158,7 @@ namespace csl::hio
 			}
 			else
 			{
-				addr.sin_addr.S_un.S_addr = inet_addr(pAddress);
+				addr.sin_addr.S_un.S_addr = inet_addr(in_pAddress);
 				m_Address = pAddress;
 				if (connect(sock, (sockaddr*)&addr, sizeof(addr)) < 0)
 				{
@@ -172,7 +172,7 @@ namespace csl::hio
 			return HIO_ERROR_OK;
 		}
 		
-		HioError SocketInit(const char* pAddress, ushort port)
+		HioError SocketInit(const char* in_pAddress, ushort in_port)
 		{
 			if (!TestFlag(HIO_FLAG_SOCKINIT))
 			{
@@ -184,7 +184,7 @@ namespace csl::hio
 			}
 			
 			SetFlag(HIO_FLAG_INITEX, true);
-			return ConnectSocket(pAddress, port);
+			return ConnectSocket(in_pAddress, in_port);
 		}
 		
 		HioError Poll()
@@ -193,22 +193,22 @@ namespace csl::hio
 			return m_LastError;
 		}
 
-		int SendAll(NetworkSocket sock, const void* pData, int dataSize, HioError* pOutError)
+		int SendAll(NetworkSocket in_sock, const void* in_pData, int in_dataSize, HioError* in_pOutError)
 		{
 			int bytesSent = 0;
-			if (pOutError)
-				pOutError = HIO_ERROR_OK;
+			if (in_pOutError)
+				in_pOutError = HIO_ERROR_OK;
 
-			if (dataSize <= 0)
+			if (in_dataSize <= 0)
 				return 0;
 			
-			while (bytesSent < dataSize)
+			while (bytesSent < in_dataSize)
 			{
-				int sent = send(sock, ((const char*)pData) + bytesSent, dataSize - bytesSent, 0);
+				int sent = send(in_sock, ((const char*)in_pData) + bytesSent, in_dataSize - bytesSent, 0);
 				if (sent <= 0)
 				{
-					if (pOutError)
-						*pOutError = HIO_ERROR_SENDERROR;
+					if (in_pOutError)
+						*in_pOutError = HIO_ERROR_SENDERROR;
 
 					break;
 				}
@@ -220,20 +220,20 @@ namespace csl::hio
 		}
 
 		
-		PacketHeader* RecvAllAlloc(NetworkSocket sock, int* pOutBytesReceived, HioError* pOutError);
-		void RecvAllFree(void* pMem)
+		PacketHeader* RecvAllAlloc(NetworkSocket in_sock, int* in_pOutBytesReceived, HioError* in_pOutError);
+		void RecvAllFree(void* in_pMem)
 		{
-			if (pMem)
-				m_pAllocator->Free(pMem);
+			if (in_pMem)
+				m_pAllocator->Free(in_pMem);
 		}
 		
-		HioError MakePacketHeader(const char* pService, const char* pCommand, uint a3, int size, PacketHeader* pOutHeader);
-		HioError GetPacketHeader(const void* pData, PacketHeader* pOutHeader);
+		HioError MakePacketHeader(const char* in_pService, const char* in_pCommand, uint in_a3, int in_size, PacketHeader* in_pOutHeader);
+		HioError GetPacketHeader(const void* in_pData, PacketHeader* in_pOutHeader);
 
 		template<typename T>
-		inline HioError MakePacketHeader(const char* pService, const char* pCommand, T& rOutHeader)
+		inline HioError MakePacketHeader(const char* in_pService, const char* in_pCommand, T& in_rOutHeader)
 		{
-			return MakePacketHeader(pService, pCommand, 0, sizeof(T), &rOutHeader);
+			return MakePacketHeader(in_pService, in_pCommand, 0, sizeof(T), &in_rOutHeader);
 		}
 	};
 }

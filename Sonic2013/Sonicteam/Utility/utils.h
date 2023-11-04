@@ -46,7 +46,7 @@ namespace csl::ut
     static constexpr size_t SIGN_BIT = ((1u << ((sizeof(size_t) * CHAR_BIT) - 1)));
 
     template<typename TTo, typename TFrom>
-    TTo union_cast(const TFrom& in_from)
+    TTo union_cast(const TFrom& in_rFrom)
     {
         alignas(std::max(alignof(TTo), alignof(TFrom))) union
 	    {
@@ -57,44 +57,44 @@ namespace csl::ut
         if constexpr (sizeof(TTo) > sizeof(TFrom))
             memset(container.destBuffer, 0, sizeof(container.destBuffer));
 
-        memcpy(container.srcBuffer, &in_from, sizeof(container.srcBuffer));
+        memcpy(container.srcBuffer, &in_rFrom, sizeof(container.srcBuffer));
         return *reinterpret_cast<TTo*>(container.destBuffer);
     }
 
     template<typename T>
-    T RoundUp(const T& in_value, uint in_round)
+    T RoundUp(const T& in_rValue, uint in_round)
     {
-        return (in_value + in_round - 1) & ~(in_round - 1);
+        return (in_rValue + in_round - 1) & ~(in_round - 1);
     }
 
     template<typename T>
-    T RoundDown(const T& in_value, uint in_round)
+    T RoundDown(const T& in_rValue, uint in_round)
     {
-        return in_value & ~(in_round - 1);
+        return in_rValue & ~(in_round - 1);
     }
 }
 
 namespace csl::fnd
 {
-    static int VSnprintf(char* pBuf, size_t bufSize, const char* pFormat, va_list args)
+    static int VSnprintf(char* in_pBuf, size_t in_bufSize, const char* in_pFormat, va_list in_args)
     {
-        if (!bufSize)
+        if (!in_bufSize)
             return -1;
 
-        int result = vsnprintf_s(pBuf, bufSize, -1, pFormat, args);
+        int result = vsnprintf_s(in_pBuf, in_bufSize, -1, in_pFormat, in_args);
 
         return result;
     }
 
-    static int Snprintf(char* pBuf, size_t bufSize, const char* pFormat, ...)
+    static int Snprintf(char* in_pBuf, size_t in_bufSize, const char* in_pFormat, ...)
     {
-        if (!bufSize)
+        if (!in_bufSize)
             return -1;
     	
         va_list args;
         va_start(args, pFormat);
 
-        int result = vsnprintf_s(pBuf, bufSize, -1, pFormat, args);
+        int result = vsnprintf_s(in_pBuf, in_bufSize, -1, in_pFormat, args);
     	
         va_end(args);
 
@@ -102,21 +102,21 @@ namespace csl::fnd
     }
 	
 	// This is copied from optimised code
-	static size_t StrLcpy(char* pDestBuf, const char* pSrc, size_t len)
+	static size_t StrLcpy(char* pDestBuf, const char* in_pSrc, size_t in_len)
 	{
-        char* pCurChar = pDestBuf;
+        char* pCurChar = in_pDestBuf;
         size_t bytesReplaced = 0;
-        if (len == 1)
+        if (in_len == 1)
         {
-            *pDestBuf = 0;
+            *in_pDestBuf = 0;
         }
         else
         {
-            char srcChar = *pSrc;
+            char srcChar = *in_pSrc;
             do
             {
                 *pCurChar = srcChar;
-                srcChar = (pCurChar++)[pSrc - pDestBuf + 1];
+                srcChar = (pCurChar++)[in_pSrc - in_pDestBuf + 1];
                 ++bytesReplaced;
             } while (srcChar && bytesReplaced < len - 1);
             *pCurChar = 0;

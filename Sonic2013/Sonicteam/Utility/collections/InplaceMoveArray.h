@@ -6,14 +6,14 @@ namespace csl::ut
 	class InplaceMoveArray : public MoveArray<T>
 	{
 	protected:
-		char reserved[sizeof(T) * Bsz]{};
+		char m_reserved[sizeof(T) * Bsz]{};
 
 	public:
-		constexpr InplaceMoveArray(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
+		constexpr InplaceMoveArray(fnd::IAllocator* in_pAllocator) : MoveArray<T>(in_pAllocator)
 		{
-			this->m_capacity = Bsz;
-			this->m_capacity |= SIGN_BIT;
-			this->p_buffer = (T*)reserved;
+			this->Capacity = Bsz;
+			this->Capacity |= SIGN_BIT;
+			this->pBuffer = (T*)m_reserved;
 		}
 	};
 
@@ -24,11 +24,11 @@ namespace csl::ut
 		char alignas(16) reserved[sizeof(T) * Bsz]{};
 
 	public:
-		constexpr InplaceMoveArrayAligned16(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
+		constexpr InplaceMoveArrayAligned16(fnd::IAllocator* in_pAllocator) : MoveArray<T>(in_pAllocator)
 		{
-			this->m_capacity = Bsz;
-			this->m_capacity |= SIGN_BIT;
-			this->p_buffer = (T*)reserved;
+			this->Capacity = Bsz;
+			this->Capacity |= SIGN_BIT;
+			this->pBuffer = (T*)reserved;
 		}
 	};
 }

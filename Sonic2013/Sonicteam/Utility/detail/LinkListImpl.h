@@ -5,8 +5,8 @@ namespace csl::ut
 	class LinkListNode
 	{
 	public:
-		LinkListNode* m_pPrev{};
-		LinkListNode* m_pNext{};
+		LinkListNode* pPrev{};
+		LinkListNode* pNext{};
 	};
 
 	namespace detail
@@ -16,8 +16,8 @@ namespace csl::ut
 		public:
 			struct iterator
 			{
-				LinkListNode* m_pCurNode{};
-				size_t m_NodeOffset{};
+				LinkListNode* pCurNode{};
+				size_t NodeOffset{};
 			};
 
 		protected:
@@ -38,26 +38,26 @@ namespace csl::ut
 				Initialize();
 			}
 
-			void insert(iterator iter, LinkListNode* pNode)
+			void insert(iterator in_iter, LinkListNode* in_pNode)
 			{
 				LinkListNode* oldNext;
 
 				++m_Count;
-				oldNext = iter.m_pCurNode->m_pNext;
-				pNode->m_pPrev = iter.m_pCurNode;
-				pNode->m_pNext = oldNext;
-				iter.m_pCurNode->m_pNext = pNode;
-				oldNext->m_pPrev = pNode;
+				oldNext = in_iter.pCurNode->pNext;
+				in_pNode->pPrev = iter.pCurNode;
+				in_pNode->pNext = oldNext;
+				iter.pCurNode->pNext = in_pNode;
+				oldNext->pPrev = in_pNode;
 			}
 
-			LinkListNode* erase(LinkListNode* pNode)
+			LinkListNode* erase(LinkListNode* in_pNode)
 			{
-				LinkListNode* pResult = pNode->m_pPrev;
+				LinkListNode* pResult = in_pNode->pPrev;
 				m_Count--;
-				pNode->m_pPrev->m_pNext = pNode->m_pNext;
-				pNode->m_pNext->m_pPrev = pNode->m_pPrev;
-				pNode->m_pNext = nullptr;
-				pNode->m_pPrev = nullptr;
+				in_pNode->pPrev->pNext = in_pNode->pNext;
+				in_pNode->pNext->pPrev = in_pNode->pPrev;
+				in_pNode->pNext = nullptr;
+				in_pNode->pPrev = nullptr;
 				return pResult;
 			}
 		};

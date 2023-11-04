@@ -10,9 +10,9 @@ namespace csl::ut
 	protected:
 		struct Elem
 		{
-			size_t m_Hash;
-			size_t m_Key;
-			size_t m_Value;
+			size_t Hash;
+			size_t Key;
+			size_t Value;
 		};
 		
 		Elem* m_pElements{};
@@ -23,10 +23,10 @@ namespace csl::ut
 		TOp m_Operation{};
 		
 	protected:
-		size_t CalcResize(size_t capacity)
+		size_t CalcResize(size_t in_capacity)
 		{
 			size_t result;
-			for (result = 16; result < capacity; result *= 2);
+			for (result = 16; result < in_capacity; result *= 2);
 
 			if (result < 16)
 				result = 16;
@@ -34,9 +34,9 @@ namespace csl::ut
 			return result;
 		}
 
-		Elem* AllocateMemory(size_t count)
+		Elem* AllocateMemory(size_t in_count)
 		{
-			return static_cast<Elem*>(m_pAllocator->Alloc(sizeof(Elem) * count, alignof(Elem)));
+			return static_cast<Elem*>(m_pAllocator->Alloc(sizeof(Elem) * in_count, alignof(Elem)));
 		}
 
 		void ReleaseMemory()
@@ -52,17 +52,17 @@ namespace csl::ut
 			return m_Capacity & ~csl::ut::SIGN_BIT;
 		}
 
-		void ResizeTbl(size_t capacity)
+		void ResizeTbl(size_t in_capacity)
 		{
 			size_t oldCap = GetCapacity();
 			Elem* oldElements = m_pElements;
 
-			m_Capacity = capacity;
-			m_CapacityMax = capacity - 1;
+			m_Capacity = in_capacity;
+			m_CapacityMax = in_capacity - 1;
 			m_Length = 0;
 
-			m_pElements = AllocateMemory(capacity);
-			memset(m_pElements, INVALID_KEY, sizeof(Elem) * capacity);
+			m_pElements = AllocateMemory(in_capacity);
+			memset(m_pElements, INVALID_KEY, sizeof(Elem) * in_capacity);
 
 			if (oldElements)
 			{
@@ -81,22 +81,22 @@ namespace csl::ut
 			}
 		}
 
-		void Reserve(size_t capacity)
+		void Reserve(size_t in_capacity)
 		{
-			size_t cap = CalcResize(capacity);
+			size_t cap = CalcResize(in_capacity);
 			if (GetCapacity() < cap)
 				ResizeTbl(cap);
 		}
 		
-		HashMap(fnd::IAllocator* pAllocator)
+		HashMap(fnd::IAllocator* in_pAllocator)
 		{
-			m_pAllocator = pAllocator;
+			m_pAllocator = in_pAllocator;
 		}
 
 	public:
-		void reserve(size_t capacity)
+		void reserve(size_t in_capacity)
 		{
-			Reserve(capacity);
+			Reserve(in_capacity);
 		}
 
 		~HashMap()
@@ -109,9 +109,9 @@ namespace csl::ut
 		}
 		
 	protected:
-		void Insert(size_t key, size_t value)
+		void Insert(size_t in_key, size_t in_value)
 		{
-			size_t hash = m_Operation.hash(key);
+			size_t hash = m_Operation.hash(in_key);
 			if (m_Length || GetCapacity())
 			{
 				if (2 * m_Length >= GetCapacity())
@@ -127,25 +127,25 @@ namespace csl::ut
 			size_t idx = hash & m_CapacityMax;
 			Elem* pElem = &m_pElements[idx];
 
-			if (pElem->m_Hash == INVALID_KEY)
+			if (pElem->Hash == INVALID_KEY)
 			{
-				pElem->m_Hash = hash;
-				pElem->m_Key = key;
-				pElem->m_Value = value;
+				pElem->Hash = hash;
+				pElem->Key = in_key;
+				pElem->Value = in_value;
 				m_Length++;
 			}
 			else
 			{
-				while (pElem->m_Hash != hash || pElem->m_Key != key)
+				while (pElem->Hash != hash || pElem->Key != key)
 				{
 					idx = m_CapacityMax & (idx + 1);
 					pElem = &m_pElements[idx];
 
-					if (pElem->m_Hash == INVALID_KEY)
+					if (pElem->Hash == INVALID_KEY)
 					{
-						pElem->m_Hash = hash;
-						pElem->m_Key = key;
-						pElem->m_Value = value;
+						pElem->Hash = hash;
+						pElem->Key = key;
+						pElem->Value = value;
 						m_Length++;
 						break;
 					}
@@ -157,18 +157,18 @@ namespace csl::ut
 		{
 			for (size_t i = 0; i < m_CapacityMax; i++)
 			{
-				if (m_pElements[i].m_Hash != INVALID_KEY)
+				if (m_pElements[i].Hash != INVALID_KEY)
 					return i;
 			}
 			
 			return m_CapacityMax + 1;
 		}
 
-		size_t GetNext(size_t idx) const
+		size_t GetNext(size_t in_idx) const
 		{
-			for (size_t i = idx + 1; i < m_CapacityMax; i++)
+			for (size_t i = in_idx + 1; i < m_CapacityMax; i++)
 			{
-				if (m_pElements[i].m_Hash != INVALID_KEY)
+				if (m_pElements[i].Hash != INVALID_KEY)
 					return i;
 			}
 
@@ -178,11 +178,11 @@ namespace csl::ut
 	public:
 		struct iterator
 		{
-			const HashMap* m_pOwner;
-			size_t m_CurIdx;
+			const HashMap* pOwner;
+			size_t CurIdx;
 
-			friend bool operator==(const iterator& a, const iterator& b) { return a.m_CurIdx == b.m_CurIdx; }
-			friend bool operator!=(const iterator& a, const iterator& b) { return a.m_CurIdx != b.m_CurIdx; }
+			friend bool operator==(const iterator& a, const iterator& b) { return a.CurIdx == b.CurIdx; }
+			friend bool operator!=(const iterator& a, const iterator& b) { return a.CurIdx != b.CurIdx; }
 		};
 
 		iterator begin() const
@@ -201,75 +201,75 @@ namespace csl::ut
 			for (size_t i = 0; i < m_CapacityMax + 1; ++i)
 			{
 				auto& element = m_pElements[i];
-				element.m_Hash = INVALID_KEY;
+				element.Hash = INVALID_KEY;
 			}
 		}
 
 	protected:
-		iterator Find(size_t key) const
+		iterator Find(size_t in_key) const
 		{
 			if (!m_pElements)
 				return end();
 
 			TOp& op = const_cast<TOp&>(m_Operation);
 			
-			const size_t hash = op.hash(key);
+			const size_t hash = op.hash(in_key);
 			size_t idx = hash & m_CapacityMax;
 			const Elem* pElem = &m_pElements[idx];
 			
-			if (pElem->m_Hash == INVALID_KEY)
+			if (pElem->Hash == INVALID_KEY)
 				return end();
 			
-			while (pElem->m_Hash != hash || !op.compare(key, pElem->m_Key))
+			while (pElem->Hash != hash || !op.compare(in_key, pElem->Key))
 			{
 				idx = m_CapacityMax & (idx + 1);
 				pElem = &m_pElements[idx];
 
-				if (pElem->m_Hash == INVALID_KEY)
+				if (pElem->Hash == INVALID_KEY)
 					return end();
 			}
 
 			return iterator{ this, idx };
 		}
 
-		size_t GetKey(iterator iter) const
+		size_t GetKey(iterator in_iter) const
 		{
-			return iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Key;
+			return in_iter.pOwner->m_pElements[in_iter.CurIdx].Key;
 		}
 		
-		size_t GetValue(iterator iter) const
+		size_t GetValue(iterator in_iter) const
 		{
-			return iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Value;
+			return in_iter.pOwner->m_pElements[in_iter.CurIdx].Value;
 		}
 
-		size_t* GetValuePtr(iterator iter) const
+		size_t* GetValuePtr(iterator in_iter) const
 		{
-			return &iter.m_pOwner->m_pElements[iter.m_CurIdx].m_Value;
+			return &in_iter.pOwner->m_pElements[in_iter.CurIdx].Value;
 		}
 		
-		void Erase(size_t key)
+		void Erase(size_t in_key)
 		{
-			auto result = Find(key);
+			auto result = Find(in_key);
 
 			if (result == end())
 				return;
 
-			Elem* pElem = &m_pElements[result.m_CurIdx];
-			pElem->m_Hash = INVALID_KEY;
-			pElem->m_Key = INVALID_KEY;
-			pElem->m_Value = INVALID_KEY;
+			Elem* pElem = &m_pElements[result.CurIdx];
+			pElem->Hash = INVALID_KEY;
+			pElem->Key = INVALID_KEY;
+			pElem->Value = INVALID_KEY;
 			m_Length--;
 		}
 
-		void Erase(const iterator& iter)
+		void Erase(const iterator& in_rIter)
 		{
-			if (iter == end())
+			if (in_rIter == end())
 				return;
 
-			Elem* pElem = &m_pElements[iter.m_CurIdx];
-			pElem->m_Hash = INVALID_KEY;
-			pElem->m_Key = INVALID_KEY;
-			pElem->m_Value = INVALID_KEY;
+			Elem* pElem = &m_pElements[in_rIter.CurIdx];
+			pElem->Hash = INVALID_KEY;
+			pElem->Key = INVALID_KEY;
+			pElem->Value = INVALID_KEY;
 			m_Length--;
 		}
 	};

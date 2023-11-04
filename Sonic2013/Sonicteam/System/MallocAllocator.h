@@ -6,19 +6,20 @@ namespace csl::fnd
 	{
 	public:
 		static MallocAllocator ms_Instance;
+		
 		MallocAllocator()
 		{
 			ReplaceInstance(this);
 		}
 		
-		void* Alloc(size_t size, int alignment) override
+		void* Alloc(size_t in_size, int in_alignment) override
 		{
-			return _aligned_malloc(size, alignment);
+			return _aligned_malloc(size, in_alignment);
 		}
 
-		void Free(void* loc) override
+		void Free(void* in_pLoc) override
 		{
-			_aligned_free(loc);
+			_aligned_free(in_pLoc);
 		}
 	};
 

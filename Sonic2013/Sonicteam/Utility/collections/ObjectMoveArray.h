@@ -12,20 +12,20 @@ namespace csl::ut
 
 		}
 
-		ObjectMoveArray(fnd::IAllocator* allocator_) : MoveArray<T>(allocator_)
+		ObjectMoveArray(fnd::IAllocator* in_pAllocator) : MoveArray<T>(in_pAllocator)
 		{
 			
 		}
 
 		ObjectMoveArray(void* in_pBuffer, uint in_length, uint in_capacity, fnd::IAllocator* in_pAllocator, bool in_unk) : MoveArray<T>(in_pAllocator)
 		{
-			this->p_buffer = static_cast<T*>(in_pBuffer);
-			this->m_length = in_length;
+			this->pBuffer = static_cast<T*>(in_pBuffer);
+			this->Length = in_length;
 
 			if (in_unk)
 				in_capacity |= SIGN_BIT;
-			this->m_capacity = in_capacity;
-			this->p_allocator = in_pAllocator;
+			this->Capacity = in_capacity;
+			this->pAllocator = in_pAllocator;
 
 			T* pEnd = (&static_cast<T*>(in_pBuffer)[in_length]);
 			T* pStart = static_cast<T*>(in_pBuffer);
@@ -36,58 +36,58 @@ namespace csl::ut
 			}
 		}
 
-		void insert(size_t i, const T& item)
+		void insert(size_t in_index, const T& in_rItem)
 		{
-			if (i >= this->size())
+			if (in_index >= this->size())
 			{
 				return;
 			}
 
-			if (i == this->size() - 1 || (this->size() == 0 && i == 0))
+			if (in_index == this->size() - 1 || (this->size() == 0 && in_index == 0))
 			{
-				push_back(item);
+				push_back(in_rItem);
 				return;
 			}
 
-			this->m_length++;
-			if (this->m_length > this->capacity())
+			this->Length++;
+			if (this->Length > this->capacity())
 			{
-				this->reserve(this->m_length * 2);
+				this->reserve(this->Length * 2);
 			}
 
-			memmove(&this->p_buffer[i + 1], &this->p_buffer[i], (this->size() - i) * sizeof(T));
-			new(&this->p_buffer[i]) T(item);
+			memmove(&this->pBuffer[in_index + 1], &this->pBuffer[i], (this->size() - in_index) * sizeof(T));
+			new(&this->pBuffer[in_index]) T(in_rItem);
 		}
 
-		void push_back(const T& item)
+		void push_back(const T& in_rItem)
 		{
-			this->m_length++;
-			if (this->m_length > this->capacity())
+			this->Length++;
+			if (this->Length > this->capacity())
 			{
-				this->reserve(this->m_length * 2);
+				this->reserve(this->Length * 2);
 			}
 
-			new(&this->p_buffer[this->m_length - 1]) T(item);
+			new(&this->pBuffer[this->Length - 1]) T(in_rItem);
 		}
 
-		void remove(uint i)
+		void remove(uint in_index)
 		{
-			if (i >= this->m_length)
+			if (in_index >= this->Length)
 				return;
 
-			this->p_buffer[i].~T();
+			this->Length[in_index].~T();
 
-			if (i != this->m_length - 1)
-				this->p_buffer[i] = this->p_buffer[i + 1];
+			if (in_index != this->Length - 1)
+				this->pBuffer[in_index] = this->pBuffer[in_index + 1];
 
-			this->m_length--;
+			this->Length--;
 		}
 
 		void erase(T* in_pItem)
 		{
 			in_pItem->~T();
 
-			T* pEnd = &this->p_buffer[this->m_length];
+			T* pEnd = &this->pBuffer[this->Length];
 			if (in_pItem != pEnd)
 			{
 				for (T* i = in_pItem; i != pEnd; i++)
@@ -96,7 +96,7 @@ namespace csl::ut
 				}
 			}
 
-			this->m_length--;
+			this->Length--;
 		}
 
 		void clear()
@@ -106,31 +106,31 @@ namespace csl::ut
 				item.~T();
 			}
 
-			this->m_length = 0;
+			this->Length = 0;
 		}
 
-		void resize(size_t num)
+		void resize(size_t in_num)
 		{
-			if (num < this->size())
+			if (in_num < this->size())
 			{
-				for (size_t i = num; i < this->size(); i++)
+				for (size_t i = in_num; i < this->size(); i++)
 				{
 					(*this)[i].~T();
 				}
 				
-				this->m_length = num;
+				this->Length = in_num;
 				return;
 			}
-			else if (num > this->size())
+			else if (in_num > this->size())
 			{
-				this->reserve(num);
+				this->reserve(in_num);
 
-				for (size_t i = this->size(); i < num; i++)
+				for (size_t i = this->size(); i < in_num; i++)
 				{
 					new(&(*this)[i]) T();
 				}
 
-				this->m_length = num;
+				this->Length = in_num;
 			}
 		}
 

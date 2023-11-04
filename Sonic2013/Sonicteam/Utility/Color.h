@@ -4,10 +4,10 @@ namespace csl::ut
 {
 	struct Color8
 	{
-		uint8 r;
-		uint8 g;
-		uint8 b;
-		uint8 a;
+		uint8 R;
+		uint8 G;
+		uint8 B;
+		uint8 A;
 
 		inline operator const uint&() const
 		{

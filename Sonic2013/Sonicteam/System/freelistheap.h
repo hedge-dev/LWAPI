@@ -4,34 +4,35 @@ namespace csl::fnd
 {
 	class FreeListHeapBase : public HeapBase
 	{
-		struct BlockHead
-		{
-			FreeListHeapBase* m_pOwner{}; // 0
-			size_t m_Size{}; // 4
-			size_t m_Offset{}; // 8
-			size_t m_Unk1{}; // 12
-			BlockHead* m_pPrev{}; // 16
-			BlockHead* m_pNext{}; // 20
-			size_t m_Unk2{}; // 24
-			size_t m_Padding{ 0x41474553 }; // 28
-		};
-
-	public:
-		DEFINE_RTTI_PTR(ASLR(0x00FBABC8));
-		void* m_pBufferBegin{}; // 56
-		void* m_pBufferEnd{}; // 60
-		BlockHead* m_pRootBlock{}; // 64
-		BlockHead* m_pLastBlock{}; // 68
-		size_t m_TotalFreeSize{}; // 72
-		size_t m_AllocationCount{}; // 76
-		size_t m_BufferFreeSize{}; // 80
-		size_t m_TotalAllocationCalls{}; // 84
-		uint m_Unk3{}; // 88
-
+	private:
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpAllocCore, ASLR(0x0096A450), FreeListHeapBase*, size_t, size_t);
 		inline static FUNCTION_PTR(void*, __thiscall, ms_fpAllocBottomCore, ASLR(0x0096A4E0), FreeListHeapBase*, size_t, size_t);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpFree, ASLR(0x0096A140), FreeListHeapBase*, void*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCollectHeapInformation, ASLR(0x0096A270), const FreeListHeapBase*, HeapInformation*);
+
+	public:
+		struct BlockHead
+		{
+			FreeListHeapBase* pOwner{}; // 0
+			size_t Size{}; // 4
+			size_t Offset{}; // 8
+			size_t Unk1{}; // 12
+			BlockHead* pPrev{}; // 16
+			BlockHead* pNext{}; // 20
+			size_t Unk2{}; // 24
+			size_t Padding{ 0x41474553 }; // 28
+		};
+
+		DEFINE_RTTI_PTR(ASLR(0x00FBABC8));
+		void* pBufferBegin{}; // 56
+		void* pBufferEnd{}; // 60
+		BlockHead* pRootBlock{}; // 64
+		BlockHead* pLastBlock{}; // 68
+		size_t TotalFreeSize{}; // 72
+		size_t AllocationCount{}; // 76
+		size_t BufferFreeSize{}; // 80
+		size_t TotalAllocationCalls{}; // 84
+		uint Unk3{}; // 88
 
 		FreeListHeapBase()
 		{
@@ -47,17 +48,17 @@ namespace csl::fnd
 	public:
 		void Initialize(void* in_pBuffer, size_t in_size)
 		{
-			m_pBufferBegin = in_pBuffer;
-			m_pBufferEnd = (char*)in_pBuffer + in_size;
-			m_pRootBlock = (BlockHead*)in_pBuffer;
-			m_pLastBlock = m_pRootBlock;
-			InitBlock(m_pRootBlock);
-			m_pRootBlock->m_Size = in_size;
-			m_AllocationCount = 0;
-			m_TotalAllocationCalls = 0;
+			pBufferBegin = in_pBuffer;
+			pBufferEnd = (char*)in_pBuffer + in_size;
+			pRootBlock = (BlockHead*)in_pBuffer;
+			pLastBlock = pRootBlock;
+			InitBlock(pRootBlock);
+			pRootBlock->Size = in_size;
+			AllocationCount = 0;
+			TotalAllocationCalls = 0;
 
-			m_TotalFreeSize = in_size;
-			m_BufferFreeSize = in_size;
+			TotalFreeSize = in_size;
+			BufferFreeSize = in_size;
 			AttachToLinkList(in_pBuffer);
 			RaiseInitializeCallback();
 		}
@@ -84,13 +85,13 @@ namespace csl::fnd
 
 		bool IsIn(void* in_pMemory) const override
 		{
-			return in_pMemory >= m_pBufferBegin && in_pMemory < m_pBufferEnd;
+			return in_pMemory >= pBufferBegin && in_pMemory < pBufferEnd;
 		}
 
 		size_t GetBlockSize(void* in_pMemory) const override
 		{
 			BlockHead* pBlock = (BlockHead*)(((char*)in_pMemory) - sizeof(BlockHead));
-			return pBlock->m_Size + pBlock->m_Offset;
+			return pBlock->Size + pBlock->Offset;
 		}
 
 		void CollectHeapInformation(HeapInformation* out_pInfo) const override
@@ -100,27 +101,27 @@ namespace csl::fnd
 
 		void* GetBufferTop() const override
 		{
-			return m_pBufferBegin;
+			return pBufferBegin;
 		}
 
 		void* GetBufferEnd() const override
 		{
-			return m_pBufferEnd;
+			return pBufferEnd;
 		}
 
 		size_t GetCurrentAllocateCount() const override
 		{
-			return m_AllocationCount;
+			return AllocationCount;
 		}
 
 		size_t GetCallAllocateTime() const override
 		{
-			return m_TotalAllocationCalls;
+			return TotalAllocationCalls;
 		}
 
 		void GetMemorySnapshot(MemorySnapshot& out_snapshot) const override
 		{
-			return CorrectSnapshotFromDebugInformation(out_snapshot, m_AllocationCount);
+			return CorrectSnapshotFromDebugInformation(out_snapshot, AllocationCount);
 		}
 
 	protected:
@@ -138,7 +139,7 @@ namespace csl::fnd
 		BlockHead* InitBlock(BlockHead* in_pBlock)
 		{
 			*in_pBlock = BlockHead();
-			in_pBlock->m_pOwner = this;
+			in_pBlock->pOwner = this;
 
 			return in_pBlock;
 		}
@@ -147,90 +148,122 @@ namespace csl::fnd
 		{
 			BlockHead* pNewBlock = (BlockHead*)(((char*)in_pBlock) + in_size);
 			InitBlock(pNewBlock);
-			pNewBlock->m_Size = in_pBlock->m_Size - in_size;
-			in_pBlock->m_Size = in_size;
+			pNewBlock->Size = in_pBlock->Size - in_size;
+			in_pBlock->Size = in_size;
 
 			return pNewBlock;
 		}
 
 		void InsertBlockNext(BlockHead* in_pBlock, BlockHead* in_pNext)
 		{
-			if (in_pNext->m_pNext)
+			if (in_pNext->pNext)
 			{
-				in_pNext->m_pNext->m_pPrev = in_pBlock;
-				in_pBlock->m_pNext = in_pNext->m_pNext;
+				in_pNext->pNext->pPrev = in_pBlock;
+				in_pBlock->pNext = in_pNext->pNext;
 			}
 			else
 			{
-				m_pLastBlock = in_pBlock;
-				in_pBlock->m_pNext = nullptr;
+				pLastBlock = in_pBlock;
+				in_pBlock->pNext = nullptr;
 			}
 
-			in_pNext->m_pNext = in_pBlock;
-			in_pBlock->m_pPrev = in_pNext;
+			in_pNext->pNext = in_pBlock;
+			in_pBlock->pPrev = in_pNext;
 		}
 
 		void InsertBlockPrev(BlockHead* in_pBlock, BlockHead* in_pPrev)
 		{
-			if (in_pPrev->m_pPrev)
+			if (in_pPrev->pPrev)
 			{
-				in_pPrev->m_pPrev->m_pNext = in_pBlock;
-				in_pBlock->m_pPrev = in_pPrev->m_pPrev;
+				in_pPrev->pPrev->pNext = in_pBlock;
+				in_pBlock->pPrev = in_pPrev->pPrev;
 			}
 			else
 			{
-				m_pRootBlock = in_pBlock;
-				in_pBlock->m_pPrev = nullptr;
+				pRootBlock = in_pBlock;
+				in_pBlock->pPrev = nullptr;
 			}
 
-			in_pPrev->m_pPrev = in_pBlock;
-			in_pBlock->m_pNext = in_pPrev;
+			in_pPrev->pPrev = in_pBlock;
+			in_pBlock->pNext = in_pPrev;
 		}
 
 		void RemoveBlock(BlockHead* in_pBlock)
 		{
-			if (in_pBlock->m_pPrev)
+			if (in_pBlock->pPrev)
 			{
-				in_pBlock->m_pPrev->m_pNext = in_pBlock->m_pNext;
-				if (in_pBlock->m_pNext)
+				in_pBlock->pPrev->pNext = in_pBlock->pNext;
+				if (in_pBlock->pNext)
 				{
-					in_pBlock->m_pNext->m_pPrev = in_pBlock->m_pPrev;
-					in_pBlock->m_pNext = nullptr;
-					in_pBlock->m_pPrev = nullptr;
+					in_pBlock->pNext->pPrev = in_pBlock->pPrev;
+					in_pBlock->pNext = nullptr;
+					in_pBlock->pPrev = nullptr;
 					return;
 				}
 			}
 			else
 			{
-				m_pRootBlock = in_pBlock->m_pNext;
-				if (in_pBlock->m_pNext)
+				pRootBlock = in_pBlock->pNext;
+				if (in_pBlock->pNext)
 				{
-					in_pBlock->m_pNext->m_pPrev = in_pBlock->m_pPrev;
-					in_pBlock->m_pNext = nullptr;
-					in_pBlock->m_pPrev = nullptr;
+					in_pBlock->pNext->pPrev = in_pBlock->pPrev;
+					in_pBlock->pNext = nullptr;
+					in_pBlock->pPrev = nullptr;
 					return;
 				}
 			}
 
-			m_pLastBlock = in_pBlock->m_pPrev;
-			in_pBlock->m_pPrev = nullptr;
-			in_pBlock->m_pNext = nullptr;
+			pLastBlock = in_pBlock->pPrev;
+			in_pBlock->pPrev = nullptr;
+			in_pBlock->pNext = nullptr;
 		}
 
 		void JJointBlock(BlockHead* in_pBlock, BlockHead* in_pOther)
 		{
-			if (in_pOther->m_pNext)
+			if (in_pOther->pNext)
 			{
-				in_pOther->m_pNext->m_pPrev = in_pBlock;
-				in_pBlock->m_pNext = in_pOther->m_pNext;
+				in_pOther->pNext->pPrev = in_pBlock;
+				in_pBlock->pNext = in_pOther->pNext;
 			}
 			else
 			{
-				m_pLastBlock = in_pBlock;
-				in_pBlock->m_pNext = nullptr;
+				pLastBlock = in_pBlock;
+				in_pBlock->pNext = nullptr;
 			}
 
-			in_pBlock->m_Size += in_pOther->m_Size;
+			in_pBlock->Size += in_pOther->Size;
+		}
+	};
+	
+	template<typename TLock>
+	class FreeListHeapTemplate : public FreeListHeapBase
+	{
+	public:
+		TLock Lock{};
+
+		void* Alloc(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = FreeListHeapBase::Alloc(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void* AllocBottom(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = FreeListHeapBase::AllocBottom(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void Free(void* in_pMemory) override
+		{
+			Lock.Lock();
+			FreeListHeapBase::Free(in_pMemory);
+			Lock.Unlock();
 		}
 	};
 }

@@ -5,25 +5,25 @@ namespace csl::ut
 	template<typename TKey, typename Tx>
 	struct Pair
 	{
-		TKey key;
-		Tx x;
+		TKey Key;
+		Tx X;
 
-		Pair(TKey key, Tx x) : key(key), x(x) {}
+		Pair(TKey in_key, Tx in_x) : Key(in_key), X(in_x) {}
 
-		bool operator==(const TKey& key) const
+		bool operator==(const TKey& in_rKey) const
 		{
-			return this->key == key;
+			return this->Key == in_rKey;
 		}
 
-		bool operator!=(const TKey& key) const
+		bool operator!=(const TKey& in_rKey) const
 		{
-			return this->key != key;
+			return this->Key != in_rKey;
 		}
 	};
 
 	template<typename TKey, typename Tx>
-	inline static Pair<TKey, Tx> MakePair(TKey key, Tx x)
+	inline static Pair<TKey, Tx> MakePair(TKey in_key, Tx in_x)
 	{
-		return Pair<TKey, Tx>{key, x};
+		return Pair<TKey, Tx>{in_key, in_x};
 	}
 }

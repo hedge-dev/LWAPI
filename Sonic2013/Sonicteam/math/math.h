@@ -22,64 +22,62 @@ namespace app::math
 
 namespace csl::math 
 {
-	inline static FUNCTION_PTR(Quaternion*, __cdecl, ms_fpQuaternionRotationBetweenNormals, ASLR(0x00963DA0), Quaternion*, const Vector3&, const Vector3&);
-
-	static bool IsInfinite(float value) { return isinf(value); }
-	static bool IsNaN(float value) { return isnan(value); }
+	static bool IsInfinite(float in_value) { return isinf(in_value); }
+	static bool IsNaN(float in_value) { return isnan(in_value); }
 
 	template<typename T>
-	inline static const T& Clamp(const T& value, const T& min, const T& max)
+	inline static const T& Clamp(const T& in_value, const T& in_min, const T& in_max)
 	{
-		if (value < min)
+		if (in_value < in_min)
 			return min;
 
-		if (value > max)
+		if (in_value > in_max)
 			return max;
 
-		return value;
+		return in_value;
 	}
 
 	template<typename T>
-	inline static const T& Max(const T& value, const T& max)
+	inline static const T& Max(const T& in_value, const T& in_max)
 	{
-		if (value >= max)
-			return value;
+		if (in_value >= in_max)
+			return in_value;
 
-		return max;
+		return in_max;
 	}
 
 	template<typename T>
-	inline static const T& Min(const T& value, const T& min)
+	inline static const T& Min(const T& in_value, const T& in_min)
 	{
-		if (value <= min)
-			return value;
+		if (in_value <= in_min)
+			return in_value;
 
-		return min;
+		return in_min;
 	}
 
 	template<typename T>
-	inline static const T Sqrt(const T& value)
+	inline static const T Sqrt(const T& in_value)
 	{
-		if (value >= 0.0f)
-			return sqrt(value);
+		if (in_value >= 0.0f)
+			return sqrt(in_value);
 
 		return 0.0f;
 	}
 
 	template<typename T>
-	inline static const T Lerp(const T& a, const T& b, float t)
+	inline static const T Lerp(const T& in_a, const T& in_b, float in_t)
 	{
-		return a + (b - a) * t;
+		return in_a + (in_b - in_a) * in_t;
 	}
 
-	inline static const float Select(float a, float b, float c)
+	inline static const float Select(float in_a, float in_b, float in_c)
 	{
-		return a >= 0.0f ? b : c;
+		return in_a >= 0.0f ? in_b : in_c;
 	}
 
-	inline static const float Nabs(float val)
+	inline static const float Nabs(float in_val)
 	{
-		return -fabs(val);
+		return -fabs(in_val);
 	}
 
 	class Vector2 : public Eigen::Vector2f
@@ -92,12 +90,12 @@ namespace csl::math
 			setIdentity();
 		}
 
-		Vector2(const Eigen::Vector2f& rVec) : Eigen::Vector2f(rVec.x(), rVec.y())
+		Vector2(const Eigen::Vector2f& in_rVec) : Eigen::Vector2f(in_rVec.x(), in_rVec.y())
 		{
 			
 		}
 		
-		Vector2(float x, float y) : Eigen::Vector2f(x, y)
+		Vector2(float in_x, float in_y) : Eigen::Vector2f(in_x, in_y)
 		{
 
 		}
@@ -136,12 +134,12 @@ namespace csl::math
 			*this = *Zero;
 		}
 		
-		Vector3(float x, float y, float z) : Eigen::Vector3f(x, y, z)
+		Vector3(float in_x, float in_y, float in_z) : Eigen::Vector3f(in_x, in_y, in_z)
 		{
 			
 		}
 		
-		Vector3(const Eigen::Vector3f& vec) : Eigen::Vector3f(vec.x(), vec.y(), vec.z())
+		Vector3(const Eigen::Vector3f& in_rVec) : Eigen::Vector3f(in_rVec.x(), in_rVec.y(), in_rVec.z())
 		{
 			
 		}
@@ -168,17 +166,17 @@ namespace csl::math
 			setIdentity();
 		}
 
-		Vector4(const Vector3& vec, float w) : Eigen::Vector4f(vec[0], vec[1], vec[2], w)
+		Vector4(const Vector3& in_rVec, float in_w) : Eigen::Vector4f(in_rVec[0], in_rVec[1], in_rVec[2], in_w)
 		{
 			
 		}
 
-		Vector4(float x, float y, float z, float w) : Eigen::Vector4f(x, y, z, w)
+		Vector4(float in_x, float in_y, float in_z, float in_w) : Eigen::Vector4f(in_x, in_y, in_z, in_w)
 		{
 
 		}
 
-		Vector4(const Eigen::Vector4f& vec) : Eigen::Vector4f(vec.x(), vec.y(), vec.z(), vec.w())
+		Vector4(const Eigen::Vector4f& in_rVec) : Eigen::Vector4f(in_rVec.x(), in_rVec.y(), in_rVec.z(), in_rVec.w())
 		{
 
 		}
@@ -197,7 +195,7 @@ namespace csl::math
 			setIdentity();
 		}
 		
-		Angle3(float x, float y, float z) : Eigen::Vector3f(x, y, z)
+		Angle3(float in_x, float in_y, float in_z) : Eigen::Vector3f(in_x, in_y, in_z)
 		{
 
 		}
@@ -213,31 +211,31 @@ namespace csl::math
 			setIdentity();
 		}
 
-		Quaternion(const Eigen::Quaternionf& quat) : Eigen::Quaternionf(quat)
+		Quaternion(const Eigen::Quaternionf& in_rQuat) : Eigen::Quaternionf(in_rQuat)
 		{
 
 		}
 
-		Quaternion(const Matrix34& matrix);
+		Quaternion(const Matrix34& in_rMatrix);
 
-		Quaternion(float x, float y, float z, float w) : Eigen::Quaternionf(w, x, y, z)
+		Quaternion(float in_x, float in_y, float in_z, float in_w) : Eigen::Quaternionf(in_w, in_x, in_y, in_z)
 		{
 
 		}
 
-		Quaternion(const Eigen::AngleAxisf& angleAxis) : Eigen::Quaternionf(angleAxis)
+		Quaternion(const Eigen::AngleAxisf& in_rAngleAxis) : Eigen::Quaternionf(in_rAngleAxis)
 		{
 
 		}
 
-		friend bool operator==(const Quaternion& lhs, const Quaternion& rhs)
+		friend bool operator==(const Quaternion& in_rLhs, const Quaternion& in_rRhs)
 		{
-			return lhs.isApprox(rhs);
+			return in_rLhs.isApprox(in_rRhs);
 		}
 
-		friend bool operator!=(const Quaternion& lhs, const Quaternion& rhs)
+		friend bool operator!=(const Quaternion& in_rLhs, const Quaternion& in_rRhs)
 		{
-			return !lhs.isApprox(rhs);
+			return !in_rLhs.isApprox(in_rRhs);
 		}
 
 		csl::math::Quaternion Normalize()
@@ -254,28 +252,28 @@ namespace csl::math
 			setIdentity();
 		}
 
-		Matrix34(float x, float y, float z) : Eigen::Matrix4f()
+		Matrix34(float in_x, float in_y, float in_z) : Eigen::Matrix4f()
 		{
 			setIdentity();
-			SetTransVector({ x, y, z });
+			SetTransVector({ in_x, in_y, in_z });
 		}
 
-		Matrix34(char axis, float rad) : Eigen::Matrix4f()
+		Matrix34(char in_axis, float in_rad) : Eigen::Matrix4f()
 		{
 			setIdentity();
 
 			Eigen::Quaternionf q{};
-			if (axis == 'x')
+			if (in_axis == 'x')
 			{
-				q = { Eigen::AngleAxisf(rad, csl::math::Angle3::UnitX()) };
+				q = { Eigen::AngleAxisf(in_rad, csl::math::Angle3::UnitX()) };
 			}
-			else if (axis == 'y')
+			else if (in_axis == 'y')
 			{
-				q = { Eigen::AngleAxisf(rad, csl::math::Angle3::UnitY()) };
+				q = { Eigen::AngleAxisf(in_rad, csl::math::Angle3::UnitY()) };
 			}
-			else if (axis == 'Z')
+			else if (in_axis == 'Z')
 			{
-				q = { Eigen::AngleAxisf(rad, csl::math::Angle3::UnitZ()) };
+				q = { Eigen::AngleAxisf(in_rad, csl::math::Angle3::UnitZ()) };
 			}
 
 			Eigen::Matrix3f mtx = q.toRotationMatrix();
@@ -295,14 +293,14 @@ namespace csl::math
 			SetColumn(2, (csl::math::Vector3)mtx.col(2));
 		}
 
-		Vector3& GetColumn(uint column) const
+		Vector3& GetColumn(uint in_column) const
 		{
-			return *(Vector3*)col(column).data();
+			return *(Vector3*)col(in_column).data();
 		}
 
-		void SetColumn(uint column, const Vector3& data)
+		void SetColumn(uint in_column, const Vector3& in_rData)
 		{
-			*(Vector3*)col(column).data() = data;
+			*(Vector3*)col(in_column).data() = in_rData;
 		}
 
 		Vector3& GetTransVector() const
@@ -321,9 +319,9 @@ namespace csl::math
 			return Quaternion(q);
 		}
 
-		void SetTransVector(const Vector3& translation)
+		void SetTransVector(const Vector3& in_rTranslation)
 		{
-			SetColumn(3, translation);
+			SetColumn(3, in_rTranslation);
 		}
 
 		bool Invert(Matrix34* out_pMatrix)
@@ -391,36 +389,36 @@ namespace csl::math
 	class Sphere
 	{
 	public:
-		Vector3 m_Origin{};
-		float m_Radius{};
+		Vector3 Origin{};
+		float Radius{};
 
 		Sphere() {}
-		Sphere(const Vector3& origin, float rad) : m_Origin(origin), m_Radius(rad) {}
+		Sphere(const Vector3& in_rOrigin, float in_rad) : Origin(in_rOrigin), Radius(in_rad) {}
 		
-		bool Intersects(const Vector3& point) const
+		bool Intersects(const Vector3& in_rPoint) const
 		{
-			return (m_Origin - point).squaredNorm() <= m_Radius * m_Radius;
+			return (Origin - in_rPoint).squaredNorm() <= Radius * Radius;
 		}
 	};
 
 	class Segment3
 	{
 	public:
-		Vector3 m_Start{};
-		Vector3 m_End{};
+		Vector3 Start{};
+		Vector3 End{};
 
 		Segment3() {}
-		Segment3(const Vector3& start, const Vector3& end) : m_Start(start), m_End(end) {}
+		Segment3(const Vector3& in_rStart, const Vector3& in_rEnd) : Start(in_rStart), End(in_rEnd) {}
 		
-		bool Intersects(const Sphere& sphere) const
+		bool Intersects(const Sphere& in_rSphere) const
 		{
-			Vector3 closestPoint = m_Start;
-			float distance = (m_End - m_Start).norm();
+			Vector3 closestPoint = Start;
+			float distance = (End - Start).norm();
 			float t = 0.0f;
 			
 			if (distance > 0.0f)
 			{
-				t = (sphere.m_Origin - m_Start).dot(m_End - m_Start) / distance;
+				t = (in_rSphere.Origin - Start).dot(End - Start) / distance;
 				
 				if (t < 0.0f)
 				{
@@ -431,31 +429,31 @@ namespace csl::math
 					t = 1.0f;
 				}
 				
-				closestPoint = Vector3(m_Start + t * (m_End - m_Start));
+				closestPoint = Vector3(Start + t * (End - Start));
 			}
 			
-			return (sphere.m_Origin - closestPoint).squaredNorm() <= sphere.m_Radius * sphere.m_Radius;
+			return (in_rSphere.Origin - closestPoint).squaredNorm() <= in_rSphere.Radius * in_rSphere.Radius;
 		}
 	};
 
 	class Capsule
 	{
 	public:
-		Segment3 m_Segment{};
-		float m_Radius{};
+		Segment3 Segment{};
+		float Radius{};
 
 		Capsule() {}
-		Capsule(const Segment3& segment, float rad) : m_Segment(segment), m_Radius(rad) {}
+		Capsule(const Segment3& in_rSegment, float in_rad) : Segment(in_rSegment), Radius(in_rad) {}
 
-		bool Intersects(const Sphere& sphere) const
+		bool Intersects(const Sphere& in_rSphere) const
 		{
-			Vector3 closestPoint = m_Segment.m_Start;
-			float distance = (m_Segment.m_End - m_Segment.m_Start).norm();
+			Vector3 closestPoint = Segment.Start;
+			float distance = (Segment.End - Segment.Start).norm();
 			float t = 0.0f;
 			
 			if (distance > 0.0f)
 			{
-				t = (sphere.m_Origin - m_Segment.m_Start).dot(m_Segment.m_End - m_Segment.m_Start) / distance;
+				t = (in_rSphere.Origin - Segment.Start).dot(Segment.End - Segment.Start) / distance;
 				
 				if (t < 0.0f)
 				{
@@ -466,25 +464,25 @@ namespace csl::math
 					t = 1.0f;
 				}
 				
-				closestPoint = Vector3(m_Segment.m_Start + t * (m_Segment.m_End - m_Segment.m_Start));
+				closestPoint = Vector3(Segment.Start + t * (Segment.End - Segment.Start));
 			}
 			
-			return (sphere.m_Origin - closestPoint).squaredNorm() <= sphere.m_Radius * sphere.m_Radius;
+			return (in_rSphere.Origin - closestPoint).squaredNorm() <= in_rSphere.Radius * in_rSphere.Radius;
 		}
 	};
 	
 	class Aabb
 	{
 	public:
-		Vector3 m_Min{};
-		Vector3 m_Max{};
+		Vector3 Min{};
+		Vector3 Max{};
 
 		Aabb() {}
-		Aabb(const Vector3& min, const Vector3& max) : m_Min(min), m_Max(max) {}
-		void Add(const Vector3& point)
+		Aabb(const Vector3& in_rMin, const Vector3& in_Max) : Min(in_rMin), Max(in_Max) {}
+		void Add(const Vector3& in_rPoint)
 		{
-			m_Min = { m_Min.cwiseMin(point) };
-			m_Max = { m_Max.cwiseMax(point) };
+			Min = { Min.cwiseMin(in_rPoint) };
+			Max = { Max.cwiseMax(in_rPoint) };
 		}
 	};
 
@@ -555,7 +553,8 @@ namespace csl::math
 
 	static Quaternion* QuaternionRotationBetweenNormals(Quaternion* out_pRotation, const Vector3& in_rLeft, const Vector3& in_rRight)
 	{
-		return ms_fpQuaternionRotationBetweenNormals(out_pRotation, in_rLeft, in_rRight);
+		FUNCTION_PTR(Quaternion*, __cdecl, fpQuaternionRotationBetweenNormals, ASLR(0x00963DA0), Quaternion*, const Vector3&, const Vector3&);
+		return fpQuaternionRotationBetweenNormals(out_pRotation, in_rLeft, in_rRight);
 	}
 
 	static Quaternion QuaternionNormalize(Quaternion in_rotation)
@@ -568,7 +567,7 @@ namespace csl::math
 		return in_rLeft * in_rRight;
 	}
 
-	inline Quaternion::Quaternion(const Matrix34& matrix) : Eigen::Quaternionf(matrix.topLeftCorner<3, 3>())
+	inline Quaternion::Quaternion(const Matrix34& in_rMatrix) : Eigen::Quaternionf(in_rMatrix.topLeftCorner<3, 3>())
 	{
 
 	}
@@ -637,16 +636,16 @@ namespace app::math
 		return csl::math::Vector3(rotMtx * in_rDir);
 	}
 
-	inline csl::math::Vector3 Vector3RotateX(float angle, const csl::math::Vector3& in_rDir)
+	inline csl::math::Vector3 Vector3RotateX(float in_angle, const csl::math::Vector3& in_rDir)
 	{
-		csl::math::Quaternion rot(Eigen::AngleAxisf(angle, csl::math::Vector3::UnitX()));
+		csl::math::Quaternion rot(Eigen::AngleAxisf(in_angle, csl::math::Vector3::UnitX()));
 		auto rotMtx = rot.toRotationMatrix();
 		return csl::math::Vector3(rotMtx * in_rDir);
 	}
 
-	inline csl::math::Vector3 Vector3RotateY(float angle, const csl::math::Vector3& in_rDir)
+	inline csl::math::Vector3 Vector3RotateY(float in_angle, const csl::math::Vector3& in_rDir)
 	{
-		csl::math::Quaternion rot(Eigen::AngleAxisf(angle, csl::math::Vector3::UnitY()));
+		csl::math::Quaternion rot(Eigen::AngleAxisf(in_angle, csl::math::Vector3::UnitY()));
 		auto rotMtx = rot.toRotationMatrix();
 		return csl::math::Vector3(rotMtx * in_rDir);
 	}
@@ -714,18 +713,18 @@ namespace app::math
 	class CalculatedTransform
 	{
 	public:
-		csl::math::Matrix34 m_Mtx;
-		csl::math::Vector3 m_Scale;
-		size_t m_Flags;
+		csl::math::Matrix34 Mtx;
+		csl::math::Vector3 Scale;
+		size_t Flags;
 
 		csl::math::Vector3 GetTranslation() const
 		{
-			return m_Mtx.GetTransVector();
+			return Mtx.GetTransVector();
 		}
 
-		void SetTranslation(const csl::math::Vector3& translation)
+		void SetTranslation(const csl::math::Vector3& in_rTranslation)
 		{
-			m_Mtx.SetTransVector(translation);
+			Mtx.SetTransVector(in_rTranslation);
 			SetFlag(1);
 		}
 
@@ -733,46 +732,46 @@ namespace app::math
 		{
 			Eigen::Matrix3f mtx = in_rRotation.toRotationMatrix();
 
-			m_Mtx.SetColumn(0, (csl::math::Vector3)mtx.col(0));
-			m_Mtx.SetColumn(1, (csl::math::Vector3)mtx.col(1));
-			m_Mtx.SetColumn(2, (csl::math::Vector3)mtx.col(2));
+			Mtx.SetColumn(0, (csl::math::Vector3)mtx.col(0));
+			Mtx.SetColumn(1, (csl::math::Vector3)mtx.col(1));
+			Mtx.SetColumn(2, (csl::math::Vector3)mtx.col(2));
 
 			SetFlag(1);
 		}
 
 		void SetRotationXYZ(float in_roll, float in_pitch, float in_yaw)
 		{
-			app::math::Matrix34RotationRollPitchYaw(&m_Mtx, in_roll, in_pitch, in_yaw);
+			app::math::Matrix34RotationRollPitchYaw(&Mtx, in_roll, in_pitch, in_yaw);
 			SetFlag(1);
 		}
 
 		csl::math::Quaternion GetRotationQuaternion() const
 		{
-			return m_Mtx.GetRotation();
+			return Mtx.GetRotation();
 		}
 
-		void SetFlag(size_t value)
+		void SetFlag(size_t in_value)
 		{
-			m_Flags |= value;
+			Flags |= in_value;
 		}
 	};
 
 	class Transform
 	{
 	public:
-		csl::math::Vector3 m_Position;
-		csl::math::Quaternion m_Rotation;
-		csl::math::Vector3 m_Scale;
-		bool m_IsDirty;
+		csl::math::Vector3 Position;
+		csl::math::Quaternion Rotation;
+		csl::math::Vector3 Scale;
+		bool IsDirty;
 
 		csl::math::Matrix34 GetTransformMatrix() const
 		{
-			return Matrix34AffineTransformation(m_Position, m_Rotation);
+			return Matrix34AffineTransformation(Position, Rotation);
 		}
 
-		void SetFlag(size_t flag)
+		void SetFlag(size_t in_flag)
 		{
-			m_IsDirty |= flag;
+			IsDirty |= in_flag;
 		}
 	};
 }

@@ -14,14 +14,14 @@ namespace csl::ut
 			reset();
 		}
 
-		Bitset(T value) : m_dummy(value){}
+		Bitset(T in_value) : m_dummy(in_value){}
 
 		// This doesn't actually exist, i just want to make bits easily
 		template<typename... TArgs>
-		constexpr Bitset(TArgs... bits)
+		constexpr Bitset(TArgs... in_bits)
 		{
 			reset();
-			(set(bits), ...);
+			(set(in_bits), ...);
 		}
 		
 		constexpr void reset()
@@ -29,19 +29,19 @@ namespace csl::ut
 			m_dummy = T();
 		}
 
-		constexpr void reset(T bit)
+		constexpr void reset(T in_bit)
 		{
-			m_dummy &= ~(1 << bit);
+			m_dummy &= ~(1 << in_bit);
 		}
 
-		constexpr void flip(T bit)
+		constexpr void flip(T in_bit)
 		{
-			m_dummy ^= 1 << bit;
+			m_dummy ^= 1 << in_bit;
 		}
 
-		constexpr void Flip(T bit)
+		constexpr void Flip(T in_bit)
 		{
-			flip(bit);
+			flip(in_bit);
 		}
 
 		constexpr void set()
@@ -49,27 +49,27 @@ namespace csl::ut
 			m_dummy = -1;
 		}
 		
-		constexpr void set(T bit)
+		constexpr void set(T in_bit)
 		{
-			m_dummy |= 1 << bit;
+			m_dummy |= 1 << in_bit;
 		}
 
-		void set(T bit, bool flag)
+		void set(T in_bit, bool in_flag)
 		{
-			if (flag)
-				set(bit);
+			if (in_flag)
+				set(in_bit);
 			else
-				reset(bit);
+				reset(in_bit);
 		}
 
-		void Set(T bit)
+		void Set(T in_bit)
 		{
-			set(bit);
+			set(in_bit);
 		}
 
-		void Set(T bit, bool flag)
+		void Set(T in_bit, bool in_flag)
 		{
-			set(bit, flag);
+			set(in_bit, in_flag);
 		}
 
 		constexpr T value() const
@@ -77,14 +77,14 @@ namespace csl::ut
 			return m_dummy;
 		}
 		
-		constexpr bool test(T bit) const
+		constexpr bool test(T in_bit) const
 		{
-			return m_dummy & (1 << bit);
+			return m_dummy & (1 << in_bit);
 		}
 
-		constexpr bool Test(T bit) const
+		constexpr bool Test(T in_bit) const
 		{
-			return test(bit);
+			return test(in_bit);
 		}
 		
 		operator T() const { return m_dummy; }

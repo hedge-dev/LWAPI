@@ -12,18 +12,18 @@ namespace csl::ut
 			const RuntimeTypeInfo* m_pBaseType{};
 
 		public:
-			RuntimeTypeInfo(const RuntimeTypeInfo* pBase) : m_pBaseType(pBase)
+			RuntimeTypeInfo(const RuntimeTypeInfo* in_pBase) : m_pBaseType(in_pBase)
 			{
 
 			}
 
-			bool IsDerivedFrom(const RuntimeTypeInfo* pInfo) const
+			bool IsDerivedFrom(const RuntimeTypeInfo* in_pInfo) const
 			{
 				if (!this)
 					return false;
 
 				const RuntimeTypeInfo* pBase = this;
-				while (pBase != pInfo)
+				while (pBase != in_pInfo)
 				{
 					pBase = pBase->m_pBaseType;
 					if (!pBase)
@@ -36,14 +36,14 @@ namespace csl::ut
 	}
 
 	template<typename DstType, typename SrcType>
-	inline static DstType* DynamicCast(SrcType* pSrc) 
+	inline static DstType* DynamicCast(SrcType* in_pSrc) 
 	{
-		if (!pSrc)
+		if (!in_pSrc)
 			return nullptr;
 
-		if (DstType::GetRuntimeTypeInfoStatic()->IsDerivedFrom(pSrc->GetRuntimeTypeInfo()))
+		if (DstType::GetRuntimeTypeInfoStatic()->IsDerivedFrom(in_pSrc->GetRuntimeTypeInfo()))
 		{
-			return reinterpret_cast<DstType*>(pSrc);
+			return reinterpret_cast<DstType*>(in_pSrc);
 		}
 
 		return nullptr;

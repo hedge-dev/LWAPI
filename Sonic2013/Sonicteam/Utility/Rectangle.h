@@ -5,40 +5,40 @@ namespace csl::ut
 	template<typename T>
 	struct Rectangle2
 	{
-		T x;
-		T y;
-		T width;
-		T height;
+		T X;
+		T Y;
+		T Width;
+		T Height;
 
 	public:
 		T GetLeft() const
 		{
-			return x;
+			return X;
 		}
 
 		T GetTop() const
 		{
-			return y;
+			return Y;
 		}
 
 		T GetRight() const
 		{
-			return x + width;
+			return X + Width;
 		}
 
 		T GetBottom() const
 		{
-			return y + height;
+			return Y + Height;
 		}
 
 		T GetWidth() const
 		{
-			return width;
+			return Width;
 		}
 
 		T GetHeight() const
 		{
-			return height;
+			return Height;
 		}
 	};
 }

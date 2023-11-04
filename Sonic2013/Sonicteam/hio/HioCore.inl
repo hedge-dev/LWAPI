@@ -2,33 +2,33 @@
 
 namespace csl::hio
 {
-	inline HioError HioCore::MakePacketHeader(const char* pService, const char* pCommand, uint a3, int size, PacketHeader* pOutHeader)
+	inline HioError HioCore::MakePacketHeader(const char* in_pService, const char* in_pCommand, uint in_a3, int in_size, PacketHeader* out_pOutHeader)
 	{
-		pOutHeader->m_ServiceName = pService;
-		pOutHeader->m_CommandName = pCommand;
-		pOutHeader->m_Unk1 = htonl(a3);
-		pOutHeader->m_Size = htonl(size);
+		out_pOutHeader->ServiceName = in_pService;
+		out_pOutHeader->CommandName = in_pCommand;
+		out_pOutHeader->Unk1 = htonl(in_a3);
+		out_pOutHeader->Size = htonl(in_size);
 		
 		return HIO_ERROR_OK;
 	}
 
-	inline HioError HioCore::GetPacketHeader(const void* pData, PacketHeader* pOutHeader)
+	inline HioError HioCore::GetPacketHeader(const void* in_pData, PacketHeader* out_pOutHeader)
 	{
-		const PacketHeader* pHeader = static_cast<const PacketHeader*>(pData);
-		pOutHeader->m_ServiceName = pHeader->m_ServiceName.c_str();
-		pOutHeader->m_CommandName = pHeader->m_CommandName.c_str();
-		pOutHeader->m_Unk1 = ntohl(pHeader->m_Unk1);
-		pOutHeader->m_Size = ntohl(pHeader->m_Size);
+		const PacketHeader* pHeader = static_cast<const PacketHeader*>(in_pData);
+		out_pOutHeader->ServiceName = pHeader->ServiceName.c_str();
+		out_pOutHeader->CommandName = pHeader->CommandName.c_str();
+		out_pOutHeader->Unk1 = ntohl(pHeader->Unk1);
+		out_pOutHeader->Size = ntohl(pHeader->Size);
 		
 		return HIO_ERROR_OK;
 	}
 
-	inline PacketHeader* HioCore::RecvAllAlloc(NetworkSocket sock, int* pOutBytesReceived, HioError* pOutError)
+	inline PacketHeader* HioCore::RecvAllAlloc(NetworkSocket in_sock, int* out_pOutBytesReceived, HioError* out_pOutError)
 	{
-		*pOutBytesReceived = 0;
-		*pOutError = HIO_ERROR_OK;
+		*out_pOutBytesReceived = 0;
+		*out_pOutError = HIO_ERROR_OK;
 		PacketHeader header{};
-		int received = recv(sock, (char*)&header, sizeof(header), 0);
+		int received = recv(in_sock, (char*)&header, sizeof(header), 0);
 		char* pBuf{};
 		int size{};
 		
@@ -38,25 +38,25 @@ namespace csl::hio
 			pBuf = (char*)m_pAllocator->Alloc(size, 16);
 			if (!pBuf)
 			{
-				*pOutError = HIO_ERROR_OUTOFMEMORY;
+				*out_pOutError = HIO_ERROR_OUTOFMEMORY;
 				return nullptr;
 			}
 			
 			memcpy(pBuf, &header, sizeof(header));
 		}else
 		{
-			*pOutError = HIO_ERROR_RECVERROR;
+			*out_pOutError = HIO_ERROR_RECVERROR;
 			return nullptr;
 		}
 		
-		*pOutBytesReceived = received;
+		*out_pOutBytesReceived = received;
 
 		while (received < size)
 		{
-			int nextRecv = recv(sock, pBuf + received, size - received, 0);
+			int nextRecv = recv(in_sock, pBuf + received, size - received, 0);
 			if (nextRecv < 0)
 			{
-				*pOutError = HIO_ERROR_RECVERROR;
+				*out_pOutError = HIO_ERROR_RECVERROR;
 				break;
 			}
 			

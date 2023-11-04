@@ -7,29 +7,29 @@ namespace csl::fnd
 	public:
 		struct State
 		{
-			void* m_pTopBlock{};
-			void* m_pBottomBlock{};
-			size_t m_TopAllocationCount;
-			size_t m_BottomAllocationCount;
+			void* pTopBlock{};
+			void* pBottomBlock{};
+			size_t TopAllocationCount;
+			size_t BottomAllocationCount;
 		};
 
 		enum FreeMode
 		{
-			FreeMode_Top = 1,
-			FreeMode_Bottom = 2,
-			FreeMode_All = FreeMode_Top | FreeMode_Bottom
+			eFreeMode_Top = 1,
+			eFreeMode_Bottom = 2,
+			eFreeMode_All = eFreeMode_Top | eFreeMode_Bottom
 		};
 
-		void* m_pBufferBegin{}; // 56
-		void* m_pBufferEnd{}; // 60
-		void* m_pTopBlock{}; // 64
-		void* m_pBottomBlock{}; // 68
-		size_t m_AllocationCount{}; // 72
-		size_t m_TopAllocationCount{}; // 76
-		size_t m_BottomAllocationCount{}; // 80
-		size_t m_MaxAllocationCount{}; // 84
-		size_t m_FreeSpace{}; // 88
-		size_t m_AllocationCallCount{}; // 92
+		void* pBufferBegin{}; // 56
+		void* pBufferEnd{}; // 60
+		void* pTopBlock{}; // 64
+		void* pBottomBlock{}; // 68
+		size_t AllocationCount{}; // 72
+		size_t TopAllocationCount{}; // 76
+		size_t BottomAllocationCount{}; // 80
+		size_t MaxAllocationCount{}; // 84
+		size_t FreeSpace{}; // 88
+		size_t AllocationCallCount{}; // 92
 
 		StackHeapBase()
 		{
@@ -38,17 +38,17 @@ namespace csl::fnd
 
 		void Initialize(void* in_pBuffer, size_t in_size)
 		{
-			m_pBufferBegin = in_pBuffer;
-			m_pBufferEnd = (void*)((size_t)in_pBuffer + in_size);
-			m_pTopBlock = m_pBufferBegin;
-			m_pBottomBlock = m_pBufferEnd;
+			pBufferBegin = in_pBuffer;
+			pBufferEnd = (void*)((size_t)in_pBuffer + in_size);
+			pTopBlock = pBufferBegin;
+			pBottomBlock = pBufferEnd;
 
-			m_AllocationCount = 0;
-			m_AllocationCallCount = 0;
-			m_TopAllocationCount = 0;
-			m_BottomAllocationCount = 0;
-			m_MaxAllocationCount = 0;
-			m_FreeSpace = (size_t)m_pBottomBlock - (size_t)m_pTopBlock;
+			AllocationCount = 0;
+			AllocationCallCount = 0;
+			TopAllocationCount = 0;
+			BottomAllocationCount = 0;
+			MaxAllocationCount = 0;
+			FreeSpace = (size_t)pBottomBlock - (size_t)pTopBlock;
 
 			AttachToLinkList(in_pBuffer);
 			RaiseInitializeCallback();
@@ -62,16 +62,16 @@ namespace csl::fnd
 
 		State SaveState()
 		{
-			return { m_pTopBlock, m_pBottomBlock, m_TopAllocationCount, m_BottomAllocationCount };
+			return { pTopBlock, pBottomBlock, TopAllocationCount, BottomAllocationCount };
 		}
 		void RestoreState(const State& in_state)
 		{
-			m_pTopBlock = in_state.m_pTopBlock;
-			m_pBottomBlock = in_state.m_pBottomBlock;
-			m_TopAllocationCount = in_state.m_TopAllocationCount;
-			m_BottomAllocationCount = in_state.m_BottomAllocationCount;
+			pTopBlock = in_state.pTopBlock;
+			pBottomBlock = in_state.pBottomBlock;
+			TopAllocationCount = in_state.TopAllocationCount;
+			BottomAllocationCount = in_state.BottomAllocationCount;
 
-			m_AllocationCount = m_TopAllocationCount + m_BottomAllocationCount;
+			AllocationCount = TopAllocationCount + BottomAllocationCount;
 		}
 
 		void* Alloc(size_t in_size, size_t in_alignment) override
@@ -88,7 +88,7 @@ namespace csl::fnd
 
 		bool IsIn(void* in_pMemory) const override
 		{
-			return in_pMemory >= m_pBufferBegin && in_pMemory < m_pBufferEnd;
+			return in_pMemory >= pBufferBegin && in_pMemory < pBufferEnd;
 		}
 
 		size_t GetBlockSize(void* in_pMemory) const override
@@ -98,97 +98,129 @@ namespace csl::fnd
 
 		void CollectHeapInformation(HeapInformation* out_pInfo) const override
 		{
-			out_pInfo->m_AllocationCount = m_AllocationCount;
-			out_pInfo->m_FreeSpace = (size_t)m_pBottomBlock - (size_t)m_pTopBlock;
-			out_pInfo->m_LargestBlockSize = (size_t)m_pBottomBlock - (size_t)m_pTopBlock;
-			out_pInfo->m_AllocationSize = (size_t)m_pBufferEnd - (size_t)m_pBufferBegin;
+			out_pInfo->m_AllocationCount = AllocationCount;
+			out_pInfo->m_FreeSpace = (size_t)pBottomBlock - (size_t)pTopBlock;
+			out_pInfo->m_LargestBlockSize = (size_t)pBottomBlock - (size_t)pTopBlock;
+			out_pInfo->m_AllocationSize = (size_t)pBufferEnd - (size_t)pBufferBegin;
 		}
 
 		void* GetBufferTop() const override
 		{
-			return m_pBufferBegin;
+			return pBufferBegin;
 		}
 
 		void* GetBufferEnd() const override
 		{
-			return m_pBufferEnd;
+			return pBufferEnd;
 		}
 
 		size_t GetCurrentAllocateCount() const override
 		{
-			return m_AllocationCount;
+			return AllocationCount;
 		}
 
 		size_t GetCallAllocateTime() const override
 		{
-			return m_AllocationCallCount;
+			return AllocationCallCount;
 		}
 
-		void GetMemorySnapshot(MemorySnapshot& out_snapshot) const override
+		void GetMemorySnapshot(MemorySnapshot& out_rSnapshot) const override
 		{
 			
 		}
 
 		virtual void FreeAll(FreeMode in_mode)
 		{
-			if (in_mode & FreeMode_Top)
+			if (in_mode & eFreeMode_Top)
 			{
-				m_AllocationCount -= m_TopAllocationCount;
-				m_pTopBlock = m_pBufferBegin;
-				m_TopAllocationCount = 0;
+				AllocationCount -= TopAllocationCount;
+				pTopBlock = pBufferBegin;
+				TopAllocationCount = 0;
 			}
 
-			if (in_mode & FreeMode_Bottom)
+			if (in_mode & eFreeMode_Bottom)
 			{
-				m_AllocationCount -= m_BottomAllocationCount;
-				m_pBottomBlock = m_pBufferEnd;
-				m_BottomAllocationCount = 0;
+				AllocationCount -= BottomAllocationCount;
+				pBottomBlock = pBufferEnd;
+				BottomAllocationCount = 0;
 			}
 		}
 
 		virtual void* AllocCore(size_t in_size, size_t in_alignment)
 		{
-			++m_AllocationCallCount;
+			++AllocationCallCount;
 
-			size_t blockStart = csl::ut::RoundUp((size_t)m_pTopBlock, in_alignment);
-			if (blockStart + in_size > (size_t)m_pBottomBlock)
+			size_t blockStart = csl::ut::RoundUp((size_t)pTopBlock, in_alignment);
+			if (blockStart + in_size > (size_t)pBottomBlock)
 				return nullptr;
 
-			++m_AllocationCount;
-			++m_TopAllocationCount;
+			++AllocationCount;
+			++TopAllocationCount;
 
-			m_pTopBlock = (void*)(blockStart + in_size);
-			size_t freeSpace = (size_t)m_pBottomBlock - (size_t)m_pTopBlock;
+			pTopBlock = (void*)(blockStart + in_size);
+			size_t freeSpace = (size_t)pBottomBlock - (size_t)pTopBlock;
 
-			if (m_MaxAllocationCount < m_AllocationCount)
-				m_MaxAllocationCount = m_AllocationCount;
+			if (MaxAllocationCount < AllocationCount)
+				MaxAllocationCount = AllocationCount;
 
-			if (m_FreeSpace > freeSpace)
-				m_FreeSpace = freeSpace;
+			if (FreeSpace > freeSpace)
+				FreeSpace = freeSpace;
 
 			return (void*)blockStart;
 		}
 
 		virtual void* AllocBottomCore(size_t in_size, size_t in_alignment)
 		{
-			++m_AllocationCallCount;
-			size_t blockStart = csl::ut::RoundUp((size_t)m_pBottomBlock - in_size, in_alignment);
-			if (blockStart >= (size_t)m_pTopBlock)
+			++AllocationCallCount;
+			size_t blockStart = csl::ut::RoundUp((size_t)pBottomBlock - in_size, in_alignment);
+			if (blockStart >= (size_t)pTopBlock)
 				return nullptr;
 
-			++m_AllocationCount;
-			++m_BottomAllocationCount;
+			++AllocationCount;
+			++BottomAllocationCount;
 
-			m_pBottomBlock = (void*)blockStart;
-			size_t freeSpace = (size_t)m_pBottomBlock - (size_t)m_pTopBlock;
+			pBottomBlock = (void*)blockStart;
+			size_t freeSpace = (size_t)pBottomBlock - (size_t)pTopBlock;
 
-			if (m_MaxAllocationCount < m_AllocationCount)
-				m_MaxAllocationCount = m_AllocationCount;
+			if (MaxAllocationCount < AllocationCount)
+				MaxAllocationCount = AllocationCount;
 
-			if (m_FreeSpace > freeSpace)
-				m_FreeSpace = freeSpace;
+			if (FreeSpace > freeSpace)
+				FreeSpace = freeSpace;
 
 			return (void*)blockStart;
+		}
+	};
+
+	template<typename TLock>
+	class StackHeapTemplate : public StackHeapBase
+	{
+		TLock Lock{};
+
+	public:
+		void* Alloc(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = StackHeapBase::Alloc(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void* AllocBottom(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = StackHeapBase::AllocBottom(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void FreeAll(FreeMode in_mode) override
+		{
+			Lock.Lock();
+			StackHeapBase::FreeAll(in_mode);
+			Lock.Unlock();
 		}
 	};
 }

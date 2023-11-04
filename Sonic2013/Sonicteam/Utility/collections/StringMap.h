@@ -11,12 +11,12 @@ namespace csl::ut
 		size_t m_Dummy;
 
 	public:
-		size_t hash(size_t key)
+		size_t hash(size_t in_key)
 		{
-			if (!key)
+			if (!in_key)
 				return 0;
 			
-			const char* pStr = reinterpret_cast<const char*>(key);
+			const char* pStr = reinterpret_cast<const char*>(in_key);
 			size_t hashResult{};
 			size_t i = 0;
 			char c = *pStr;
@@ -34,23 +34,23 @@ namespace csl::ut
 			return hashResult & HASH_MASK;
 		}
 
-		bool compare(size_t key, size_t other)
+		bool compare(size_t in_key, size_t in_other)
 		{
-			return strcmp(reinterpret_cast<const char*>(key), reinterpret_cast<const char*>(other)) == 0;
+			return strcmp(reinterpret_cast<const char*>(in_key), reinterpret_cast<const char*>(in_other)) == 0;
 		}
 	};
 
 	template<typename TValue>
 	class StringMap : public HashMap<StringMapOperation>
 	{
-		size_t keyCast(const char* key) const
+		size_t keyCast(const char* in_pKey) const
 		{
-			return (size_t)key;
+			return (size_t)in_pKey;
 		}
 
-		size_t valueCast(TValue value) const
+		size_t valueCast(TValue in_value) const
 		{
-			return (size_t)value;
+			return (size_t)in_value;
 		}
 
 	public:
@@ -66,8 +66,8 @@ namespace csl::ut
 			}
 			
 		public:
-			friend bool operator==(const iterator& a, const iterator& b) { return a.m_CurIdx == b.m_CurIdx; }
-			friend bool operator!=(const iterator& a, const iterator& b) { return a.m_CurIdx != b.m_CurIdx; }
+			friend bool operator==(const iterator& in_rA, const iterator& in_rB) { return in_rA.m_CurIdx == in_rB.m_CurIdx; }
+			friend bool operator!=(const iterator& in_rA, const iterator& in_rB) { return in_rA.m_CurIdx != in_rB.m_CurIdx; }
 
 			iterator& operator++() { m_CurIdx = m_pOwner->GetNext(m_CurIdx); return *this; }
 			iterator operator++(int) { iterator tmp = *this; m_CurIdx = m_pOwner->GetNext(m_CurIdx); return tmp; }
@@ -103,7 +103,7 @@ namespace csl::ut
 			}
 		};
 
-		StringMap(fnd::IAllocator* pAllocator) : HashMap<csl::ut::StringMapOperation>(pAllocator)
+		StringMap(fnd::IAllocator* in_pAllocator) : HashMap<csl::ut::StringMapOperation>(in_pAllocator)
 		{
 
 		}
@@ -118,30 +118,30 @@ namespace csl::ut
 			return iterator(this, m_CapacityMax + 1);
 		}
 
-		void insert(const char* key, TValue value)
+		void insert(const char* in_pKey, TValue in_value)
 		{
-			Insert(keyCast(key), valueCast(value));
+			Insert(keyCast(in_pKey), valueCast(in_value));
 		}
 
-		void erase(const char* key)
+		void erase(const char* in_pKey)
 		{
-			Erase(keyCast(key));
+			Erase(keyCast(in_pKey));
 		}
 
-		void erase(const iterator& iter)
+		void erase(const iterator& in_rIter)
 		{
-			Erase({ iter.m_pOwner, iter.m_CurIdx });
+			Erase({ in_rIter.m_pOwner, in_rIter.m_CurIdx });
 		}
 		
-		iterator find(const char* key) const
+		iterator find(const char* in_pKey) const
 		{
-			auto result = Find(keyCast(key));
+			auto result = Find(keyCast(in_pKey));
 			return iterator(this, result.m_CurIdx);
 		}
 
-		iterator operator[](const char* key) const
+		iterator operator[](const char* in_pKey) const
 		{
-			return find(key);
+			return find(in_pKey);
 		}
 	};
 }

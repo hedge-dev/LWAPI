@@ -15,39 +15,39 @@ namespace csl::ut
 			return reinterpret_cast<size_t>(m_pStr) & 1;
 		}
 		
-		void assign(fnd::IAllocator* pAllocator, const char* pStr)
+		void assign(fnd::IAllocator* in_pAllocator, const char* in_pStr)
 		{
-			if (c_str() == pStr)
+			if (c_str() == in_pStr)
 				return;
 
 			if (isFree() && m_pAllocator)
 				m_pAllocator->Free(reinterpret_cast<char*>(reinterpret_cast<size_t>(m_pStr) - 1));
 
-			m_pAllocator = pAllocator;
+			m_pAllocator = in_pAllocator;
 			if (!pStr)
 			{
 				m_pStr = nullptr;
 				return;
 			}
 
-			size_t bufSize = strlen(pStr) + 1;
+			size_t bufSize = strlen(in_pStr) + 1;
 			char* pBuffer = reinterpret_cast<char*>(m_pAllocator->Alloc(bufSize, 16));
-			for (size_t i = 0; pStr[i]; i++)
-				pBuffer[i] = pStr[i];
+			for (size_t i = 0; in_pStr[i]; i++)
+				pBuffer[i] = in_pStr[i];
 
 			pBuffer[bufSize - 1] = '\0';
 			m_pStr = pBuffer + 1;
 		}
 		
 	public:
-		VariableString(const char* pStr, csl::fnd::IAllocator* pAlloc)
+		VariableString(const char* in_pStr, csl::fnd::IAllocator* in_pAllocator)
 		{
-			assign(pAlloc, pStr);
+			assign(in_pAllocator, in_pStr);
 		}
 
-		VariableString(csl::fnd::IAllocator* pAlloc)
+		VariableString(csl::fnd::IAllocator* in_pAllocator)
 		{
-			m_pAllocator = pAlloc;
+			m_pAllocator = in_pAllocator;
 		}
 		
 		~VariableString()
@@ -60,14 +60,14 @@ namespace csl::ut
 			return m_pAllocator;
 		}
 		
-		void Set(const char* pStr, csl::fnd::IAllocator* pAlloc)
+		void Set(const char* in_pStr, csl::fnd::IAllocator* in_pAllocator)
 		{
-			assign(pAlloc, pStr);
+			assign(in_pAllocator, in_pStr);
 		}
 
-		void Set(const char* pStr)
+		void Set(const char* in_pStr)
 		{
-			Set(pStr, GetAllocator());
+			Set(in_pStr, GetAllocator());
 		}
 		
 		const char* c_str() const
@@ -86,9 +86,9 @@ namespace csl::ut
 			return m_pStr;
 		}
 
-		bool Compare(const char* pStr) const
+		bool Compare(const char* in_pStr) const
 		{
-			return strcmp(c_str(), pStr);
+			return strcmp(c_str(), in_pStr);
 		}
 		
 		operator const char*() const
@@ -101,20 +101,20 @@ namespace csl::ut
 			return c_str();
 		}
 		
-		VariableString& operator=(const char* pStr)
+		VariableString& operator=(const char* in_pStr)
 		{
-			Set(pStr);
+			Set(in_pStr);
 			return *this;
 		}
 
-		friend bool operator==(const VariableString& lhs, const VariableString& rhs)
+		friend bool operator==(const VariableString& in_rLhs, const VariableString& in_rRhs)
 		{
-			return lhs.Compare(rhs.c_str());
+			return in_rLhs.Compare(in_rRhs.c_str());
 		}
 
-		friend bool operator==(const VariableString& lhs, const char* rhs)
+		friend bool operator==(const VariableString& in_rLhs, const char* in_pRhs)
 		{
-			return lhs.Compare(rhs);
+			return in_rLhs.Compare(in_pRhs);
 		}
 	};
 }

@@ -149,4 +149,41 @@ namespace csl::fnd
 			return in_elemSize * in_count;
 		}
 	};
+	
+	template<typename TLock = Mutex>
+	class PoolHeapTemplate : public PoolHeapBase
+	{
+	public:
+		TLock Lock{};
+
+		PoolHeapTemplate()
+		{
+			
+		}
+
+		void* Alloc(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = PoolHeapBase::Alloc(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void* AllocBottom(size_t in_size, size_t in_alignment) override
+		{
+			Lock.Lock();
+			void* pMemory = PoolHeapBase::AllocBottom(in_size, in_alignment);
+			Lock.Unlock();
+
+			return pMemory;
+		}
+
+		void Free(void* in_pMemory) override
+		{
+			Lock.Lock();
+			PoolHeapBase::Free(in_pMemory);
+			Lock.Unlock();
+		}
+	};
 }

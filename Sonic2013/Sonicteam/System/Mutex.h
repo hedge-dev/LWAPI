@@ -34,7 +34,7 @@ namespace csl::fnd
 		Mutex* m_pMutex;
 
 	public:
-		MutexGuard(Mutex& rMutex) : m_pMutex(&rMutex)
+		MutexGuard(Mutex& in_rMutex) : m_pMutex(&in_rMutex)
 		{
 			m_pMutex->Lock();
 		}

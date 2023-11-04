@@ -8,17 +8,17 @@ namespace csl::ut
 		char m_Buffer[Len]{};
 
 	public:
-		void set(const char* pStr)
+		void set(const char* in_pStr)
 		{
-			csl::fnd::StrLcpy(m_Buffer, pStr, Len);
+			csl::fnd::StrLcpy(m_Buffer, in_pStr, Len);
 		}
 
-		void setf(const char* pFormat, ...)
+		void setf(const char* in_pFormat, ...)
 		{
 			va_list args;
-			va_start(args, pFormat);
+			va_start(args, in_pFormat);
 
-			csl::fnd::VSnprintf(m_Buffer, Len, pFormat, args);
+			csl::fnd::VSnprintf(m_Buffer, Len, in_pFormat, args);
 
 			va_end(args);
 		}
@@ -28,9 +28,9 @@ namespace csl::ut
 			set("");
 		}
 
-		FixedString(const char* pStr)
+		FixedString(const char* in_pStr)
 		{
-			set(pStr);
+			set(in_pStr);
 		}
 		
 		const char* c_str() const
@@ -38,9 +38,9 @@ namespace csl::ut
 			return m_Buffer;
 		}
 
-		void operator=(const char* pStr)
+		void operator=(const char* in_pStr)
 		{
-			set(pStr);
+			set(in_pStr);
 		}
 		
 		operator const char* () const
@@ -53,24 +53,24 @@ namespace csl::ut
 			return m_Buffer;
 		}
 		
-		friend bool operator==(const FixedString<Len>& lhs, const char* rhs)
+		friend bool operator==(const FixedString<Len>& in_rLhs, const char* in_pRhs)
 		{
-			return !strcmp(lhs.c_str(), rhs);
+			return !strcmp(in_rLhs.c_str(), in_pRhs);
 		}
 
-		friend bool operator!=(const FixedString<Len>& lhs, const char* rhs)
+		friend bool operator!=(const FixedString<Len>& lhs, const char* in_pRhs)
 		{
-			return strcmp(lhs.c_str(), rhs);
+			return strcmp(in_rLhs.c_str(), in_pRhs);
 		}
 
-		friend bool operator==(const char* lhs, const FixedString<Len>& rhs)
+		friend bool operator==(const char* in_pLhs, const FixedString<Len>& in_rLhs)
 		{
-			return !strcmp(lhs, rhs.c_str());
+			return !strcmp(in_pLhs, in_rLhs.c_str());
 		}
 
-		friend bool operator!=(const char* lhs, const FixedString<Len>& rhs)
+		friend bool operator!=(const char* in_pLhs, const FixedString<Len>& in_rLhs)
 		{
-			return strcmp(lhs, rhs.c_str());
+			return strcmp(in_pLhs, in_rLhs.c_str());
 		}
 	};
 }

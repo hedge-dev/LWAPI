@@ -5,8 +5,8 @@ namespace csl::ut
 	template<typename T>
 	struct Point2
 	{
-		T x;
-		T y;
+		T X;
+		T Y;
 
 	public:
 		T GetX() const
@@ -19,14 +19,14 @@ namespace csl::ut
 			return y;
 		}
 
-		Point2<T> operator +(const Point2<T>& point2) const
+		Point2<T> operator +(const Point2<T>& in_rPoint2) const
 		{
-			return Point2<T> { GetX() + point2.GetX(), GetY() + point2.GetY() };
+			return Point2<T> { GetX() + in_rPoint2.GetX(), GetY() + in_rPoint2.GetY() };
 		}
 		
-		Point2<T> operator -(const Point2<T>& point2) const
+		Point2<T> operator -(const Point2<T>& in_rPoint2) const
 		{
-			return Point2<T> { GetX() - point2.GetX(), GetY() - point2.GetY() };
+			return Point2<T> { GetX() - in_rPoint2.GetX(), GetY() - in_rPoint2.GetY() };
 		}
 	};
 }

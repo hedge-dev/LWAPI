@@ -10,24 +10,24 @@ namespace csl::hio
 {
 	struct ConnectArgs
 	{
-		NetworkSocket m_Socket{};
+		NetworkSocket Socket{};
 	};
 	
 	struct DisconnectArgs
 	{
-		NetworkSocket m_Socket{};
+		NetworkSocket Socket{};
 	};
 	
 	struct PacketReadArgs
 	{
-		PacketHeader m_Header{};
-		NetworkSocket m_Socket{};
-		PacketHeader* m_pPacket{};
+		PacketHeader Header{};
+		NetworkSocket Socket{};
+		PacketHeader* pPacket{};
 	};
 	
 	struct PacketWriteArgs
 	{
-		NetworkSocket m_Socket{};
+		NetworkSocket Socket{};
 	};
 	
 	class HioServer : public HioCore
@@ -41,47 +41,47 @@ namespace csl::hio
 	protected:
 		struct ServiceDesc
 		{
-			ut::FixedString<64> m_Name{};
-			bool m_CanWrite{};
-			bool m_CanRead{};
-			void* m_pConnectContext{};
-			void* m_pDisconnectContext{};
-			void* m_pReadContext{};
-			void* m_pWriteContext{};
-			ConnectFuncType* m_pConnectFunc{};
-			DisconnectFuncType* m_pDisconnectFunc{};
-			ReadFuncType* m_pReadFunc{};
-			WriteFuncType* m_pWriteFunc{};
+			ut::FixedString<64> Name{};
+			bool CanWrite{};
+			bool CanRead{};
+			void* pConnectContext{};
+			void* pDisconnectContext{};
+			void* pReadContext{};
+			void* pWriteContext{};
+			ConnectFuncType* pConnectFunc{};
+			DisconnectFuncType* pDisconnectFunc{};
+			ReadFuncType* pReadFunc{};
+			WriteFuncType* pWriteFunc{};
 
-			void ReadCallback(const PacketReadArgs& args)
+			void ReadCallback(const PacketReadArgs& in_rArgs)
 			{
-				if (m_pReadFunc && m_pReadFunc(m_pReadContext, args) != HIO_ERROR_OK)
-					m_pReadFunc = nullptr;
+				if (pReadFunc && pReadFunc(pReadContext, in_rArgs) != HIO_ERROR_OK)
+					pReadFunc = nullptr;
 			}
 
-			void WriteCallback(NetworkSocket sock)
+			void WriteCallback(NetworkSocket in_sock)
 			{
-				if (m_pWriteFunc && m_pWriteFunc(m_pWriteContext, { sock }) != HIO_ERROR_OK)
-					m_pWriteFunc = nullptr;
+				if (pWriteFunc && pWriteFunc(pWriteContext, { in_sock }) != HIO_ERROR_OK)
+					pWriteFunc = nullptr;
 			}
 			
-			void ConnectCallback(NetworkSocket sock)
+			void ConnectCallback(NetworkSocket in_sock)
 			{
-				if (m_pConnectFunc && m_pConnectFunc(m_pConnectContext, { sock }) != HIO_ERROR_OK)
-					m_pConnectFunc = nullptr;
+				if (pConnectFunc && pConnectFunc(pConnectContext, { in_sock }) != HIO_ERROR_OK)
+					pConnectFunc = nullptr;
 			}
 			
-			void DisconnectCallback(NetworkSocket sock)
+			void DisconnectCallback(NetworkSocket in_sock)
 			{
-				if (m_pDisconnectFunc && m_pDisconnectFunc(m_pDisconnectContext, { sock }) != HIO_ERROR_OK)
-					m_pDisconnectFunc = nullptr;
+				if (pDisconnectFunc && pDisconnectFunc(pDisconnectContext, { in_sock }) != HIO_ERROR_OK)
+					pDisconnectFunc = nullptr;
 			}
 		};
 
 		struct ClientSocket
 		{
-			NetworkSocket m_Socket{};
-			ServiceDesc* m_pService{};
+			NetworkSocket Socket{};
+			ServiceDesc* pService{};
 		};
 
 		csl::ut::FixedArray<ServiceDesc, FD_SETSIZE> m_Services{};
@@ -91,7 +91,7 @@ namespace csl::hio
 		fd_set m_FdSet;
 	
 	public:
-		HioServer(fnd::IAllocator* pAlloc) : HioCore(pAlloc)
+		HioServer(fnd::IAllocator* in_pAlloc) : HioCore(in_pAlloc)
 		{
 			FD_ZERO(&m_FdSet);
 			SetServer(true);
@@ -107,24 +107,24 @@ namespace csl::hio
 			for (size_t i = 0; i < m_ClientCount; i++) 
 			{
 				auto& client = m_Clients[i];
-				if (!client.m_Socket || !client.m_pService)
+				if (!client.Socket || !client.pService)
 					continue;
 
-				client.m_pService->DisconnectCallback(client.m_Socket);
-				client.m_pService->m_CanRead = false;
-				client.m_pService->m_CanWrite = false;
+				client.pService->DisconnectCallback(client.Socket);
+				client.pService->CanRead = false;
+				client.pService->CanWrite = false;
 			}
 		}
 
 	protected:
-		HioError StartupCore(const char* pAddress, ushort port) override
+		HioError StartupCore(const char* in_pAddress, ushort in_port) override
 		{
 			Cleanup();
 			HioError error = HIO_ERROR_OK;
-			if ((error = SocketInit(pAddress, port)) == HIO_ERROR_OK)
+			if ((error = SocketInit(in_pAddress, in_port)) == HIO_ERROR_OK)
 			{
 				m_ClientCount = 1;
-				m_Clients[0].m_Socket = GetSocket();
+				m_Clients[0].Socket = GetSocket();
 				FD_SET(GetSocket(), &m_FdSet);
 			}
 			
@@ -150,52 +150,52 @@ namespace csl::hio
 			for (size_t i = 0; i < m_ClientCount; i++)
 			{
 				auto& client = m_Clients[i];
-				if (FD_ISSET(client.m_Socket, &m_FdSet))
+				if (FD_ISSET(client.Socket, &m_FdSet))
 				{
-					if (client.m_Socket == GetSocket() && IsServer())
+					if (client.Socket == GetSocket() && IsServer())
 					{
-						NetworkSocket newClient = AcceptNewClient(client.m_Socket);
+						NetworkSocket newClient = AcceptNewClient(client.Socket);
 						if (newClient != HIO_ERROR_ACCEPTFAIL)
 						{
 							if (m_ClientCount >= m_Clients.size())
 								return HIO_ERROR_TOOMANYCLIENTS;
 
 							FD_SET(newClient, &m_FdSet);
-							m_Clients[m_ClientCount++].m_Socket = newClient;
+							m_Clients[m_ClientCount++].Socket = newClient;
 						}
 					}
 					else
 					{
 						if (RecvAndSendMsg(&client, GetSocket(), &m_FdSet) != HIO_ERROR_OK)
 						{
-							if (client.m_pService)
+							if (client.pService)
 							{
-								client.m_pService->DisconnectCallback(client.m_Socket);
-								client.m_pService->m_CanRead = false;
-								client.m_pService->m_CanWrite = false;
+								client.pService->DisconnectCallback(client.Socket);
+								client.pService->CanRead = false;
+								client.pService->CanWrite = false;
 							}
 
-							FD_CLR(client.m_Socket, &m_FdSet);
+							FD_CLR(client.Socket, &m_FdSet);
 							m_ClientCount--;
 						}
 					}
 				}
 				
-				if (FD_ISSET(client.m_Socket, &m_FdSet))
+				if (FD_ISSET(client.Socket, &m_FdSet))
 				{
-					if (client.m_pService)
+					if (client.pService)
 					{
-						if (client.m_pService->m_CanWrite)
-							client.m_pService->WriteCallback(client.m_Socket);
-						else if (client.m_pService->m_CanRead)
+						if (client.pService->CanWrite)
+							client.pService->WriteCallback(client.Socket);
+						else if (client.pService->CanRead)
 						{
 							PacketHeader header;
-							MakePacketHeader(client.m_pService->m_Name, HIO_COMMAND_CLIENTLINK, header);
+							MakePacketHeader(client.pService->Name, HIO_COMMAND_CLIENTLINK, header);
 							HioError sendError = HIO_ERROR_OK;
-							SendAll(client.m_Socket, &header, sizeof(header), &sendError);
+							SendAll(client.Socket, &header, sizeof(header), &sendError);
 
 							if (sendError == HIO_ERROR_OK)
-								client.m_pService->m_CanWrite = true;
+								client.pService->CanWrite = true;
 						}
 					}
 				}
@@ -204,16 +204,16 @@ namespace csl::hio
 			return HIO_ERROR_OK;
 		}
 
-		bool AcceptNewClientLink(const PacketHeader* pHeader, csl::hio::HioServer::ClientSocket* pSock)
+		bool AcceptNewClientLink(const PacketHeader* in_pHeader, csl::hio::HioServer::ClientSocket* in_pSock)
 		{
 			for (size_t i = 0; i < m_ServiceCount; i++)
 			{
 				auto& service = m_Services[i];
-				if (!service.m_CanRead && pHeader->m_ServiceName == service.m_Name.c_str() && pHeader->m_CommandName == HIO_COMMAND_SERVERLINK)
+				if (!service.CanRead && in_pHeader->ServiceName == service.Name.c_str() && in_pHeader->CommandName == HIO_COMMAND_SERVERLINK)
 				{
-					pSock->m_pService = &service;
-					service.m_CanRead = true;
-					service.ConnectCallback(pSock->m_Socket);
+					in_pSock->pService = &service;
+					service.CanRead = true;
+					service.ConnectCallback(in_pSock->Socket);
 					return true;
 				}
 			}
@@ -221,23 +221,23 @@ namespace csl::hio
 			return false;
 		}
 		
-		HioError RecvAndSendMsg(ClientSocket* pSock, NetworkSocket hostSock, fd_set* pSet)
+		HioError RecvAndSendMsg(ClientSocket* in_pSock, NetworkSocket in_hostSock, fd_set* in_pSet)
 		{
 			int bytesRecieved = 0;
 			HioError error = HIO_ERROR_OK;
-			PacketHeader* pPacket = RecvAllAlloc(pSock->m_Socket, &bytesRecieved, &error);
+			PacketHeader* pPacket = RecvAllAlloc(in_pSock->Socket, &bytesRecieved, &error);
 
-			if (error == HIO_ERROR_OK && (IsServer() ? pSock->m_Socket != hostSock : true) && FD_ISSET(pSock->m_Socket, pSet))
+			if (error == HIO_ERROR_OK && (IsServer() ? in_pSock->Socket != in_hostSock : true) && FD_ISSET(in_pSock->Socket, in_pSet))
 			{
 				PacketHeader header{};
 				GetPacketHeader(pPacket, &header);
-				if (!AcceptNewClientLink(&header, pSock) && pSock->m_pService)
+				if (!AcceptNewClientLink(&header, in_pSock) && in_pSock->pService)
 				{
 					PacketReadArgs args{};
-					args.m_Header = header;
-					args.m_Socket = pSock->m_Socket;
-					args.m_pPacket = pPacket;
-					pSock->m_pService->ReadCallback(args);
+					args.Header = header;
+					args.Socket = in_pSock->Socket;
+					args.pPacket = pPacket;
+					in_pSock->pService->ReadCallback(args);
 				}
 			}
 
@@ -252,15 +252,15 @@ namespace csl::hio
 			return HIO_ERROR_OK;
 		}
 
-		NetworkSocket AcceptNewClient(NetworkSocket sock)
+		NetworkSocket AcceptNewClient(NetworkSocket in_sock)
 		{
 			sockaddr_in address{};
 			int addrLen = sizeof(sockaddr_in);
 			
-			NetworkSocket clientSock = accept(sock, (sockaddr*)&address, &addrLen);
+			NetworkSocket clientSock = accept(in_sock, (sockaddr*)&address, &addrLen);
 			if (clientSock == SOCKET_ERROR)
 			{
-				closesocket(sock);
+				closesocket(in_sock);
 				return HIO_ERROR_ACCEPTFAIL;
 			}
 
@@ -268,7 +268,7 @@ namespace csl::hio
 		}
 	
 	public:
-		const char* GetIPAddress(int i)
+		const char* GetIPAddress(int in_index)
 		{
 			char nameBuf[256]{};
 			hostent* ht{};
@@ -276,9 +276,10 @@ namespace csl::hio
 			if (gethostname(nameBuf, sizeof(nameBuf)) == SOCKET_ERROR || (ht = gethostbyname(nameBuf)) == nullptr)
 			{
 				m_Address = "unknown";
-			}else
+			}
+			else
 			{
-				in_addr* addr = (in_addr*)ht->h_addr_list[i];
+				in_addr* addr = (in_addr*)ht->h_addr_list[in_index];
 				if (addr)
 					m_Address = inet_ntoa(*addr);
 				else
@@ -287,54 +288,54 @@ namespace csl::hio
 			return m_Address;
 		}
 
-		void SetConnectFunc(int service, ConnectFuncType* pFunc, void* pContext)
+		void SetConnectFunc(int in_service, ConnectFuncType* in_pFunc, void* in_pContext)
 		{
-			if (service >= m_ServiceCount)
+			if (in_service >= m_ServiceCount)
 				return;
 
-			m_Services[service].m_pConnectFunc = pFunc;
-			m_Services[service].m_pConnectContext = pContext;
+			m_Services[in_service].m_pConnectFunc = in_pFunc;
+			m_Services[in_service].m_pConnectContext = in_pContext;
 		}
 
-		void SetDisconnectFunc(int service, DisconnectFuncType* pFunc, void* pContext)
+		void SetDisconnectFunc(int in_service, DisconnectFuncType* in_pFunc, void* in_pContext)
 		{
-			if (service >= m_ServiceCount)
+			if (in_service >= m_ServiceCount)
 				return;
 
-			m_Services[service].m_pDisconnectFunc = pFunc;
-			m_Services[service].m_pDisconnectContext = pContext;
+			m_Services[in_service].m_pDisconnectFunc = in_pFunc;
+			m_Services[in_service].m_pDisconnectContext = in_pContext;
 		}
 
-		void SetReadFunc(int service, ReadFuncType* pFunc, void* pContext)
+		void SetReadFunc(int service, ReadFuncType* in_pFunc, void* in_pContext)
 		{
-			if (service >= m_ServiceCount)
+			if (in_service >= m_ServiceCount)
 				return;
 
-			m_Services[service].m_pReadFunc = pFunc;
-			m_Services[service].m_pReadContext = pContext;
+			m_Services[in_service].m_pReadFunc = in_pFunc;
+			m_Services[in_service].m_pReadContext = in_pContext;
 		}
 
-		void SetWriteFunc(int service, WriteFuncType* pFunc, void* pContext)
+		void SetWriteFunc(int in_service, WriteFuncType* in_pFunc, void* in_pContext)
 		{
-			if (service >= m_ServiceCount)
+			if (in_service >= m_ServiceCount)
 				return;
 
-			m_Services[service].m_pWriteFunc = pFunc;
-			m_Services[service].m_pWriteContext = pContext;
+			m_Services[in_service].m_pWriteFunc = in_pFunc;
+			m_Services[in_service].m_pWriteContext = in_pContext;
 		}
 		
-		int SetServiceId(const char* pName)
+		int SetServiceId(const char* in_pName)
 		{
 			size_t i = 0;
 			for(auto& service : m_Services)
 			{
 				if (i >= m_ServiceCount)
 				{
-					service.m_Name = pName;
+					service.m_Name = in_pName;
 					return i;
 				}
 				
-				if (service.m_Name == pName)
+				if (service.m_Name == in_pName)
 				{
 					return i;
 				}
@@ -345,12 +346,12 @@ namespace csl::hio
 			return HIO_SERVICE_INVALID;
 		}
 
-		const char* GetServiceId(int id) const
+		const char* GetServiceId(int in_id) const
 		{
-			if (id >= m_Services.size())
+			if (in_id >= m_Services.size())
 				return nullptr;
 
-			return m_Services[id].m_Name;
+			return m_Services[in_id].m_Name;
 		}
 	};
 }

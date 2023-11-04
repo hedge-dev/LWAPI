@@ -6,19 +6,19 @@ namespace csl::ut
 	class InplaceObjectMoveArray : public ObjectMoveArray<T>
 	{
 	protected:
-		char reserved[sizeof(T) * Bsz]{};
+		char m_reserved[sizeof(T) * Bsz]{};
 
 	public:
-		constexpr InplaceObjectMoveArray(size_t in_length) : ObjectMoveArray<T>((void*)reserved, in_length, Bsz, nullptr, false)
+		constexpr InplaceObjectMoveArray(size_t in_length) : ObjectMoveArray<T>((void*)m_reserved, in_length, Bsz, nullptr, false)
 		{
 
 		}
 
-		constexpr InplaceObjectMoveArray(fnd::IAllocator* allocator_) : ObjectMoveArray<T>(allocator_)
+		constexpr InplaceObjectMoveArray(fnd::IAllocator* in_pAllocator) : ObjectMoveArray<T>(in_pAllocator)
 		{
-			this->m_capacity = Bsz;
-			this->m_capacity |= 1u << ((sizeof(size_t) * CHAR_BIT) - 1);
-			this->p_buffer = (T*)reserved;
+			this->Capacity = Bsz;
+			this->Capacity |= 1u << ((sizeof(size_t) * CHAR_BIT) - 1);
+			this->pBuffer = (T*)m_reserved;
 		}
 	};
 
@@ -26,10 +26,10 @@ namespace csl::ut
 	class InplaceObjectMoveArrayAligned16 : public ObjectMoveArray<T>
 	{
 	protected:
-		alignas(16) char reserved[sizeof(T) * Bsz];
+		alignas(16) char m_reserved[sizeof(T) * Bsz];
 
 	public:
-		constexpr InplaceObjectMoveArrayAligned16() : ObjectMoveArray<T>(&reserved, Bsz, 8, nullptr, false)
+		constexpr InplaceObjectMoveArrayAligned16() : ObjectMoveArray<T>(&m_reserved, Bsz, 8, nullptr, false)
 		{
 
 		}
