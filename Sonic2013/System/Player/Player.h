@@ -12,7 +12,7 @@ namespace app::Player
 		csl::ut::Bitset<ushort> Flags{};
 		bool Unk3{};
 		int Unk4{};
-		const csl::ut::InplaceMoveArray<app::Game::EPhantomType, app::Game::EPhantomType::PHANTOM_MAX>* pPhantoms{};
+		const csl::ut::InplaceMoveArray<app::Game::EPhantomType, app::Game::EPhantomType::ePhantom_Max>* pPhantoms{};
 	};
 
 	struct RegisterCompornentsInfo;
@@ -31,20 +31,20 @@ namespace app::Player
 
 	public:
 		INSERT_PADDING(8) {};
-		CWorld* m_pWorld{};
-		CGOCCollection<10> m_Components{};
+		CWorld* pWorld{};
+		CGOCCollection<10> Components{};
 		INSERT_PADDING(4); // app::ut::RefPtr<CPostureInputManager>
 		INSERT_PADDING(4); // app::ut::RefPtr<CPostureMoveManager>
-		ut::RefPtr<CPhysics> m_rpPhysics{};
-		ut::RefPtr<CBlackBoard> m_rpBlackboard{};
-		ut::ScopedPtr<CPathService> m_spPathService{ nullptr, nullptr };
-		ut::ScopedPtr<CHomingTargetService> m_spHomingService{ nullptr, nullptr };
-		const SCinfo* m_pCinfo{};
-		ut::ScopedPtr<SVisualCinfo> m_spVisualCinfo{nullptr, nullptr};
-		size_t m_CameraId{};
-		void* m_Unk1{};
-		GameObjectHandle<CPlayerVehicle> m_Vehicle{};
-		app::ut::RefPtr<Camera::CCameraController> m_rpCamera{};
+		ut::RefPtr<CPhysics> rpPhysics{};
+		ut::RefPtr<CBlackBoard> rpBlackboard{};
+		ut::ScopedPtr<CPathService> spPathService{ nullptr, nullptr };
+		ut::ScopedPtr<CHomingTargetService> spHomingService{ nullptr, nullptr };
+		const SCinfo* pCinfo{};
+		ut::ScopedPtr<SVisualCinfo> spVisualCinfo{nullptr, nullptr};
+		size_t CameraId{};
+		void* Unk1{};
+		GameObjectHandle<CPlayerVehicle> Vehicle{};
+		app::ut::RefPtr<Camera::CCameraController> rpCamera{};
 		INSERT_PADDING(20) {};
 		
 		CPlayer()
@@ -58,22 +58,22 @@ namespace app::Player
 			if (pCollector)
 				pCollector->UpdateChangeRequest();
 			
-			m_rpPhysics->UpdateBeforeMove(in_rUpdateInfo.deltaTime);
+			rpPhysics->UpdateBeforeMove(in_rUpdateInfo.deltaTime);
 			
 			auto* pInput = GetComponent<GOCCharacterInput>();
 			if (pInput)
 				pInput->UpdateManual();
 			
-			m_rpInputManager->Update(in_rUpdateInfo);
-			m_rpMoveManager->Update(in_rUpdateInfo);
+			rpInputManager->Update(in_rUpdateInfo);
+			rpMoveManager->Update(in_rUpdateInfo);
 			
 			GetPlayerGOC<CStateGOC>()->Update(in_rUpdateInfo);
 			
 			UpdateTransform();
 			
-			m_Components.Update(in_rUpdateInfo);
+			Components.Update(in_rUpdateInfo);
 
-			m_rpPhysics->UpdateAfterMove(in_rUpdateInfo.deltaTime);
+			rpPhysics->UpdateAfterMove(in_rUpdateInfo.deltaTime);
 			
 			GetPlayerGOC<CVisualGOC>()->Update(in_rUpdateInfo);
 			GetPlayerGOC<CEffectGOC>()->Update(in_rUpdateInfo);
@@ -82,56 +82,56 @@ namespace app::Player
 			
 			UpdateGroundShapeInfo();
 
-			m_rpPhysics->UpdateHistoryData(in_rUpdateInfo.deltaTime);
+			rpPhysics->UpdateHistoryData(in_rUpdateInfo.deltaTime);
 
-			if (m_rpBlackboard->m_Unk1[2].test(4))
+			if (rpBlackboard->Unk1[2].test(4))
 				UpdateApplyGravityFromDirection(in_rUpdateInfo.deltaTime);*/
 		}
 
 		template <typename T>
 		T* GetPlayerGOC() const
 		{
-			return m_Components.GetGOC<T>();
+			return Components.GetGOC<T>();
 		}
 
 		CStateGOC* GetStateGOC() const
 		{
-			return m_Components.GetGOC<CStateGOC>();
+			return Components.GetGOC<CStateGOC>();
 		}
 
 		size_t GetGameID()
 		{
-			return GetDocument()->m_GameActorID;
+			return GetDocument()->GameActorID;
 		}
 
 		size_t GetCameraActorID()
 		{
-			return GetLevelInfo()->m_Cameras[GetPlayerNo()];
+			return GetLevelInfo()->Cameras[GetPlayerNo()];
 		}
 
 		size_t GetRCActorID()
 		{
-			return GetLevelInfo()->m_RcActor;
+			return GetLevelInfo()->RcActor;
 		}
 
 		bool HaveVehicle()
 		{
-			return m_Vehicle.IsValid();
+			return Vehicle.IsValid();
 		}
 
 		CPlayerVehicle* GetPlayerVehicle()
 		{
-			return m_Vehicle.Get();
+			return Vehicle.Get();
 		}
 
 		void SetPlayerVehicle(CPlayerVehicle* in_pVehicle)
 		{
-			m_Vehicle = in_pVehicle;
+			Vehicle = in_pVehicle;
 		}
 
 		size_t GetPlayerNo() const
 		{
-			return m_rpBlackboard->PlayerNo;
+			return rpBlackboard->PlayerNo;
 		}
 
 		size_t GetRivalActorID()
@@ -146,7 +146,7 @@ namespace app::Player
 
 		size_t GetHudID()
 		{
-			return GetLevelInfo()->m_HudActor;
+			return GetLevelInfo()->HudActor;
 		}
 
 		float GetParameter(size_t in_parameter) const
@@ -161,7 +161,7 @@ namespace app::Player
 
 		CWorld* GetWorld() const
 		{
-			return m_pWorld;
+			return pWorld;
 		}
 
 		void ChangeToTopView(bool in_isTopView)
@@ -178,7 +178,7 @@ namespace app::Player
 
 		void UpdateTransform()
 		{
-			GetComponent<fnd::GOCTransform>()->SetLocalTranslationAndRotation(m_rpPhysics->m_Position, m_rpPhysics->m_Rotation);
+			GetComponent<fnd::GOCTransform>()->SetLocalTranslationAndRotation(rpPhysics->Position, rpPhysics->Rotation);
 		}
 
 		void InitializePlayerInformation()

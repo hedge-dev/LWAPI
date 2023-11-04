@@ -5,7 +5,7 @@ namespace app
 	class CSetObjectListener;
 	class CSetAdapterMgr;
 
-	inline static int ShiftOfUserData(uint type) { return 8 * type + 16; }
+	inline static int ShiftOfUserData(uint in_type) { return 8 * in_type + 16; }
 
 	class CSetAdapter
 	{
@@ -23,9 +23,9 @@ namespace app
 			return m_pListener;
 		}
 		
-		void SetListener(CSetObjectListener* pListener)
+		void SetListener(CSetObjectListener* in_pListener)
 		{
-			m_pListener = pListener;
+			m_pListener = in_pListener;
 		}
 
 		uint GetStatusFlags() const
@@ -33,21 +33,21 @@ namespace app
 			return m_StatusFlags;
 		}
 
-		uint GetUserData(uint type) const
+		uint GetUserData(uint in_type) const
 		{
-			uint shift = ShiftOfUserData(type);
+			uint shift = ShiftOfUserData(in_type);
 			return (m_StatusFlags & (255 << shift)) >> shift;
 		}
 		
-		void SetStatusFlags(uint flag)
+		void SetStatusFlags(uint in_flag)
 		{
-			m_StatusFlags |= flag;
+			m_StatusFlags |= in_flag;
 		}
 
-		void SetUserData(uint type, uint value)
+		void SetUserData(uint in_type, uint in_value)
 		{
-			uint shift = ShiftOfUserData(type);
-			m_StatusFlags = m_StatusFlags & ~(255 << shift) | (value << shift) & (255 << shift);
+			uint shift = ShiftOfUserData(in_type);
+			m_StatusFlags = m_StatusFlags & ~(255 << shift) | (in_value << shift) & (255 << shift);
 		}
 
 		const SetEd::CResObject& GetObjectResource() const
@@ -76,18 +76,18 @@ namespace app
 
 		const csl::math::Vector3& GetPosition() const
 		{
-			return m_pObject.GetUnit(m_pObject.ref().m_Class.ref().m_Unk1).GetPosition();
+			return m_pObject.GetUnit(m_pObject.ref().Class.ref().Unk1).GetPosition();
 		}
 
 		const csl::math::Quaternion& GetRotation() const
 		{
-			csl::math::Quaternion q = SetEd::CalcRotationByAngle(m_pObject.GetUnit(m_pObject.ref().m_Class.ref().m_Unk1).GetRotation());
+			csl::math::Quaternion q = SetEd::CalcRotationByAngle(m_pObject.GetUnit(m_pObject.ref().Class.ref().Unk1).GetRotation());
 			return q;
 		}
 		
-		static CSetAdapter* GetPointerFromActor(const Gops::CActor& pActor)
+		static CSetAdapter* GetPointerFromActor(const Gops::CActor& in_pActor)
 		{
-			return pActor.GetAdapter();
+			return in_pActor.GetAdapter();
 		}
 	};
 }

@@ -14,20 +14,20 @@ namespace app
 	{
 	public:
 		typedef CSetObjectListener* CreateObject_t();
-		typedef CObjInfo* CreateInfo_t(csl::fnd::IAllocator* pAllocator);
-		typedef void SetupParamMap_t(app::SetEd::CResClass rClass);
+		typedef CObjInfo* CreateInfo_t(csl::fnd::IAllocator* in_pAllocator);
+		typedef void SetupParamMap_t(app::SetEd::CResClass in_rClass);
 
-		const char* m_pName{};
-		const char* m_pType{};
-		CreateObject_t* m_fpCreateObject{};
-		CreateInfo_t* m_fpCreateInfo{};
-		SetupParamMap_t* m_fpSetupParamMap{};
-		const fnd::GOComponentClass** m_ppComponents{};
-		uint m_Unk1{};
-		float m_DefaultRangeOut{};
-		float m_DefaultRangeIn{};
-		csl::ut::Enum<ESetObjectSpawnType, char> m_SpawnType{};
-		const char* m_pCategory{};
+		const char* pName{};
+		const char* pType{};
+		CreateObject_t* fpCreateObject{};
+		CreateInfo_t* fpCreateInfo{};
+		SetupParamMap_t* fpSetupParamMap{};
+		const fnd::GOComponentClass** ppComponents{};
+		uint Unk1{};
+		float DefaultRangeOut{};
+		float DefaultRangeIn{};
+		csl::ut::Enum<ESetObjectSpawnType, char> SpawnType{};
+		const char* pCategory{};
 
 	public:
 
@@ -38,9 +38,9 @@ namespace app
 		}
 
 		template<class T>
-		inline static CObjInfo* InfoCreator(csl::fnd::IAllocator* pAllocator)
+		inline static CObjInfo* InfoCreator(csl::fnd::IAllocator* in_pAllocator)
 		{
-			return new(pAllocator) T();
+			return new(in_pAllocator) T();
 		}
 
 		CSetObjClass()
@@ -48,85 +48,85 @@ namespace app
 
 		}
 		
-		CSetObjClass(const char* pName, const char* pType, const char* pCategory, CreateObject_t fpCreateObject, CreateInfo_t* fpCreateInfo, SetupParamMap_t* fpSetupParamMap, const fnd::GOComponentClass** ppComponents, float defaultRangeOut, float defaultRangeIn, ESetObjectSpawnType spawnType)
+		CSetObjClass(const char* in_pName, const char* in_pType, const char* in_pCategory, CreateObject_t in_fpCreateObject, CreateInfo_t* in_fpCreateInfo, SetupParamMap_t* in_fpSetupParamMap, const fnd::GOComponentClass** in_ppComponents, float in_defaultRangeOut, float in_defaultRangeIn, ESetObjectSpawnType in_spawnType)
 		{
-			m_pName = pName;
-			m_pType = pType;
-			m_pCategory = pCategory;
-			m_fpCreateObject = fpCreateObject;
-			m_fpCreateInfo = fpCreateInfo;
-			m_fpSetupParamMap = fpSetupParamMap;
-			m_ppComponents = ppComponents;
-			m_DefaultRangeIn = defaultRangeIn;
-			m_DefaultRangeOut = defaultRangeOut;
-			m_SpawnType = spawnType;
+			pName = in_pName;
+			pType = in_pType;
+			pCategory = in_pCategory;
+			fpCreateObject = in_fpCreateObject;
+			fpCreateInfo = in_fpCreateInfo;
+			fpSetupParamMap = in_fpSetupParamMap;
+			ppComponents = in_ppComponents;
+			DefaultRangeIn = in_defaultRangeIn;
+			DefaultRangeOut = in_defaultRangeOut;
+			SpawnType = in_spawnType;
 		}
 
 		template<typename TObject, typename TInfo>
-		inline static CSetObjClass Create(const char* pName, const char* pType, const char* pCategory, SetupParamMap_t* fpSetupParamMap = nullptr, const fnd::GOComponentClass** ppComponents = nullptr, float defaultRangeOut = 1200, float defaultRangeIn = 1000, ESetObjectSpawnType spawnType = eSetObjectSpawnType_Default)
+		inline static CSetObjClass Create(const char* in_pName, const char* in_pType, const char* in_pCategory, SetupParamMap_t* in_fpSetupParamMap = nullptr, const fnd::GOComponentClass** in_ppComponents = nullptr, float in_defaultRangeOut = 1200, float in_defaultRangeIn = 1000, ESetObjectSpawnType in_spawnType = eSetObjectSpawnType_Default)
 		{
 			CSetObjClass info{};
 
-			info.m_pName = pName;
-			info.m_pType = pType;
-			info.m_pCategory = pCategory;
-			info.m_fpCreateObject = ObjectCreator<TObject>;
-			info.m_fpCreateInfo = InfoCreator<TInfo>;
-			info.m_fpSetupParamMap = fpSetupParamMap;
-			info.m_ppComponents = ppComponents;
-			info.m_DefaultRangeIn = defaultRangeIn;
-			info.m_DefaultRangeOut = defaultRangeOut;
-			info.m_SpawnType = spawnType;
+			info.pName = in_pName;
+			info.pType = in_pType;
+			info.pCategory = in_pCategory;
+			info.fpCreateObject = ObjectCreator<TObject>;
+			info.fpCreateInfo = InfoCreator<TInfo>;
+			info.fpSetupParamMap = in_fpSetupParamMap;
+			info.ppComponents = in_ppComponents;
+			info.DefaultRangeIn = in_defaultRangeIn;
+			info.DefaultRangeOut = in_defaultRangeOut;
+			info.SpawnType = in_spawnType;
 			return info;
 		}
 
 		template<typename TObject>
-		inline static CSetObjClass Create(const char* pName, const char* pType, const char* pCategory, CreateInfo_t* fpCreateInfo = nullptr, SetupParamMap_t* fpSetupParamMap = nullptr, const fnd::GOComponentClass** ppComponents = nullptr, float defaultRangeOut = 1200, float defaultRangeIn = 1000, ESetObjectSpawnType spawnType = eSetObjectSpawnType_Default)
+		inline static CSetObjClass Create(const char* in_pName, const char* in_pType, const char* in_pCategory, CreateInfo_t* in_fpCreateInfo = nullptr, SetupParamMap_t* in_fpSetupParamMap = nullptr, const fnd::GOComponentClass** in_ppComponents = nullptr, float in_defaultRangeOut = 1200, float in_defaultRangeIn = 1000, ESetObjectSpawnType in_spawnType = eSetObjectSpawnType_Default)
 		{
 			CSetObjClass info{};
-			info.m_pName = pName;
-			info.m_pType = pType;
-			info.m_pCategory = pCategory;
-			info.m_fpCreateObject = ObjectCreator<TObject>;
-			info.m_fpCreateInfo = fpCreateInfo;
-			info.m_fpSetupParamMap = fpSetupParamMap;
-			info.m_ppComponents = ppComponents;
-			info.m_DefaultRangeIn = defaultRangeIn;
-			info.m_DefaultRangeOut = defaultRangeOut;
-			info.m_SpawnType = spawnType;
+			info.pName = in_pName;
+			info.pType = in_pType;
+			info.pCategory = in_pCategory;
+			info.fpCreateObject = ObjectCreator<TObject>;
+			info.fpCreateInfo = in_fpCreateInfo;
+			info.fpSetupParamMap = in_fpSetupParamMap;
+			info.ppComponents = in_ppComponents;
+			info.DefaultRangeIn = in_defaultRangeIn;
+			info.DefaultRangeOut = in_defaultRangeOut;
+			info.SpawnType = in_spawnType;
 			return info;
 		}
 
-		inline static CSetObjClass Create(const char* pName, const char* pType, const char* pCategory, CreateObject_t fpCreateObject, CreateInfo_t* fpCreateInfo, SetupParamMap_t* fpSetupParamMap = nullptr, const fnd::GOComponentClass** ppComponents = nullptr, float defaultRangeOut = 1200, float defaultRangeIn = 1000, ESetObjectSpawnType spawnType = eSetObjectSpawnType_Default)
+		inline static CSetObjClass Create(const char* in_pName, const char* in_pType, const char* in_pCategory, CreateObject_t in_fpCreateObject, CreateInfo_t* in_fpCreateInfo, SetupParamMap_t* in_fpSetupParamMap = nullptr, const fnd::GOComponentClass** in_ppComponents = nullptr, float in_defaultRangeOut = 1200, float in_defaultRangeIn = 1000, ESetObjectSpawnType in_spawnType = eSetObjectSpawnType_Default)
 		{
 			CSetObjClass info{};
-			info.m_pName = pName;
-			info.m_pType = pType;
-			info.m_pCategory = pCategory;
-			info.m_fpCreateObject = fpCreateObject;
-			info.m_fpCreateInfo = fpCreateInfo;
-			info.m_fpSetupParamMap = fpSetupParamMap;
-			info.m_ppComponents = ppComponents;
-			info.m_DefaultRangeIn = defaultRangeIn;
-			info.m_DefaultRangeOut = defaultRangeOut;
-			info.m_SpawnType = spawnType;
+			info.pName = in_pName;
+			info.pType = in_pType;
+			info.pCategory = in_pCategory;
+			info.fpCreateObject = in_fpCreateObject;
+			info.fpCreateInfo = in_fpCreateInfo;
+			info.fpSetupParamMap = in_fpSetupParamMap;
+			info.ppComponents = in_ppComponents;
+			info.DefaultRangeIn = in_defaultRangeIn;
+			info.DefaultRangeOut = in_defaultRangeOut;
+			info.SpawnType = in_spawnType;
 			return info;
 		}
 
-		CObjInfo* CreateInfo(csl::fnd::IAllocator* pAllocator) const
+		CObjInfo* CreateInfo(csl::fnd::IAllocator* in_pAllocator) const
 		{
-			if (!m_fpCreateInfo)
+			if (!fpCreateInfo)
 				return nullptr;
 
-			return m_fpCreateInfo(pAllocator);
+			return fpCreateInfo(in_pAllocator);
 		}
 
-		void SetupParamMap(app::SetEd::CResClass rClass) const
+		void SetupParamMap(app::SetEd::CResClass in_rClass) const
 		{
-			if (!m_fpSetupParamMap)
+			if (!fpSetupParamMap)
 				return;
 
-			m_fpSetupParamMap(rClass);
+			fpSetupParamMap(in_rClass);
 		}
 	};
 }

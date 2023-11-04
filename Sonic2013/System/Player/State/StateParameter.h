@@ -7,7 +7,7 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFCBE4);
 
-		int m_Unk1{};
+		int Unk1{};
 
 		virtual SStateParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const
 		{

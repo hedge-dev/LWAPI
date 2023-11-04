@@ -96,10 +96,10 @@ namespace app::Player
 
 	class CCollisionGOC : public CGOComponent
 	{
-		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF7E14);
-
 	private:
 		inline static FUNCTION_PTR(STriggerCollisionData*, __thiscall, ms_fpGetShapeData, ASLR(0x00864AA0), const CCollisionGOC*, const game::ColliShape*);
+
+		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF7E14);
 
 	public:
 		int Unk1{};

@@ -3,22 +3,24 @@
 namespace app::dbg
 {
 	class Texture;
+	
 	enum PrimitiveType
 	{
-		PrimitiveType_PointList,
-		PrimitiveType_LineList,
-		PrimitiveType_LineStrip,
-		PrimitiveType_TriangleStrip,
-		PrimitiveType_TriangleFan
+		ePrimitiveType_PointList,
+		ePrimitiveType_LineList,
+		ePrimitiveType_LineStrip,
+		ePrimitiveType_TriangleStrip,
+		ePrimitiveType_TriangleFan
 	};
 
 	struct DrawVertex
 	{
-		float x{};
-		float y{};
-		float z{};
-		csl::ut::Color8 color{ 255,255,255,255 };
+		float X{};
+		float Y{};
+		float Z{};
+		csl::ut::Color8 Color{ 255,255,255,255 };
 	};
+
 	using DrawVertexT = DrawVertex;
 
 	class DrawContext : public fnd::ReferencedObject

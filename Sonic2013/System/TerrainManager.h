@@ -7,22 +7,22 @@ namespace app
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFD9C));
 
 	public:
-		csl::ut::ObjectMoveArray<app::ut::RefPtr<TerrainBase>> m_Terrains{ GetAllocator() }; // ObjectMoveArray<intrusive_ptr<TerrainBase>>
-		TerrainParam* m_pParam{};
-		csl::ut::Bitset<uint> m_Flags{};
+		csl::ut::ObjectMoveArray<app::ut::RefPtr<TerrainBase>> Terrains{ GetAllocator() }; // ObjectMoveArray<intrusive_ptr<TerrainBase>>
+		TerrainParam* pParam{};
+		csl::ut::Bitset<uint> Flags{};
 
 		TerrainManager() : GameService(0)
 		{
 
 		}
 
-		bool IsLocalVisible(uint flags) const
+		bool IsLocalVisible(uint in_flags) const
 		{
 			bool result{};
 			uint counter{};
-			for (auto& terrain : m_Terrains)
+			for (auto& terrain : Terrains)
 			{
-				if (flags & (1 << counter))
+				if (in_flags & (1 << counter))
 					result |= terrain->IsVisible();
 
 				counter++;
@@ -31,12 +31,12 @@ namespace app
 			return result;
 		}
 
-		void SetLocalVisible(bool in_visible, uint flags)
+		void SetLocalVisible(bool in_visible, uint in_flags)
 		{
 			uint counter{};
-			for (auto& terrain : m_Terrains)
+			for (auto& terrain : Terrains)
 			{
-				if (flags & (1 << counter))
+				if (in_flags & (1 << counter))
 				{
 					terrain->SetVisible(in_visible);
 				}

@@ -46,9 +46,9 @@ namespace app
 			return ms_fpGetContentPath(this, in_pTitle);
 		}
 
-		void* GetPurchaseInfo(void* in_pTitle, bool* out_pIsPurchased, ushort* in_pDlcIndex, uint count)
+		void* GetPurchaseInfo(void* in_pTitle, bool* out_pIsPurchased, ushort* in_pDlcIndex, uint in_count)
 		{
-			return ms_fpGetPurchaseInfo(this, in_pTitle, out_pIsPurchased, in_pDlcIndex, count);
+			return ms_fpGetPurchaseInfo(this, in_pTitle, out_pIsPurchased, in_pDlcIndex, in_count);
 		}
 	};
 }

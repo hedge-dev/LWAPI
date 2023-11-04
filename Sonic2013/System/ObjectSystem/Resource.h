@@ -5,17 +5,17 @@ namespace app::SetEd
 	class CResource : public fnd::ReferencedObject
 	{
 	public:
-		csl::ut::ObjectMoveArray<app::ut::RefPtr<CClassProject>> m_ClassProjects{ GetAllocator() };
-		csl::ut::ObjectMoveArray<app::ut::RefPtr<CObjectProject>> m_ObjectProjects{ GetAllocator() };
+		csl::ut::ObjectMoveArray<app::ut::RefPtr<CClassProject>> ClassProjects{ GetAllocator() };
+		csl::ut::ObjectMoveArray<app::ut::RefPtr<CObjectProject>> ObjectProjects{ GetAllocator() };
 
-		CResClass FindClass(const char* pName) const
+		CResClass FindClass(const char* in_pName) const
 		{
-			if (!m_ClassProjects.size())
+			if (!ClassProjects.size())
 				return {};
 
-			for (auto& pProject : m_ClassProjects)
+			for (auto& pProject : ClassProjects)
 			{	
-				auto result = pProject->FindClass(pName);
+				auto result = pProject->FindClass(in_pName);
 				if (!result.IsValid())
 					continue;
 
@@ -25,10 +25,10 @@ namespace app::SetEd
 			return {};
 		}
 
-		CObjectProject* GetObjectProject(size_t i) const
+		CObjectProject* GetObjectProject(size_t in_index) const
 		{
-			if (i < m_ObjectProjects.size())
-				return m_ObjectProjects[i].get();
+			if (in_index < ObjectProjects.size())
+				return ObjectProjects[i].get();
 
 			return { nullptr };
 		}

@@ -20,34 +20,34 @@ namespace app
 	
 	class CLevelInfo : public fnd::GameService
 	{
-	protected:
-		inline static const uint DLCStageIndices[] = { 0, 17, 18, 19 };
-
+	private:
+		inline static FUNCTION_PTR(SPlayerInfo*, __thiscall, ms_fpGetPlayerInfo, ASLR(0x009125A0), CLevelInfo*, uint);
+		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetPlayerNo, ASLR(0x00912570), const CLevelInfo*, const uint);
+		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID, ASLR(0x00912520), const CLevelInfo*);
+		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID2, ASLR(0x00912550), const CLevelInfo*, const uint);
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFD1C));
 
-		inline static FUNCTION_PTR(SPlayerInfo*, __thiscall, ms_fpGetPlayerInfo, ASLR(0x009125A0), void* This, uint playerNum);
-		inline static FUNCTION_PTR(int, __thiscall, ms_fpGetPlayerNo, ASLR(0x00912570), const void* This, const uint actorID);
-		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID, ASLR(0x00912520), const void*);
-		inline static FUNCTION_PTR(uint, __thiscall, ms_fpGetPlayerID2, ASLR(0x00912550), const void* This, const uint playerNo);
 	public:
-		csl::ut::FixedArray<SPlayerInfo, 2> m_Players{};
-		size_t m_PlayerNum{};
-		csl::ut::FixedArray<size_t, 2> m_Cameras{};
-		size_t m_UnkRc{};
-		size_t m_HudActor{};
-		size_t m_RcActor{};
-		const char* m_Level{};
-		csl::ut::Bitset<uint> m_StageFlags{};
-		csl::ut::Bitset<uint> m_UnkFlags{};
+		inline static const uint DLCStageIndices[] = { 0, 17, 18, 19 };
+
+		csl::ut::FixedArray<SPlayerInfo, 2> Players{};
+		size_t PlayerNum{};
+		csl::ut::FixedArray<size_t, 2> Cameras{};
+		size_t UnkRc{};
+		size_t HudActor{};
+		size_t RcActor{};
+		const char* Level{};
+		csl::ut::Bitset<uint> StageFlags{};
+		csl::ut::Bitset<uint> UnkFlags{};
 		INSERT_PADDING(16){};
 		Game::EPlayMode PlayMode{};
 
 		size_t GetCameraActor(size_t i) const
 		{
-			if (i > m_PlayerNum)
+			if (i > PlayerNum)
 				return 0;
 
-			return m_Cameras[i];
+			return Cameras[i];
 		}
 
 		[[nodiscard]] uint GetPlayerID() const
@@ -67,7 +67,7 @@ namespace app
 
 		int GetNumPlayers() const
 		{
-			if (m_PlayerNum != 2)
+			if (PlayerNum != 2)
 				return 1;
 		
 			return 2;
@@ -85,13 +85,13 @@ namespace app
 
 		int GetDLCStageIndex()
 		{
-			if (m_StageFlags.test(17))
+			if (StageFlags.test(17))
 				return 1;
 			
-			if (m_StageFlags.test(18))
+			if (StageFlags.test(18))
 				return 2;
 			
-			if (m_StageFlags.test(19))
+			if (StageFlags.test(19))
 				return 3;
 
 			return 0;
@@ -102,12 +102,12 @@ namespace app
 			if (in_redRingNo >= 5)
 				return false;
 		
-			return m_UnkFlags.test(in_redRingNo);
+			return UnkFlags.test(in_redRingNo);
 		}
 
 		void SetFlagRedRingObtained(uint in_bit, bool in_enable)
 		{
-			m_UnkFlags.set(in_bit, in_enable);
+			UnkFlags.set(in_bit, in_enable);
 		}
 
 		void ReflectStageInfo(const StageInfo::SStageData& in_rStageData)
@@ -121,24 +121,24 @@ namespace app
 			if (!PlayMode || PlayMode > 2)
 				return;
 		
-			m_StageFlags.set(2, true);
-			m_StageFlags.set(3, true);
-			m_StageFlags.set(4, true);
+			StageFlags.set(2, true);
+			StageFlags.set(3, true);
+			StageFlags.set(4, true);
 		}
 
 		void SetDLCStage(uint in_dlcIndex)
 		{
-			m_StageFlags.set(DLCStageIndices[in_dlcIndex]);
+			StageFlags.set(DLCStageIndices[in_dlcIndex]);
 		}
 
 		bool IsPlayingZeldaEvent()
 		{
-			return m_StageFlags.test(20);
+			return StageFlags.test(20);
 		}
 
 		void SetPlayingZeldaEvent(bool in_isZeldaEvent)
 		{
-			m_StageFlags.set(20, in_isZeldaEvent);
+			StageFlags.set(20, in_isZeldaEvent);
 		}
 
 		static fnd::GameServiceClass& staticClass()

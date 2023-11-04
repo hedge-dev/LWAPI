@@ -12,8 +12,8 @@ namespace app::xgame
 			eFinishType_Snowball
 		};
 		
-		bool m_PanCamera{ false };
-		EFinishType m_FinishType{ EFinishType::eFinishType_Normal };
+		bool PanCamera{ false };
+		EFinishType FinishType{ EFinishType::eFinishType_Normal };
 		
 		inline const static unsigned int MessageID = 0x300A;
 

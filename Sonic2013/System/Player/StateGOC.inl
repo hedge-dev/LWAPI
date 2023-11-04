@@ -13,7 +13,7 @@ namespace app::Player
 		{
 			game::SoundPlayInfo playInfo{ in_pName, { HH_SOUND_DEVICE_AUTO }, 0.0f };
 			if (!GetPlayerNo())
-				playInfo.Device.m_Device = 32;
+				playInfo.Device.Device = 32;
 
 			return pSound->Play(playInfo);
 		}

@@ -8,22 +8,20 @@ namespace app
 			inline static csl::fnd::IAllocator** ms_ppAllocators = reinterpret_cast<csl::fnd::IAllocator**>(ASLR(0x000FD7C34));
 
 		public:
-			static csl::fnd::IAllocator* GetAllocator(uint id)
+			static csl::fnd::IAllocator* GetAllocator(uint in_id)
 			{
-				return ms_ppAllocators[id];
+				return ms_ppAllocators[in_id];
 			}
 
-			static void SetAllocator(uint id, csl::fnd::IAllocator* allocator)
+			static void SetAllocator(uint in_id, csl::fnd::IAllocator* in_pAllocator)
 			{
-				ms_ppAllocators[id] = allocator;
+				ms_ppAllocators[in_id] = in_pAllocator;
 			}
 		};
 	}
 
 	namespace fnd
 	{
-		inline static FUNCTION_PTR(csl::fnd::IAllocator*, __cdecl, ms_fpGetTempAllocator, ASLR(0x00499EB0));
-		
 		inline static csl::fnd::IAllocator* GetSingletonAllocator()
 		{
 			return game::GlobalAllocator::GetAllocator(2);
@@ -31,7 +29,8 @@ namespace app
 
 		inline static csl::fnd::IAllocator* GetTempAllocator()
 		{
-			return ms_fpGetTempAllocator();
+			FUNCTION_PTR(csl::fnd::IAllocator*, __cdecl, fpGetTempAllocator, ASLR(0x00499EB0));
+			return fpGetTempAllocator();
 		}
 
 		template <typename T>

@@ -8,16 +8,16 @@ namespace app
 {
 	inline void CSetObjectManager::KillAllObject()
 	{
-		for (auto& obj : m_Objects)
+		for (auto& obj : Objects)
 		{
 			xgame::MsgKill killMsg{};
 			obj.SendMessage(killMsg);
 		}
 	}
 
-	inline CSetAdapter* CSetObjectManager::FindAdapter(CSetObjectID id)
+	inline CSetAdapter* CSetObjectManager::FindAdapter(CSetObjectID in_id)
 	{
-		auto* pPack = m_pActorManager->FindPack(id.Value);
+		auto* pPack = pActorManager->FindPack(in_id.Value);
 		if (!pPack)
 			return nullptr;
 
@@ -25,19 +25,19 @@ namespace app
 		return CSetAdapter::GetPointerFromActor(*pActor);
 	}
 
-	inline SetEd::CResObject CSetObjectManager::FindObjectResource(app::CSetObjectID id)
+	inline SetEd::CResObject CSetObjectManager::FindObjectResource(app::CSetObjectID in_id)
 	{
-		ASSERT_OFFSETOF(SetEd::SResObjectData, m_pParam, 48);
-		auto* pPack = m_pActorManager->FindPack(id.Value);
+		ASSERT_OFFSETOF(SetEd::SResObjectData, pParam, 48);
+		auto* pPack = pActorManager->FindPack(in_id.Value);
 		if (!pPack)
 			return SetEd::CResObject{ nullptr };
 
 		return pPack->GetObjectResource();
 	}
 
-	inline CSetObjectListener* CSetObjectManager::CreateObjectBySetObjectID(CSetObjectID id)
+	inline CSetObjectListener* CSetObjectManager::CreateObjectBySetObjectID(CSetObjectID in_id)
 	{
-		auto* pPack = m_pActorManager->FindPack(id.Value);
+		auto* pPack = pActorManager->FindPack(in_id.Value);
 		if (!pPack)
 			return nullptr;
 

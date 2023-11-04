@@ -8,13 +8,13 @@ namespace app
 		const char* pPacfileName{};
 		const char* pCueSheetName{};
 
-		void Load(CObjInfoFileLoader& loader) override
+		void Load(CObjInfoFileLoader& in_rLoader) override
 		{
 			if (pPacfileName)
-				loader.Load(pPacfileName, -1);
+				in_rLoader.Load(pPacfileName, -1);
 			
 			if (pCueSheetName)
-				loader.Load(pCueSheetName, -1);
+				in_rLoader.Load(pCueSheetName, -1);
 		}
 
 		hh::ut::PackFile GetEnemyPackfile()

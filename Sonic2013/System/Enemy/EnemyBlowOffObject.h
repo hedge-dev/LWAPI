@@ -37,10 +37,10 @@ namespace app
 
         }
 
-        void AddCallback(GameDocument& in_rDocument) override
+        void AddCallback(GameDocument* in_pDocument) override
         {
-            FUNCTION_PTR(void, __thiscall, fpAddCallback, ASLR(0x0072BD90), EnemyBlowOffObject*, GameDocument&);
-            fpAddCallback(this, in_rDocument);
+            FUNCTION_PTR(void, __thiscall, fpAddCallback, ASLR(0x0072BD90), EnemyBlowOffObject*, GameDocument*);
+            fpAddCallback(this, in_pDocument);
 
             /*fnd::GOComponent::Create<game::GOCGravity>(*this);
             fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
@@ -57,8 +57,8 @@ namespace app
                 pTransform->SetLocalTranslation(pCreateInfo->TrsMatrix.GetTransVector());
                 pTransform->SetLocalRotation({ pCreateInfo->TrsMatrix });
                 
-                pTransform->m_Frame.AddChild(&Frame);
-                pTransform->m_Frame.SetLocalTranslation(pCreateInfo->Offset);
+                pTransform->Frame.AddChild(&Frame);
+                pTransform->Frame.SetLocalTranslation(pCreateInfo->Offset);
             }
 
             PositionOffset = pCreateInfo->Offset;
@@ -67,8 +67,8 @@ namespace app
             if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
             {
                 fnd::GOCVisualModel::Description description{};
-                description.m_Model = pCreateInfo->Model;
-                description.m_Skeleton = pCreateInfo->Skeleton;
+                description.Model = pCreateInfo->Model;
+                description.Skeleton = pCreateInfo->Skeleton;
 
                 pVisualModel->Setup(description);
                 pVisualModel->SetLocalScale({ pCreateInfo->Scale, pCreateInfo->Scale, pCreateInfo->Scale });
@@ -95,22 +95,22 @@ namespace app
                 pCollider->Setup({ ms_ShapeCount });
 
                 game::ColliSphereShapeCInfo collisionInfo{};
-                collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-                collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-                collisionInfo.m_Unk2 |= 1;
-                collisionInfo.m_Radius = pCreateInfo->CollisionRadius;
-                collisionInfo.m_ShapeID = 0;
-                collisionInfo.m_pParent = &Frame;
+                collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+                collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+                collisionInfo.Unk2 |= 1;
+                collisionInfo.Radius = pCreateInfo->CollisionRadius;
+                collisionInfo.ShapeID = 0;
+                collisionInfo.pParent = &Frame;
                 ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk9, collisionInfo);
                 pCollider->CreateShape(collisionInfo);
 
                 game::ColliSphereShapeCInfo collisionInfo2{};
-                collisionInfo2.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-                collisionInfo2.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-                collisionInfo2.m_Unk2 |= 1;
-                collisionInfo2.m_Radius = pCreateInfo->CollisionRadius;
-                collisionInfo2.m_ShapeID = 1;
-                collisionInfo2.m_pParent = &Frame;
+                collisionInfo2.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+                collisionInfo2.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+                collisionInfo2.Unk2 |= 1;
+                collisionInfo2.Radius = pCreateInfo->CollisionRadius;
+                collisionInfo2.ShapeID = 1;
+                collisionInfo2.pParent = &Frame;
                 ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Unk3, collisionInfo2);
                 pCollider->CreateShape(collisionInfo2);
             }
@@ -151,7 +151,7 @@ namespace app
                         GameObjectHandle<GameObject> target = sweeps[i].pShape->GetGameObject();
                         if (Owner != target)
                         {
-                            csl::math::Vector3 positionDiff{ sweeps[i].pShape->m_Transform.GetTransVector() - pCreateInfo->TrsMatrix.GetTransVector() };
+                            csl::math::Vector3 positionDiff{ sweeps[i].pShape->Transform.GetTransVector() - pCreateInfo->TrsMatrix.GetTransVector() };
                             float length = math::Vector3NormalizeWithLength(positionDiff, &positionDiff);
                             if (length > 0.0f && length < max && cosf(MATHF_PI / 6.0f) < normalizedVector.dot(positionDiff))
                             {
@@ -195,7 +195,7 @@ namespace app
 
             auto* pContextParam = pMovement->GetContextParam();
             auto velocity = pContextParam->Velocity;
-            auto trsMatrix = pTransform->m_Frame.m_Unk3.m_Mtx;
+            auto trsMatrix = pTransform->Frame.Unk3.Mtx;
             csl::math::Vector3 up{ trsMatrix.GetColumn(1) };
             csl::math::Matrix34 inverseMtx{};
             csl::math::Matrix34Inverse(trsMatrix, &inverseMtx);
@@ -223,7 +223,7 @@ namespace app
                     if (!pVisualModel)
                         return;
 
-                    rotation = csl::math::QuaternionMultiply(pVisualModel->m_Transform.GetRotationQuaternion(), rotation).Normalize();
+                    rotation = csl::math::QuaternionMultiply(pVisualModel->Transform.GetRotationQuaternion(), rotation).Normalize();
 
                     pVisualModel->SetLocalRotation(rotation);
                     pVisualModel->SetLocalTranslation({ PositionOffset - math::Vector3Rotate(rotation, PositionOffset) });
@@ -245,7 +245,7 @@ namespace app
             if (LifeSpan <= 0.0f && !Target.IsValid())
                 OnDead(false);
             
-            csl::math::Vector3 position{ pTransform->m_Frame.m_Unk3.GetTranslation() };
+            csl::math::Vector3 position{ pTransform->Frame.Unk3.GetTranslation() };
             if (csl::math::Vector3NearZero({ position - Unk4 }))
                 OnDead(false);
             else
@@ -254,10 +254,10 @@ namespace app
 
         bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)
         {
-            if (in_rMessage.m_pSelf->GetID() != 1)
+            if (in_rMessage.pSelf->GetID() != 1)
                 return true;
         
-            GameObjectHandle<GameObject> otherOwner = in_rMessage.m_pOther->GetGameObject();
+            GameObjectHandle<GameObject> otherOwner = in_rMessage.pOther->GetGameObject();
             if (Owner == otherOwner)
                 return true;
 
@@ -267,9 +267,9 @@ namespace app
 
             xgame::MsgDamage msg{ 3, 0x800, 3, in_rMessage, pMovement->GetContextParam()->Velocity };
             msg.PlayerNo = PlayerNo;
-            msg.m_Bonus.m_Unk1 = 7;
+            msg.Bonus.Unk1 = 7;
 
-            return SendMessageImm(in_rMessage.m_Sender, msg);
+            return SendMessageImm(in_rMessage.Sender, msg);
         }
 
         bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
@@ -303,14 +303,14 @@ namespace app
             if (!pTargetTransform)
                 return;
 
-            csl::math::Vector3 targetPosition{ pTargetTransform->m_Frame.m_Unk3.m_Mtx * csl::math::Vector4(Unk3, 1.0f) };
+            csl::math::Vector3 targetPosition{ pTargetTransform->Frame.Unk3.Mtx * csl::math::Vector4(Unk3, 1.0f) };
 
             auto* pTransform = GetComponent<fnd::GOCTransform>();
             if (!pTransform)
                 return;
 
-            pTransform->m_Frame.m_Unk3.m_Mtx.GetColumn(1);
-            csl::math::Vector3 distance{ targetPosition - pTransform->m_Frame.m_Unk3.m_Mtx.GetTransVector() };
+            pTransform->Frame.Unk3.Mtx.GetColumn(1);
+            csl::math::Vector3 distance{ targetPosition - pTransform->Frame.Unk3.Mtx.GetTransVector() };
             float length = math::Vector3NormalizeWithLength(distance, &distance);
 
             auto* pMovement = GetComponent<game::GOCMovementComplex>();

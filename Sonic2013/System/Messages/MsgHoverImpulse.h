@@ -5,12 +5,12 @@ namespace app::xgame
 	class MsgHoverImpulse : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x6111;
-
 		csl::math::Vector3 Direction{};
 		float OutOfControl{};
 		float SpeedDropoffTime{};
 		bool Unk3{};
+
+		inline const static unsigned int MessageID = 0x6111;
 
 		MsgHoverImpulse() : Message(MessageID)
 		{

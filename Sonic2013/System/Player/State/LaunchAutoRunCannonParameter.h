@@ -7,8 +7,8 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFA0A8);
 
-		float Unk1{};
-		csl::math::Vector3 Unk2{};
+		float Unk2{};
+		csl::math::Vector3 Unk3{};
 
 		LaunchAutoRunCannonParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

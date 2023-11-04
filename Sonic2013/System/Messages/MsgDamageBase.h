@@ -13,20 +13,20 @@ namespace app::xgame
 		typedef int EnumSenderType;
 		struct BonusData
 		{
-			uint m_Unk1{ static_cast<uint>(-1) }; // Bonus type?
-			uint m_Bonus{};
+			uint Unk1{ static_cast<uint>(-1) }; // Bonus type?
+			uint Bonus{};
 		};
 		
-		fnd::Handle<game::ColliShape> m_SenderShape{};
-		fnd::Handle<game::ColliShape> m_RecieverShape{};
-		EnumSenderType m_SenderType{};
+		fnd::Handle<game::ColliShape> SenderShape{};
+		fnd::Handle<game::ColliShape> RecieverShape{};
+		EnumSenderType SenderType{};
 		uint DefensePower{};
-		csl::math::Vector3 m_Unk2;
-		csl::math::Vector3 m_Unk3;
+		csl::math::Vector3 Unk2;
+		csl::math::Vector3 Unk3;
 		uint PlayerNo{ static_cast<uint>(-1) };
-		BonusData m_Bonus{};
+		BonusData Bonus{};
 		
-		MsgDamageBase(uint id) : fnd::Message(id)
+		MsgDamageBase(uint in_id) : fnd::Message(in_id)
 		{
 
 		}

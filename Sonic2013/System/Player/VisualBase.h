@@ -28,22 +28,22 @@ namespace app::Player
 
 		CPhysics* GetPhysics()
 		{
-			return pPlayer->m_rpPhysics.get();
+			return pPlayer->rpPhysics.get();
 		}
 
 		CPhysics* GetPhysics() const
 		{
-			return pPlayer->m_rpPhysics.get();
+			return pPlayer->rpPhysics.get();
 		}
 
 		csl::math::Vector3 GetPosition() const
 		{
-			return GetPhysics()->m_Position;
+			return GetPhysics()->Position;
 		}
 
 		csl::math::Quaternion GetRotation() const
 		{
-			return GetPhysics()->m_Rotation;
+			return GetPhysics()->Rotation;
 		}
 
 		csl::math::Matrix34& GetLocaterMatrix() const
@@ -58,7 +58,7 @@ namespace app::Player
 
 		csl::math::Matrix34& GetViewMatrix() const
 		{
-			return GetPhysics()->m_CameraViewMtx;
+			return GetPhysics()->CameraViewMtx;
 		}
 
 		csl::math::Vector3 GetRight() const
@@ -78,7 +78,7 @@ namespace app::Player
 
 		csl::math::Vector3 GetVelocity() const
 		{
-			return GetPhysics()->m_Velocity;
+			return GetPhysics()->Velocity;
 		}
 
 		csl::math::Vector3 GetHorzVelocity() const
@@ -93,7 +93,7 @@ namespace app::Player
 
 		csl::math::Vector3 GetUpDirection() const
 		{
-			return GetPhysics()->m_Up;
+			return GetPhysics()->Up;
 		}
 
 		csl::math::Vector3 GetGravityUpDirection() const
@@ -108,18 +108,18 @@ namespace app::Player
 
 		bool GetReflectionInfo(csl::math::Vector3* out_pUnk1, csl::math::Vector3* out_pUnk2) const
 		{
-			auto* pBlackboard = pPlayer->m_rpBlackboard.get();
-			if (pBlackboard->m_Unk1[3].test(25))
+			auto* pBlackboard = pPlayer->rpBlackboard.get();
+			if (pBlackboard->Unk1[3].test(25))
 				return false;
 		
 			auto* pPhysics = GetPhysics();
-			if (!pPhysics->m_Unk9.IsOnGround)
+			if (!pPhysics->Unk9.IsOnGround)
 				return false;
 
-			if (pPhysics->m_Unk9.Unk7 >= 50.0f)
+			if (pPhysics->Unk9.Unk7 >= 50.0f)
 				return false;
 		
-			if ((pPhysics->m_Unk9.GetAttribute() & 0x200) == 0)
+			if ((pPhysics->Unk9.GetAttribute() & 0x200) == 0)
 				return false;
 
 			auto* pGravityController = GetPhysics()->GetGravityController();
@@ -134,11 +134,11 @@ namespace app::Player
 			if (!pGravityController->GetCenterPosition(&gravityCenterPosition))
 				return false;
 		
-			if ((pPhysics->m_Unk9.Unk5 - gravityCenterPosition).norm() > powf(gravityInnerRadius * 5.0f, 2.0f))
+			if ((pPhysics->Unk9.Unk5 - gravityCenterPosition).norm() > powf(gravityInnerRadius * 5.0f, 2.0f))
 				return false;
 		
-			*out_pUnk1 = pPhysics->m_Unk9.Unk5;
-			*out_pUnk2 = pPhysics->m_Unk9.Unk4;
+			*out_pUnk1 = pPhysics->Unk9.Unk5;
+			*out_pUnk2 = pPhysics->Unk9.Unk4;
 
 			return true;
 		}
@@ -150,17 +150,17 @@ namespace app::Player
 
 		bool IsSideView() const
 		{
-			return pPlayer->m_rpBlackboard.get()->m_Unk2 == 1;
+			return pPlayer->rpBlackboard.get()->Unk2 == 1;
 		}
 
 		bool IsNowSuperSonic() const
 		{
-			return pPlayer->m_rpBlackboard.get()->m_Unk1[3].test(23);
+			return pPlayer->rpBlackboard.get()->Unk1[3].test(23);
 		}
 
 		bool IsLinkCostume() const
 		{
-			return pPlayer->m_rpBlackboard.get()->m_Unk1[3].test(31);
+			return pPlayer->rpBlackboard.get()->Unk1[3].test(31);
 		}
 
 		fnd::SoundHandle PlaySE(const char* in_pCueName)

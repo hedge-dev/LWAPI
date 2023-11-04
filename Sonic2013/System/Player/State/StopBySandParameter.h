@@ -7,7 +7,7 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFFBD4);
 
-		csl::math::Vector3 Unk1{};
+		csl::math::Vector3 Unk2{};
 
 		StopBySandParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

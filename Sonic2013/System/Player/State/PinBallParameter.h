@@ -7,8 +7,8 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFE878);
 
-		bool Unk1{};
 		bool Unk2{};
+		bool Unk3{};
 		bool IsMode2D{};
 		int Unk4{};
 		int Unk5{};

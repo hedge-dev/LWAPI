@@ -49,6 +49,12 @@ namespace app
 		public TTinyFsm<GameModeStage, GameModeUtil::Event<GameModeStage>, false>,
 		TinyFsmSetOption<TiFSM_OPTION_USE_FP_TOP>
 	{
+	private:
+		inline static FUNCTION_PTR(TiFsmState_t&, __thiscall, ms_fpStateLoad, ASLR(0x00918C80), GameModeStage*, TiFsmState_t&, const TiFsmEvent_t&);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetupGameStatus, ASLR(0x00915AF0), GameModeStage*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetupMission, ASLR(0x00915D20), GameModeStage*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetStage, ASLR(0x00916BC0), GameModeStage*);
+
 	public:
 		struct SSuspendInfo
 		{
@@ -134,13 +140,6 @@ namespace app
 		int MaxNumHearts{ 3 }; // TODO: Is this actually meaning of the value?
 		int Unk31{ 3 };
 
-	private:
-		inline static FUNCTION_PTR(TiFsmState_t&, __thiscall, ms_fpStateLoad, ASLR(0x00918C80), GameModeStage*, TiFsmState_t&, const TiFsmEvent_t&);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetupGameStatus, ASLR(0x00915AF0), GameModeStage*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetupMission, ASLR(0x00915D20), GameModeStage*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetStage, ASLR(0x00916BC0), GameModeStage*);
-
-	public:
 		GameModeStage(const SGameModeStageCinfo& in_rCreateInfo)
 			: GameMode()
 			, CreateInfo(in_rCreateInfo)
@@ -151,10 +150,10 @@ namespace app
 			// pStageGameStatus = new(m_pAllocator) StageGameStatus({ 10 });
 		}
 
-		TiFsmState_t StateLoad(const TiFsmEvent_t& in_event)
+		TiFsmState_t StateLoad(const TiFsmEvent_t& in_rEvent)
 		{
 			TiFsmState_t result{};
-			ms_fpStateLoad(this, result, in_event);
+			ms_fpStateLoad(this, result, in_rEvent);
 
 			return result;
 		}
@@ -186,15 +185,15 @@ namespace app
 			Player::SCinfo playerCreateInfo{};
 			playerCreateInfo.Position = pMarkerStatus->Position;
 			playerCreateInfo.Rotation = pMarkerStatus->Rotation;
-			playerCreateInfo.DeadLine = rpStageDataInitailizer->m_DeadLine;
+			playerCreateInfo.DeadLine = rpStageDataInitailizer->DeadLine;
 			playerCreateInfo.Flags.set(0, pMarkerStatus->Unk1);
-			playerCreateInfo.Flags.set(1, pStageData->m_PlayerFlags.test(3));
-			playerCreateInfo.Flags.set(2, pStageData->m_PlayerFlags.test(2));
-			playerCreateInfo.Flags.set(3, pStageData->m_PlayerFlags.test(4));
+			playerCreateInfo.Flags.set(1, pStageData->PlayerFlags.test(3));
+			playerCreateInfo.Flags.set(2, pStageData->PlayerFlags.test(2));
+			playerCreateInfo.Flags.set(3, pStageData->PlayerFlags.test(4));
 			playerCreateInfo.Flags.set(5, CreateInfo.IsRadioControlExist());
 			playerCreateInfo.Flags.set(4, CreateInfo.IsSuperSonicUnlocked);
 			playerCreateInfo.Flags.set(8, pStageData->IsBakuBakuStage());
-			playerCreateInfo.Flags.set(9, pStageData->m_PlayerFlags.test(1));
+			playerCreateInfo.Flags.set(9, pStageData->PlayerFlags.test(1));
 			playerCreateInfo.Flags.set(10, pStageData->IsDrawReflect());
 			playerCreateInfo.Flags.set(11, pStageData->IsLastBossStage());
 			playerCreateInfo.Flags.set(12, pStageData->IsZeldaStage());
@@ -206,12 +205,12 @@ namespace app
 				playerCreateInfo.Flags.set(14, true);
 
 			playerCreateInfo.pPhantoms = pStageData->GetPhantoms();
-			playerCreateInfo.EagleAltitude = pStageData->m_EagleAltitude * 10.0f;
+			playerCreateInfo.EagleAltitude = pStageData->EagleAltitude * 10.0f;
 
-			auto* pPlayer = Player::CreatePlayer(m_pDocument, playerCreateInfo);
+			auto* pPlayer = Player::CreatePlayer(pDocument, playerCreateInfo);
 
 			if (pLevelInfo && pPlayer)
-				pLevelInfo->m_Players[0].ActorId = pPlayer->m_ActorID;
+				pLevelInfo->Players[0].ActorId = pPlayer->ActorID;
 		
 			if (pStageSoundDirector)
 				pStageSoundDirector->InitPlayerGuidePathControl();
@@ -223,7 +222,7 @@ namespace app
 			rcCreateInfo.Variant = CreateInfo.RcVariant;
 			rcCreateInfo.Unk1 = CreateInfo.Unk5;
 
-			CreateRCObject(*m_pDocument, rcCreateInfo, *game::GlobalAllocator::GetAllocator(2));
+			CreateRCObject(*pDocument, rcCreateInfo, *game::GlobalAllocator::GetAllocator(2));
 		}
 
 		void InitFirst()
@@ -236,10 +235,10 @@ namespace app
 
 			Flags.set(25, pStageData->IsDLCStage());
 
-			auto* pLevelInfoService = m_pDocument->GetService<CLevelInfo>();
+			auto* pLevelInfoService = pDocument->GetService<CLevelInfo>();
 			if (pLevelInfoService)
 			{
-				pLevelInfoService->m_Level = findFileName(pStageData->m_Directory.c_str());
+				pLevelInfoService->Level = findFileName(pStageData->Directory.c_str());
 				pLevelInfoService->ReflectStageInfo(*pStageData);
 			
 				pLevelInfoService->SetPlayMode((Game::EPlayMode)(CreateInfo.Unk8 != 0));
@@ -263,12 +262,12 @@ namespace app
 				pLevelInfo = pLevelInfoService;
 			}
 
-			auto* pGameScoreManager = m_pDocument->GetService<xgame::GameScoreManager>();
+			auto* pGameScoreManager = pDocument->GetService<xgame::GameScoreManager>();
 			pGameScoreManager->SetTotalScore(CreateInfo.TotalScore);
 
 			SetupGameStatus();
 
-			xgame::StagePhysicsSetup::SetupWorld(m_pDocument);
+			xgame::StagePhysicsSetup::SetupWorld(pDocument);
 
 			for (size_t i = 0; i < 2; i++)
 				GetPlayerInfo(i)->NumChallenges = CreateInfo.NumChallenges;
@@ -277,20 +276,20 @@ namespace app
 			if (pSoundDirector)
 				pStageSoundDirector = pSoundDirector;
 		
-			m_pDocument->AddGameObject(pStageSoundDirector);
+			pDocument->AddGameObject(pStageSoundDirector);
 
 			SceneFxDirector* pSceneDirector = SceneFxDirector::Create(GetAllocator());
 			if (pSceneDirector)
 				rpSceneFxDirector = pSceneDirector;
 
-			m_pDocument->AddGameObject(rpSceneFxDirector.get());
+			pDocument->AddGameObject(rpSceneFxDirector.get());
 
-			auto* pEffectManager = m_pDocument->GetService<Effect::CEffectManager>();
+			auto* pEffectManager = pDocument->GetService<Effect::CEffectManager>();
 			if (pEffectManager)
 				pEffectManager->SetStageName(StageName);
 
 			ColorParamChanger = ObjColorParamChanger::Create(GetAllocator());
-			m_pDocument->AddGameObject(ColorParamChanger.Get());*/
+			pDocument->AddGameObject(ColorParamChanger.Get());*/
 
 			csl::fnd::Singleton<gfx::RenderManager>::GetInstance()->SetDRCRenderMode(3);
 			ResetStage();
@@ -336,7 +335,7 @@ namespace app
 
 			Unk30 = 3;
 
-			auto* pLevelInfoService = m_pDocument->GetService<CLevelInfo>();
+			auto* pLevelInfoService = pDocument->GetService<CLevelInfo>();
 			pLevelInfoService->SetPlayingZeldaEvent(false);*/
 		}
 
@@ -349,18 +348,18 @@ namespace app
 		{
 			Player::ResourceInfo resourceInfo{};
 			resourceInfo.pPhantoms = pStageData->GetPhantoms();
-			resourceInfo.Flags.set(0, pStageData->m_PlayerFlags.test(2));
-			resourceInfo.Flags.set(1, pStageData->m_PlayerFlags.test(4));
+			resourceInfo.Flags.set(0, pStageData->PlayerFlags.test(2));
+			resourceInfo.Flags.set(1, pStageData->PlayerFlags.test(4));
 			resourceInfo.Flags.set(3, CreateInfo.IsSuperSonicUnlocked);
 			resourceInfo.Flags.set(4, pStageData->IsZeldaStage());
-			Player::RegisterResourceInfos(m_pDocument, resourceInfo, *game::GlobalAllocator::GetAllocator(2));
+			Player::RegisterResourceInfos(pDocument, resourceInfo, *game::GlobalAllocator::GetAllocator(2));
 
 			RcInfo rcResourceInfo{};
 			rcResourceInfo.Type = CreateInfo.RcType;
 			rcResourceInfo.Variant = CreateInfo.RcVariant;
-			RegisterResourceInfo(*m_pDocument, rcResourceInfo, *game::GlobalAllocator::GetAllocator(2));
+			RegisterResourceInfo(*pDocument, rcResourceInfo, *game::GlobalAllocator::GetAllocator(2));
 
-			worldmap::CWorldMapDioramaStage::RegisterResourceInfo(*m_pDocument, StageName.c_str(), *game::GlobalAllocator::GetAllocator(2));
+			worldmap::CWorldMapDioramaStage::RegisterResourceInfo(*pDocument, StageName.c_str(), *game::GlobalAllocator::GetAllocator(2));
 		}
 
 		const char* findFileName(const char* in_pDirectoryName)

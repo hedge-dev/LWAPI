@@ -7,10 +7,10 @@ namespace app
 	class TerrainBase : public fnd::ReferencedObject
 	{
 	public:
-		TerrainParam* m_pParam;
-		csl::ut::Bitset<uint> m_Flags{};
+		TerrainParam* pParam;
+		csl::ut::Bitset<uint> Flags{};
 
-		virtual void Update(const fnd::SUpdateInfo& in_info) { }
+		virtual void Update(const fnd::SUpdateInfo& in_rInfo) { }
 		virtual void Load(const char*, const char*) { }
 		virtual void Setup() { }
 		virtual void Prepare() { }
@@ -18,8 +18,8 @@ namespace app
 		virtual void LoadEnd() { }
 		virtual void Cleanup() { }
 		virtual void LevelStarted() { }
-		virtual void SetVisible(bool in_visible) { m_Flags.set(0, in_visible); }
-		virtual bool IsVisible() const { return m_Flags.test(0); }
+		virtual void SetVisible(bool in_visible) { Flags.set(0, in_visible); }
+		virtual bool IsVisible() const { return Flags.test(0); }
 		virtual bool SetVisibleModel(const char* in_pName, bool in_visible) { return false; }
 		virtual game::res::ResNameExtra GetResNameExtra(const char* in_pName, bool in_visible) { return {}; }
 		virtual res::ResSvCol GetResSvCol() const { return {}; };

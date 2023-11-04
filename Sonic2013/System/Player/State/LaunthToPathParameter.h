@@ -14,7 +14,7 @@ namespace app::Player
 
 		LaunthToPathParameter()
 		{
-			m_Unk1 = 1;
+			Unk1 = 1;
 		}
 
 		LaunthToPathParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override

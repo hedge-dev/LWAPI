@@ -11,9 +11,7 @@ namespace app::Player
 
 	class CStateGOC : public CGOComponent
 	{
-		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF77D8);
-
-	public:
+	private:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsTimerDisable, ASLR(0x0085AE20), const CStateGOC*, EDisableTimer, uint);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsTimerDisable2, ASLR(0x0085ADF0), const CStateGOC*, EDisableTimer);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDisableTime, ASLR(0x0085ADC0), CStateGOC*, EDisableTimer, float, uint);
@@ -31,7 +29,10 @@ namespace app::Player
 		inline static FUNCTION_PTR(CStatePlugin*, __thiscall, ms_fpAddStatePlugin, ASLR(0x0085C3F0), CStateGOC*, uint);
 		inline static FUNCTION_PTR(CStatePlugin*, __thiscall, ms_fpRemoveStatePlugin, ASLR(0x0085C400), CStateGOC*, uint);
 
-		void* m_Unk1{};
+		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF77D8);
+
+	public:
+		void* Unk1{};
 		bool Unk2{};
 		ut::internal::HsmImpl Hsm{};
 		hh::eff::CInstanceHandle<hh::eff::CEffectInstance> Effect{};
@@ -58,7 +59,7 @@ namespace app::Player
 
 		CBlackBoard* GetBlackBoard() const
 		{
-			return pPlayer->m_rpBlackboard.get();
+			return pPlayer->rpBlackboard.get();
 		}
 
 		CVisualGOC* GetVisualGoc()
@@ -83,12 +84,12 @@ namespace app::Player
 
 		CPhysics* GetPhysics()
 		{
-			return pPlayer->m_rpPhysics.get();
+			return pPlayer->rpPhysics.get();
 		}
 
 		CPhysics* GetPhysics() const
 		{
-			return pPlayer->m_rpPhysics.get();
+			return pPlayer->rpPhysics.get();
 		}
 
 		CAttackStatus* GetAttackStatus()
@@ -98,12 +99,12 @@ namespace app::Player
 
 		CPathService* GetPathService()
 		{
-			return pPlayer->m_spPathService.get();
+			return pPlayer->spPathService.get();
 		}
 
 		game::PathEvaluator* GetPath(PathType in_type)
 		{
-			return pPlayer->m_spPathService.get()->GetPathEvaluator(in_type);
+			return pPlayer->spPathService.get()->GetPathEvaluator(in_type);
 		}
 
 		CCollisionGOC* GetCollision()
@@ -134,12 +135,12 @@ namespace app::Player
 
 		csl::math::Vector3 GetPosition() const
 		{
-			return GetPhysics()->m_Position;
+			return GetPhysics()->Position;
 		}
 
 		csl::math::Quaternion GetRotation() const
 		{
-			return GetPhysics()->m_Rotation;
+			return GetPhysics()->Rotation;
 		}
 
 		csl::math::Matrix34 GetMatrix() const
@@ -270,7 +271,7 @@ namespace app::Player
 		bool IsNowSuperSonic() const
 		{
 			auto* pBlackBoard = GetBlackBoard();
-			return pBlackBoard->m_Unk1[3].test(23);
+			return pBlackBoard->Unk1[3].test(23);
 		}
 
 		bool SendMessageImm(uint in_actorId, fnd::Message& in_rMessage)
@@ -346,7 +347,7 @@ namespace app::Player
 
 		bool Is2DMode() const
 		{
-			return GetBlackBoard()->m_Unk2;
+			return GetBlackBoard()->Unk2;
 		}
 
 		bool IsControlMode2D() const

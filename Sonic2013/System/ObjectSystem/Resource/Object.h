@@ -6,35 +6,35 @@ namespace app
 	{
 		union ParamData
 		{
-			char m_ByteVal;
-			const char* m_StrVal;
-			uint m_UnsignedIntVal;
-			int m_IntVal;
+			char ByteVal;
+			const char* StrVal;
+			uint UnsignedIntVal;
+			int IntVal;
 		};
 
 		// This is probably the wrong way of doing it
 		struct SParamDescData
 		{
-			ushort m_ParamType;
-			ushort m_ParamOffset;
-			const char* m_pParamName;
-			const char* m_pParamDesc;
-			ParamData m_DefaultValue;
-			ParamData m_ValueStep;
-			ParamData m_MaxValue;
-			ParamData m_MinValue;
+			ushort ParamType;
+			ushort ParamOffset;
+			const char* pParamName;
+			const char* pParamDesc;
+			ParamData DefaultValue;
+			ParamData ValueStep;
+			ParamData MaxValue;
+			ParamData MinValue;
 		};
 		
 		struct SResClassData
 		{
-			size_t m_Flags;
-			size_t m_CRC;
-			const char* m_pName;
-			const char* m_pCategory;
-			size_t m_Unk1;
-			float m_DefaultRangeOut;
-			float m_DefaultRangeIn;
-			app::TArray<SParamDescData, app::dbg::Allocator<SParamDescData>> m_Params;
+			size_t Flags;
+			size_t CRC;
+			const char* pName;
+			const char* pCategory;
+			size_t Unk1;
+			float DefaultRangeOut;
+			float DefaultRangeIn;
+			app::TArray<SParamDescData, app::dbg::Allocator<SParamDescData>> Params;
 		};
 
 		class CResClass : public CResCommon<SResClassData>
@@ -42,36 +42,36 @@ namespace app
 		public:
 			uint GetParamSize() const
 			{
-				return ref().m_Flags & 0xFFFF;
+				return ref().Flags & 0xFFFF;
 			}
 
 			bool IsPlain() const
 			{
-				return (ref().m_Flags >> 30) & 1;
+				return (ref().Flags >> 30) & 1;
 			}
 
 			const char* GetName() const
 			{
-				return ref().m_pName;
+				return ref().pName;
 			}
 
 			const char* GetCategory() const
 			{
-				return ref().m_pCategory;
+				return ref().pCategory;
 			}
 		};
 
 		struct SResUnitData
 		{
-			float m_PosX;
-			float m_PosY;
-			float m_PosZ;
-			csl::math::Angle3 m_Rotation;
+			float PosX;
+			float PosY;
+			float PosZ;
+			csl::math::Angle3 Rotation;
 
-			float m_LocalPosX;
-			float m_LocalPosY;
-			float m_LocalPosZ;
-			csl::math::Angle3 m_LocalRotation;
+			float LocalPosX;
+			float LocalPosY;
+			float LocalPosZ;
+			csl::math::Angle3 LocalRotation;
 		};
 
 		class CResUnit : public CResCommon<SResUnitData>
@@ -79,37 +79,37 @@ namespace app
 		public:
 			const csl::math::Vector3& GetPosition() const
 			{
-				return *reinterpret_cast<const csl::math::Vector3*>(&ref().m_PosX);
+				return *reinterpret_cast<const csl::math::Vector3*>(&ref().PosX);
 			}
 
 			const csl::math::Angle3& GetRotation() const
 			{
-				return ref().m_Rotation;
+				return ref().Rotation;
 			}
 
 			const csl::math::Vector3& GetLocalPosition() const
 			{
-				return *reinterpret_cast<const csl::math::Vector3*>(&ref().m_LocalPosX);
+				return *reinterpret_cast<const csl::math::Vector3*>(&ref().LocalPosX);
 			}
 
 			const csl::math::Angle3& GetLocalRotation() const
 			{
-				return ref().m_LocalRotation;
+				return ref().LocalRotation;
 			}
 		};
 		
 		struct SResObjectData
 		{
-			uint m_ObjectID; // Actually flags
-			uint m_ClassCRC;
-			CResClass m_Class;
-			float m_Interval;
-			float m_RangeIn;
-			float m_RangeOut;
-			uint m_ParentID;
-			app::TArray<SResUnitData, app::dbg::Allocator<SResUnitData>> m_Units;
+			uint ObjectID; // Actually flags
+			uint ClassCRC;
+			CResClass Class;
+			float Interval;
+			float RangeIn;
+			float RangeOut;
+			uint ParentID;
+			app::TArray<SResUnitData, app::dbg::Allocator<SResUnitData>> Units;
 			INSERT_PADDING(8) {};
-			void* m_pParam;
+			void* pParam;
 		};
 
 		class CResObject : public CResCommon<SResObjectData>
@@ -117,27 +117,27 @@ namespace app
 		public:
 			CResClass GetClass() const
 			{
-				return ref().m_Class;
+				return ref().Class;
 			}
 
 			size_t GetClassHash() const
 			{
-				return ref().m_ClassCRC;
+				return ref().ClassCRC;
 			}
 
 			size_t GetUnitNum()
 			{
-				return ref().m_Units.size();
+				return ref().Units.size();
 			}
 			
-			CResUnit GetUnit(size_t unit) const
+			CResUnit GetUnit(size_t in_unit) const
 			{
-				return CResUnit{ const_cast<SResUnitData*>(&ref().m_Units[unit]) };
+				return CResUnit{ const_cast<SResUnitData*>(&ref().Units[in_unit]) };
 			}
 
 			uint GetUID() const
 			{
-				return ref().m_ObjectID & 0xFFFF;
+				return ref().ObjectID & 0xFFFF;
 			}
 
 			// None
@@ -149,7 +149,7 @@ namespace app
 			// Ground2
 			char GetAlignment() const
 			{
-				return (ref().m_ObjectID & 0xF000000) >> 24;
+				return (ref().ObjectID & 0xF000000) >> 24;
 			}
 
 			// Front
@@ -157,32 +157,32 @@ namespace app
 			// Up
 			char GetLayout() const
 			{
-				return (ref().m_ObjectID & 0xF00000) >> 20;
+				return (ref().ObjectID & 0xF00000) >> 20;
 			}
 
 			uint GetParentID() const
 			{
-				return ref().m_ParentID;
+				return ref().ParentID;
 			}
 
 			const char* GetName() const
 			{
-				return ref().m_Class->m_pName;
+				return ref().Class->pName;
 			}
 
 			void* GetParamAddress() const
 			{
-				return const_cast<void**>(&ref().m_pParam);
+				return const_cast<void**>(&ref().pParam);
 			}
 		};
 
-		inline csl::math::Quaternion CalcRotationByAngle(const csl::math::Angle3& angle)
+		inline csl::math::Quaternion CalcRotationByAngle(const csl::math::Angle3& in_angle)
 		{
 			csl::math::Quaternion q
 			(
-				Eigen::AngleAxisf(angle.x(), csl::math::Angle3::UnitX())
-				* Eigen::AngleAxisf(angle.y(), csl::math::Angle3::UnitY())
-				* Eigen::AngleAxisf(angle.z(), csl::math::Angle3::UnitZ())
+				Eigen::AngleAxisf(in_angle.x(), csl::math::Angle3::UnitX())
+				* Eigen::AngleAxisf(in_angle.y(), csl::math::Angle3::UnitY())
+				* Eigen::AngleAxisf(in_angle.z(), csl::math::Angle3::UnitZ())
 			);
 
 			return q;

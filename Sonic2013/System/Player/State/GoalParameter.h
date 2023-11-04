@@ -7,13 +7,13 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFF374);
 
-		int Unk1{};
-		csl::math::Vector3 Unk2{};
-		float Unk3{};
+		int Unk2{};
+		csl::math::Vector3 Unk3{};
+		float Unk4{};
 
 		GoalParameter() : SStateParameter()
 		{
-			m_Unk1 = 1;
+			Unk1 = 1;
 		}
 
 		GoalParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override

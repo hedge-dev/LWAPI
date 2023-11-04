@@ -28,15 +28,15 @@ namespace app::xgame
 			eType_ZeldaOneUp
 		};
 		
-		EType m_Type;
+		EType Type;
 		uint ItemLevel{ static_cast<uint>(-1) };
-		bool m_Taken{};
-		bool m_HasUserID{};
-		uint m_UserID{};
+		bool Taken{};
+		bool HasUserID{};
+		uint UserID{};
 		
 		inline const static unsigned int MessageID = 0x6008;
 
-		MsgTakeObject(EType type) : Message(MessageID), m_Type(type)
+		MsgTakeObject(EType in_type) : Message(MessageID), Type(in_type)
 		{
 
 		}
@@ -48,19 +48,19 @@ namespace app::xgame
 
 		bool IsValidUserID() const
 		{
-			return m_HasUserID;
+			return HasUserID;
 		}
 
-		void SetShapeUserID(uint userID)
+		void SetShapeUserID(uint in_userID)
 		{
-			m_UserID = userID;
-			m_HasUserID = 1;
+			UserID = in_userID;
+			HasUserID = 1;
 		}
 
 		void ResetShapeUserID()
 		{
-			m_UserID = 0;
-			m_HasUserID = 0;
+			UserID = 0;
+			HasUserID = 0;
 		}
 	};
 }

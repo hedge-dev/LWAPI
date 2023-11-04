@@ -4,6 +4,9 @@ namespace app::Player
 {
     class VehicleSnowBallInfo : public CObjInfo
     {
+    public:
+        inline static const char* ms_pName = "VehicleSnowBallInfo";
+
     private:
         inline static const char* ms_pModelName = "w4_obj_snowball";
         inline static const char* ms_pShadowModelName = "w4_obj_snowball";
@@ -53,7 +56,7 @@ namespace app::Player
 
         const char* GetInfoName() override
         {
-            return "VehicleSnowBallInfo";
+            return ms_pName;
         }
     };
 }

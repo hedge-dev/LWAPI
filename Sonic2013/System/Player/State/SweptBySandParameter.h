@@ -7,11 +7,11 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFFDD8);
 
-		csl::math::Vector3 Unk1{};
 		csl::math::Vector3 Unk2{};
+		csl::math::Vector3 Unk3{};
 		int Sender{};
-		bool Unk3{};
 		bool Unk4{};
+		bool Unk5{};
 
 		SweptBySandParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

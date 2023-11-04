@@ -5,9 +5,9 @@ namespace app::xgame
 	class MsgPLGetWaterLimitTime : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x505B;
-
 		float WaterLimitTime{};
+
+		inline const static unsigned int MessageID = 0x505B;
 
 		MsgPLGetWaterLimitTime() : Message(MessageID)
 		{

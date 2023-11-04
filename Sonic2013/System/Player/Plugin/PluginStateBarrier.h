@@ -4,6 +4,9 @@ namespace app::Player
 {
 	class PluginStateBarrier : public CStatePlugin
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpEnd, ASLR(0x008D3C80), PluginStateBarrier*, CStateGOC&);
+
 	public:
 		inline static int ms_BarrierUseCount[] = { 1, 2, 3, 4 };
 
@@ -14,10 +17,6 @@ namespace app::Player
 			eType_WaterBarrier
 		};
 
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpEnd, ASLR(0x008D3C80), PluginStateBarrier*, CStateGOC&);
-
-	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00E006AC);
 		
 		csl::ut::Bitset<byte> Flags{};

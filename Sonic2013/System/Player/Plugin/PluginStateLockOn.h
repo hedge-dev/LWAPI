@@ -25,12 +25,12 @@ namespace app::Player
 
 		CHomingTargetService* GetTargetService(CStateGOC& in_rStateGoc)
 		{
-			return in_rStateGoc.pPlayer->m_spHomingService.get();
+			return in_rStateGoc.pPlayer->spHomingService.get();
 		}
 
 		void HitCheckTargetCollision(CStateGOC& in_rStateGoc, xgame::MsgHitTriggerBase& in_rMessage)
 		{
-			GetTargetService(in_rStateGoc)->HitCollision(in_rMessage.m_pSelf, in_rMessage.m_pOther);
+			GetTargetService(in_rStateGoc)->HitCollision(in_rMessage.pSelf, in_rMessage.pOther);
 		}
 	};
 }

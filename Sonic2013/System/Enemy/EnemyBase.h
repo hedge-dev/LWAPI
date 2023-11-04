@@ -18,14 +18,14 @@ namespace app
 
         void CreateCenterPositionFrame(const csl::math::Vector3& in_rCenterPosition)
         {
-            GetComponent<fnd::GOCTransform>()->m_Frame.AddChild(&Unk1);
+            GetComponent<fnd::GOCTransform>()->Frame.AddChild(&Unk1);
             Unk1.SetLocalTranslation(in_rCenterPosition);
         }
 
         fnd::HFrame* GetCenterPositionFrame() const
         {
             if (!Unk1.m_pParent)
-                return &GetComponent<fnd::GOCTransform>()->m_Frame;
+                return &GetComponent<fnd::GOCTransform>()->Frame;
         
             return const_cast<fnd::HFrame*>(&Unk1);
         }
@@ -33,7 +33,7 @@ namespace app
         void SendTouchDamage(xgame::MsgHitEventCollision& in_rMessage)
         {
             xgame::MsgDamage msgDamage{ 3, 8, 1, in_rMessage, {0.0f, 0.0f, 0.0f} };
-            SendMessageImm(in_rMessage.m_Sender, msgDamage);
+            SendMessageImm(in_rMessage.Sender, msgDamage);
         }
 
         void CreateDeadEffect(enemy::DeadEffectCInfo in_rCreateInfo)
@@ -89,21 +89,6 @@ namespace app
             ObjUtil::SendMessageImmToGameActor(*this, msg);
         }
 
-        bool ProcMsgPLGetHomingTargetInfo(xgame::MsgPLGetHomingTargetInfo& in_rMessage) const
-        {
-            in_rMessage.m_CursorPosition = GetCenterPositionFrame()->m_Unk3.GetTranslation();
-            in_rMessage.m_Flags.set(3);
-
-            return true;
-        }
-
-        bool ProcMsgPLKickTargetting(xgame::MsgPLKickTargetting& in_rMessage) const
-        {
-            in_rMessage.Success = true;
-
-            return true;
-        }
-
         bool ProcessMessage(fnd::Message& in_rMessage) override
         {
             if (PreProcessMessage(in_rMessage))
@@ -115,6 +100,21 @@ namespace app
             case xgame::MsgPLKickTargetting::MessageID:				return ProcMsgPLKickTargetting(static_cast<xgame::MsgPLKickTargetting&>(in_rMessage));
             default:												return CSetObjectListener::ProcessMessage(in_rMessage);
             }
+        }
+
+        bool ProcMsgPLGetHomingTargetInfo(xgame::MsgPLGetHomingTargetInfo& in_rMessage) const
+        {
+            in_rMessage.CursorPosition = GetCenterPositionFrame()->m_Unk3.GetTranslation();
+            in_rMessage.Flags.set(3);
+
+            return true;
+        }
+
+        bool ProcMsgPLKickTargetting(xgame::MsgPLKickTargetting& in_rMessage) const
+        {
+            in_rMessage.Success = true;
+
+            return true;
         }
     };
 }

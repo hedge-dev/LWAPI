@@ -18,12 +18,13 @@ namespace app
 
 	class CSetObject : public hh::base::CRefCountObject
 	{
-	public:
+	private:
 		inline static FUNCTION_PTR(CSetObjectListener*, __thiscall, ms_fpGetNthObject, ASLR(0x00841400), const CSetObject*, size_t);
 		
-		CSetObjectManager* m_pManager;
-		Gops::CActorPack* m_pPack{};
-		void* m_pUnk2{};
+	public:
+		CSetObjectManager* pManager;
+		Gops::CActorPack* pPack{};
+		void* pUnk2{};
 		
 		CSetObject()
 		{
@@ -32,7 +33,7 @@ namespace app
 
 		CSetObjectListener* GetNthObject(size_t n)
 		{
-			for (auto actor : m_pPack->GetActors())
+			for (auto actor : pPack->GetActors())
 			{
 				if (actor.GetUnitNum() == n)
 					return CSetAdapter::GetPointerFromActor(actor)->GetListener();

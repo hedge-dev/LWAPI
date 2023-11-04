@@ -13,18 +13,18 @@ namespace app::dbg
 	class Allocator
 	{
 	public:
-		T* allocate(size_t num)
+		T* allocate(size_t in_num)
 		{
-			if (!num)
+			if (!in_num)
 				return nullptr;
 			
 			auto* pAlloc = GetMemoryAllocator();
-			return reinterpret_cast<T*>(pAlloc->Alloc(sizeof(T) * num, alignof(T)));
+			return reinterpret_cast<T*>(pAlloc->Alloc(sizeof(T) * in_num, alignof(T)));
 		}
 
-		void deallocate(T* ptr, size_t num)
+		void deallocate(T* in_pPtr, size_t in_num)
 		{
-			GetMemoryAllocator()->Free(ptr);
+			GetMemoryAllocator()->Free(in_pPtr);
 		}
 	};
 }

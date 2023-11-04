@@ -50,85 +50,85 @@ namespace app::Player
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpNormalizeRotationMatrix, ASLR(0x00856890), CPhysics*);
 
 	public:
-		CPlayer* m_pPlayer{};
-		int m_Unk1{};
-		csl::math::Vector3 m_Position{};
-		csl::math::Quaternion m_Rotation{};
+		CPlayer* pPlayer{};
+		int Unk1{};
+		csl::math::Vector3 Position{};
+		csl::math::Quaternion Rotation{};
 		csl::math::Matrix34 PhysicsMatrix{};
-		csl::math::Vector3 m_Velocity{};
-		csl::math::Vector3 m_Unk3{};
-		csl::math::Vector3 m_Unk4{};
-		csl::math::Vector3 m_Unk5{};
-		csl::math::Vector3 m_Unk6{};
-		csl::math::Vector3 m_DrawnForce{};
-		csl::math::Vector3 m_DrawnPosition{};
-		csl::math::Vector3 m_Up{};
-		byte m_Unk18{};
-		int m_Unk19{};
+		csl::math::Vector3 Velocity{};
+		csl::math::Vector3 Unk3{};
+		csl::math::Vector3 Unk4{};
+		csl::math::Vector3 Unk5{};
+		csl::math::Vector3 Unk6{};
+		csl::math::Vector3 DrawnForce{};
+		csl::math::Vector3 DrawnPosition{};
+		csl::math::Vector3 Up{};
+		byte Unk18{};
+		int Unk19{};
 		INSERT_PADDING(8);
-		csl::math::Vector3 m_PositionHistory[256]{};
-		csl::math::Quaternion m_RotationHistory[256]{};
-		csl::math::Vector3 m_VelocityHistory[256]{};
+		csl::math::Vector3 PositionHistory[256]{};
+		csl::math::Quaternion RotationHistory[256]{};
+		csl::math::Vector3 VelocityHistory[256]{};
 		INSERT_PADDING(1024);
-		csl::ut::Bitset<size_t> m_Unk7{};
-		csl::math::Matrix34 m_CameraViewMtx{};
-		SGroundInfo m_Unk9{};
-		SGroundInfo m_Unk10{};
-		csl::math::Vector3 m_Unk11{};
+		csl::ut::Bitset<size_t> Unk7{};
+		csl::math::Matrix34 CameraViewMtx{};
+		SGroundInfo Unk9{};
+		SGroundInfo Unk10{};
+		csl::math::Vector3 Unk11{};
 		INSERT_PADDING(36);
-		float m_Unk20{};
+		float Unk20{};
 		INSERT_PADDING(8);
-		csl::math::Vector3 m_Unk12{};
-		csl::math::Vector3 m_Unk13{};
-		csl::math::Vector3 m_Unk14{};
+		csl::math::Vector3 Unk12{};
+		csl::math::Vector3 Unk13{};
+		csl::math::Vector3 Unk14{};
 		INSERT_PADDING(4);
-		ut::ScopedPtr<CParameterSpeed> m_spSpeedParameter{ nullptr, nullptr };
-		ut::RefPtr<GravityController> m_rpGravityController{};
+		ut::ScopedPtr<CParameterSpeed> spSpeedParameter{ nullptr, nullptr };
+		ut::RefPtr<GravityController> rpGravityController{};
 		INSERT_PADDING(4); // app::Player::TouchedMovableShapeInfo
-		fnd::Handle<game::ColliShape> m_Unk15{};
+		fnd::Handle<game::ColliShape> Unk15{};
 		INSERT_PADDING(84);
 		INSERT_PADDING(4); // app::Player::TouchedMovableShapeInfo
-		fnd::Handle<game::ColliShape> m_Unk16{};
+		fnd::Handle<game::ColliShape> Unk16{};
 		INSERT_PADDING(84);
-		ut::ScopedPtr<PlayerUtil::PositionTracer> m_rpPositionTracer { nullptr, nullptr };
-		csl::math::Vector3 m_Unk17{};
+		ut::ScopedPtr<PlayerUtil::PositionTracer> rpPositionTracer { nullptr, nullptr };
+		csl::math::Vector3 Unk17{};
 
 		bool IsOnGround() const
 		{
-			return m_Unk9.IsOnGround;
+			return Unk9.IsOnGround;
 		}
 
 		void SetOnGround(bool in_isOnGround)
 		{
-			m_Unk9.IsOnGround = in_isOnGround;
+			Unk9.IsOnGround = in_isOnGround;
 		}
 		
 		void ResetGroundState()
 		{
-			m_Unk9.Reset();
-			m_Up = GetGravityController()->GetUpDirectionAtPoint(m_Position);
+			Unk9.Reset();
+			Up = GetGravityController()->GetUpDirectionAtPoint(Position);
 
-			m_Unk9.IsOnGround = false;
+			Unk9.IsOnGround = false;
 		}
 
 		bool IsGravityDirectionNotUpdate(const csl::math::Vector3& in_position, bool in_isOnGround) const
 		{
-			if (m_Unk7.test(4))
+			if (Unk7.test(4))
 				return false;
 		
-			if (m_Unk7.test(5) || m_Unk7.test(6))
+			if (Unk7.test(5) || Unk7.test(6))
 				return true;
 		
-			if (!in_isOnGround && m_rpGravityController->IsGravityTypeInner() && !m_Unk7.test(9))
+			if (!in_isOnGround && rpGravityController->IsGravityTypeInner() && !Unk7.test(9))
 				return true;
 
 			if (in_isOnGround)
 				return false;
 
-			if (m_rpGravityController->GetType() == (game::GravityType)12)
+			if (rpGravityController->GetType() == (game::GravityType)12)
 				return false;
 		
-			auto* pPathEvaluator = &m_rpGravityController->Path;
+			auto* pPathEvaluator = &rpGravityController->Path;
 			if (!pPathEvaluator->Component.IsValid())
 				return false;
 
@@ -165,24 +165,24 @@ namespace app::Player
 
 		void DisableExternalForce(float in_unk)
 		{
-			m_Unk20 = in_unk;
-			m_Unk7.set(1, true);
+			Unk20 = in_unk;
+			Unk7.set(1, true);
 		}
 
 		bool IsDistableExternalForce()
 		{
-			return m_Unk7.test(1);
+			return Unk7.test(1);
 		}
 
 		void EnableExternalForce()
 		{
-			return m_Unk7.set(1, false);
+			return Unk7.set(1, false);
 		}
 
 		void SetPosition(const csl::math::Vector3& in_rPosition)
 		{
-			m_Position = in_rPosition;
-			PhysicsMatrix = { csl::math::Matrix34(in_rPosition.x(), in_rPosition.y(), in_rPosition.z()) * csl::math::Matrix34(m_Rotation) };
+			Position = in_rPosition;
+			PhysicsMatrix = { csl::math::Matrix34(in_rPosition.x(), in_rPosition.y(), in_rPosition.z()) * csl::math::Matrix34(Rotation) };
 		}
 
 		void NormalizeRotationMatrix()
@@ -192,23 +192,23 @@ namespace app::Player
 
 		void SetRotation(const csl::math::Matrix34& in_rRotationMatrix)
 		{
-			PhysicsMatrix = { csl::math::Matrix34(m_Position.x(), m_Position.y(), m_Position.z()) * in_rRotationMatrix };
+			PhysicsMatrix = { csl::math::Matrix34(Position.x(), Position.y(), Position.z()) * in_rRotationMatrix };
 			NormalizeRotationMatrix();
 		}
 
 		csl::math::Vector3 GetVelocity() const
 		{
-			return m_Velocity;
+			return Velocity;
 		}
 
 		void SetVelocity(const csl::math::Vector3& in_rVelocity)
 		{
-			m_Velocity = in_rVelocity;
+			Velocity = in_rVelocity;
 		}
 
 		csl::math::Vector3 GetHorzVelocity() const
 		{
-			return static_cast<csl::math::Vector3>(GetVelocity() - m_Up * GetVelocity().dot(m_Up));
+			return static_cast<csl::math::Vector3>(GetVelocity() - Up * GetVelocity().dot(Up));
 		}
 
 		float GetHorzVelocityLength() const
@@ -218,12 +218,12 @@ namespace app::Player
 
 		void SetHorzVelocity(const csl::math::Vector3& in_rHorzVelocity)
 		{
-			m_Velocity = { in_rHorzVelocity + GetVertVelocity() };
+			Velocity = { in_rHorzVelocity + GetVertVelocity() };
 		}
 
 		csl::math::Vector3 GetVertVelocity() const
 		{
-			return static_cast<csl::math::Vector3>(m_Up * GetVelocity().dot(m_Up));
+			return static_cast<csl::math::Vector3>(Up * GetVelocity().dot(Up));
 		}
 
 		csl::math::Vector3 ConvertAirVertVector(const csl::math::Vector3& in_rVertVelocity) const
@@ -253,29 +253,29 @@ namespace app::Player
 
 		byte GetHistoryID(byte in_index) const
 		{
-			if (in_index < m_Unk19)
+			if (in_index < Unk19)
 			{
-				return (byte)(m_Unk18 - in_index);
+				return (byte)(Unk18 - in_index);
 			}
 			else
 			{
-				return (byte)(m_Unk19 - 1);
+				return (byte)(Unk19 - 1);
 			}
 		}
 
 		csl::math::Vector3 GetHistoryPosition(byte in_index) const
 		{
-			return { m_PositionHistory[GetHistoryID(in_index)] };
+			return { PositionHistory[GetHistoryID(in_index)] };
 		}
 
 		GravityController* GetGravityController()
 		{
-			return m_rpGravityController.get();
+			return rpGravityController.get();
 		}
 
 		GravityController* GetGravityController() const
 		{
-			return m_rpGravityController.get();
+			return rpGravityController.get();
 		}
 
 		csl::math::Vector3 GetGravityDirection() const
@@ -300,57 +300,57 @@ namespace app::Player
 
 		CParameterSpeed* GetSpeedParameter()
 		{
-			return m_spSpeedParameter.get();
+			return spSpeedParameter.get();
 		}
 
 		void UpdateViewMatrix();
 
 		void UpdateBeforeMove(float in_deltaTime)
 		{
-			m_Unk3 = m_Velocity;
-			m_Unk4 = GetGravityDirection();
+			Unk3 = Velocity;
+			Unk4 = GetGravityDirection();
 			UpdateViewMatrix();
-			if (!IsGravityDirectionNotUpdate(m_Position, IsOnGround()))
+			if (!IsGravityDirectionNotUpdate(Position, IsOnGround()))
 			{
-				m_rpGravityController->ApplyGravityDirectionAndPosition();
+				rpGravityController->ApplyGravityDirectionAndPosition();
 			}
 			else
 			{
-				m_rpGravityController->ApplyGravityPathPosition();
+				rpGravityController->ApplyGravityPathPosition();
 			}
 
-			m_Unk7.set(2, false);
-			if (IsDistableExternalForce() && m_Unk18 > 0.0f)
+			Unk7.set(2, false);
+			if (IsDistableExternalForce() && Unk18 > 0.0f)
 			{
-				m_Unk18 -= in_deltaTime;
-				if (m_Unk18 <= 0.0f)
+				Unk18 -= in_deltaTime;
+				if (Unk18 <= 0.0f)
 				{
 					EnableExternalForce();
 				}
 			}
 			
-			int material = m_Unk9.GetMaterial();
+			int material = Unk9.GetMaterial();
 			bool groundStatus = false;
 			if (IsOnGround() && material != 15 && material != 20 && material != 21 && material != 12 && material != 13)
-				groundStatus = m_Unk7.test(8);
+				groundStatus = Unk7.test(8);
 		
-			m_spSpeedParameter->SetGroundStatus((CParameterSpeed::EGroundStatus)groundStatus);
-			m_spSpeedParameter->Update();
+			spSpeedParameter->SetGroundStatus((CParameterSpeed::EGroundStatus)groundStatus);
+			spSpeedParameter->Update();
 		}
 
 		void UpdateGravityForced(const csl::math::Vector3& in_rVector)
 		{
-			m_rpGravityController->UpdateForcedGravity(in_rVector);
+			rpGravityController->UpdateForcedGravity(in_rVector);
 		}
 
 		void SetGravityScale(float in_gravityScale)
 		{
-			m_rpGravityController.get()->GravityScale = in_gravityScale;
+			rpGravityController.get()->GravityScale = in_gravityScale;
 		}
 
 		void SetDrawnPosition(const csl::math::Vector3& in_rDrawnPosition)
 		{
-			m_DrawnPosition = in_rDrawnPosition;
+			DrawnPosition = in_rDrawnPosition;
 		}
 
 		void SetGroundInfo(const SGroundInfo& in_rGroundInfo)

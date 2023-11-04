@@ -8,6 +8,7 @@ namespace app
 	class CActivationHandle : public csl::ut::NonCopyable
 	{
 		friend CActivationManager;
+		
 	protected:
 		CActivationManager* m_pOwner{};
 		csl::math::Vector3 m_Position;
@@ -17,8 +18,8 @@ namespace app
 		
 	public:
 		virtual ~CActivationHandle();
-		virtual void ActivationProc(EActivationOp op) = 0;
-		virtual void SetAppearance(float opacity)
+		virtual void ActivationProc(EActivationOp in_op) = 0;
+		virtual void SetAppearance(float in_opacity)
 		{
 			
 		}

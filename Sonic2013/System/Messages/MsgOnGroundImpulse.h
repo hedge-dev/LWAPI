@@ -7,8 +7,6 @@ namespace app::xgame
 	public:
 		typedef int EPanelType;
 
-		inline const static unsigned int MessageID = 0x6001;
-
 		csl::math::Vector3 Unk1{};
 		csl::math::Vector3 Unk2{};
 		float Unk3{};
@@ -16,6 +14,8 @@ namespace app::xgame
 		EPanelType PanelType{};
 		bool Unk6{};
 		bool Unk7{};
+
+		inline const static unsigned int MessageID = 0x6001;
 
 		MsgOnGroundImpulse(const csl::math::Vector3& in_rUnk1, const csl::math::Vector3& in_rUnk2, float in_unk3, EPanelType in_panelType)
 			: Message(MessageID)

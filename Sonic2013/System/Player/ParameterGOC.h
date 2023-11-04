@@ -23,11 +23,11 @@ namespace app::Player
 
 	class CParameterGOC : public CGOComponent
 	{
-		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF82C8);
-
 	private:
 		inline static FUNCTION_PTR(float, __thiscall, ms_fpGet, ASLR(0x008665C0), CParameterGOC*, Param::Index);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpChangeParam, ASLR(0x008664A0), CParameterGOC*, Param::Type::EType__);
+
+		inline static const char* ms_pStaticId = (char*)ASLR(0x00DF82C8);
 
 	public:
 		int Unk1{};

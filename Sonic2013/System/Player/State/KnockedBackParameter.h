@@ -11,7 +11,8 @@ namespace app::Player
 
 		KnockedBackParameter()
 		{
-			m_Unk1 = 1;
+			
+			Unk1 = 1;
 		}
 
 		KnockedBackParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override

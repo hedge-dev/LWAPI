@@ -21,13 +21,13 @@ namespace app
 		CMyActivationHandle m_ActivationHandle{};
 
 	public:
-		csl::ut::LinkListNode m_ListNode;
+		csl::ut::LinkListNode ListNode;
 		
 	public:
 		CSetObjectListener()
 		{
 			ASSERT_OFFSETOF(CSetObjectListener, m_ActivationHandle, 816);
-			ASSERT_OFFSETOF(CSetObjectListener, m_ListNode, 912);
+			ASSERT_OFFSETOF(CSetObjectListener, ListNode, 912);
 
 			m_ActivationHandle.SetOwner(this);
 		}
@@ -39,17 +39,17 @@ namespace app
 		}
 		
 	protected:
-		bool ProcessMessage(fnd::Message& msg) override
+		bool ProcessMessage(fnd::Message& in_rMessage) override
 		{
-			if (PreProcessMessage(msg))
+			if (PreProcessMessage(in_rMessage))
 				return true;
 
-			if (msg.IsOfType<SetEd::MsgUpdateSetEditor>() || msg.IsOfType<SetEd::MsgSetObjectEdited>())
+			if (in_rMessage.IsOfType<SetEd::MsgUpdateSetEditor>() || in_rMessage.IsOfType<SetEd::MsgSetObjectEdited>())
 			{
 				return true;
 			}
 
-			return GameObject3D::ProcessMessage(msg);
+			return GameObject3D::ProcessMessage(in_rMessage);
 		}
 		
 		virtual void OnInitializedSetObject()
@@ -57,29 +57,29 @@ namespace app
 			
 		}
 		
-		virtual void OnPutSetObject(CSetAdapter& adapter)
+		virtual void OnPutSetObject(CSetAdapter& in_rAdapter)
 		{
 			
 		}
 		
-		virtual void OnSetEditorParamChanged(CSetAdapter& adapter)
+		virtual void OnSetEditorParamChanged(CSetAdapter& in_rAdapter)
 		{
 
 		}
 
 	public:
-		uint GetExtUserData(EExtUserDataType type) const
+		uint GetExtUserData(EExtUserDataType in_type) const
 		{
 			if (m_pAdapter)
-				return m_pAdapter->GetUserData(type);
+				return m_pAdapter->GetUserData(in_type);
 
 			return 0;
 		}
 
-		void SetExtUserData(EExtUserDataType type, uint value)
+		void SetExtUserData(EExtUserDataType in_type, uint in_value)
 		{
 			if (m_pAdapter)
-				m_pAdapter->SetUserData(type, value);
+				m_pAdapter->SetUserData(in_type, in_value);
 		}
 
 		virtual unsigned int GetAdsorbGuidePathID()
@@ -97,7 +97,7 @@ namespace app
 			return { 0, 0, 0 };
 		}
 		
-		virtual void SetAppearance(float opacity) // not sure if this is opacity
+		virtual void SetAppearance(float in_opacity) // not sure if this is opacity
 		{
 			
 		}

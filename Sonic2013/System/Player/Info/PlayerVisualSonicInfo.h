@@ -19,6 +19,8 @@ namespace app::Player
         inline static const char* ms_pSpinTexSrtAnimationName = "chr_Sonic_spin";
         inline static const char* ms_pVisAnimationNames[] = { "sn_idle_l_loop", "sn_idle_r_loop" };
         inline static const char* ms_pFootprintNames[] = { "sonic_footprint01", "sonic_footprint02" };
+        inline static const char* ms_pMirrorBindDataNames[] = { "MouthReference_L", "MouthReference", "MouthPosition_L", "MouthPosition", "Jaw_L", "Jaw", "Teeth_Low_L", "Teeth_Low",
+            "Teeth_Up_L", "Teeth_Up", "Lip_C_L", "Lip_C", "Lip_L", "Lip_L_L", "Lip_R", "Lip_R_L",};
 
     public:
         inline static const size_t ms_VisAnimationCount = ARRAYSIZE(ms_pVisAnimationNames);
@@ -53,15 +55,15 @@ namespace app::Player
 
             auto animScript = ObjUtil::GetAnimationScriptResource(ms_pAnimationScriptName, packFile);
             csl::ut::InplaceMoveArray<app::animation::MirrorBindData, 8> bindData{ m_pAllocator };
-            bindData.push_back_unchecked({ "MouthReference_L", "MouthReference" });
-            bindData.push_back_unchecked({ "MouthPosition_L", "MouthPosition" });
-            bindData.push_back_unchecked({ "Jaw_L", "Jaw" });
-            bindData.push_back_unchecked({ "Teeth_Low_L", "Teeth_Low" });
-            bindData.push_back_unchecked({ "Teeth_Up_L", "Teeth_Up" });
-            bindData.push_back_unchecked({ "Lip_C_L", "Lip_C" });
-            bindData.push_back_unchecked({ "Lip_L", "Lip_L_L" });
-            bindData.push_back_unchecked({ "Lip_R", "Lip_R_L" });
-
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[0], ms_pMirrorBindDataNames[1] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[2], ms_pMirrorBindDataNames[3] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[4], ms_pMirrorBindDataNames[5] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[6], ms_pMirrorBindDataNames[7] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[8], ms_pMirrorBindDataNames[9] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[10], ms_pMirrorBindDataNames[11] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[12], ms_pMirrorBindDataNames[13] });
+            bindData.push_back_unchecked({ ms_pMirrorBindDataNames[14], ms_pMirrorBindDataNames[15] });
+            
             app::animation::AnimationResContainer::LoadInfo loadInfo{ animScript, Skeleton, &bindData };
             AnimationContainer.LoadFromBuffer(loadInfo, packFile);
 

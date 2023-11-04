@@ -22,9 +22,9 @@ namespace app::fnd
 			return nullptr;
 		}
 
-		void AddService(const GameServiceClass& rClass)
+		void AddService(const GameServiceClass& in_rClass)
 		{
-			m_Classes.push_back(&rClass);
+			m_Classes.push_back(&in_rClass);
 		}
 	};
 }

@@ -7,27 +7,27 @@ namespace app::SetEd
 		inline static FUNCTION_PTR(SResObjectData*, __thiscall, ms_fpCreateObject, ASLR(0x004635D0), CObjectProject*, CResClass);
 
 	public:
-		SResObjectData* CreateObject(CResClass cls)
+		SResObjectData* CreateObject(CResClass in_class)
 		{
-			return ms_fpCreateObject(this, cls);
+			return ms_fpCreateObject(this, in_class);
 		}
 
-		CResObject AddObject(CResClass cls)
+		CResObject AddObject(CResClass in_class)
 		{
-			auto* pObj = CreateObject(cls);
+			auto* pObj = CreateObject(in_class);
 
 			if (pObj)
-				ref().m_Objects.push_back(pObj);
+				ref().Objects.push_back(pObj);
 
 			return { pObj };
 		}
 
-		CResObject GetObjectByID(CSetObjectID id)
+		CResObject GetObjectByID(CSetObjectID in_id)
 		{
-			for (size_t i = 0; i < ref().m_Objects.size(); i++)
+			for (size_t i = 0; i < ref().Objects.size(); i++)
 			{
-				SetEd::CResObject resObj{ ref().m_Objects[i] };
-				if (resObj.IsValid() && id.Value == resObj.GetUID())
+				SetEd::CResObject resObj{ ref().Objects[i] };
+				if (resObj.IsValid() && in_id.Value == resObj.GetUID())
 					return resObj;
 			}
 

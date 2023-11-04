@@ -25,11 +25,11 @@ namespace app::dbg
 			}
 		}
 
-		void Draw(app::font::Font* pFont)
+		void Draw(app::font::Font* in_pFont)
 		{
 			for (auto& item : m_Items)
 			{
-				item->Draw(pFont);
+				item->Draw(in_pFont);
 			}
 		}
 	};

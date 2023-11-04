@@ -21,7 +21,7 @@ namespace app::Player
 
 		bool HitCheckPressCollision(CStateGOC& in_rStateGoc, xgame::MsgHitTriggerBase& in_rMessage)
 		{
-			if (!(in_rMessage.m_pOther->m_Unk3 & 0x1000))
+			if (!(in_rMessage.pOther->Unk3 & 0x1000))
 				return false;
 
 			Unk1.set(2, true);

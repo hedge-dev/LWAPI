@@ -17,16 +17,6 @@ namespace app::Player::StateUtil
 {
 	inline static int PhantomMissionTypes[] = { 15, 11, 16, 21, 26, 29, -1, 31, -1 };
 
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpResetPosition, ASLR(0x008D9C60), CStateGOC&, const csl::math::Vector3&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpResetPositionAll, ASLR(0x008D85F0), CStateGOC&, const csl::math::Vector3&, const csl::math::Quaternion&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpResetLocater, ASLR(0x008DF670), CStateGOC&, const csl::math::Matrix34&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpAbortPhantom, ASLR(0x008D6930), CStateGOC&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpAddRingNum, ASLR(0x008D7BA0), CStateGOC&, int);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpSetDraw, ASLR(0x008D7BA0), CStateGOC&, bool, bool);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpSendNextStateToNotVisible, ASLR(0x008D9400), CStateGOC&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpEnable2ndDefCollision, ASLR(0x00861E30), CStateGOC&);
-	inline static FUNCTION_PTR(void, __cdecl, ms_fpForcedStopFootPlacement, ASLR(0x008DF740), CStateGOC&);
-
 	static CSnowBall* GetSnowBall(CStateGOC& in_rStateGoc)
 	{
 		CPlayerVehicle* pVehicle{};
@@ -41,12 +31,14 @@ namespace app::Player::StateUtil
 
 	static void ResetPosition(CStateGOC& rStateGoc, const csl::math::Vector3& rPos)
 	{
-		ms_fpResetPosition(rStateGoc, rPos);
+		FUNCTION_PTR(void, __cdecl, fpResetPosition, ASLR(0x008D9C60), CStateGOC&, const csl::math::Vector3&);
+		fpResetPosition(rStateGoc, rPos);
 	}
 
 	static void ResetPosition(CStateGOC& rStateGoc, const csl::math::Vector3& rPos, const csl::math::Quaternion& rRot)
 	{
-		ms_fpResetPositionAll(rStateGoc, rPos, rRot);
+		FUNCTION_PTR(void, __cdecl, fpResetPositionAll, ASLR(0x008D85F0), CStateGOC&, const csl::math::Vector3&, const csl::math::Quaternion&);
+		fpResetPositionAll(rStateGoc, rPos, rRot);
 	}
 
 	static void ResetPosition(CPlayer& rPlayer, const csl::math::Vector3& rPos)
@@ -98,7 +90,7 @@ namespace app::Player::StateUtil
 
 	static void SetUpDirection(CStateGOC& in_rStateGoc, const csl::math::Vector3& in_rUpDirection)
 	{
-		in_rStateGoc.GetPhysics()->m_Up = in_rUpDirection;
+		in_rStateGoc.GetPhysics()->Up = in_rUpDirection;
 	}
 
 	static game::GravityType GetGravityType(CStateGOC& in_rStateGoc)
@@ -110,12 +102,13 @@ namespace app::Player::StateUtil
 	{
 		auto* pPhysics = in_rStateGoc.GetPhysics();
 		pPhysics->UpdateGravityForced(in_rOrigin);
-		pPhysics->m_Unk7.set(6, true);
+		pPhysics->Unk7.set(6, true);
 	}
 
 	static void ResetLocater(CStateGOC& in_rStateGoc, const csl::math::Matrix34& in_rMatrix)
 	{
-		ms_fpResetLocater(in_rStateGoc, in_rMatrix);
+		FUNCTION_PTR(void, __cdecl, fpResetLocater, ASLR(0x008DF670), CStateGOC&, const csl::math::Matrix34&);
+		fpResetLocater(in_rStateGoc, in_rMatrix);
 	}
 
 	static void RotateCollision(CStateGOC& in_rStateGoc, const csl::math::Quaternion& in_rRotation, bool in_unk)
@@ -152,7 +145,8 @@ namespace app::Player::StateUtil
 
 	static void AddRingNum(CStateGOC& in_rStateGoc, int ringNum)
 	{
-		ms_fpAddRingNum(in_rStateGoc, ringNum);
+		FUNCTION_PTR(void, __cdecl, fpAddRingNum, ASLR(0x008D7BA0), CStateGOC&, int);
+		fpAddRingNum(in_rStateGoc, ringNum);
 	}
 
 	static void SubRingNum(CStateGOC& in_rStateGoc, int in_ringNum)
@@ -195,12 +189,12 @@ namespace app::Player::StateUtil
 
 	static bool IsNowAutoRun(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(17);
+		return in_rStateGoc.GetBlackBoard()->Unk1[3].test(17);
 	}
 
 	static bool IsNowStomping(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(8);
+		return in_rStateGoc.GetBlackBoard()->Unk1[3].test(8);
 	}
 
 	static bool IsNowPhantom(CStateGOC& in_rStateGoc)
@@ -210,7 +204,8 @@ namespace app::Player::StateUtil
 
 	static void AbortPhantom(CStateGOC& in_rStateGoc)
 	{
-		ms_fpAbortPhantom(in_rStateGoc);
+		FUNCTION_PTR(void, __cdecl, fpAbortPhantom, ASLR(0x008D6930), CStateGOC&);
+		fpAbortPhantom(in_rStateGoc);
 	}
 
 	static Game::EPhantomType GetStockPixieType(CStateGOC& in_rStateGoc)
@@ -220,7 +215,7 @@ namespace app::Player::StateUtil
 
 	static int GetGroundAttribute(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetPhysics()->m_Unk9.GetAttribute();
+		return in_rStateGoc.GetPhysics()->Unk9.GetAttribute();
 	}
 
 	static bool IsLandOnMovableGround(CStateGOC& in_rStateGoc)
@@ -244,7 +239,7 @@ namespace app::Player::StateUtil
 		in_rStateGoc.SendMessageToGame(msg);
 
 		auto phantomType = GetNowPhantomType(in_rStateGoc);
-		if (phantomType < Game::EPhantomType::PHANTOM_MAX)
+		if (phantomType < Game::EPhantomType::ePhantom_Max)
 		{
 			int missionType = PhantomMissionTypes[phantomType];
 			if (missionType >= 0)
@@ -268,12 +263,13 @@ namespace app::Player::StateUtil
 
 	static void SetDraw(CStateGOC& in_rStateGoc, bool in_unk, bool in_unk2)
 	{
-		ms_fpSetDraw(in_rStateGoc, in_unk, in_unk2);
+		FUNCTION_PTR(void, __cdecl, fpSetDraw, ASLR(0x008D7BA0), CStateGOC&, bool, bool);
+		fpSetDraw(in_rStateGoc, in_unk, in_unk2);
 	}
 
 	static bool IsDead(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(0);
+		return in_rStateGoc.GetBlackBoard()->Unk1[3].test(0);
 	}
 
 	static bool IsDisableTime(CStateGOC& in_rStateGoc, EDisableTimer in_timer)
@@ -314,7 +310,7 @@ namespace app::Player::StateUtil
 
 	static bool IsInWater(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(6);
+		return in_rStateGoc.GetBlackBoard()->Unk1[3].test(6);
 	}
 
 	static bool IsHeartLife(CStateGOC& in_rStateGoc);
@@ -323,7 +319,7 @@ namespace app::Player::StateUtil
 
 	static SGroundInfo* GetGroundInfo(CStateGOC& in_rStateGoc)
 	{
-		return &in_rStateGoc.GetPhysics()->m_Unk9;
+		return &in_rStateGoc.GetPhysics()->Unk9;
 	}
 
 	static void SetInputEnable(CStateGOC& in_rStateGoc, bool in_enable)
@@ -335,7 +331,8 @@ namespace app::Player::StateUtil
 
 	static void SendNextStateToNotVisible(CStateGOC& in_rStateGoc)
 	{
-		ms_fpSendNextStateToNotVisible(in_rStateGoc);
+		FUNCTION_PTR(void, __cdecl, fpSendNextStateToNotVisible, ASLR(0x008D9400), CStateGOC&);
+		fpSendNextStateToNotVisible(in_rStateGoc);
 	}
 
 	static void EndDamageBlink(CStateGOC& in_rStateGoc)
@@ -407,7 +404,7 @@ namespace app::Player::StateUtil
 
 	static bool IsBattleMode(CStateGOC& in_rStateGoc)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(20);
+		return in_rStateGoc.GetBlackBoard()->Unk1[3].test(20);
 	}
 
 	static fnd::SoundHandle PlaySE(CStateGOC& in_rStateGoc, const char* in_pName)
@@ -451,14 +448,15 @@ namespace app::Player::StateUtil
 			auto* pSnowball = static_cast<CSnowBall*>(pVehicle);
 			auto* pPhysics = in_rStateGoc.GetPhysics();
 			
-			pSnowball->SetPosition({ pPhysics->m_Position + pPhysics->GetUp() * pSnowball->Radius });
+			pSnowball->SetPosition({ pPhysics->Position + pPhysics->GetUp() * pSnowball->Radius });
 			pSnowball->SetDirection(pPhysics->GetFront(), pPhysics->GetUp());
 		}
 	}
 
 	static void Enable2ndDefCollision(CStateGOC& in_rStateGoc)
 	{
-		ms_fpEnable2ndDefCollision(in_rStateGoc);
+		FUNCTION_PTR(void, __cdecl, fpEnable2ndDefCollision, ASLR(0x00861E30), CStateGOC&);
+		fpEnable2ndDefCollision(in_rStateGoc);
 	}
 
 	static void SetRCLockHoverAbility(CStateGOC& in_rStateGoc, bool in_lockAbility);
@@ -502,12 +500,13 @@ namespace app::Player::StateUtil
 
 	static bool TestActionFlag(CStateGOC& in_rStateGoc, EActionFlag in_flag)
 	{
-		return in_rStateGoc.GetBlackBoard()->m_Unk1[1].test(in_flag);
+		return in_rStateGoc.GetBlackBoard()->Unk1[1].test(in_flag);
 	}
 
 	static void ForcedStopFootPlacement(CStateGOC& in_rStateGoc)
 	{
-		ms_fpForcedStopFootPlacement(in_rStateGoc);
+		FUNCTION_PTR(void, __cdecl, fpForcedStopFootPlacement, ASLR(0x008DF740), CStateGOC&);
+		fpForcedStopFootPlacement(in_rStateGoc);
 	}
 
 	static void ChangeToChangePathMode(CStateGOC& in_rStateGoc, float in_unk1, bool in_unk2)
@@ -515,9 +514,9 @@ namespace app::Player::StateUtil
 		auto* pBlackboard = in_rStateGoc.GetBlackBoard();
 		
 		in_rStateGoc.ChangeTo3DMode(in_unk2);
-		pBlackboard->m_Unk1[2].set(2, true);
+		pBlackboard->Unk1[2].set(2, true);
 		in_rStateGoc.SetDisableTime(5, 0.05f);
-		pBlackboard->m_Unk1[2].set(3, in_unk2);
+		pBlackboard->Unk1[2].set(3, in_unk2);
 	}
 
 	void SetTerrainCollisionDisable(CStateGOC& in_rStateGoc, bool in_isDisable);

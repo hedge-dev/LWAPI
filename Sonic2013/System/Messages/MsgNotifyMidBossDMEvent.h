@@ -5,11 +5,11 @@ namespace app::xgame
 	class MsgNotifyMidBossDMEvent : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x60DC;
-
 		int Unk1{};
 		csl::math::Vector3 Unk2{};
 		bool Unk3{};
+
+		inline const static unsigned int MessageID = 0x60DC;
 
 		MsgNotifyMidBossDMEvent() : Message(MessageID)
 		{

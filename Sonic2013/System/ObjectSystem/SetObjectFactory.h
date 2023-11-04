@@ -7,40 +7,40 @@ namespace app
 	class CSetObjectFactory
 	{
 	public:
-		app::TArray<const CSetObjClass*, std::dummy::allocator<const CSetObjClass*>> m_Classes{};
+		app::TArray<const CSetObjClass*, std::dummy::allocator<const CSetObjClass*>> Classes{};
 
 		void BeginRegistration() {  }
-		void RegisterClass(const CSetObjClass* pClass)
+		void RegisterClass(const CSetObjClass* in_pClass)
 		{
-			m_Classes.push_back(pClass);
+			Classes.push_back(in_pClass);
 		}
 
 		void EndRegistration()
 		{
-			std::sort(m_Classes.begin(), m_Classes.end(), [](const CSetObjClass* c1, const CSetObjClass* c2) -> bool
+			std::sort(Classes.begin(), Classes.end(), [](const CSetObjClass* c1, const CSetObjClass* c2) -> bool
 			{
 				return strcmp(c1->m_pName, c2->m_pName) >> 31;
 			});
 		}
 
-		void CreateParamMap(app::ut::RefPtr<SetEd::CClassProject>& rClassProject)
+		void CreateParamMap(app::ut::RefPtr<SetEd::CClassProject>& in_rClassProject)
 		{
-			for (const auto& pClass : m_Classes)
+			for (const auto& pClass : Classes)
 			{
-				auto resCls = rClassProject->AddClass(pClass->m_pName, pClass->m_pType, pClass->m_DefaultRangeIn, pClass->m_DefaultRangeOut, nullptr, 0);
+				auto resCls = in_rClassProject->AddClass(pClass->pName, pClass->pType, pClass->DefaultRangeIn, pClass->DefaultRangeOut, nullptr, 0);
 				pClass->SetupParamMap(resCls);
 			}
 		}
 
-		void RegisterContainer(app::GameDocument& rDocument)
+		void RegisterContainer(app::GameDocument& in_rDocument)
 		{
-			auto* pContainer = rDocument.GetService<CObjInfoContainer>();
+			auto* pContainer = in_rDocument.GetService<CObjInfoContainer>();
 			if (!pContainer)
 				return;
 
-			for (const auto& pClass : m_Classes)
+			for (const auto& pClass : Classes)
 			{
-				CObjInfo* pInfo = pClass->CreateInfo(rDocument.GetAllocator());
+				CObjInfo* pInfo = pClass->CreateInfo(in_rDocument.GetAllocator());
 				if (!pInfo)
 					continue;
 
@@ -48,18 +48,18 @@ namespace app
 			}
 		}
 
-		void RegisterContainer(app::GameDocument& rDocument, std::dummy::vector<const char*>& objects)
+		void RegisterContainer(app::GameDocument& in_rDocument, std::dummy::vector<const char*>& in_rObjects)
 		{
-			auto* pContainer = rDocument.GetService<CObjInfoContainer>();
+			auto* pContainer = in_rDocument.GetService<CObjInfoContainer>();
 			if (!pContainer)
 				return;
 
-			auto* pAllocator = rDocument.GetAllocator();
+			auto* pAllocator = in_rDocument.GetAllocator();
 			csl::ut::StringMap<const CSetObjClass*> objectLookup{ pAllocator };
-			for (const auto& pClass : m_Classes)
-				objectLookup.insert(pClass->m_pName, pClass);
+			for (const auto& pClass : Classes)
+				objectLookup.insert(pClass->pName, pClass);
 
-			for (auto& pName : objects)
+			for (auto& pName : in_rObjects)
 			{
 				auto pClass = objectLookup.find(pName);
 				if (pClass == objectLookup.end())

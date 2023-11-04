@@ -3,13 +3,15 @@
 namespace app
 {
 	class CSetAdapter;
+	
 	namespace Gops
 	{
 		class CActorPack;
+
 		class CActor : CWorldHandle
 		{
 		public:
-			csl::ut::LinkListNode m_ListNode{};
+			csl::ut::LinkListNode ListNode{};
 
 		protected:
 			CActorPack* m_pPack;
@@ -20,7 +22,7 @@ namespace app
 			csl::math::Vector3 m_Position{};
 
 		public:
-			void* m_Unk1{};
+			void* Unk1{};
 			
 			CActorPack* GetPack() const
 			{

@@ -21,28 +21,28 @@ namespace app
 			return *ms_pStaticClass;
 		}
 		
-		void AddVolume(CActivationVolume* pVolume)
+		void AddVolume(CActivationVolume* in_pVolume)
 		{
-			m_Volumes.push_back(pVolume);
-			pVolume->m_pManager = this;
+			m_Volumes.push_back(in_pVolume);
+			in_pVolume->m_pManager = this;
 		}
 
-		void RemoveVolume(CActivationVolume* pVolume)
+		void RemoveVolume(CActivationVolume* in_pVolume)
 		{
-			m_Volumes.erase(pVolume);
-			pVolume->m_pManager = nullptr;
+			m_Volumes.erase(in_pVolume);
+			in_pVolume->m_pManager = nullptr;
 		}
 
-		void AddObject(CActivationHandle* pHandle)
+		void AddObject(CActivationHandle* in_pHandle)
 		{
-			m_Handles.push_back(pHandle);
-			pHandle->m_pOwner = this;
+			m_Handles.push_back(in_pHandle);
+			in_pHandle->m_pOwner = this;
 		}
 
-		void RemoveObject(CActivationHandle* pHandle)
+		void RemoveObject(CActivationHandle* in_pHandle)
 		{
-			m_Handles.erase(pHandle);
-			pHandle->m_pOwner = nullptr;
+			m_Handles.erase(in_pHandle);
+			in_pHandle->m_pOwner = nullptr;
 		}
 
 		const csl::ut::LinkList<CActivationVolume>& GetVolumes() const

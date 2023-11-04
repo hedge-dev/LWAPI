@@ -5,19 +5,19 @@ namespace app::dbg
 	class FormObject : public gindows::Form
 	{
 	public:
-		FormObject(const char* pName) : Form()
+		FormObject(const char* in_pName) : Form()
 		{
-			SetName(pName);
-			m_OnExecute += csl::ut::MakePair(this, &FormObject::Update);
-			m_OnRender += csl::ut::MakePair(this, &FormObject::Draw);
+			SetName(in_pName);
+			OnExecute += csl::ut::MakePair(this, &FormObject::Update);
+			OnRender += csl::ut::MakePair(this, &FormObject::Draw);
 		}
 
-		virtual void Update(gindows::Object* pSender, gindows::ExecuteEventArgs& args)
+		virtual void Update(gindows::Object* in_pSender, gindows::ExecuteEventArgs& in_rArgs)
 		{
 			
 		}
 
-		virtual void Draw(gindows::Object* pSender, gindows::RenderEventArgs& args)
+		virtual void Draw(gindows::Object* in_pSender, gindows::RenderEventArgs& in_rArgs)
 		{
 
 		}

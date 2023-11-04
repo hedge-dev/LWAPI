@@ -5,13 +5,14 @@ namespace app::xgame
 	class MsgSuspendWorld : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x300D;
-		float m_Time{};
-		size_t m_Flags{};
+		float Time{};
+		size_t Flags{};
 		
-		MsgSuspendWorld(float time) : Message(MessageID)
+		inline const static unsigned int MessageID = 0x300D;
+
+		MsgSuspendWorld(float in_time) : Message(MessageID)
 		{
-			m_Time = time;
+			Time = in_time;
 		}
 
 		Message* Clone() override

@@ -32,7 +32,7 @@ namespace app
 
         void SetParamByMessage(const xgame::MsgKick& in_rMessage)
         {
-            Unk6 = in_rMessage.m_Unk3;
+            Unk6 = in_rMessage.Unk3;
             PlayerNo = in_rMessage.PlayerNo;
         }
     };

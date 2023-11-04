@@ -4,6 +4,9 @@ namespace app::Player
 {
     class PhantomRhythmInfo : public CObjInfo
     {
+    public:
+        inline static const char* ms_pName = "PhantomRhythmInfo";
+
     private:
         inline static const char* ms_pPackfileName = "PhantomRhythm.pac";
         inline static const char* ms_pModelName = "chr_pha_Rhythm";
@@ -37,7 +40,7 @@ namespace app::Player
 
         const char* GetInfoName() override
         {
-            return "PhantomRhythmInfo";
+            return ms_pName;
         }
     };
 }

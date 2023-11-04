@@ -5,9 +5,9 @@ namespace app::Player
 	inline void RegisterBodyModel(GOCReferenceHolderUnit& in_rRefHolderGocUnit, fnd::GOCVisualModel* in_pVisualModelGoc, hh::gfx::res::ResModel in_model, hh::gfx::res::ResSkeleton in_skeleton, uint in_unk)
 	{
 		fnd::GOCVisualModel::Description description{};
-		description.m_Model = in_model;
+		description.Model = in_model;
 		if (in_skeleton.IsValid())
-			description.m_Skeleton = in_skeleton;
+			description.Skeleton = in_skeleton;
 
 		description.field_0C = in_unk;
 

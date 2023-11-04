@@ -14,18 +14,18 @@ namespace app::Player
 		if (!pVisual && !pVisual->pGocHolder)
 			return nullptr;
 
-		return pVisual->pGocHolder->GetUnit(0).m_rpAnimScript.get();
+		return pVisual->pGocHolder->GetUnit(0).rpAnimScript.get();
 	}
 
 	inline game::GOCAnimationScript& CVisualGOC::GetHumanAnimation() const
 	{
-		return *GetHumanVisual()->pGocHolder->GetUnit(0).m_rpAnimScript.get();
+		return *GetHumanVisual()->pGocHolder->GetUnit(0).rpAnimScript.get();
 	}
 
 	inline const char* CVisualGOC::GetCurrentVisualName() const
 	{
-		if (m_rpHumanVisual)
-			return m_rpHumanVisual->pVisualName;
+		if (rpHumanVisual)
+			return rpHumanVisual->pVisualName;
 
 		return { nullptr };
 	}
@@ -34,6 +34,6 @@ namespace app::Player
 	{
 		Flags.set(2, false);
 		Unk1 = 0.0f;
-		m_rpCurrentVisual->SetBlinkVisible(true);
+		rpCurrentVisual->SetBlinkVisible(true);
 	}
 }

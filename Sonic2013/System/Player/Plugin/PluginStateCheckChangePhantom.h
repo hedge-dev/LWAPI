@@ -23,7 +23,7 @@ namespace app::Player
 		{
 			switch (in_type)
 			{
-			case app::Game::PHANTOM_DRILL:
+			case app::Game::ePhantom_Drill:
 			{
 				auto* pGroundInfo = StateUtil::GetGroundInfo(in_rStateGoc);
 
@@ -32,26 +32,26 @@ namespace app::Player
 			
 				return true;
 			}
-			case app::Game::PHANTOM_LASER:
+			case app::Game::ePhantom_Laser:
 			{
 				return true;
 			}
-			case app::Game::PHANTOM_ROCKET:
+			case app::Game::ePhantom_Rocket:
 			{
 				if (in_rStateGoc.Is2DMode())
 					return false;
 			
 				return true;
 			}
-			case app::Game::PHANTOM_ASTEROID:
-			case app::Game::PHANTOM_RHYTHM:
+			case app::Game::ePhantom_Asteroid:
+			case app::Game::ePhantom_Rhythm:
 			{
 				if (!in_rStateGoc.Is2DMode())
 					return false;
 
 				return true;
 			}
-			case app::Game::PHANTOM_EAGLE:
+			case app::Game::ePhantom_Eagle:
 			{
 				if (in_rStateGoc.Is2DMode())
 					return false;
@@ -75,12 +75,12 @@ namespace app::Player
 			
 				return true;
 			}
-			case app::Game::PHANTOM_HOVER:
+			case app::Game::ePhantom_Hover:
 			{
 				return true;
 			}
-			case app::Game::PHANTOM_BOMB:
-			case app::Game::PHANTOM_QUAKE:
+			case app::Game::ePhantom_Bomb:
+			case app::Game::ePhantom_Quake:
 			default:
 				return true;
 			}
@@ -100,7 +100,7 @@ namespace app::Player
 			if (!in_rStateGoc.GetBlackBoard()->GetPixieParameter()->IsEnableTransform(in_type))
 				return false;
 		
-			if ((!Unk3 || in_type == Game::EPhantomType::PHANTOM_BOMB && Unk4 && Unk3 <= 1) && CheckArea(in_rStateGoc, in_type))
+			if ((!Unk3 || in_type == Game::EPhantomType::ePhantom_Bomb && Unk4 && Unk3 <= 1) && CheckArea(in_rStateGoc, in_type))
 			{
 				MsgPLCheckPhantomStart msg{ in_type };
 				in_rStateGoc.ProcessMessageToCurrentState(msg);

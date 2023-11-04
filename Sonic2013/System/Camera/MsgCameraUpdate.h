@@ -5,17 +5,18 @@ namespace app::xgame
 	class MsgCameraUpdate : public fnd::Message
 	{
 	public:
-		inline static uint MessageID = 0x8026;
-		float m_DeltaTime{};
+		float DeltaTime{};
 		
-		MsgCameraUpdate(float delta) : Message(MessageID)
+		inline const static unsigned int MessageID = 0x8026;
+
+		MsgCameraUpdate(float in_deltaTime) : Message(MessageID)
 		{
-			m_DeltaTime = delta;
+			DeltaTime = in_deltaTime;
 		}
 
 		Message* Clone() override
 		{
-			return new MsgCameraUpdate(m_DeltaTime);
+			return new MsgCameraUpdate(DeltaTime);
 		}
 	};
 }

@@ -7,9 +7,9 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFE914);
 
-		int Unk1{};
 		int Unk2{};
-		csl::math::Vector3 Unk3{};
+		int Unk3{};
+		csl::math::Vector3 Unk4{};
 
 		PipeMoveParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

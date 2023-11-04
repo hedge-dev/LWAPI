@@ -5,14 +5,14 @@ namespace app::dbg
 	class Menu;
 	struct MenuEventArgs
 	{
-		bool m_Handled;
+		bool Handled;
 	};
 	
 	class MenuItem : public Object
 	{
 	public:
-		csl::fnd::Delegate<void(Object*, MenuEventArgs& args), csl::fnd::DelegateAllocator> m_OnDecide;
-		csl::fnd::Delegate<void(Object*, MenuEventArgs& args), csl::fnd::DelegateAllocator> m_OnCancel;
+		csl::fnd::Delegate<void(Object*, MenuEventArgs& args), csl::fnd::DelegateAllocator> OnDecide;
+		csl::fnd::Delegate<void(Object*, MenuEventArgs& args), csl::fnd::DelegateAllocator> OnCancel;
 
 	protected:
 		csl::ut::Bitset<uint> m_Flags;
@@ -33,13 +33,13 @@ namespace app::dbg
 		virtual void OnDecide()
 		{
 			MenuEventArgs args{};
-			m_OnDecide(this, args);
+			OnDecide(this, args);
 		}
 		
 		virtual void OnCancel()
 		{
 			MenuEventArgs args{};
-			m_OnCancel(this, args);
+			OnCancel(this, args);
 		}
 
 		void Draw()
@@ -47,9 +47,9 @@ namespace app::dbg
 			m_Text.Draw();
 		}
 
-		void Draw(app::font::Font* pFont)
+		void Draw(app::font::Font* in_pFont)
 		{
-			m_Text.Draw(pFont);
+			m_Text.Draw(in_pFont);
 		}
 	};
 }

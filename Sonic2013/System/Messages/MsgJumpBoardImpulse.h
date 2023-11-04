@@ -11,24 +11,24 @@ namespace app::xgame
 		};
 		
 		INSERT_PADDING(8);
-		csl::math::Vector3 m_Origin{};
-		csl::math::Vector3 m_Direction{};
-		csl::math::Vector3 m_BoostDirection{};
-		float m_SpeedDropoffTime{};
-		EType m_Type{};
-		bool m_Unk3{};
+		csl::math::Vector3 Origin{};
+		csl::math::Vector3 Direction{};
+		csl::math::Vector3 BoostDirection{};
+		float SpeedDropoffTime{};
+		EType Type{};
+		bool Unk3{};
 		INSERT_PADDING(4);
 
 		inline const static unsigned int MessageID = 0x6003;
 
-		MsgJumpBoardImpulse(const csl::math::Vector3& rOrigin, const csl::math::Vector3& rDir, const csl::math::Vector3& rBoostDir, EType type, float speedDropoffTime) : fnd::Message(MessageID)
+		MsgJumpBoardImpulse(const csl::math::Vector3& in_rOrigin, const csl::math::Vector3& in_rDir, const csl::math::Vector3& in_rBoostDir, EType in_type, float in_speedDropoffTime) : fnd::Message(MessageID)
 		{
-			m_Origin = rOrigin;
-			m_Direction = rDir;
-			m_BoostDirection = rBoostDir;
-			m_SpeedDropoffTime = speedDropoffTime;
-			m_Type = type;
-			m_Unk3 = false;
+			Origin = in_rOrigin;
+			Direction = in_rDir;
+			BoostDirection = in_rBoostDir;
+			SpeedDropoffTime = in_speedDropoffTime;
+			Type = in_type;
+			Unk3 = false;
 		}
 
 		Message* Clone() override

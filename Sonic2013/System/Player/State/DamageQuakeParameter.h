@@ -7,8 +7,8 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFB9A4);
 
-		float Unk1{};
 		float Unk2{};
+		float Unk3{};
 
 		DamageQuakeParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

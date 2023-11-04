@@ -11,10 +11,10 @@ namespace app::Player
 		inline static const char* ms_pName = (const char*)ASLR(0x00E00630);
 
 	protected:
-		int m_MaxNumHearts{};
-		int m_NumHearts{};
-		float m_ElapsedTime{};
-		bool m_IsHeartAlertEnabled{};
+		int MaxNumHearts{};
+		int NumHearts{};
+		float ElapsedTime{};
+		bool IsHeartAlertEnabled{};
 
 	public:
 		PluginStateHeartLife() : CStatePlugin(ms_pName)
@@ -24,17 +24,17 @@ namespace app::Player
 
 		int GetNumHearts() const
 		{
-			return m_NumHearts;
+			return NumHearts;
 		}
 
 		int GetMaxNumHearts() const
 		{
-			return m_MaxNumHearts;
+			return MaxNumHearts;
 		}
 
 		void SetEnableHeartAlert(bool in_enable)
 		{
-			m_IsHeartAlertEnabled = true;
+			IsHeartAlertEnabled = true;
 		}
 
 		void OnEnter(CStateGOC& in_rStateGoc) override
@@ -44,55 +44,55 @@ namespace app::Player
 
 			in_rStateGoc.SendMessageImmToGame(msg);
 
-			m_MaxNumHearts = msg.HeartContainerNo;
-			m_NumHearts = msg.HeartContainerNo;
+			MaxNumHearts = msg.HeartContainerNo;
+			NumHearts = msg.HeartContainerNo;
 		}
 
 		bool Update(CStateGOC& in_rStateGoc, float in_deltaTime) override
 		{
-			if (m_NumHearts != 1 || !m_IsHeartAlertEnabled || StateUtil::IsNowPhantom(in_rStateGoc))
+			if (NumHearts != 1 || !IsHeartAlertEnabled || StateUtil::IsNowPhantom(in_rStateGoc))
 				return true;
 		
-			if (m_ElapsedTime >= 0.0f)
+			if (ElapsedTime >= 0.0f)
 			{
-				m_ElapsedTime -= in_deltaTime;
+				ElapsedTime -= in_deltaTime;
 				return true;
 			}
 
 			StateUtil::PlaySE(in_rStateGoc, "obj_zeldastrength_low");
-			m_ElapsedTime += 1.0f;
+			ElapsedTime += 1.0f;
 
 			return true;
 		}
 
 		void IncrementMaxHearts()
 		{
-			m_MaxNumHearts = csl::math::Min(m_MaxNumHearts + 1, 6);
-			m_NumHearts = m_MaxNumHearts;
+			MaxNumHearts = csl::math::Min(MaxNumHearts + 1, 6);
+			NumHearts = MaxNumHearts;
 		}
 
 		bool Recovery()
 		{
-			if (m_NumHearts >= m_MaxNumHearts)
+			if (NumHearts >= MaxNumHearts)
 				return false;
 		
-			m_NumHearts = csl::math::Min(m_NumHearts + 1, m_MaxNumHearts);
+			NumHearts = csl::math::Min(NumHearts + 1, MaxNumHearts);
 			return true;
 		}
 
 		bool AllRecovery()
 		{
-			if (m_NumHearts >= m_MaxNumHearts)
+			if (NumHearts >= MaxNumHearts)
 				return false;
 		
-			m_NumHearts = m_MaxNumHearts;
+			NumHearts = MaxNumHearts;
 			return true;
 		}
 
 		bool Damaged()
 		{
-			m_NumHearts--;
-			return m_NumHearts < 1;
+			NumHearts--;
+			return NumHearts < 1;
 		}
 	};
 }

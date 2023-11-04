@@ -7,15 +7,18 @@ namespace app::fnd
 	
 	struct SingletonInitNode
 	{
-		inline static SingletonInitNode** ms_ppCurNode = reinterpret_cast<SingletonInitNode**>(ASLR(0xFD4218));
-		Singleton_init* init;
-		Singleton_destroy* destroy;
-		SingletonInitNode* prevNode;
-		void** instance;
+	private:
+		inline static SingletonInitNode** ms_ppCurNode = reinterpret_cast<SingletonInitNode**>(ASLR(0x00FD4218));
+	
+	public:
+		Singleton_init* pInit;
+		Singleton_destroy* pDestroy;
+		SingletonInitNode* pPreviousNode;
+		void** ppInstance;
 
 		SingletonInitNode() = default;
 		
-		SingletonInitNode(Singleton_init* init_, Singleton_destroy* destroy_, void** inst) : init(init_), destroy(destroy_), prevNode(*ms_ppCurNode), instance(inst)
+		SingletonInitNode(Singleton_init* in_pInit, Singleton_destroy* in_pDestroy, void** ppInstance) : pInit(in_pInit), pDestroy(in_pDestroy), pPreviousNode(*ms_ppCurNode), ppInstance(ppInstance)
 		{
 			*ms_ppCurNode = this;
 		}

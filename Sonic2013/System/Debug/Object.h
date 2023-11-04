@@ -12,14 +12,14 @@ namespace app::dbg
 			return GetMemoryAllocator();
 		}
 		
-		void* operator new(size_t size)
+		void* operator new(size_t in_size)
 		{
-			return GetAllocator()->Alloc(size, 16);
+			return GetAllocator()->Alloc(in_size, 16);
 		}
 
-		void operator delete(void* mem)
+		void operator delete(void* in_pMem)
 		{
-			return GetAllocator()->Free(mem);
+			return GetAllocator()->Free(in_pMem);
 		}
 	};
 }

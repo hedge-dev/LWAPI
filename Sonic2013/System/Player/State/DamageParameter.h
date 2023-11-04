@@ -7,14 +7,14 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFB9D4);
 
-		int Unk1{};
 		int Unk2{};
-		csl::math::Vector3 Unk3{};
-		bool Unk4{};
+		int Unk3{};
+		csl::math::Vector3 Unk4{};
+		bool Unk5{};
 
 		DamageParameter()
 		{
-			m_Unk1 = 1;
+			Unk1 = 1;
 		}
 
 		DamageParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override

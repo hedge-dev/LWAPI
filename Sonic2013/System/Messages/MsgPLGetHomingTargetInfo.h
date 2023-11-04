@@ -5,11 +5,11 @@ namespace app::xgame
 	class MsgPLGetHomingTargetInfo : public fnd::Message
 	{
 	public:
-		csl::ut::Bitset<uint> m_Flags{};
-		csl::math::Vector3 m_CursorPosition{};
+		csl::ut::Bitset<uint> Flags{};
+		csl::math::Vector3 CursorPosition{};
 		GameObject* pUnk1{};
 		size_t TargetShapeID{};
-		size_t m_LockonCount{ 1 };
+		size_t LockonCount{ 1 };
 		int Unk2{};
 		const game::ColliShape* pTargetShape{};
 		
@@ -27,7 +27,7 @@ namespace app::xgame
 
 		void SetHandledFlag()
 		{
-			m_Flags.set(3);
+			Flags.set(3);
 		}
 	};
 }

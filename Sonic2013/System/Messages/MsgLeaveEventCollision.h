@@ -7,7 +7,7 @@ namespace app::xgame
 	public:
 		fnd::Handle<game::ColliShape> Self{};
 		INSERT_PADDING(8);
-		size_t m_Sender{};
+		size_t Sender{};
 
 		inline const static unsigned int MessageID = 0x9001;
 

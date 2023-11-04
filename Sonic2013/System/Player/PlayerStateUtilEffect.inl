@@ -42,14 +42,14 @@ namespace app::Player::StateUtil
 		rotationMatrix.SetTransVector({ 0.0f, 0.0f, 0.0f });
 
 		game::EffectCreateInfo createInfo{};
-		createInfo.m_pName = in_pEffectName;
-		createInfo.m_Position = in_rOffset.GetTransVector();
-		createInfo.m_Rotation = { rotationMatrix };
-		createInfo.m_Unk1 = 1.0f;
-		createInfo.m_Unk2 = 1;
-		createInfo.m_Unk3 = true;
-		createInfo.m_pVisual = unit.m_rpModel.get();
-		createInfo.m_pBoneName = GetVisualHumanNodeName(in_nodeId);
+		createInfo.pName = in_pEffectName;
+		createInfo.Position = in_rOffset.GetTransVector();
+		createInfo.Rotation = { rotationMatrix };
+		createInfo.Unk1 = 1.0f;
+		createInfo.Unk2 = 1;
+		createInfo.Unk3 = true;
+		createInfo.pVisual = unit.rpModel.get();
+		createInfo.pBoneName = GetVisualHumanNodeName(in_nodeId);
 
 		return unit.CreateEffect(createInfo);
 	}

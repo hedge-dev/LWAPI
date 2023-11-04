@@ -5,14 +5,14 @@ namespace app::Player
 {
 	inline void CPhysics::UpdateViewMatrix()
 	{
-		auto* pCamera = m_pPlayer->GetWorld()->GetCamera(m_Unk1);
+		auto* pCamera = pPlayer->GetWorld()->GetCamera(Unk1);
 		if (pCamera)
 		{
-			m_CameraViewMtx = pCamera->m_ViewMtx;
+			CameraViewMtx = pCamera->ViewMtx;
 		}
 		else
 		{
-			m_CameraViewMtx = math::Matrix34OrthonormalDirection({ 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+			CameraViewMtx = math::Matrix34OrthonormalDirection({ 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
 		}
 	}
 }

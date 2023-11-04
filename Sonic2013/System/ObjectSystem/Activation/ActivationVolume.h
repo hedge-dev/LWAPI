@@ -7,6 +7,7 @@ namespace app
 	class alignas(16) CActivationVolume
 	{
 		friend CActivationManager;
+
 	protected:
 		CActivationManager* m_pManager{};
 		size_t m_Flags{};
@@ -29,9 +30,9 @@ namespace app
 			return m_Volume;
 		}
 
-		void SetVolume(const csl::math::Sphere& vol)
+		void SetVolume(const csl::math::Sphere& in_vol)
 		{
-			m_Volume = vol;
+			m_Volume = in_vol;
 		}
 	};
 }

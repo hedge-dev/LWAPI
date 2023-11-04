@@ -7,8 +7,8 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFEA90);
 
-		bool Unk1{};
-		float Unk2{};
+		bool Unk2{};
+		float Unk3{};
 
 		RollingParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

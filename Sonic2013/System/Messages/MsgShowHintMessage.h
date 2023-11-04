@@ -5,12 +5,13 @@ namespace app::xgame
 	class MsgShowHintMessage : public app::fnd::Message
 	{
 	public:
-		inline static uint MessageID = 0x3023;
-		size_t m_Hide{};
+		size_t Hide{};
+		
+		inline const static unsigned int MessageID = 0x3023;
 
-		MsgShowHintMessage(bool hide) : Message(MessageID)
+		MsgShowHintMessage(bool in_hide) : Message(MessageID)
 		{
-			m_Hide = hide;
+			Hide = in_hide;
 		}
 
 		Message* Clone() override

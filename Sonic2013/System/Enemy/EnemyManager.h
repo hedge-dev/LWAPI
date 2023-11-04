@@ -109,7 +109,7 @@ namespace app
             else
             {
                 if (auto* pObject = in_rCreateInfo.Owner.Get())
-                    effectMtx = pObject->GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3.m_Mtx;
+                    effectMtx = pObject->GetComponent<fnd::GOCTransform>()->Frame.Unk3.Mtx;
             }
 
             if (in_rCreateInfo.Flags.test(3))
@@ -179,7 +179,7 @@ namespace app
                 if (in_rCreateInfo.Flags.test(5) || in_rCreateInfo.Flags.test(6) || in_rCreateInfo.Flags.test(8))
                 {
                     csl::math::Matrix34 popupMtx{};
-                    if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pEffectManager->m_pOwnerDocument, in_rCreateInfo.PlayerNo))
+                    if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pEffectManager->pOwnerDocument, in_rCreateInfo.PlayerNo))
                         popupMtx = math::Matrix34AffineTransformation(pPlayerInfo->Position, pPlayerInfo->Rotation);
 
                     zelda_popupitem::ZeldaPopupItemCinfo createInfo
@@ -188,14 +188,14 @@ namespace app
                         ZeldaPopupItemType::eZeldaPopupItemType_Heart,
                         in_rCreateInfo.PlayerNo
                     };
-                    zelda_popupitem::CreateZeldaPopupItem(GetAllocator(), *pEffectManager->m_pOwnerDocument, createInfo);
+                    zelda_popupitem::CreateZeldaPopupItem(GetAllocator(), *pEffectManager->pOwnerDocument, createInfo);
                 }
                 else
                 {
                     popup_item::SParam param{};
                     param.Unk2 = 20.f;
                     param.Unk4 = 0.3f;
-                    popup_item::Create(*pEffectManager->m_pOwnerDocument, param);
+                    popup_item::Create(*pEffectManager->pOwnerDocument, param);
                 }
             }
 
@@ -210,7 +210,7 @@ namespace app
                 csl::math::Vector3 unk1(effectMtx.GetColumn(1) + (csl::math::Vector3(effectMtx.GetColumn(0) * sinf(scalar)) * 0.01f * 10.0f));
                 unk1 += ((effectMtx.GetColumn(2) * cosf(scalar) * 0.01f * 10.0f));
 
-                AnimalManager.CreateAnimal(*pEffectManager->m_pOwnerDocument, effectMtx, unk1);
+                AnimalManager.CreateAnimal(*pEffectManager->pOwnerDocument, effectMtx, unk1);
             }
         }
 

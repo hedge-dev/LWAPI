@@ -19,11 +19,11 @@ namespace app::xgame
 		inline static FUNCTION_PTR(csl::math::Vector3*, __thiscall, ms_fpGetContactPointPosition, ASLR(0x005344D0), const MsgHitTriggerBase*, csl::math::Vector3*);
 
 	public:
-		game::ColliShape* m_pSelf{};
-		game::ColliShape* m_pOther{};
-		uint m_Sender{};
+		game::ColliShape* pSelf{};
+		game::ColliShape* pOther{};
+		uint Sender{};
 		
-		MsgHitTriggerBase(uint id, game::ColliShape* pSelf, game::ColliShape* pOther) : fnd::Message(id), m_pSelf(pSelf), m_pOther(pOther)
+		MsgHitTriggerBase(uint in_id, game::ColliShape* in_pSelf, game::ColliShape* in_pOther) : fnd::Message(in_id), pSelf(in_pSelf), pOther(in_pOther)
 		{
 			
 		}

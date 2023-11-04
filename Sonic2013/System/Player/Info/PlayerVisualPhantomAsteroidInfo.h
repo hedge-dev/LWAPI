@@ -4,6 +4,9 @@ namespace app::Player
 {
     class PhantomAsteroidInfo : public CObjInfo
     {
+    public:
+        inline static const char* ms_pName = "PhantomAsteroidInfo";
+
     private:
         inline static const char* ms_pPackfileName = "PhantomAsteroid.pac";
         inline static const char* ms_pModelName = "chr_pha_Asteroid";
@@ -41,7 +44,7 @@ namespace app::Player
 
         const char* GetInfoName() override
         {
-            return "PhantomAsteroidInfo";
+            return ms_pName;
         }
     };
 }

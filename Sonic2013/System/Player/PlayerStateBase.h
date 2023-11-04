@@ -172,9 +172,9 @@ namespace app::Player
 				return true;
 
 			LaunchAutoRunCannonParameter autoRunParam{};
-			autoRunParam.m_Unk1 = 1;
-			autoRunParam.Unk2 = { in_rMessage.Unk4 * in_rMessage.Unk3 };
-			autoRunParam.Unk1 = in_rMessage.Unk5;
+			autoRunParam.Unk1 = 1;
+			autoRunParam.Unk3 = { in_rMessage.Unk4 * in_rMessage.Unk3 };
+			autoRunParam.Unk2 = in_rMessage.Unk5;
 			in_rStateGoc.AddStateContextParameter(autoRunParam);
 			in_rStateGoc.ChangeState(116);
 
@@ -208,11 +208,11 @@ namespace app::Player
 		bool ProcMsgPlayerReachGoal(CStateGOC& in_rStateGoc, xgame::MsgPlayerReachGoal& in_rMessage)
 		{
 			xgame::MsgGoal msg{};
-			msg.m_PanCamera = !in_rStateGoc.Is2DMode();
+			msg.PanCamera = !in_rStateGoc.Is2DMode();
 
 			if (in_rMessage.Unk1 == 2)
 			{
-				msg.m_FinishType = xgame::MsgGoal::EFinishType::eFinishType_FadeToWhite;
+				msg.FinishType = xgame::MsgGoal::EFinishType::eFinishType_FadeToWhite;
 				in_rStateGoc.SendMessageToGame(msg);
 
 				return true;
@@ -221,12 +221,12 @@ namespace app::Player
 			if (in_rMessage.Unk1 == 1)
 			{
 				auto* pParameter = in_rStateGoc.CreateStateContextParameter<GoalParameter>();
-				pParameter->Unk1 = 1;
-				pParameter->Unk2 = in_rMessage.Unk3;
+				pParameter->Unk2 = 1;
+				pParameter->Unk3= in_rMessage.Unk3;
 			}
 
 			if (in_rStateGoc.GetLevelInfo()->GetDLCStageIndex() == 3)
-				msg.m_PanCamera = false;
+				msg.PanCamera = false;
 
 			in_rStateGoc.SendMessageToGame(msg);
 			in_rStateGoc.ChangeState(47);
@@ -236,7 +236,7 @@ namespace app::Player
 
 		bool ProcMsgPLEnableSearchAllDirections(CStateGOC& in_rStateGoc, xgame::MsgPLEnableSearchAllDirections& in_rMessage)
 		{
-			auto* pHomingService = in_rStateGoc.pPlayer->m_spHomingService.get();
+			auto* pHomingService = in_rStateGoc.pPlayer->spHomingService.get();
 			if (pHomingService)
 				pHomingService->Unk2.set(3, in_rMessage.IsEnabled);
 		
@@ -271,18 +271,18 @@ namespace app::Player
 
 		bool ProcMsgTakeObject(CStateGOC& in_rStateGoc, xgame::MsgTakeObject& in_rMessage)
 		{
-			if (StateUtil::IsDead(in_rStateGoc) || in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(26))
+			if (StateUtil::IsDead(in_rStateGoc) || in_rStateGoc.GetBlackBoard()->Unk1[3].test(26))
 				return true;
 			
 			bool isVariantValid = in_rMessage.ItemLevel != -1;
 			auto* pPlugin = in_rStateGoc.GetStatePlugin<PluginStateCheckEnableItem>();
 
-			switch (in_rMessage.m_Type)
+			switch (in_rMessage.Type)
 			{
 			case xgame::MsgTakeObject::EType::eType_Ring:
 			case xgame::MsgTakeObject::EType::eType_DroppedRing:
 			{
-				if (in_rMessage.IsValidUserID() && in_rMessage.m_UserID != 6)
+				if (in_rMessage.IsValidUserID() && in_rMessage.UserID != 6)
 					break;
 			
 				if (isVariantValid && pPlugin && pPlugin->IsItemDisable(8))
@@ -294,10 +294,10 @@ namespace app::Player
 				if (in_rMessage.ItemLevel == -1)
 				{
 					StateUtil::AddRingNum(in_rStateGoc, 1);
-					if (in_rMessage.m_Type == xgame::MsgTakeObject::EType::eType_DroppedRing)
+					if (in_rMessage.Type == xgame::MsgTakeObject::EType::eType_DroppedRing)
 						StateUtil::SendMissionGetRing(in_rStateGoc, 1);
 
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 					break;
 				}
 
@@ -316,18 +316,18 @@ namespace app::Player
 				xgame::MsgPLSendGameInfo msg{ (Game::EUser)in_rStateGoc.GetPlayerNo(), in_rStateGoc.GetPhysics()->GetHorzVelocityLength(), StateUtil::GetRingNum(in_rStateGoc), numHearts, maxNumHearts };
 				in_rStateGoc.SendMessageImmToGame(msg);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_SuperRing:
 			{
-				if (in_rMessage.IsValidUserID() && in_rMessage.m_UserID != 6)
+				if (in_rMessage.IsValidUserID() && in_rMessage.UserID != 6)
 					break;
 
 				StateUtil::AddRingNum(in_rStateGoc, 10);
 				StateUtil::SendMissionGetRing(in_rStateGoc, 10);
 				
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_OneUp:
@@ -341,7 +341,7 @@ namespace app::Player
 					msg.LifeCount = 1;
 					in_rStateGoc.SendMessageImmToGame(msg);
 
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 					break;
 				}
 
@@ -350,7 +350,7 @@ namespace app::Player
 				msg.LifeCount = ms_ReleaseBoxLivesCount[in_rMessage.ItemLevel];
 				in_rStateGoc.SendMessageImmToGame(msg);
 				
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_RedRing:
@@ -358,7 +358,7 @@ namespace app::Player
 				StateUtil::PlayVoice(in_rStateGoc, 13);
 				StateUtil::SendMission(in_rStateGoc, 1);
 				
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_SpeedUp:
@@ -396,7 +396,7 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_SlowDown:
@@ -413,7 +413,7 @@ namespace app::Player
 				if (pSpeedUpPlugin)
 					pSpeedUpPlugin->RequestSlowDown(in_rStateGoc);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_Invincibility:
@@ -448,12 +448,12 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_Warp:
 			{
-				if (in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(28) || pPlugin && pPlugin->IsItemDisable(4))
+				if (in_rStateGoc.GetBlackBoard()->Unk1[3].test(28) || pPlugin && pPlugin->IsItemDisable(4))
 				{
 					CallErrSE(in_rStateGoc, isVariantValid);
 					break;
@@ -476,7 +476,7 @@ namespace app::Player
 					else
 						in_rStateGoc.ChangeState(121);
 
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 					break;
 				}
 
@@ -507,7 +507,7 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_Barrier:
@@ -523,8 +523,8 @@ namespace app::Player
 				int itemLevel = in_rMessage.ItemLevel == -1 ? 0 : in_rMessage.ItemLevel;
 
 				PluginStateBarrier::EType barrierType{};
-				if (in_rMessage.m_Type >= xgame::MsgTakeObject::EType::eType_Barrier && in_rMessage.m_Type <= xgame::MsgTakeObject::EType::eType_ThunderBarrier)
-					barrierType = ms_BarrierTypes[in_rMessage.m_Type];
+				if (in_rMessage.Type >= xgame::MsgTakeObject::EType::eType_Barrier && in_rMessage.Type <= xgame::MsgTakeObject::EType::eType_ThunderBarrier)
+					barrierType = ms_BarrierTypes[in_rMessage.Type];
 			
 				auto* pBarrierPlugin = in_rStateGoc.GetStatePlugin<PluginStateBarrier>();
 				if (!pBarrierPlugin)
@@ -548,7 +548,7 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 			
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_RedRingRadar:
@@ -577,7 +577,7 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_StealRing:
@@ -585,7 +585,7 @@ namespace app::Player
 				auto* pLevelInfo = in_rStateGoc.pPlayer->GetLevelInfo();
 				if (!pLevelInfo)
 				{
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 					break;
 				}
 			
@@ -607,7 +607,7 @@ namespace app::Player
 				msgChangeRing.Unk3 = -stealAmount;
 				in_rStateGoc.SendMessageImmToGame(msgChangeRing);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_ChangeRing:
@@ -615,7 +615,7 @@ namespace app::Player
 				auto* pLevelInfo = in_rStateGoc.pPlayer->GetLevelInfo();
 				if (!pLevelInfo)
 				{
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 					break;
 				}
 
@@ -636,7 +636,7 @@ namespace app::Player
 				msgChangeRing.Unk3 = ringCount - rivalRingCount;
 				in_rStateGoc.SendMessageImmToGame(msgChangeRing);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_PhantomBomb:
@@ -645,7 +645,7 @@ namespace app::Player
 				{
 					xgame::MsgTakePixie msg{ Game::EPhantomType::PHANTOM_BOMB, 1.0f };
 					in_rStateGoc.ProcessMessageToCurrentState(msg);
-					in_rMessage.m_Taken = msg.Taken;
+					in_rMessage.Taken = msg.Taken;
 
 					if (isVariantValid)
 						in_rStateGoc.PlaySE("obj_itembox", false);
@@ -672,7 +672,7 @@ namespace app::Player
 				if (isVariantValid)
 					in_rStateGoc.PlaySE("obj_itembox", false);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_YoshiOneUp:
@@ -689,15 +689,15 @@ namespace app::Player
 				}
 				
 				in_rStateGoc.SendMessageImmToGame(msg);
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			case xgame::MsgTakeObject::EType::eType_YoshiCoin:
 			{
-				if (!in_rMessage.IsValidUserID() || in_rMessage.m_UserID == 6)
+				if (!in_rMessage.IsValidUserID() || in_rMessage.UserID == 6)
 				{
 					StateUtil::AddRingNum(in_rStateGoc, 1);
-					in_rMessage.m_Taken = true;
+					in_rMessage.Taken = true;
 				}
 
 				break;
@@ -712,12 +712,12 @@ namespace app::Player
 
 				in_rStateGoc.SendMessageImmToGame(msg);
 
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			default:
 			{
-				in_rMessage.m_Taken = true;
+				in_rMessage.Taken = true;
 				break;
 			}
 			}
@@ -936,7 +936,7 @@ namespace app::Player
 			if (StateUtil::IsDead(in_rStateGoc))
 				return true;
 		
-			if (in_rStateGoc.GetCurrentState() == 38 || HIBYTE(in_rMessage.m_pOther->m_Unk3) != 23)
+			if (in_rStateGoc.GetCurrentState() == 38 || HIBYTE(in_rMessage.pOther->Unk3) != 23)
 				return false;
 			
 			in_rStateGoc.ChangeState(19);
@@ -945,7 +945,7 @@ namespace app::Player
 
 		bool CheckHitHighJumpCollision(CStateGOC& in_rStateGoc, xgame::MsgHitEventCollision& in_rMessage)
 		{
-			if (in_rMessage.m_pSelf->GetID() != 8)
+			if (in_rMessage.pSelf->GetID() != 8)
 				return false;
 		
 			MsgGoHighJumpState msg{ in_rMessage };
@@ -957,20 +957,20 @@ namespace app::Player
 
 		bool CheckHitInletCollision(CStateGOC& in_rStateGoc, xgame::MsgHitEventCollision& in_rMessage)
 		{
-			size_t selfId = in_rMessage.m_pSelf->GetID();
+			size_t selfId = in_rMessage.pSelf->GetID();
 			if (selfId != 10 && selfId != 11)
 				return false;
 		
 			xgame::MsgRingGetSuckedInto msg{};
 			msg.PlayerNo = in_rStateGoc.GetPlayerNo();
 
-			in_rStateGoc.SendMessageImm(in_rMessage.m_Sender, msg);
+			in_rStateGoc.SendMessageImm(in_rMessage.Sender, msg);
 			return true;
 		}
 
 		bool CheckHitPressDeadCollision(CStateGOC& in_rStateGoc, xgame::MsgHitTriggerBase& in_rMessage)
 		{
-			if (in_rMessage.m_pSelf->GetID() != 12)
+			if (in_rMessage.pSelf->GetID() != 12)
 				return false;
 
 			auto* pPlugin = in_rStateGoc.GetStatePlugin<PluginStateCheckDead>();
@@ -983,7 +983,7 @@ namespace app::Player
 
 		bool CheckHitTargetSearchCollision(CStateGOC& in_rStateGoc, xgame::MsgHitTriggerBase& in_rMessage)
 		{
-			if (in_rMessage.m_pSelf->GetID() != 13 && in_rMessage.m_pSelf->GetID() != 14)
+			if (in_rMessage.pSelf->GetID() != 13 && in_rMessage.pSelf->GetID() != 14)
 				return false;
 		
 			auto* pPlugin = in_rStateGoc.GetStatePlugin<CPluginStateLockOn>();
@@ -999,7 +999,7 @@ namespace app::Player
 			if (!in_rStateGoc.GetAttackStatus()->IsAttack())
 				return false;
 		
-			auto* pShapeData = in_rStateGoc.GetCollision()->GetShapeData(in_rMessage.m_pSelf);
+			auto* pShapeData = in_rStateGoc.GetCollision()->GetShapeData(in_rMessage.pSelf);
 			if (!pShapeData)
 				return false;
 			
@@ -1011,12 +1011,12 @@ namespace app::Player
 
 		bool CheckHitCollisionAttackStatus(CStateGOC& in_rStateGoc, xgame::MsgHitEventCollision& in_rMessage)
 		{
-			if (in_rStateGoc.IsDamagedShape(in_rMessage.m_pOther))
+			if (in_rStateGoc.IsDamagedShape(in_rMessage.pOther))
 				return false;
 		
 			if (StateUtil::TestActionFlag(in_rStateGoc, 11))
 			{
-				xgame::MsgStartKick msg{ in_rMessage.m_pOther, in_rMessage.m_pSelf, *in_rMessage.GetContactPointPosition(), *in_rMessage.GetContactPointNormal() };
+				xgame::MsgStartKick msg{ in_rMessage.pOther, in_rMessage.pSelf, *in_rMessage.GetContactPointPosition(), *in_rMessage.GetContactPointNormal() };
 				in_rStateGoc.ProcessMessageToCurrentState(msg);
 				if (msg.Unk1)
 					return true;
@@ -1026,15 +1026,15 @@ namespace app::Player
 			auto* pAttackStatus = in_rStateGoc.GetAttackStatus();
 
 			xgame::MsgDamage msgDamage{ 1, pAttackStatus->GetAttackTypeFlag(), pAttackStatus->GetAttackPower(), in_rMessage, pPhysics->GetVelocity() };
-			msgDamage.m_Bonus.m_Unk1 = 0;
-			msgDamage.m_Bonus.m_Bonus = 1;
+			msgDamage.Bonus.Unk1 = 0;
+			msgDamage.Bonus.Bonus = 1;
 
-			xgame::MsgSetupDamageAndBonus msgBonusSetup{ in_rMessage.m_pOther->GetGameObject(), msgDamage };
+			xgame::MsgSetupDamageAndBonus msgBonusSetup{ in_rMessage.pOther->GetGameObject(), msgDamage };
 			in_rStateGoc.ProcessMessageToCurrentState(msgBonusSetup);
 
 			msgDamage.PlayerNo = in_rStateGoc.GetPlayerNo();
 	
-			in_rStateGoc.SendMessageImm(in_rMessage.m_pOther->GetGameObject(), msgDamage);
+			in_rStateGoc.SendMessageImm(in_rMessage.pOther->GetGameObject(), msgDamage);
 
 			if (msgDamage.IsComingReply())
 				ChangeStateForMsgDamageReply(in_rStateGoc, msgDamage);
@@ -1048,7 +1048,7 @@ namespace app::Player
 				return false;
 	
 			auto* pBlackboard = in_rStateGoc.GetBlackBoard();
-			if (pBlackboard->m_Unk1[3].test(21))
+			if (pBlackboard->Unk1[3].test(21))
 			{
 				in_rStateGoc.ChangeState(125);
 				return false;
@@ -1071,7 +1071,7 @@ namespace app::Player
 
 		void ChangeStateForMsgDamageReply(CStateGOC& in_rStateGoc, xgame::MsgDamage& in_rMessage)
 		{
-			if (in_rMessage.m_ReplyStatus.test(1))
+			if (in_rMessage.ReplyStatus.test(1))
 			{
 				if (StateUtil::IsInvincible(in_rStateGoc))
 				{
@@ -1103,7 +1103,7 @@ namespace app::Player
 			else
 			{
 				MsgHitDamage msg{ in_rMessage };
-				msg.pObject = in_rMessage.m_SenderShape->GetGameObject();
+				msg.pObject = in_rMessage.SenderShape->GetGameObject();
 				in_rStateGoc.ProcessMessageToCurrentState(msg);
 			}
 		}
@@ -1140,16 +1140,16 @@ namespace app::Player
 
 		void StartDiving(CStateGOC& in_rStateGoc, xgame::MsgPLStartDiving& in_rMessage)
 		{
-			if (in_rStateGoc.GetBlackBoard()->m_Unk1[1].test(14) || in_rStateGoc.IsOnGround())
+			if (in_rStateGoc.GetBlackBoard()->Unk1[1].test(14) || in_rStateGoc.IsOnGround())
 				return;
 			
 			auto* pDivingParam = in_rStateGoc.CreateStateContextParameter<DivingParameter>();
-			pDivingParam->Unk1 = 1;
-			pDivingParam->Unk2 = in_rMessage.Unk1;
-			pDivingParam->Unk3 = in_rMessage.Unk2;
-			pDivingParam->Unk4 = 0.0f;
-			pDivingParam->Unk5 = in_rMessage.Unk4;
-			pDivingParam->Unk6 = in_rMessage.Unk3;
+			pDivingParam->Unk2 = 1;
+			pDivingParam->Unk3 = in_rMessage.Unk1;
+			pDivingParam->Unk4 = in_rMessage.Unk2;
+			pDivingParam->Unk5 = 0.0f;
+			pDivingParam->Unk6 = in_rMessage.Unk4;
+			pDivingParam->Unk7 = in_rMessage.Unk3;
 
 			in_rStateGoc.ChangeState(60);
 		}
@@ -1244,7 +1244,7 @@ namespace app::Player
 
 		bool ProcMsgDamage(CStateGOC& in_rStateGoc, xgame::MsgDamage& in_rMessage)
 		{
-			auto* pSenderData = in_rStateGoc.GetCollision()->GetShapeData(in_rMessage.m_SenderShape.Get());
+			auto* pSenderData = in_rStateGoc.GetCollision()->GetShapeData(in_rMessage.SenderShape.Get());
 			if (pSenderData && !pSenderData->ForDefence())
 				return true;
 
@@ -1272,7 +1272,7 @@ namespace app::Player
 				}
 
 				in_rMessage.SetReply(in_rStateGoc.GetPosition(), false);
-				Player::MsgChangeDamageState msg{ in_rMessage.m_Unk3 };
+				Player::MsgChangeDamageState msg{ in_rMessage.Unk3 };
 				msg.pDamageMsg = &in_rMessage;
 				in_rStateGoc.ProcessMessageToCurrentState(msg);
 
@@ -1284,14 +1284,14 @@ namespace app::Player
 			}
 
 			auto phantomType = StateUtil::GetNowPhantomType(in_rStateGoc);
-			if (phantomType != Game::EPhantomType::PHANTOM_BOMB)
+			if (phantomType != Game::EPhantomType::ePhantom_Bomb)
 			{
 				if (phantomType == static_cast<Game::EPhantomType>(-1) && in_rStateGoc.GetCurrentState() != 125)
 				{
 					in_rMessage.SetReply(in_rStateGoc.GetPosition(), false);
 
 					KnockedBackParameter parameter{};
-					parameter.Velocity = in_rMessage.m_Unk3;
+					parameter.Velocity = in_rMessage.Unk3;
 					in_rStateGoc.AddStateContextParameter(parameter);
 					in_rStateGoc.ChangeState(125);
 				}
@@ -1299,7 +1299,7 @@ namespace app::Player
 				return true;
 			}
 
-			StateUtil::SetVelocity(in_rStateGoc, in_rMessage.m_Unk3);
+			StateUtil::SetVelocity(in_rStateGoc, in_rMessage.Unk3);
 
 			return true;
 		}
@@ -1456,7 +1456,7 @@ namespace app::Player
 			auto* pPhysics = in_rStateGoc.GetPhysics();
 			pPhysics->UpdateGravityForced(in_rStateGoc.GetPosition());
 
-			pPhysics->m_Up = { -pPhysics->GetGravityController()->GetGravityDirectionAtPointWorld(in_rStateGoc.GetPosition()) };
+			pPhysics->Up = { -pPhysics->GetGravityController()->GetGravityDirectionAtPointWorld(in_rStateGoc.GetPosition()) };
 
 			return true;
 		}
@@ -1533,7 +1533,7 @@ namespace app::Player
 
 				in_rStateGoc.pPlayer->ChangeDimension(is2D, true, pComponent, unk);
 				StateUtil::RetireHomingEffect(in_rStateGoc);
-				in_rStateGoc.GetPhysics()->m_Up = in_rStateGoc.GetPhysics()->GetUp();
+				in_rStateGoc.GetPhysics()->Up = in_rStateGoc.GetPhysics()->GetUp();
 				in_rStateGoc.ChangeState(122);
 			}
 
@@ -1586,14 +1586,14 @@ namespace app::Player
 
 		void EnterDivingVolume(CStateGOC& in_rStateGoc, xgame::MsgPLEnterDivingVolume& in_rMessage)
 		{
-			if (in_rStateGoc.GetBlackBoard()->m_Unk1[1].test(14) || in_rStateGoc.IsOnGround() && in_rMessage.Unk6)
+			if (in_rStateGoc.GetBlackBoard()->Unk1[1].test(14) || in_rStateGoc.IsOnGround() && in_rMessage.Unk6)
 				return;
 
 			auto* pDivingParam = in_rStateGoc.CreateStateContextParameter<DivingParameter>();
-			pDivingParam->Unk1 = 2;
-			pDivingParam->Unk7 = in_rMessage.Unk3;
-			pDivingParam->Unk8 = in_rMessage.Unk4;
-			pDivingParam->Unk9 = in_rMessage.Unk5;
+			pDivingParam->Unk2 = 2;
+			pDivingParam->Unk8 = in_rMessage.Unk3;
+			pDivingParam->Unk9 = in_rMessage.Unk4;
+			pDivingParam->Unk10 = in_rMessage.Unk5;
 
 			in_rStateGoc.ChangeState(60);
 		}
@@ -1613,78 +1613,78 @@ namespace app::Player
 		{
 			if (StateUtil::GetNowPhantomType(in_rStateGoc) != static_cast<Game::EPhantomType>(-1))
 			{
-				if (!in_rMessage.m_Unk1.test(3))
+				if (!in_rMessage.Unk1.test(3))
 					return;
 
 				StateUtil::AbortPhantom(in_rStateGoc);
 			}
 
-			if (in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(4))
+			if (in_rStateGoc.GetBlackBoard()->Unk1[3].test(4))
 				return;
 
 			StateHangOnParameter hangParam{};
-			switch (in_rMessage.m_Unk3)
+			switch (in_rMessage.Unk3)
 			{
 			case 0:
 			{
-				hangParam.m_HangType = 3;
+				hangParam.HangType = 3;
 				break;
 			}
 			case 2:
 			{
-				hangParam.m_HangType = 10;
+				hangParam.HangType = 10;
 				break;
 			}
 			case 3:
 			case 11:
 			{
-				hangParam.m_HangType = 1;
+				hangParam.HangType = 1;
 				break;
 			}
 			case 4:
 			case 7:
 			{
-				hangParam.m_HangType = 4;
+				hangParam.HangType = 4;
 				break;
 			}
 			case 5:
 			{
-				hangParam.m_HangType = 5;
+				hangParam.HangType = 5;
 				break;
 			}
 			case 8:
 			{
-				hangParam.m_HangType = 6;
+				hangParam.HangType = 6;
 				break;
 			}
 			case 9:
 			{
 				auto* pPinballParam = in_rStateGoc.CreateStateContextParameter<PinBallParameter>();
-				pPinballParam->Unk1 = in_rMessage.m_Sender;
-				pPinballParam->Unk2 = 4;
-				in_rMessage.m_Unk4 = true;
+				pPinballParam->Unk2 = in_rMessage.Sender;
+				pPinballParam->Unk3 = 4;
+				in_rMessage.Unk4 = true;
 				in_rStateGoc.ChangeState(82);
 
 				return;
 			}
 			case 10:
 			{
-				hangParam.m_HangType = 12;
+				hangParam.HangType = 12;
 				break;
 			}
 			case 12:
 			{
-				hangParam.m_HangType = 8;
+				hangParam.HangType = 8;
 				break;
 			}
 			case 13:
 			{
-				hangParam.m_HangType = 9;
+				hangParam.HangType = 9;
 				break;
 			}
 			case 14:
 			{
-				hangParam.m_HangType = 13;
+				hangParam.HangType = 13;
 				if (in_rStateGoc.IsOnGround())
 					break;
 
@@ -1692,56 +1692,56 @@ namespace app::Player
 			}
 			case 15:
 			{
-				hangParam.m_HangType = 7;
+				hangParam.HangType = 7;
 				break;
 			}
 			case 16:
 			{
-				hangParam.m_HangType = 0;
-				hangParam.m_Unk1 = 1;
-				hangParam.Unk1 = in_rMessage.m_Sender;
+				hangParam.HangType = 0;
+				hangParam.Unk1 = 1;
+				hangParam.Unk2 = in_rMessage.Sender;
 
 				in_rStateGoc.AddStateContextParameter(hangParam);
 
-				in_rMessage.m_Unk4 = true;
+				in_rMessage.Unk4 = true;
 				in_rStateGoc.ChangeStateAlways(89);
 
 				return;
 			}
 			case 17:
 			{
-				hangParam.m_HangType = 11;
+				hangParam.HangType = 11;
 				break;
 			}
 			case 19:
 			{
-				hangParam.m_HangType = 14;
+				hangParam.HangType = 14;
 				StateUtil::EndDamageBlink(in_rStateGoc);
 				break;
 			}
 			case 20:
 			{
-				hangParam.m_HangType = 15;
+				hangParam.HangType = 15;
 				break;
 			}
 			default:
 			{
-				hangParam.m_HangType = 0;
+				hangParam.HangType = 0;
 				break;
 			}
 			}
 
-			hangParam.m_Unk1 = 1;
-			hangParam.Unk1 = in_rMessage.m_Sender;
-			hangParam.m_Unk2.set(0, in_rMessage.m_Unk1.test(0));
-			hangParam.m_Unk2.set(1, in_rMessage.m_Unk1.test(1));
-			hangParam.m_Unk2.set(2, in_rMessage.m_Unk1.test(2));
-			hangParam.m_Unk2.set(3, in_rMessage.m_Unk1.test(4));
-			hangParam.m_Unk2.set(4, in_rMessage.m_Unk1.test(5));
+			hangParam.Unk1 = 1;
+			hangParam.Unk2 = in_rMessage.Sender;
+			hangParam.Unk3.set(0, in_rMessage.Unk1.test(0));
+			hangParam.Unk3.set(1, in_rMessage.Unk1.test(1));
+			hangParam.Unk3.set(2, in_rMessage.Unk1.test(2));
+			hangParam.Unk3.set(3, in_rMessage.Unk1.test(4));
+			hangParam.Unk3.set(4, in_rMessage.Unk1.test(5));
 
 			in_rStateGoc.AddStateContextParameter(hangParam);
 			in_rStateGoc.ChangeStateAlways(88);
-			in_rMessage.m_Unk4 = true;
+			in_rMessage.Unk4 = true;
 		}
 
 		void EnterLoop(CStateGOC& in_rStateGoc, xgame::MsgEnterLoop& in_rMessage)
@@ -1847,7 +1847,7 @@ namespace app::Player
 
 		virtual bool ProcMsgOnGroundImpulse(CStateGOC& in_rStateGoc, xgame::MsgOnGroundImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 1, in_rMessage.m_Sender))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 1, in_rMessage.Sender))
 				return true;
 
 			csl::math::Vector3 vector { in_rMessage.Unk2 };
@@ -1900,19 +1900,19 @@ namespace app::Player
 
 		virtual bool ProcMsgSpringImpulse(CStateGOC& in_rStateGoc, xgame::MsgSpringImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender) || (in_rMessage.Flags.test(15) && in_rStateGoc.IsOutOfControl()))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender) || (in_rMessage.Flags.test(15) && in_rStateGoc.IsOutOfControl()))
 				return true;
 
 			csl::math::Vector3 origin{};
 			if (in_rMessage.Flags.test(5))
-				origin = in_rMessage.m_Origin;
+				origin = in_rMessage.Origin;
 			
 			csl::math::Vector3 yawDirection{};
 			if (in_rMessage.Flags.test(8))
 				yawDirection = in_rMessage.YawDirection;
 
-			StateUtil::DoSpringJump(in_rStateGoc, &origin, &in_rMessage.m_Direction, in_rMessage.m_OutOfControl, in_rMessage.m_SpeedDropoffTime, in_rMessage.Flags, true, true, false, in_rMessage.Unk1, &yawDirection, in_rMessage.m_OutOfParkour);
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 0.1f);
+			StateUtil::DoSpringJump(in_rStateGoc, &origin, &in_rMessage.Direction, in_rMessage.OutOfControl, in_rMessage.SpeedDropoffTime, in_rMessage.Flags, true, true, false, in_rMessage.Unk1, &yawDirection, in_rMessage.OutOfParkour);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 0.1f);
 			StateUtil::ForcedStopFootPlacement(in_rStateGoc);
 
 			if (in_rMessage.Flags.test(0))
@@ -1927,7 +1927,7 @@ namespace app::Player
 
 			StateUtil::CreateSpringFollowEffect(in_rStateGoc);
 
-			in_rMessage.m_Handled = true;
+			in_rMessage.Handled = true;
 
 			return true;
 		}
@@ -1949,7 +1949,7 @@ namespace app::Player
 		bool ProcMsgPLStartAlongPathMode(CStateGOC& in_rStateGoc, xgame::MsgPLStartAlongPathMode& in_rMessage)
 		{
 			LaunchToPathParameter parameter{};
-			parameter.Sender = in_rMessage.m_Sender;
+			parameter.Sender = in_rMessage.Sender;
 			parameter.PathComponent = in_rMessage.PathComponent;
 			parameter.Unk2 = in_rMessage.Unk1;
 			parameter.Unk3 = in_rMessage.Unk2;
@@ -1972,9 +1972,9 @@ namespace app::Player
 		{
 			GoTargetParameter parameter{};
 			parameter.Target = math::Matrix34AffineTransformation(in_rMessage.TargetPosition, in_rMessage.TargetRotation);
-			parameter.Unk1 = in_rMessage.Unk1;
-			parameter.Unk2 = in_rMessage.Unk2;
-			parameter.Unk3 = in_rMessage.Unk3;
+			parameter.Unk2 = in_rMessage.Unk1;
+			parameter.Unk3 = in_rMessage.Unk2;
+			parameter.Unk4 = in_rMessage.Unk3;
 
 			in_rStateGoc.AddStateContextParameter(parameter);
 
@@ -1996,7 +1996,7 @@ namespace app::Player
 			if (StateUtil::IsDead(in_rStateGoc) || StateUtil::IsDamaged(in_rStateGoc) || !in_rStateGoc.IsOnGround())
 				return true;
 
-			in_rStateGoc.CreateStateContextParameter<DamageQuakeParameter>()->Unk1 = 3.0f;
+			in_rStateGoc.CreateStateContextParameter<DamageQuakeParameter>()->Unk2 = 3.0f;
 
 			in_rStateGoc.ChangeState(32);
 			return true;
@@ -2010,8 +2010,8 @@ namespace app::Player
 			in_rMessage.Unk6 = true;
 
 			auto* pPinballParam = in_rStateGoc.CreateStateContextParameter<PinBallParameter>();
-			pPinballParam->Unk1 = in_rMessage.Unk4;
-			pPinballParam->Unk2 = !in_rMessage.Unk5;
+			pPinballParam->Unk2 = in_rMessage.Unk4;
+			pPinballParam->Unk3 = !in_rMessage.Unk5;
 			pPinballParam->Unk9 = in_rMessage.Unk2;
 
 			if (in_rStateGoc.Is2DMode())
@@ -2039,7 +2039,7 @@ namespace app::Player
 
 		bool ProcMsgSheepBumperImpulse(CStateGOC& in_rStateGoc, xgame::MsgSheepBumperImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender))
 				return false;
 
 			csl::math::Vector3 vector{ in_rMessage.Unk2 };
@@ -2049,7 +2049,7 @@ namespace app::Player
 			auto* pPhysics = in_rStateGoc.GetPhysics();
 			pPhysics->SetVelocity({ vector * in_rMessage.Unk3 });
 			PlayerUtil::SetDirection(pPhysics, vector, pPhysics->GetGravityUpDirection());
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 1.0f);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 1.0f);
 
 			auto* pPinballParam = in_rStateGoc.CreateStateContextParameter<PinBallParameter>();
 			pPinballParam->Unk9 = in_rMessage.Unk4;
@@ -2069,7 +2069,7 @@ namespace app::Player
 
 		bool ProcMsgSheepRollingImpulse(CStateGOC& in_rStateGoc, xgame::MsgSheepRollingImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender))
 				return false;
 
 			auto* pPhysics = in_rStateGoc.GetPhysics();
@@ -2077,11 +2077,11 @@ namespace app::Player
 			if (!pPhysics->IsGravityTypeRunPath())
 				return false;
 
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 1.0f);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 1.0f);
 
 			auto* pRollingParam = in_rStateGoc.CreateStateContextParameter<RollingParameter>();
-			pRollingParam->Unk1 = in_rMessage.Unk2;
-			pRollingParam->Unk2 = in_rMessage.Unk1;
+			pRollingParam->Unk2 = in_rMessage.Unk2;
+			pRollingParam->Unk3 = in_rMessage.Unk1;
 
 			in_rStateGoc.ChangeState(65);
 			return true;
@@ -2103,8 +2103,8 @@ namespace app::Player
 				return false;
 
 			auto* pWallrunParam = in_rStateGoc.CreateStateContextParameter<WallRunParameter>();
-			pWallrunParam->Unk5 = 1;
-			pWallrunParam->Unk6 = in_rMessage.WobblePoint;
+			pWallrunParam->Unk6 = 1;
+			pWallrunParam->Unk7 = in_rMessage.WobblePoint;
 
 			in_rStateGoc.ChangeState(73);
 			return true;
@@ -2112,14 +2112,14 @@ namespace app::Player
 
 		bool ProcMsgSheepTargetImpulse(CStateGOC& in_rStateGoc, xgame::MsgSheepTargetImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender))
 				return false;
 
 			csl::math::Vector3 vector = in_rMessage.Unk2;
 			if (!math::Vector3NormalizeIfNotZero(vector, &vector))
 				return false;
 
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 1.0f);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 1.0f);
 			in_rMessage.Unk6 = true;
 
 			auto* pPinballParam = in_rStateGoc.CreateStateContextParameter<PinBallParameter>();
@@ -2141,7 +2141,7 @@ namespace app::Player
 
 		bool ProcMsgDroppingSand(CStateGOC& in_rStateGoc, xgame::MsgDroppingSand& in_rMessage)
 		{
-			in_rStateGoc.CreateStateContextParameter<StopBySandParameter>()->Unk1 = in_rMessage.Unk1;
+			in_rStateGoc.CreateStateContextParameter<StopBySandParameter>()->Unk2 = in_rMessage.Unk1;
 
 			in_rStateGoc.ChangeState(99);
 			return true;
@@ -2150,9 +2150,9 @@ namespace app::Player
 		bool ProcMsgQuicksandImpulse(CStateGOC& in_rStateGoc, xgame::MsgQuicksandImpulse& in_rMessage)
 		{
 			auto* pSweptParam = in_rStateGoc.CreateStateContextParameter<SweptBySandParameter>();
-			pSweptParam->Unk1 = in_rMessage.Unk1;
-			pSweptParam->Unk2 = in_rMessage.Unk2;
-			pSweptParam->Sender = in_rMessage.m_Sender;
+			pSweptParam->Unk2 = in_rMessage.Unk1;
+			pSweptParam->Unk3 = in_rMessage.Unk2;
+			pSweptParam->Sender = in_rMessage.Sender;
 
 			in_rStateGoc.ChangeState(98);
 			return true;
@@ -2160,7 +2160,7 @@ namespace app::Player
 
 		bool ProcMsgLaunchPathSpring(CStateGOC& in_rStateGoc, xgame::MsgLaunchPathSpring& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender))
 				return true;
 			
 			csl::ut::Bitset<uint> flags{};
@@ -2175,7 +2175,7 @@ namespace app::Player
 
 			StateUtil::DoSpringJump(in_rStateGoc, &in_rMessage.Origin, &direction, 0.05f, 0.0f, flags, false, true, isStomping, 0.0f, nullptr, 0.0f);
 
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 0.1f);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 0.1f);
 			StateUtil::ForcedStopFootPlacement(in_rStateGoc);
 			StateUtil::CreateSpringFollowEffect(in_rStateGoc);
 
@@ -2190,7 +2190,7 @@ namespace app::Player
 			{
 				in_rStateGoc.AddStatePlugin(5);
 				if (auto* pPlugin = in_rStateGoc.GetStatePlugin<CPluginStateCheckSandHole>())
-					pPlugin->SetHoleInfo(in_rStateGoc, in_rMessage.m_Sender, in_rMessage.Unk1, in_rMessage.Unk2);
+					pPlugin->SetHoleInfo(in_rStateGoc, in_rMessage.Sender, in_rMessage.Unk1, in_rMessage.Unk2);
 			}
 
 			return true;
@@ -2199,11 +2199,11 @@ namespace app::Player
 		bool ProcMsgOnRunningSand(CStateGOC& in_rStateGoc, xgame::MsgOnRunningSand& in_rMessage)
 		{
 			auto* pSweptParam = in_rStateGoc.CreateStateContextParameter<SweptBySandParameter>();
-			pSweptParam->Unk1 = in_rMessage.Unk1;
-			pSweptParam->Unk2 = in_rMessage.Unk2;
-			pSweptParam->Sender = in_rMessage.m_Sender;
-			pSweptParam->Unk3 = true;
-			pSweptParam->Unk4 = in_rMessage.Unk3;
+			pSweptParam->Unk2 = in_rMessage.Unk1;
+			pSweptParam->Unk3 = in_rMessage.Unk2;
+			pSweptParam->Sender = in_rMessage.Sender;
+			pSweptParam->Unk4 = true;
+			pSweptParam->Unk5 = in_rMessage.Unk3;
 
 			in_rStateGoc.ChangeState(98);
 			return true;
@@ -2223,8 +2223,8 @@ namespace app::Player
 		bool ProcMsgWaterWorks(CStateGOC& in_rStateGoc, xgame::MsgWaterWorks& in_rMessage)
 		{
 			auto* pWaterParam = in_rStateGoc.CreateStateContextParameter<WaterFlowParameter>();
-			pWaterParam->Unk1 = in_rMessage.Unk1;
-			pWaterParam->Unk2 = in_rMessage.Unk2;
+			pWaterParam->Unk2 = in_rMessage.Unk1;
+			pWaterParam->Unk3 = in_rMessage.Unk2;
 
 			in_rStateGoc.ChangeState(102);
 			return true;
@@ -2257,9 +2257,9 @@ namespace app::Player
 		bool ProcMsgGetSuckedIntoPipe(CStateGOC& in_rStateGoc, xgame::MsgGetSuckedIntoPipe& in_rMessage)
 		{
 			auto* pPipeParam = in_rStateGoc.CreateStateContextParameter<PipeMoveParameter>();
-			pPipeParam->Unk1 = in_rMessage.Unk1;
-			pPipeParam->Unk2 = in_rMessage.Unk2;
-			pPipeParam->Unk3 = in_rMessage.Unk3;
+			pPipeParam->Unk2 = in_rMessage.Unk1;
+			pPipeParam->Unk3 = in_rMessage.Unk2;
+			pPipeParam->Unk4 = in_rMessage.Unk3;
 
 			in_rStateGoc.ChangeState(115);
 			return true;
@@ -2267,7 +2267,7 @@ namespace app::Player
 
 		bool ProcMsgHitUpdraftCollision(CStateGOC& in_rStateGoc, xgame::MsgHitUpdraftCollision& in_rMessage)
 		{
-			in_rStateGoc.CreateStateContextParameter<GlideParameter>()->Unk1 = in_rMessage.Unk1;
+			in_rStateGoc.CreateStateContextParameter<GlideParameter>()->Unk2 = in_rMessage.Unk1;
 
 			in_rStateGoc.ChangeState(118);
 			return true;
@@ -2293,7 +2293,7 @@ namespace app::Player
 
 		bool ProcMsgHoverImpulse(CStateGOC& in_rStateGoc, xgame::MsgHoverImpulse& in_rMessage)
 		{
-			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender) || StateUtil::IsDisableRCHoverAbility(in_rStateGoc))
+			if (StateUtil::IsDisableTime(in_rStateGoc, 0, in_rMessage.Sender) || StateUtil::IsDisableRCHoverAbility(in_rStateGoc))
 				return true;
 
 			csl::ut::Bitset<uint> flags{};
@@ -2303,7 +2303,7 @@ namespace app::Player
 
 			StateUtil::DoSpringJump(in_rStateGoc, nullptr, &in_rMessage.Direction, in_rMessage.OutOfControl, in_rMessage.SpeedDropoffTime, flags, false, false, false, 0.0f, nullptr, 0.0f);
 
-			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.m_Sender, 0.1f);
+			StateUtil::SetDisableTime(in_rStateGoc, 0, in_rMessage.Sender, 0.1f);
 			StateUtil::ForcedStopFootPlacement(in_rStateGoc);
 			in_rMessage.Unk3 = true;
 
@@ -2332,8 +2332,8 @@ namespace app::Player
 				return;
 			}
 
-			csl::math::Vector3 from{ in_rStateGoc.GetPosition() + pPhysics->m_Unk9.Unk4 * 5.0f };
-			csl::math::Vector3 to{ in_rStateGoc.GetPosition() - pPhysics->m_Unk9.Unk4 * 5.0f };
+			csl::math::Vector3 from{ in_rStateGoc.GetPosition() + pPhysics->Unk9.Unk4 * 5.0f };
+			csl::math::Vector3 to{ in_rStateGoc.GetPosition() - pPhysics->Unk9.Unk4 * 5.0f };
 
 			game::PhysicsRaycastOutput output{};
 			if (!PlayerUtil::RaycastPhantom(output, in_rStateGoc.pPlayer, from, to, 0xC996))
@@ -2342,7 +2342,7 @@ namespace app::Player
 				return;
 			}
 
-			if (!PlayerUtil::IsEnablePhantomDig(output.m_Attribute))
+			if (!PlayerUtil::IsEnablePhantomDig(output.Attribute))
 			{
 				in_rMessage.Unk1 = 0;
 				return;
@@ -2352,7 +2352,7 @@ namespace app::Player
 			if (in_rStateGoc.Is2DMode())
 			{
 				in_rMessage.Unk2 = 51;
-				in_rMessage.Unk3 = { -output.m_Normal };
+				in_rMessage.Unk3 = { -output.Normal };
 			}
 			else
 			{
@@ -2365,24 +2365,24 @@ namespace app::Player
 		{
 			switch (in_rMessage.Type)
 			{
-			case Game::EPhantomType::PHANTOM_DRILL:
+			case Game::EPhantomType::ePhantom_Drill:
 			{
 				CheckSpinPhantomStart(in_rStateGoc, in_rMessage);
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_LASER:
+			case Game::EPhantomType::ePhantom_Laser:
 			{
 				in_rMessage.Unk1 = 1;
 				in_rMessage.Unk1 = 55;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_ROCKET:
+			case Game::EPhantomType::ePhantom_Rocket:
 			{
 				in_rMessage.Unk1 = 1;
 				in_rMessage.Unk1 = 91;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_ASTEROID:
+			case Game::EPhantomType::ePhantom_Asteroid:
 			{
 				if (in_rStateGoc.Is2DMode() || !in_rStateGoc.GetPath(0))
 				{
@@ -2394,13 +2394,13 @@ namespace app::Player
 				in_rMessage.Unk1 = 90;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_EAGLE:
+			case Game::EPhantomType::ePhantom_Eagle:
 			{
 				in_rMessage.Unk1 = 1;
 				in_rMessage.Unk1 = 92;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_RHYTHM:
+			case Game::EPhantomType::ePhantom_Rhythm:
 			{
 				if (in_rStateGoc.Is2DMode() || !in_rStateGoc.GetPath(0))
 				{
@@ -2412,13 +2412,13 @@ namespace app::Player
 				in_rMessage.Unk1 = 93;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_HOVER:
+			case Game::EPhantomType::ePhantom_Hover:
 			{
 				in_rMessage.Unk1 = 1;
 				in_rMessage.Unk1 = 95;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_BOMB:
+			case Game::EPhantomType::ePhantom_Bomb:
 			{
 				if (!in_rStateGoc.IsOnGround())
 				{
@@ -2430,7 +2430,7 @@ namespace app::Player
 				in_rMessage.Unk1 = 94;
 				break;
 			}
-			case Game::EPhantomType::PHANTOM_QUAKE:
+			case Game::EPhantomType::ePhantom_Quake:
 			{
 				in_rMessage.Unk1 = 1;
 				in_rMessage.Unk1 = 96;

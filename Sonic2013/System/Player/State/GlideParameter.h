@@ -7,7 +7,7 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFB070);
 
-		int Unk1{};
+		int Unk2{};
 
 		GlideParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

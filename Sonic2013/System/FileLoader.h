@@ -4,20 +4,20 @@ namespace app::fnd
 {
 	struct FileLoaderParam
 	{
-		csl::fnd::IAllocator* m_pAllocator;
-		void* m_Unk2;
-		void* m_Unk3;
-		uint m_Unk4{ 8192 }; // Buffer Size?
-		void* m_Unk5;
-		uint m_Attributes;
+		csl::fnd::IAllocator* pAllocator;
+		void* Unk2;
+		void* Unk3;
+		uint Unk4{ 8192 }; // Buffer Size?
+		void* Unk5;
+		uint Attributes;
 
 	public:
-		void SetMultiLanguageAttr(bool flag, uint lang)
+		void SetMultiLanguageAttr(bool in_flag, uint in_lang)
 		{
-			m_Attributes = 0;
-			if (flag)
+			Attributes = 0;
+			if (in_flag)
 			{
-				m_Attributes = lang | 1;
+				Attributes = in_lang | 1;
 			}
 		}
 	};
@@ -27,24 +27,17 @@ namespace app::fnd
 	public:
 		struct LoadInfo
 		{
-			csl::fnd::IAllocator* m_pAllocator{};
-			csl::fnd::com_ptr<FileHandleObj> m_pHandle{};
-			uint32_t m_LoadFlags{};
-			uint32_t m_State{};
-			size_t m_Unk1{};
-			void* m_pLoadBuffer{}; // Owned by FileLoader::LoadBuffer
-			size_t m_BufferSize{};
+			csl::fnd::IAllocator* pAllocator{};
+			csl::fnd::com_ptr<FileHandleObj> pHandle{};
+			uint32_t LoadFlags{};
+			uint32_t State{};
+			size_t Unk1{};
+			void* pLoadBuffer{}; // Owned by FileLoader::LoadBuffer
+			size_t BufferSize{};
 			INSERT_PADDING(8);
 		};
-
-		csl::ut::MoveArray<LoadInfo*> m_PendingFiles{};
-		csl::ut::MoveArray<LoadInfo*> m_Unk1{};
-		csl::ut::MoveArray<LoadInfo*> m_Unk2{};
-		INSERT_PADDING(12){};
-		bool m_SyncComplete{};
-		INSERT_PADDING(31);
-
-	public:
+		
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpResourceJobMTExec, ASLR(0x00491140), FileLoader* This, LoadInfo*);
 		inline static FUNCTION_PTR(csl::fnd::com_ptr<FileHandleObj>&, __thiscall, ms_fpLoadFile, ASLR(0x00490C80), FileLoader* This, csl::fnd::com_ptr<FileHandleObj>&  rRet, const char* pName, const char* a3, const FileLoaderParam& params);
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpPreLoadFile, ASLR(0x00491880), FileLoader* This, const char* pName, int priority);
@@ -53,26 +46,33 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSyncAll, ASLR(0x00491FB0), FileLoader* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStopFileAll, ASLR(0x00490E60), FileLoader* This);
 
-		void ResourceJobMTExec(LoadInfo* info)
+		csl::ut::MoveArray<LoadInfo*> PendingFiles{};
+		csl::ut::MoveArray<LoadInfo*> Unk1{};
+		csl::ut::MoveArray<LoadInfo*> Unk2{};
+		INSERT_PADDING(12){};
+		bool SyncComplete{};
+		INSERT_PADDING(31);
+
+		void ResourceJobMTExec(LoadInfo* in_pInfo)
 		{
-			ms_fpResourceJobMTExec(this, info);
+			ms_fpResourceJobMTExec(this, in_pInfo);
 		}
 
-		bool PreLoadFile(const char* pName, int priority)
+		bool PreLoadFile(const char* in_pName, int in_priority)
 		{
-			return ms_fpPreLoadFile(this, pName, priority);
+			return ms_fpPreLoadFile(this, in_pName, in_priority);
 		}
 		
-		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const char* a3, const FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* in_pName, const char* in_pA3, const FileLoaderParam& in_rParams)
 		{
 			csl::fnd::com_ptr<FileHandleObj> result{};
-			ms_fpLoadFile(this, result, pName, a3, params);
+			ms_fpLoadFile(this, result, in_pName, in_pA3, in_rParams);
 			return result;
 		}
 
-		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* pName, const FileLoaderParam& params)
+		csl::fnd::com_ptr<FileHandleObj> LoadFile(const char* in_pName, const FileLoaderParam& in_rParams)
 		{
-			return LoadFile(pName, nullptr, params);
+			return LoadFile(in_pName, nullptr, in_rParams);
 		}
 
 		bool IsSyncCompleteAll() const
@@ -80,9 +80,9 @@ namespace app::fnd
 			return m_SyncComplete;
 		}
 
-		void WaitSync(csl::fnd::com_ptr<FileHandleObj> handle)
+		void WaitSync(csl::fnd::com_ptr<FileHandleObj> in_handle)
 		{
-			ms_fpWaitSync(this, handle);
+			ms_fpWaitSync(this, in_handle);
 		}
 
 		void WaitSyncAll()

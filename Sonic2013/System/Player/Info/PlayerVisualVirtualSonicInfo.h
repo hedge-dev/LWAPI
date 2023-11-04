@@ -4,6 +4,9 @@ namespace app::Player
 {
     class VirtualSonicInfo : public CObjInfo
     {
+    public:
+        inline static const char* ms_pName = "VirtualSonicInfo";
+
     private:
         inline static const char* ms_pPackfileNames[] = { "Virtualsonic1p.pac", "Virtualsonic2p.pac" };
         inline static const char* ms_pModelNames[] = { "chr_virtualsonic_1p", "chr_virtualsonic_2p" };
@@ -45,7 +48,7 @@ namespace app::Player
 
         const char* GetInfoName() override
         {
-            return "VirtualSonicInfo";
+            return ms_pName;
         }
     };
 }

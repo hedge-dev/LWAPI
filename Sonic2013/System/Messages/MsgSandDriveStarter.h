@@ -5,9 +5,9 @@ namespace app::xgame
 	class MsgSandDriveStarter : public fnd::Message
 	{
 	public:
-		inline const static unsigned int MessageID = 0x6084;
-
 		int Unk1{};
+
+		inline const static unsigned int MessageID = 0x6084;
 
 		MsgSandDriveStarter() : Message(MessageID)
 		{

@@ -5,23 +5,23 @@ namespace app::xgame
 	class MsgPushCameraController : public app::fnd::Message
 	{
 	public:
+		Camera::CCameraController* pController{};
+		float Easing{};
+		bool Unk1{};
+		size_t Priority{};
+		Camera::EInterpolateType Interpolation{};
+		bool Unk2{};
+		
 		inline const static unsigned int MessageID = 0x8005;
 
-		Camera::CCameraController* m_pController{};
-		float m_Easing{};
-		bool m_Unk1{};
-		size_t m_Priority{};
-		Camera::EInterpolateType m_Interpolation{};
-		bool m_Unk2{};
-		
-		MsgPushCameraController(Camera::CCameraController* pCamera, float easing, bool a3, size_t prio, Camera::EInterpolateType interpolate, bool a5) : Message(MessageID)
+		MsgPushCameraController(Camera::CCameraController* in_pCamera, float in_easing, bool in_a3, size_t in_prio, Camera::EInterpolateType in_interpolate, bool in_a5) : Message(MessageID)
 		{
-			m_pController = pCamera;
-			m_Easing = easing;
-			m_Unk1 = a3;
-			m_Priority = prio;
-			m_Interpolation = interpolate;
-			m_Unk2 = a5;
+			pController = in_pCamera;
+			Easing = in_easing;
+			Unk1 = in_a3;
+			Priority = in_prio;
+			Interpolation = in_interpolate;
+			Unk2 = in_a5;
 		}
 
 		Message* Clone() override

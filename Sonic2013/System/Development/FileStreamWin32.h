@@ -13,9 +13,9 @@ namespace app::dev
 		uint m_Flags{};
 		
 	public:
-		FileStreamWin32(const char* pFileName, uint flags)
+		FileStreamWin32(const char* in_pFileName, uint in_flags)
 		{
-			Open(pFileName, flags);
+			Open(in_pFileName, in_flags);
 		}
 
 		~FileStreamWin32()
@@ -33,23 +33,23 @@ namespace app::dev
 			m_Flags = 0;
 		}
 		
-		size_t Read(void* pBuffer, size_t bufSize) override final
+		size_t Read(void* in_pBuffer, size_t in_bufSize) override final
 		{
 			if (!IsAvailable())
 				return 0;
 			
 			DWORD bytesRead = 0;
-			bool success = ReadFile(m_FileHandle, pBuffer, bufSize, &bytesRead, NULL);
+			bool success = ReadFile(m_FileHandle, in_pBuffer, in_bufSize, &bytesRead, NULL);
 			return success ? bytesRead : 0;
 		}
 
-		size_t Write(const void* pBuffer, size_t bufSize) override final
+		size_t Write(const void* in_pBuffer, size_t in_bufSize) override final
 		{
 			if (!IsAvailable())
 				return 0;
 
 			DWORD bytesWritten = 0;
-			bool success = WriteFile(m_FileHandle, pBuffer, bufSize, &bytesWritten, NULL);
+			bool success = WriteFile(m_FileHandle, in_pBuffer, in_bufSize, &bytesWritten, NULL);
 			return success ? bytesWritten : 0;
 		}
 		
@@ -83,33 +83,33 @@ namespace app::dev
 		}
 
 	protected:
-		void Open(const char* pName, uint flags)
+		void Open(const char* in_pName, uint in_flags)
 		{
 			DWORD accessFlags = 0;
 			DWORD creationDisposition = 0;
 
-			if (flags & FILE_FLAG_OPEN_WRITE == FILE_FLAG_OPEN_WRITE)
+			if (in_flags & FILE_FLAG_OPEN_WRITE == FILE_FLAG_OPEN_WRITE)
 			{
 				accessFlags = GENERIC_READ | GENERIC_WRITE;
 				creationDisposition = OPEN_ALWAYS;
 			}
-			else if (flags & FILE_FLAG_OPEN)
+			else if (in_flags & FILE_FLAG_OPEN)
 			{
 				accessFlags |= GENERIC_READ;
 				creationDisposition = OPEN_EXISTING;
 			}
-			else if (flags & FILE_FLAG_CREATE)
+			else if (in_flags & FILE_FLAG_CREATE)
 			{
 				accessFlags |= GENERIC_WRITE;
 				creationDisposition = CREATE_ALWAYS;
 			}
 			else
-				creationDisposition = flags;
+				creationDisposition = in_flags;
 			
-			HANDLE handle = CreateFileA(pName, accessFlags, 0, NULL, creationDisposition, FILE_ATTRIBUTE_NORMAL, NULL);
+			HANDLE handle = CreateFileA(in_pName, accessFlags, 0, NULL, creationDisposition, FILE_ATTRIBUTE_NORMAL, NULL);
 			m_FileHandle = handle;
 			if (handle != INVALID_HANDLE_VALUE)
-				m_Flags = flags;
+				m_Flags = in_flags;
 		}
 	};
 }

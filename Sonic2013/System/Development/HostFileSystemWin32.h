@@ -5,7 +5,7 @@ namespace app::dev
 	class HostFileSystemWin32 : public HostFileSystem, csl::fnd::SingletonPointer<HostFileSystemWin32>
 	{
 	public:
-		DirectoryList m_Root{ GetAllocator() };
+		DirectoryList Root{ GetAllocator() };
 	};
 }
 

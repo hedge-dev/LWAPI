@@ -24,19 +24,19 @@ namespace app::font
 			return m_Fonts[1];
 		}
 
-		void DbgAddFontText(FontText* pText)
+		void DbgAddFontText(FontText* in_pText)
 		{
 			csl::fnd::MutexGuard lock(m_Lock);
 			if (!m_DbgTexts.get_allocator())
 				m_DbgTexts.change_allocator(GetAllocator());
 
-			m_DbgTexts.push_back(pText);
+			m_DbgTexts.push_back(in_pText);
 		}
 
-		void DbgRemoveFontText(FontText* pText)
+		void DbgRemoveFontText(FontText* in_pText)
 		{
 			csl::fnd::MutexGuard lock(m_Lock);
-			auto idx = m_DbgTexts.find(pText);
+			auto idx = m_DbgTexts.find(in_pText);
 			if (idx == -1)
 				return;
 

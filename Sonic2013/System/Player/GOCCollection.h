@@ -16,8 +16,8 @@ namespace app
 
 		}
 
-		virtual void Update(float delta) {}
-		virtual void Update(const fnd::SUpdateInfo& update) {}
+		virtual void Update(float in_deltaTime) {}
+		virtual void Update(const fnd::SUpdateInfo& in_rUpdateInfo) {}
 	};
 
 	class CGOCCollectionImpl
@@ -29,9 +29,9 @@ namespace app
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x00914510), CGOCCollectionImpl*, size_t);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGOC, ASLR(0x009145C0), CGOCCollectionImpl*, CGOComponent*);
 
-		CGOCCollectionImpl(size_t capacity)
+		CGOCCollectionImpl(size_t in_capacity)
 		{
-			ms_fpCtor(this, capacity);
+			ms_fpCtor(this, in_capacity);
 		}
 
 		~CGOCCollectionImpl()
@@ -42,16 +42,16 @@ namespace app
 			}
 		}
 
-		void SetGOC(CGOComponent* pComponent)
+		void SetGOC(CGOComponent* in_pComponent)
 		{
-			ms_fpSetGOC(this, pComponent);
+			ms_fpSetGOC(this, in_pComponent);
 		}
 
-		CGOComponent* GetGOC(const char* pName) const
+		CGOComponent* GetGOC(const char* in_pName) const
 		{
 			for (auto& goc : m_Components)
 			{
-				if (goc->m_pID == pName)
+				if (goc->m_pID == in_pName)
 					return goc.get();
 			}
 
@@ -64,19 +64,19 @@ namespace app
 			return reinterpret_cast<T*>(GetGOC(T::staticID()));
 		}
 
-		void Update(float delta)
+		void Update(float in_deltaTime)
 		{
 			for (auto& goc : m_Components)
 			{
-				goc->Update(delta);
+				goc->Update(in_deltaTime);
 			}
 		}
 
-		void Update(const fnd::SUpdateInfo& rInfo)
+		void Update(const fnd::SUpdateInfo& in_rUpdateInfo)
 		{
 			for (auto& goc : m_Components)
 			{
-				goc->Update(rInfo);
+				goc->Update(in_rUpdateInfo);
 			}
 		}
 	};

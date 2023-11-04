@@ -42,17 +42,17 @@ namespace app
 			return "GOCEnemyHsm";
 		}
 
-		void Update(fnd::UpdatingPhase phase, const fnd::SUpdateInfo& updateInfo) override
+		void Update(fnd::UpdatingPhase in_phase, const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			if (!Unk2.test(0) || phase)
+			if (!Unk2.test(0) || in_phase)
 				return;
 		
-			Impl.HSM_UPDATE(updateInfo.deltaTime);
+			Impl.HSM_UPDATE(in_rUpdateInfo.DeltaTime);
 		}
 
-		void OnGOCEvent(int event, GameObject& object, void* data) override
+		void OnGOCEvent(int in_event, GameObject& in_rObject, void* in_pData) override
 		{
-			ms_fpOnGOCEvent(this, event, object, data);
+			ms_fpOnGOCEvent(this, in_event, in_rObject, in_pData);
 		}
 
 		void Setup(const Description& in_rDescription)

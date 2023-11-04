@@ -7,13 +7,13 @@ namespace app::Gops
 	class CActorPack
 	{
 	public:
-		csl::ut::LinkListNode m_ListNode{};
+		csl::ut::LinkListNode ListNode{};
 
 	protected:
 		CActorManager* m_pManager{};
 		size_t m_ObjectUID{};
 		void* m_Unk1{};
-		csl::ut::LinkList<CActor> m_Actors{ &CActor::m_ListNode };
+		csl::ut::LinkList<CActor> m_Actors{ &CActor::ListNode };
 		SetEd::CResObject m_Object{ nullptr };
 
 	public:

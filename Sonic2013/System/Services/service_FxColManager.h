@@ -4,17 +4,19 @@ namespace app
 {
 	class FxColManager : public fnd::GameService
 	{
-	protected:
+	private:
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFC84));
 		inline static FxColManager** ms_pInstance = reinterpret_cast<FxColManager**>(ASLR(0x00FEFC80));
 		
+	protected:
 		INSERT_PADDING(76) {};
 		uint m_Flags;
 		INSERT_PADDING(76);
+	
 	public:
-		hh::ut::PackFile m_Resources{ nullptr };
-		void* m_pUnk1;
-		app::FxParameter m_CurrentParameter;
+		hh::ut::PackFile Resources{ nullptr };
+		void* _pUnk1;
+		app::FxParameter CurrentParameter;
 		
 	protected:
 		INSERT_PADDING(64);

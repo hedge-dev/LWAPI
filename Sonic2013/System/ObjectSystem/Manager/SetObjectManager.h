@@ -6,60 +6,60 @@ namespace app
 
 	struct SLayerInfo
 	{
-		csl::ut::Bitset<uint> m_Flags;
-		void* m_Unk1;
-		csl::ut::FixedString<64> m_Name;
+		csl::ut::Bitset<uint> Flags;
+		void* Unk1;
+		csl::ut::FixedString<64> Name;
 	};
 
 	class CSetObjectManager : public fnd::GameService
 	{
 		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEF2E8));
 
-	public:
-		GameDocument* m_pDocument;
-		boost::shared_ptr<CSetObjectFactory> m_spObjectFactory;
-		csl::ut::LinkList<CSetObjectListener> m_Objects;
-		SLayerInfo m_Layers[9];
-		size_t m_CurrentLayerIdx;
-		CLevelInfo* m_pLevelInfo;
-		CActivationManager* m_pActivationMan;
-		app::ut::RefPtr<SetEd::CResource> m_rpRes;
-		std::unique_ptr<Gops::CActorManager> m_pActorManager; // boost::scoped_ptr<Gops::CActorManager>
-		INSERT_PADDING(16); // app::Util::TFreeList<app::Gops::CActor, 4>
-		INSERT_PADDING(16); // app::Util::TFreeList<app::Gops::CActorPack, 4>
-		std::unique_ptr<CSetAdapterMgr> m_pAdapterManager; // boost::scoped_ptr<CSetAdapterMgr>
-		std::unique_ptr<Gops::CActorListener> m_pListener; // boost::scoped_ptr<Gops::CActorListener>
-		csl::ut::InplaceObjectMoveArrayAligned16<app::CActivationVolume, 2> m_Volumes;
-		csl::ut::InplaceObjectMoveArrayAligned16<csl::math::Vector3, 2> m_BasePoints;
-		float m_RangeIn;
-		INSERT_PADDING(72); // PointMarkerManager
-		INSERT_PADDING(24); // RespawnPointManager
-		csl::ut::MoveArray<Gops::CActor*> m_Actors{ GetAllocator() };
-		csl::ut::Bitset<char> m_Flags;
-		void* m_Unk3;
-		void* m_Unk4;
-		csl::fnd::IAllocator* m_pHeapAlloc;
-		INSERT_PADDING(8); // ???
-		
-	public:
+	private:
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpSendObjectMessageImpl, ASLR(0x0084CBA0), CSetObjectManager*, CSetObjectID, fnd::Message&, uint sender, bool create, bool immediate);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpGetSetObjectFromUniqID, ASLR(0x0084C830), CSetObjectManager*, app::ut::RefPtr<CSetObject>&, size_t);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRemoveListener, ASLR(0x0084BA60), CSetObjectManager*, CSetObjectListener*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpKillAllObject, ASLR(0x0084BAF0), CSetObjectManager*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartUpLayerInfo, ASLR(0x0084C4B0), CSetObjectManager*, size_t difficulty);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadDatabase, ASLR(0x0084B910), CSetObjectManager*, size_t idx);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStartUpLayerInfo, ASLR(0x0084C4B0), CSetObjectManager*, size_t);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadDatabase, ASLR(0x0084B910), CSetObjectManager*, size_t);
 		inline static FUNCTION_PTR(CSetObjectListener*, __thiscall, ms_fpCreateObjectImpl, ASLR(0x0084C370), CSetObjectManager*, CSetAdapter*, CActivationManager*, uint);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpRangeInSetObject, ASLR(0x0084D620), CSetObjectManager*, const csl::math::Vector3&);
 
+	public:
+		GameDocument* pDocument;
+		boost::shared_ptr<CSetObjectFactory> spObjectFactory;
+		csl::ut::LinkList<CSetObjectListener> Objects;
+		SLayerInfo Layers[9];
+		size_t CurrentLayerIdx;
+		CLevelInfo* pLevelInfo;
+		CActivationManager* pActivationMan;
+		app::ut::RefPtr<SetEd::CResource> rpRes;
+		std::unique_ptr<Gops::CActorManager> pActorManager; // boost::scoped_ptr<Gops::CActorManager>
+		INSERT_PADDING(16); // app::Util::TFreeList<app::Gops::CActor, 4>
+		INSERT_PADDING(16); // app::Util::TFreeList<app::Gops::CActorPack, 4>
+		std::unique_ptr<CSetAdapterMgr> pAdapterManager; // boost::scoped_ptr<CSetAdapterMgr>
+		std::unique_ptr<Gops::CActorListener> pListener; // boost::scoped_ptr<Gops::CActorListener>
+		csl::ut::InplaceObjectMoveArrayAligned16<app::CActivationVolume, 2> Volumes;
+		csl::ut::InplaceObjectMoveArrayAligned16<csl::math::Vector3, 2> BasePoints;
+		float RangeIn;
+		INSERT_PADDING(72); // PointMarkerManager
+		INSERT_PADDING(24); // RespawnPointManager
+		csl::ut::MoveArray<Gops::CActor*> Actors{ GetAllocator() };
+		csl::ut::Bitset<char> Flags;
+		void* Unk3;
+		void* Unk4;
+		csl::fnd::IAllocator* pHeapAlloc;
+		INSERT_PADDING(8); // ???
+
 	protected:
-		bool SendObjectMessageImpl(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create, bool immediate)
+		bool SendObjectMessageImpl(CSetObjectID in_id, fnd::Message& in_rMessage, uint in_sender, bool in_create, bool in_immediate)
 		{
-			return ms_fpSendObjectMessageImpl(this, id, rMsg, sender, create, immediate);
+			return ms_fpSendObjectMessageImpl(this, in_id, in_rMessage, in_sender, in_create, in_immediate);
 		}
 
-		CSetObjectListener* CreateObjectImpl(CSetAdapter* pAdapter, CActivationManager* pActivationMan, uint spawnFlags)
+		CSetObjectListener* CreateObjectImpl(CSetAdapter* in_pAdapter, CActivationManager* in_pActivationMan, uint in_spawnFlags)
 		{
-			return ms_fpCreateObjectImpl(this, pAdapter, pActivationMan, spawnFlags);
+			return ms_fpCreateObjectImpl(this, in_pAdapter, in_pActivationMan, in_spawnFlags);
 		}
 		
 	public:
@@ -68,113 +68,113 @@ namespace app
 			return *ms_pStaticClass;
 		}
 
-		size_t GetLayerIDFromUID(CSetObjectID id) const
+		size_t GetLayerIDFromUID(CSetObjectID in_id) const
 		{
-			return id.Value / 4000;
+			return in_id.Value / 4000;
 		}
 
-		SetEd::CResObject GetResObjectByID(CSetObjectID id) const
+		SetEd::CResObject GetResObjectByID(CSetObjectID in_id) const
 		{
-			auto* pProject = m_rpRes->GetObjectProject(GetLayerIDFromUID(id));
+			auto* pProject = rpRes->GetObjectProject(GetLayerIDFromUID(in_id));
 			if (!pProject)
 				return { nullptr };
 			
 			return pProject->GetObjectByID(id);
 		}
 
-		void GetSetObjectFromUniqID(app::ut::RefPtr<CSetObject>& outObj, size_t id)
+		void GetSetObjectFromUniqID(app::ut::RefPtr<CSetObject>& in_rOutObj, size_t in_id)
 		{
-			ms_fpGetSetObjectFromUniqID(this, outObj, id);
+			ms_fpGetSetObjectFromUniqID(this, in_rOutObj, in_id);
 		}
 
-		void SendObjectMessage(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)
+		void SendObjectMessage(CSetObjectID in_id, fnd::Message& in_rMessage, uint in_sender, bool in_create)
 		{
-			SendObjectMessageImpl(id, rMsg, sender, create, false);
+			SendObjectMessageImpl(in_id, in_rMessage, in_sender, in_create, false);
 		}
 
-		bool SendObjectMessageImm(CSetObjectID id, fnd::Message& rMsg, uint sender, bool create)
+		bool SendObjectMessageImm(CSetObjectID in_id, fnd::Message& in_rMessage, uint in_sender, bool in_create)
 		{
-			return SendObjectMessageImpl(id, rMsg, sender, create, true);
+			return SendObjectMessageImpl(in_id, in_rMessage, in_sender, in_create, true);
 		}
 
-		void RemoveListener(CSetObjectListener* pListener)
+		void RemoveListener(CSetObjectListener* in_pListener)
 		{
-			ms_fpRemoveListener(this, pListener);
+			ms_fpRemoveListener(this, in_pListener);
 		}
 
 		inline void KillAllObject();
-		inline CSetAdapter* FindAdapter(CSetObjectID id);
-		inline SetEd::CResObject FindObjectResource(CSetObjectID id);
+		inline CSetAdapter* FindAdapter(CSetObjectID in_id);
+		inline SetEd::CResObject FindObjectResource(CSetObjectID in_id);
 		
-		void StartUpLayerInfo(size_t difficulty)
+		void StartUpLayerInfo(size_t in_difficulty)
 		{
-			ms_fpStartUpLayerInfo(this, difficulty);
+			ms_fpStartUpLayerInfo(this, in_difficulty);
 		}
 
-		void LoadDatabase(size_t idx)
+		void LoadDatabase(size_t in_idx)
 		{
-			ms_fpLoadDatabase(this, idx);
+			ms_fpLoadDatabase(this, in_idx);
 		}
 
-		void RangeInSetObject(const csl::math::Vector3& pos)
+		void RangeInSetObject(const csl::math::Vector3& in_rPos)
 		{
-			ms_fpRangeInSetObject(this, pos);
+			ms_fpRangeInSetObject(this, in_rPos);
 		}
 
-		void SetBasePos(size_t unit, const csl::math::Vector3& pos)
+		void SetBasePos(size_t in_unit, const csl::math::Vector3& in_rPos)
 		{
-			if (m_BasePoints.size() <= unit)
+			if (BasePoints.size() <= in_unit)
 			{
-				m_BasePoints.resize(unit + 1);
-				size_t oldSize = m_Volumes.size();
-				m_Volumes.resize(unit + 1);
+				BasePoints.resize(unit + 1);
+				size_t oldSize = Volumes.size();
+				Volumes.resize(unit + 1);
 				if (oldSize)
 				{
-					for (size_t i = oldSize; i < m_Volumes.size(); i++)
+					for (size_t i = oldSize; i < Volumes.size(); i++)
 					{
-						m_pActivationMan->AddVolume(&m_Volumes[i]);
+						pActivationMan->AddVolume(&Volumes[i]);
 					}
 				}
 			}
 			
-			m_BasePoints[unit] = pos;
-			m_Volumes[unit].SetVolume({ pos, m_RangeIn + 200 });
+			BasePoints[unit] = in_rPos;
+			Volumes[unit].SetVolume({ in_rPos, RangeIn + 200 });
 		}
 		
-		CSetObjectListener* CreateObjectAlways(CSetAdapter* pAdapter)
+		CSetObjectListener* CreateObjectAlways(CSetAdapter* in_pAdapter)
 		{
-			return CreateObjectImpl(pAdapter, m_pActivationMan, 2);
+			return CreateObjectImpl(in_pAdapter, pActivationMan, 2);
 		}
 
-		CSetObjectListener* CreateObjectEternal(CSetAdapter* pAdapter)
+		CSetObjectListener* CreateObjectEternal(CSetAdapter* in_pAdapter)
 		{
-			return CreateObjectImpl(pAdapter, nullptr, 4);
+			return CreateObjectImpl(in_pAdapter, nullptr, 4);
 		}
 
-		CSetObjectListener* CreateObject(CSetAdapter* pAdapter)
+		CSetObjectListener* CreateObject(CSetAdapter* in_pAdapter)
 		{
 			uint spawnFlags = 0;
-			if (m_Flags.test(2))
+			if (Flags.test(2))
 				spawnFlags = -1;
 			
-			return CreateObjectImpl(pAdapter, m_pActivationMan, spawnFlags);
+			return CreateObjectImpl(pAdapter, pActivationMan, spawnFlags);
 		}
 		
-		CSetObjectListener* CreateObjectExtrinsic(CSetAdapter* pAdapter)
+		CSetObjectListener* CreateObjectExtrinsic(CSetAdapter* in_pAdapter)
 		{
-			return CreateObjectImpl(pAdapter, nullptr, 16);
+			return CreateObjectImpl(in_pAdapter, nullptr, 16);
 		}
 
-		CSetObjectListener* CreateObjectEditing(CSetAdapter* pAdapter)
+		CSetObjectListener* CreateObjectEditing(CSetAdapter* in_pAdapter)
 		{
-			return CreateObjectImpl(pAdapter, nullptr, -1);
+			return CreateObjectImpl(in_pAdapter, nullptr, -1);
 		}
 		
-		CSetObjectListener* CreateObjectBySetObjectID(CSetObjectID id);
+		CSetObjectListener* CreateObjectBySetObjectID(CSetObjectID in_id);
 
 		void LoadObjectResources()
 		{
-			auto* pResContainer = m_pOwnerDocument->GetService<CObjInfoContainer>();
+			auto* pResContainer = pOwnerDocument->GetService<CObjInfoContainer>();
 			if (pResContainer)
 				pResContainer->LoadRequestAll();
 		}

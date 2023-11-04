@@ -16,11 +16,11 @@ namespace app::dev
 		struct InputOutput;
 		
 	public:
-		const void* m_pTreeNodeVftable;
-		bool m_Unk1;
-		std::dummy::string m_Name;
+		const void* pTreeNodeVftable;
+		bool Unk1;
+		std::dummy::string Name;
 		INSERT_PADDING(12){};
-		bool m_Unk2;
+		bool Unk2;
 		
 		S13Variable()
 		{
@@ -31,15 +31,15 @@ namespace app::dev
 		virtual gindows::TreeNode* GetChild_TN() = 0;
 		virtual gindows::TreeNode* GetSibling_TN() = 0;*/
 		virtual void Release() = 0;
-		virtual void Increment(float value) = 0;
-		virtual void Decrement(float value) = 0;
+		virtual void Increment(float in_value) = 0;
+		virtual void Decrement(float in_value) = 0;
 		virtual void Execute() = 0;
-		virtual void DrawType(gindows::DrawItemEventArgs& args) = 0;
-		virtual void DrawName(gindows::DrawItemEventArgs& args) = 0;
-		virtual void DrawVariable(gindows::DrawItemEventArgs& args) = 0;
-		virtual void DrawVariableEditing(gindows::DrawItemEventArgs& args) = 0;
-		virtual void OnKeyDown(gindows::KeyEventArgs& args) = 0;
-		virtual void ProcessInput(InputInput& input, InputOutput& output) = 0;
+		virtual void DrawType(gindows::DrawItemEventArgs& in_rArgs) = 0;
+		virtual void DrawName(gindows::DrawItemEventArgs& in_rArgs) = 0;
+		virtual void DrawVariable(gindows::DrawItemEventArgs& in_rArgs) = 0;
+		virtual void DrawVariableEditing(gindows::DrawItemEventArgs& in_rArgs) = 0;
+		virtual void OnKeyDown(gindows::KeyEventArgs& in_rArgs) = 0;
+		virtual void ProcessInput(InputInput& in_rInput, InputOutput& in_rOutput) = 0;
 		virtual void ReadValue() = 0;
 		virtual void WriteValue() = 0;
 		virtual void StoreValue() = 0;

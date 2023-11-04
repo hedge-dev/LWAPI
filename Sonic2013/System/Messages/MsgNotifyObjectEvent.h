@@ -7,25 +7,25 @@ namespace app::xgame
 	public:
 		typedef uint EEventType;
 
-		EEventType eventType;
+		EEventType EventType;
 		
 		inline const static unsigned int MessageID = 0x6013;
 
-		MsgNotifyObjectEvent(EEventType type) : Message(MessageID)
+		MsgNotifyObjectEvent(EEventType in_type) : Message(MessageID)
 		{
-			eventType = type;
+			EventType = in_type;
 		}
 
 		Message* Clone() override
 		{
 			auto* msg = new MsgNotifyObjectEvent(*this);
-			msg->eventType = eventType;
+			msg->EventType = EventType;
 			return msg;
 		}
 
 		[[nodiscard]] EEventType GetEventType() const
 		{
-			return eventType;
+			return EventType;
 		}
 	};
 }

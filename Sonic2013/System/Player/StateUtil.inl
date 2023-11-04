@@ -29,7 +29,7 @@ namespace app::Player::StateUtil
 			droppedRingInfo.LifeSpan = 0.25f;
 		}
 
-		if (in_rStateGoc.GetBlackBoard()->m_Unk1[3].test(24))
+		if (in_rStateGoc.GetBlackBoard()->Unk1[3].test(24))
 			droppedRingInfo.Unk5 = 1;
 	
 		dropped_ring::Create(*in_rStateGoc.GetDocument(), droppedRingInfo);
@@ -253,6 +253,6 @@ namespace app::Player::StateUtil
 
 	inline void SetTerrainCollisionDisable(CStateGOC& in_rStateGoc, bool in_isDisable)
 	{
-		in_rStateGoc.GetBlackBoard()->m_Unk1[2].set(0, in_isDisable);
+		in_rStateGoc.GetBlackBoard()->Unk1[2].set(0, in_isDisable);
 	}
 }

@@ -7,7 +7,7 @@ namespace app::enemy
         eEffectSize_Normal,
         eEffectSize_Medium,
         eEffectSize_Large,
-        eEffectSize_MAXNUM
+        eEffectSize_Max
     };
 
     enum SoundType : uint8
@@ -18,7 +18,7 @@ namespace app::enemy
         eSoundType_ExplosionKeese,
         eSoundType_ExplosionZeldaCommon,
         eSoundType_ExplosionDekunuts,
-        eSoundType_MAXNUM
+        eSoundType_Max
     };
 
     class DeadEffectCInfo
@@ -38,12 +38,12 @@ namespace app::enemy
             AttackType = in_rMessage.AttackType;
             PlayerNo = in_rMessage.PlayerNo;
 
-            switch (in_rMessage.m_Bonus.m_Unk1)
+            switch (in_rMessage.Bonus.Unk1)
             {
             case 0:
             case 1:
             case 3:
-                Unk1 = csl::math::Min<uint>(in_rMessage.m_Bonus.m_Unk1, 6);
+                Unk1 = csl::math::Min<uint>(in_rMessage.Bonus.Unk1, 6);
                 break;
             case 4:
                 Unk1 = 1;

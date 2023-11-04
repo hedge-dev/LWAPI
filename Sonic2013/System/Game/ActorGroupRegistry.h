@@ -4,8 +4,8 @@ namespace app::game
 {
 	struct InternalActorGroupInfo
 	{
-		const char* m_pName;
-		size_t m_ID;
+		const char* pName;
+		size_t ID;
 	};
 	
 	struct ActorGroupInfo : public InternalActorGroupInfo { };
@@ -21,9 +21,9 @@ namespace app::game
 			
 		}
 
-		const ActorGroupInfo* GetInfoByName(const char* pName)
+		const ActorGroupInfo* GetInfoByName(const char* in_pName)
 		{
-			auto result = m_Groups[pName];
+			auto result = m_Groups[in_pName];
 
 			if (!result.get())
 				return nullptr;

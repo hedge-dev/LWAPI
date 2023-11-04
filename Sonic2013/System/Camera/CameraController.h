@@ -12,7 +12,7 @@ namespace app::Camera
 		CCamera* m_pOwner{};
 	
 	public:
-		float m_Fovy{ 45 };
+		float Fovy{ 45 };
 
 	protected:
 		csl::math::Vector3 m_Position{};
@@ -20,10 +20,10 @@ namespace app::Camera
 		csl::math::Vector3 m_TargetPosition{};
 
 	public:
-		void* m_Unk1{};
-		csl::fnd::IAllocator* m_pDebugAlloc{ app::dbg::GetMemoryAllocator() };
-		csl::math::Vector2 m_Unk2{};
-		bool m_Unk3{};
+		void* Unk1{};
+		csl::fnd::IAllocator* pDebugAlloc{ app::dbg::GetMemoryAllocator() };
+		csl::math::Vector2 Unk2{};
+		bool Unk3{};
 	
 	protected:
 		bool m_Active{};
@@ -52,15 +52,14 @@ namespace app::Camera
 			return m_pOwner;
 		}
 
-		
-		void SetActive(bool value)
+		void SetActive(bool in_value)
 		{
-			m_Active = value;
+			m_Active = in_value;
 		}
 
-		void SetFovy(float value)
+		void SetFovy(float in_value)
 		{
-			m_Fovy = value;
+			Fovy = in_value;
 		}
 
 		void SetCameraParam(const csl::math::Vector3& in_rPosition, const csl::math::Vector3& in_rUp, const csl::math::Vector3& in_rTargetPosition)
@@ -70,10 +69,10 @@ namespace app::Camera
 			m_TargetPosition = in_rTargetPosition;
 		}
 		
-		virtual void ResetCamera(const csl::math::Vector3& rPos, const csl::math::Vector3& rTargetPos) {}
+		virtual void ResetCamera(const csl::math::Vector3& in_rPosition, const csl::math::Vector3& in_rTargetPosition) {}
 		virtual void RestartCamera() {}
-		virtual void Update(const app::fnd::SUpdateInfo& rInfo) {}
-		virtual void OnEnter(const EnterEventArgs& rArgs) { SetActive(true); }
+		virtual void Update(const app::fnd::SUpdateInfo& in_rInfo) {}
+		virtual void OnEnter(const EnterEventArgs& in_rArgs) { SetActive(true); }
 		virtual void OnLeave() { SetActive(false); }
 
 		// bruh
@@ -81,11 +80,11 @@ namespace app::Camera
 		virtual void EndBoostCamera() { }
 		virtual void BeginQuickStep() { }
 		virtual void EndQuickStep() { }
-		virtual void Set3DCameraParam(const SPlayer3DCameraParam& rParam) { }
-		virtual void Set3DCameraParamDashMode(const SPlayer3DCameraParamDashMode& rParam) { }
-		virtual void SetCameraReset(const csl::math::Vector3& rPos, const csl::math::Vector3& rTargetPos) {}
+		virtual void Set3DCameraParam(const SPlayer3DCameraParam& in_rParam) { }
+		virtual void Set3DCameraParamDashMode(const SPlayer3DCameraParamDashMode& in_rParam) { }
+		virtual void SetCameraReset(const csl::math::Vector3& in_rPosition, const csl::math::Vector3& in_rTargetPos) {}
 		virtual bool IsDistFar() { return false; }
 		virtual void FocusChange() { }
-		virtual bool ProcessMessage(fnd::Message& rMsg) { return false; }
+		virtual bool ProcessMessage(fnd::Message& in_rMessage) { return false; }
 	};
 }

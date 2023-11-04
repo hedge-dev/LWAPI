@@ -7,15 +7,15 @@ namespace app::Player
 	public:
 		inline static const char* ms_pName = (const char*)ASLR(0x00DFAD5C);
 
-		int Unk1{};
-		float Unk2{};
+		int Unk2{};
 		float Unk3{};
 		float Unk4{};
 		float Unk5{};
 		float Unk6{};
-		csl::math::Vector3 Unk7{};
+		float Unk7{};
 		csl::math::Vector3 Unk8{};
 		csl::math::Vector3 Unk9{};
+		csl::math::Vector3 Unk10{};
 
 		DivingParameter* Clone(csl::fnd::IAllocator& in_rAlloc) const override
 		{

@@ -9,8 +9,8 @@ namespace app::dev
 	public:
 		struct FileEntry
 		{
-			char* m_pName;
-			size_t m_Flags;
+			char* pName;
+			size_t Flags;
 		};
 
 		class DirectoryList
@@ -19,7 +19,7 @@ namespace app::dev
 			csl::ut::InplaceMoveArray<FileEntry, 32> m_Entries;
 
 		public:
-			DirectoryList(csl::fnd::IAllocator* pAllocator) : m_Entries(pAllocator)
+			DirectoryList(csl::fnd::IAllocator* in_pAllocator) : m_Entries(in_pAllocator)
 			{
 				
 			}
@@ -41,7 +41,7 @@ namespace app::dev
 				
 				for (auto& entry : m_Entries)
 				{
-					pAllocator->Free(entry.m_pName);
+					pAllocator->Free(entry.pName);
 				}
 
 				m_Entries.clear();
@@ -49,9 +49,9 @@ namespace app::dev
 		};
 		
 	public:
-		virtual fnd::IOStream* OpenFile(const char* pPath) = 0;
-		virtual fnd::IOStream* CreateFile(const char* pPath) = 0;
-		virtual bool EnumerateDirectory(const char* pPath, DirectoryList& list) = 0;
+		virtual fnd::IOStream* OpenFile(const char* in_pPath) = 0;
+		virtual fnd::IOStream* CreateFile(const char* in_pPath) = 0;
+		virtual bool EnumerateDirectory(const char* in_pPath, DirectoryList& in_rList) = 0;
 	};
 }
 

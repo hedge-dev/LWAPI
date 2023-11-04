@@ -4,24 +4,26 @@ namespace app::xgame
 {
 	class SceneParameters : public fnd::GameService
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadCompatible, ASLR(0x00956600), SceneParameters*, game::LuaScript&);
+		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFEDC));
+		inline static SceneParameters** ms_pInstance = reinterpret_cast<SceneParameters**>(ASLR(0x00FEFED8));
+
 	public:
 		inline static const char* ms_pFileExtension = ".scn-cfg.xml";
 		
 	protected:
-		inline static fnd::GameServiceClass* ms_pStaticClass = reinterpret_cast<fnd::GameServiceClass*>(ASLR(0x00FEFEDC));
-		inline static SceneParameters** ms_pInstance = reinterpret_cast<SceneParameters**>(ASLR(0x00FEFED8));
 		const FxSceneData* m_pSceneData;
 		csl::ut::ObjectMoveArray<FxSceneData> m_Backups{ GetAllocator() };
 		void* m_Unk1{};
 		
 	public:
-		csl::ut::VariableString m_HostPath{ GetAllocator() };
+		csl::ut::VariableString HostPath{ GetAllocator() };
 
 	protected:
 		bool m_HasBackup{};
+
 	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadCompatible, ASLR(0x00956600), SceneParameters* pThis, game::LuaScript& rScript);
-		
 		SceneParameters() : GameService(0)
 		{
 			*ms_pInstance = this;
@@ -80,28 +82,28 @@ namespace app::xgame
 			pRenderMan->SetFxConfig(m_pSceneData->config);
 		}
 
-		void SetData(const FxSceneData* pData)
+		void SetData(const FxSceneData* in_pData)
 		{
-			m_pSceneData = pData;
+			m_pSceneData = in_pData;
 			ApplyParameter();
 		}
 		
-		void SetHostFilename(const char* pName)
+		void SetHostFilename(const char* in_pName)
 		{
-			m_HostPath.Set(pName, GetAllocator());
+			HostPath.Set(in_pName, GetAllocator());
 		}
 
-		const FxParameter* GetParameter(const size_t i) const
+		const FxParameter* GetParameter(const size_t in_index) const
 		{
 			if (!m_pSceneData || i >= HH_COUNT_OF(m_pSceneData->items))
 				return nullptr;
 			
-			return &m_pSceneData->items[i];
+			return &m_pSceneData->items[in_index];
 		}
 
-		void LoadCompatible(game::LuaScript& rScript)
+		void LoadCompatible(game::LuaScript& in_rScript)
 		{
-			ms_fpLoadCompatible(this, rScript);
+			ms_fpLoadCompatible(this, in_rScript);
 		}
 		
 		static SceneParameters* GetInstance()

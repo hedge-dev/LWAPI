@@ -13,8 +13,8 @@ namespace app
 	class CObjInfoFileLoader
 	{
 	public:
-		virtual void Load(const char* name, int a2) = 0;
-		virtual void LoadEx(const char* name, const fnd::FileLoaderParam& params) = 0;
+		virtual void Load(const char* in_pName, int in_a2) = 0;
+		virtual void LoadEx(const char* in_pName, const fnd::FileLoaderParam& in_rParams) = 0;
 	};
 	
 	class CObjInfo : public fnd::ReferencedObject
@@ -23,16 +23,16 @@ namespace app
 		friend CSetObjectFactory;
 
 	protected:
-		csl::ut::Bitset<unsigned int> status{};
+		csl::ut::Bitset<unsigned int> m_Status{};
 
-		virtual void Load(CObjInfoFileLoader& loader) {}
-		virtual void Initialize(GameDocument& document) {}
+		virtual void Load(CObjInfoFileLoader& in_rLoader) {}
+		virtual void Initialize(GameDocument& in_rDocument) {}
 		virtual void Finalize() {}
 
 	public:
 		virtual const char* GetInfoName() = 0;
 
 	protected:
-		virtual void RegisterCallback(CObjInfoContainer& container) {}
+		virtual void RegisterCallback(CObjInfoContainer& in_rContainer) {}
 	};
 }

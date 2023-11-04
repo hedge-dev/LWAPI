@@ -14,27 +14,28 @@ namespace app::dev
 	
 	class S13VariableEditControl : public gindows::Control
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x00459FA0), S13VariableEditControl*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGroup, ASLR(0x00459E90), S13VariableEditControl*, S13VariableGroup*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpClearGroup, ASLR(0x00459800), S13VariableEditControl*);
+		inline static const gindows::ControlVftable* ms_fpVftable = reinterpret_cast<const gindows::ControlVftable*>(ASLR(0x00D5D954));
+
 	public:
-		csl::fnd::Delegate<void (gindows::Object*, VariableChangedEventArgs&), gindows::DelegateAllocator> m_OnVariableChanged;
+		csl::fnd::Delegate<void (gindows::Object*, VariableChangedEventArgs&), gindows::DelegateAllocator> OnVariableChanged;
 
 	protected:
 		S13VariableGroup* m_pGroup{};
 		gindows::TreeView* m_pVariableTree{};
 		char m_Unk1;
-
-	public:
-		inline static const gindows::ControlVftable* ms_fpVftable = reinterpret_cast<const gindows::ControlVftable*>(ASLR(0x00D5D954));
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x00459FA0), S13VariableEditControl* pThis);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetGroup, ASLR(0x00459E90), S13VariableEditControl* pThis, S13VariableGroup* pGroup);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpClearGroup, ASLR(0x00459800), S13VariableEditControl* pThis);
 		
+	public:
 		S13VariableEditControl() : Control(true)
 		{
 			ms_fpCtor(this);
 		}
 
 	protected:
-		S13VariableEditControl(bool skipFp)
+		S13VariableEditControl(bool in_skipFp)
 		{
 			m_Name._Mypad |= 2;
 		}
@@ -51,14 +52,14 @@ namespace app::dev
 			ms_fpVftable->fpOnRender(this);
 		}
 
-		void OnKeyDown(gindows::KeyEventArgs& args) override
+		void OnKeyDown(gindows::KeyEventArgs& in_rArgs) override
 		{
-			ms_fpVftable->fpOnKeyDown(this, args);
+			ms_fpVftable->fpOnKeyDown(this, in_rArgs);
 		}
 
-		void SetGroup(S13VariableGroup* pGroup)
+		void SetGroup(S13VariableGroup* in_pGroup)
 		{
-			ms_fpSetGroup(this, pGroup);
+			ms_fpSetGroup(this, in_pGroup);
 		}
 
 		void ClearGroup()

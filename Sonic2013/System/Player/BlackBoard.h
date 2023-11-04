@@ -124,32 +124,32 @@ namespace app::Player
 		csl::ut::Bitset<uint> Unk8{};
 		char Unk9{};
 
-		void InitPhantomInfo(const csl::ut::MoveArray<Game::EPhantomType>& in_phantoms)
+		void InitPhantomInfo(const csl::ut::MoveArray<Game::EPhantomType>& in_rPhantoms)
 		{
 			for (size_t i = 0; i < 9; i++)
 			{
 				PhantomData[i].Unk1 = PhantomValues[1];
 			}
 
-			for (size_t i = 0; i < in_phantoms.size(); i++)
+			for (size_t i = 0; i < in_rPhantoms.size(); i++)
 			{
-				if (in_phantoms[i] < Game::EPhantomType::PHANTOM_MAX)
+				if (in_rPhantoms[i] < Game::EPhantomType::ePhantom_Max)
 				{
-					PhantomData[in_phantoms[i]].Unk2 = 1;
+					PhantomData[in_rPhantoms[i]].Unk2 = 1;
 				}
 			}
 		}
 
-		CParameterPixie(const csl::ut::MoveArray<Game::EPhantomType>& in_phantoms)
+		CParameterPixie(const csl::ut::MoveArray<Game::EPhantomType>& in_rPhantoms)
 		{
-			InitPhantomInfo(in_phantoms);
+			InitPhantomInfo(in_rPhantoms);
 		}
 
 		virtual ~CParameterPixie() {}
 
 		bool IsEnableTransform(Game::EPhantomType in_type) const
 		{
-			if (in_type >= Game::EPhantomType::PHANTOM_MAX)
+			if (in_type >= Game::EPhantomType::ePhantom_Max)
 				return false;
 		
 			return PhantomData[in_type].Unk2;
@@ -253,37 +253,37 @@ namespace app::Player
 	class CBlackBoard : public fnd::ReferencedObject
 	{
 	public:
-		csl::ut::Bitset<int> m_Unk1[4]{};
-		int m_Unk2{};
-		int m_Unk3{};
+		csl::ut::Bitset<int> Unk1[4]{};
+		int Unk2{};
+		int Unk3{};
 		size_t PlayerNo{};
-		CParameterRing* m_pRingParameter{};
-		CParameterPixie* m_pPixieParameter{};
-		CAttackStatus* m_pAttackStatus{};
+		CParameterRing* pRingParameter{};
+		CParameterPixie* pPixieParameter{};
+		CAttackStatus* pAttackStatus{};
 		csl::ut::Bitset<uint> Unk6{};
 		float Unk7{};
 		float Unk8{};
 		float Unk9{};
-		int m_Unk5{};
+		int Unk5{};
 
 		CParameterRing* GetRingParameter()
 		{
-			return m_pRingParameter;
+			return pRingParameter;
 		}
 
 		CParameterPixie* GetPixieParameter()
 		{
-			return m_pPixieParameter;
+			return pPixieParameter;
 		}
 
 		CAttackStatus* GetAttackStatus()
 		{
-			return m_pAttackStatus;
+			return pAttackStatus;
 		}
 
 		void SetStatus(EStatusFlag in_statusFlag, bool in_enable)
 		{
-			m_Unk1[3].set(in_statusFlag, in_enable);
+			Unk1[3].set(in_statusFlag, in_enable);
 		}
 	};
 }

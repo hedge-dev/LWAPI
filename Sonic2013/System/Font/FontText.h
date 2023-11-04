@@ -10,10 +10,10 @@ namespace app::font
 	{
 		struct TextParam
 		{
-			csl::math::Vector2 m_Position{ 0, 0 };
-			uint m_Color{ (uint)-1 };
-			csl::math::Vector2 m_Size{ 0, 0 };
-			char* m_pText{};
+			csl::math::Vector2 Position{ 0, 0 };
+			uint Color{ (uint)-1 };
+			csl::math::Vector2 Size{ 0, 0 };
+			char* pText{};
 		};
 		
 	protected:
@@ -31,14 +31,14 @@ namespace app::font
 			csl::fnd::MutexGuard lock(m_Lock);
 			for (auto& param : m_Params)
 			{
-				m_Params.get_allocator()->Free(param.m_pText);
+				m_Params.get_allocator()->Free(param.pText);
 			}
 		}
 		
 	public:
-		FontText(Font* pFont, csl::fnd::IAllocator* pAllocator) : m_pFont(pFont)
+		FontText(Font* in_pFont, csl::fnd::IAllocator* in_pAllocator) : m_pFont(in_pFont)
 		{
-			m_Params.change_allocator(pAllocator);
+			m_Params.change_allocator(in_pAllocator);
 		}
 
 		~FontText()
@@ -66,86 +66,86 @@ namespace app::font
 			return m_Enabled;
 		}
 
-		void SetFont(Font* pFont)
+		void SetFont(Font* in_pFont)
 		{
-			m_pFont = pFont;
+			m_pFont = in_pFont;
 		}
 		
-		void SetBasePos(const csl::math::Vector2& pos)
+		void SetBasePos(const csl::math::Vector2& in_rPos)
 		{
-			m_BasePos = pos;
+			m_BasePos = in_rPos;
 		}
 
-		void SetSize(const csl::math::Vector2& size)
+		void SetSize(const csl::math::Vector2& in_rSize)
 		{
-			m_Size = size;
+			m_Size = in_rSize;
 		}
 
-		void SetColor(uint color)
+		void SetColor(uint in_color)
 		{
-			m_Color = color;
+			m_Color = in_color;
 		}
 
-		void SetColorAll(uint color)
+		void SetColorAll(uint in_color)
 		{
 			csl::fnd::MutexGuard lock(m_Lock);
 
-			m_Color = color;
+			m_Color = in_color;
 			for (auto& param : m_Params)
 			{
-				param.m_Color = color;
+				param.Color = in_color;
 			}
 		}
 		
-		void SetEnable(bool enable)
+		void SetEnable(bool in_enable)
 		{
-			m_Enabled = enable;
+			m_Enabled = in_enable;
 		}
 
-		void AddString(const csl::math::Vector2& pos, const char* pText)
+		void AddString(const csl::math::Vector2& in_rPos, const char* in_pText)
 		{
 			csl::fnd::MutexGuard lock(m_Lock);
-			auto textSize = strlen(pText) + 1;
+			auto textSize = strlen(in_pText) + 1;
 			auto* pTexCpy = (char*)m_Params.get_allocator()->Alloc(textSize, alignof(char));
 
-			strcpy_s(pTexCpy, textSize, pText);
-			TextParam param{ pos, m_Color, m_Size, pTexCpy };
+			strcpy_s(pTexCpy, textSize, in_pText);
+			TextParam param{ in_rPos, m_Color, m_Size, pTexCpy };
 			m_Params.push_back(param);
 		}
 
-		void AddStringFormat(const csl::math::Vector2& pos, const char* pText, ...)
+		void AddStringFormat(const csl::math::Vector2& in_rPos, const char* in_pText, ...)
 		{
 			va_list args;
-			va_start(args, pText);
+			va_start(args, in_pText);
 
 			char textBuf[256];
-			vsnprintf(textBuf, sizeof(textBuf), pText, args);
-			AddString(pos, textBuf);
+			vsnprintf(textBuf, sizeof(textBuf), in_pText, args);
+			AddString(in_rPos, textBuf);
 			
 			va_end(args);
 		}
 		
-		void Draw(Font* pFont)
+		void Draw(Font* in_pFont)
 		{
-			if (pFont && m_Enabled && pFont->IsInit())
+			if (in_pFont && m_Enabled && in_pFont->IsInit())
 			{
 				if (m_AutoFlush)
-					pFont->Begin();
+					in_pFont->Begin();
 				
 				csl::fnd::MutexGuard lock(m_Lock);
 				
 				for (auto& param : m_Params)
 				{
-					csl::math::Vector2 drawPos = param.m_Position;
+					csl::math::Vector2 drawPos = param.Position;
 					drawPos += GetBasePos();
 
-					pFont->SetTextColor(param.m_Color);
-					pFont->SetTextSize(param.m_Size);
-					pFont->DrawText(drawPos, param.m_pText);
+					in_pFont->SetTextColor(param.Color);
+					in_pFont->SetTextSize(param.Size);
+					in_pFont->DrawText(drawPos, param.pText);
 				}
 
 				if (m_AutoFlush)
-					pFont->End();
+					in_pFont->End();
 			}
 		}
 

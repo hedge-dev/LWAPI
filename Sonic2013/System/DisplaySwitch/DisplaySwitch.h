@@ -9,10 +9,10 @@ namespace app
 		enum State : int;
 		
 	public:
-		csl::ut::Enum<State, char> m_State;
+		csl::ut::Enum<State, char> State;
 		INSERT_PADDING(16); // csl::ut::InplaceMoveArray<DisplaySwitchListener, 5>
 		INSERT_PADDING(20) {};
-		DisplayText m_DisplayText{};
+		DisplayText DisplayText{};
 
 		DisplaySwitch() {}
 		~DisplaySwitch() override {} 
