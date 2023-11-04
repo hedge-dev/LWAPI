@@ -15,14 +15,12 @@ namespace app::worldmap
 
     class CWorldMapDioramaInfo : public CObjInfo
     {
-    public:
-        csl::ut::FixedString<16> StageName{};
-        WorldMapObjResource Resource{};
-
     private:
         inline static FUNCTION_PTR(void, __thiscall, ms_fpMakeResModel, ASLR(0x0094CE50), CWorldMapDioramaInfo*, WorldMapObjResource*, const char*, const char*, hh::ut::PackFile&, uint, uint);
 
-    public:
+        csl::ut::FixedString<16> StageName{};
+        WorldMapObjResource Resource{};
+
         CWorldMapDioramaInfo(const char* in_pStageName) : CObjInfo(), StageName(in_pStageName)
         {
 

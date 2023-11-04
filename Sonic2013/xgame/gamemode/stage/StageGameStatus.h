@@ -10,13 +10,13 @@ namespace app::xgame
 
 	class StageGameStatus : public fnd::ReferencedObject
 	{
-		INSERT_PADDING(16);
-
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetForRestart, ASLR(0x00933B60), StageGameStatus*);
 		inline static FUNCTION_PTR(GameStatusBase*, __thiscall, ms_fpGetStatus, ASLR(0x00933BF0), const StageGameStatus*, const char*);
 
 	public:
+		INSERT_PADDING(16);
+
 		void ResetForRestart()
 		{
 			ms_fpResetForRestart(this);

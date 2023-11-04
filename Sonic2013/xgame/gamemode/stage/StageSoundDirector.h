@@ -4,6 +4,14 @@ namespace app::xgame
 {
 	class CStageSoundDirector : public GameObject
 	{
+	private:
+		inline static FUNCTION_PTR(CStageSoundDirector*, __thiscall, ms_fpCtor, ASLR(0x0095B160), CStageSoundDirector*, const StageInfo::SStageData*, const CLevelInfo*);
+		inline static FUNCTION_PTR(CStageSoundDirector*, __thiscall, ms_fpDtor, ASLR(0x0095C4E0), CStageSoundDirector*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpInitPlayerGuidePathControl, ASLR(0x0095B680), CStageSoundDirector*);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpMuteStageSE, ASLR(0x0095AD90), CStageSoundDirector*, bool);
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpStopBGM, ASLR(0x0095AFB0), CStageSoundDirector*, float);
+
+	public:
 		enum BGMCategoryType : char
 		{
 
@@ -28,7 +36,6 @@ namespace app::xgame
 			float Unk2{ -1.0f };
 		};
 
-	public:
 		fnd::SoundPlayer* pSoundPlayer{};
 		const CLevelInfo* pLevelInfo{};
 		const StageInfo::SStageData* pStageData{};
@@ -44,13 +51,6 @@ namespace app::xgame
 		csl::ut::Enum<BGMCategoryType, char> Unk5{ (BGMCategoryType)-1 };
 		int Unk6{ -1 };
 		fnd::SoundListenerHandle HandleListeners[5]{};
-
-	private:
-		inline static FUNCTION_PTR(CStageSoundDirector*, __thiscall, ms_fpCtor, ASLR(0x0095B160), CStageSoundDirector*, const StageInfo::SStageData*, const CLevelInfo*);
-		inline static FUNCTION_PTR(CStageSoundDirector*, __thiscall, ms_fpDtor, ASLR(0x0095C4E0), CStageSoundDirector*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpInitPlayerGuidePathControl, ASLR(0x0095B680), CStageSoundDirector*);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpMuteStageSE, ASLR(0x0095AD90), CStageSoundDirector*, bool);
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpStopBGM, ASLR(0x0095AFB0), CStageSoundDirector*, float);
 
 	public:
 		CStageSoundDirector(const StageInfo::SStageData* in_pStageData, const CLevelInfo* in_pLevelInfo)
