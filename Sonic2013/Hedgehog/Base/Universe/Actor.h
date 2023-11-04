@@ -30,8 +30,8 @@ namespace app::fnd
 
 		void MessageSetup(uint in_to, fnd::Message& in_rMessage) const
 		{
-			in_rMessage.m_Receiver = in_to;
-			in_rMessage.m_Sender = ActorID;
+			in_rMessage.Receiver = in_to;
+			in_rMessage.Sender = ActorID;
 		}
 		
 	public:
@@ -139,10 +139,10 @@ namespace app::fnd
 
 		void SendMessage(uint in_to, fnd::Message& in_rMessage) const
 		{
-			if (m_AllowedMessageFlags & in_rMessage.Mask)
+			if (AllowedMessageFlags & in_rMessage.Mask)
 			{
 				MessageSetup(in_to, in_rMessage);
-				m_pMessageManager->AddMessage(in_rMessage);
+				pMessageManager->AddMessage(in_rMessage);
 			}
 		}
 

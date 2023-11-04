@@ -136,7 +136,7 @@ namespace csl::ut
 		iterator find(const char* in_pKey) const
 		{
 			auto result = Find(keyCast(in_pKey));
-			return iterator(this, result.m_CurIdx);
+			return iterator(this, result.CurIdx);
 		}
 
 		iterator operator[](const char* in_pKey) const

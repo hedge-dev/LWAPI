@@ -4,6 +4,12 @@ namespace app
 {
 	class GOCEnemyTarget : fnd::GOComponent
 	{
+	public:
+		struct Description
+		{
+			bool IsEnabled{};
+		};
+
 	private:
 		inline static fnd::GOComponentClass* ms_pGOCEnemyTargetStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FE7608));
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x00726510), GOCEnemyTarget*, const Description&);
@@ -15,13 +21,8 @@ namespace app
 		inline static FUNCTION_PTR(bool, __thiscall, ms_fpIsFindTarget, ASLR(0x00726600), GOCEnemyTarget*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpLockTarget, ASLR(0x007266B0), GOCEnemyTarget*);
 		inline static FUNCTION_PTR(csl::math::Vector3*, __thiscall, ms_fpGetTargetCenterPosition, ASLR(0x00726610), GOCEnemyTarget*, csl::math::Vector3*);
-
-	public:
-		struct Description
-		{
-			bool IsEnabled{};
-		};
 		
+	public:
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pGOCEnemyTargetStaticClass;

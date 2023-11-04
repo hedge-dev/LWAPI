@@ -70,9 +70,9 @@ namespace csl::ut
 				{
 					const Elem* pElem = &oldElements[i];
 
-					if (pElem->m_Hash != INVALID_KEY)
+					if (pElem->Hash != INVALID_KEY)
 					{
-						Insert(pElem->m_Key, pElem->m_Value);
+						Insert(pElem->Key, pElem->Value);
 					}
 				}
 
@@ -136,7 +136,7 @@ namespace csl::ut
 			}
 			else
 			{
-				while (pElem->Hash != hash || pElem->Key != key)
+				while (pElem->Hash != hash || pElem->Key != in_key)
 				{
 					idx = m_CapacityMax & (idx + 1);
 					pElem = &m_pElements[idx];
@@ -144,8 +144,8 @@ namespace csl::ut
 					if (pElem->Hash == INVALID_KEY)
 					{
 						pElem->Hash = hash;
-						pElem->Key = key;
-						pElem->Value = value;
+						pElem->Key = in_key;
+						pElem->Value = in_value;
 						m_Length++;
 						break;
 					}

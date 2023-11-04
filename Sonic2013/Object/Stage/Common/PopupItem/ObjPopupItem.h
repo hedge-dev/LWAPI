@@ -14,7 +14,7 @@ namespace app
 			Param = in_rParam;
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			pTransform = GetComponent<fnd::GOCTransform>();
 			
@@ -30,7 +30,7 @@ namespace app
 
 				if (Param.Type == popup_item::EType::eType_OneUp)
 				{
-					auto* pCamera = in_rDocument.pWorld->GetCamera(0);
+					auto* pCamera = in_pDocument->pWorld->GetCamera(0);
 					pTransform->SetLocalRotation(pCamera->GetInvViewMatrix().GetRotation());
 				}
 			}
@@ -47,7 +47,7 @@ namespace app
 
 				if (Param.Type == popup_item::EType::eType_OneUp)
 				{
-					auto* pCamera = in_rDocument.pWorld->GetCamera(0);
+					auto* pCamera = in_pDocument->pWorld->GetCamera(0);
 					pTransform->SetLocalRotation(pCamera->GetInvViewMatrix().GetRotation());
 				}
 			}
@@ -55,7 +55,7 @@ namespace app
 			fnd::GOComponent::Create<game::GOCMovementComplex>(*this);
 			CreateCommonGOC(Param.Type);
 			fnd::GOComponent::BeginSetup(*this);
-			SetupCommonGOC(&in_rDocument);
+			SetupCommonGOC(in_pDocument);
 
 			if (auto* pMovement = GetComponent<game::GOCMovementComplex>())
 			{

@@ -46,6 +46,7 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpWaitSyncAll, ASLR(0x00491FB0), FileLoader* This);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpStopFileAll, ASLR(0x00490E60), FileLoader* This);
 
+	public:
 		csl::ut::MoveArray<LoadInfo*> PendingFiles{};
 		csl::ut::MoveArray<LoadInfo*> Unk1{};
 		csl::ut::MoveArray<LoadInfo*> Unk2{};
@@ -77,7 +78,7 @@ namespace app::fnd
 
 		bool IsSyncCompleteAll() const
 		{
-			return m_SyncComplete;
+			return SyncComplete;
 		}
 
 		void WaitSync(csl::fnd::com_ptr<FileHandleObj> in_handle)

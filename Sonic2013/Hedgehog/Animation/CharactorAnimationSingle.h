@@ -54,7 +54,7 @@ namespace app::animation
 
 		const TransitionArray* GetTransition(uint in_layer) const override
 		{
-			return m_Transition.m_pTransitions;
+			return m_Transition.pTransitions;
 		}
 
 		AnimationClip* GetCurrentAnimationClip(bool in_last = false) const

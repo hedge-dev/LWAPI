@@ -123,7 +123,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->ModelContainer.Models[Type];
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000u;
+				description.Unk2 |= 0x400000u;
 
 				pVisualModel->Setup(description);
 
@@ -224,7 +224,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmBasicEvent<ObjYoshi>::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmBasicEvent<ObjYoshi>::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		void BoundCallback()

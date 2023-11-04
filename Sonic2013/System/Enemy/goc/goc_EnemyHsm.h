@@ -33,7 +33,7 @@ namespace app
 	public:
 		GOCEnemyHsm()
 		{
-			unk1 = 0x1006;
+			Unk1 = 0x1006;
 			Unk2.set(0);
 		}
 

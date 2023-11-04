@@ -42,7 +42,7 @@ namespace app::game
 		struct Description
 		{
 			size_t SoundCount{};
-			size_t 3DSoundCount{};
+			size_t Sound3DCount{};
 		};
 
 		fnd::SoundPlayer* pSoundPlayer{};
@@ -61,10 +61,10 @@ namespace app::game
 			if (in_rDesc.SoundCount)
 				PlayHandles.reserve(in_rDesc.SoundCount);
 
-			if (in_rDesc.3DSoundCount)
-				FollowInfo.reserve(in_rDesc.3DSoundCount);
+			if (in_rDesc.Sound3DCount)
+				FollowInfo.reserve(in_rDesc.Sound3DCount);
 			
-			Flags.set(2, in_rDesc.SoundCount || in_rDesc.3DSoundCount);
+			Flags.set(2, in_rDesc.SoundCount || in_rDesc.Sound3DCount);
 		}
 
 		inline static void SimpleSetup(GameObject* in_pObject, size_t in_soundCount, size_t in_soundCount3d)
@@ -93,7 +93,7 @@ namespace app::game
 			param.TweenFactor = in_tween;
 			param.Device = in_device;
 			
-			fnd::SoundHandle handle = m_pSoundPlayer->Play(2, in_pName, param);
+			fnd::SoundHandle handle = pSoundPlayer->Play(2, in_pName, param);
 			OnCreateSoundHandle(handle);
 
 			return handle;
@@ -105,7 +105,7 @@ namespace app::game
 			param.TweenFactor = in_tween;
 			param.Device = in_device;
 
-			fnd::SoundHandle handle = m_pSoundPlayer->Play3D(2, in_pName, in_rPosition, param);
+			fnd::SoundHandle handle = pSoundPlayer->Play3D(2, in_pName, in_rPosition, param);
 			OnCreateSoundHandle(handle);
 
 			return handle;

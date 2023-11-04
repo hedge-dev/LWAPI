@@ -97,7 +97,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000;
+				description.Unk2 |= 0x400000;
 
 				pVisualGoc->Setup(description);
 
@@ -267,13 +267,13 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.DeltaTime));
 
 			if (!Flags.test(1) || Type != ActionType::eActionType_Idle)
 				return;
 		
 			float time = ElapsedTime;
-			ElapsedTime += in_rUpdateInfo.deltaTime;
+			ElapsedTime += in_rUpdateInfo.DeltaTime;
 			if (ElapsedTime > 7.0f)
 			{
 				SetStatusRetire();

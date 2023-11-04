@@ -43,13 +43,13 @@ namespace csl::ut
 
 			iterator& operator++()
 			{
-				m_pCurNode = m_pCurNode->m_pPrev;
+				m_pCurNode = m_pCurNode->pPrev;
 				return *this;
 			}
 
 			iterator& operator--()
 			{
-				m_pCurNode = m_pCurNode->m_pNext;
+				m_pCurNode = m_pCurNode->pNext;
 				return *this;
 			}
 
@@ -89,20 +89,20 @@ namespace csl::ut
 				return in_rLhs.m_pCurNode == in_rRhs.m_pCurNode;
 			}
 
-			friend bool operator!=(const const_iterator& lhs, const const_iterator& in_rRhs)
+			friend bool operator!=(const const_iterator& in_rLhs, const const_iterator& in_rRhs)
 			{
 				return in_rLhs.m_pCurNode != in_rRhs.m_pCurNode;
 			}
 
 			const_iterator& operator++()
 			{
-				m_pCurNode = m_pCurNode->m_pPrev;
+				m_pCurNode = m_pCurNode->pPrev;
 				return *this;
 			}
 
 			const_iterator& operator--()
 			{
-				m_pCurNode = m_pCurNode->m_pNext;
+				m_pCurNode = m_pCurNode->pNext;
 				return *this;
 			}
 

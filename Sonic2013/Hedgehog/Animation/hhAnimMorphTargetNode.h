@@ -12,7 +12,7 @@ namespace hh::gfx
 		csl::ut::MoveArray<AnimMorphTargetNode*> Nodes{};
 		float Speed{ 1 };
 
-		AnimMorphTargetNode(csl::fnd::IAllocator* in_pAllocator) : AnimObject(in_pAllocator), nodes(in_pAllocator)
+		AnimMorphTargetNode(csl::fnd::IAllocator* in_pAllocator) : AnimObject(in_pAllocator), Nodes(in_pAllocator)
 		{
 			
 		}

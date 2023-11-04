@@ -60,14 +60,6 @@ namespace app::fnd
 			return SendMessageImm(pOwnerDocument->GetGameActorID(), in_rMessage);
 		}
 	};
-
-	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* in_pAllocator) const
-	{
-		GameService* pService = m_pInitializer(in_pAllocator);
-		pService->pClass = this;
-
-		return service;
-	}
 }
 
 #pragma pop_macro("SendMessage")

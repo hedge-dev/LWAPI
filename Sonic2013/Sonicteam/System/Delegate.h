@@ -60,7 +60,7 @@ namespace csl::fnd
 			
 			while (pCurFunctor)
 			{
-				pLastFunctor = pCurFunctor->m_PrevFunctor;
+				pLastFunctor = pCurFunctor->PrevFunctor;
 				
 				pCurFunctor->~DelegateFunctorBase();
 				m_Allocator.Free(pCurFunctor);
@@ -73,8 +73,8 @@ namespace csl::fnd
 		{
 			if (in_pFunctor)
 			{
-				if (in_pFunctor->m_PrevFunctor)
-					InvokeFunctorList(in_pFunctor->m_PrevFunctor, in_args...);
+				if (in_pFunctor->PrevFunctor)
+					InvokeFunctorList(in_pFunctor->PrevFunctor, in_args...);
 
 				in_pFunctor->Invoke(in_args...);
 			}
@@ -91,9 +91,9 @@ namespace csl::fnd
 		{
 			void* pMem = m_Allocator.Alloc(sizeof(DelegateFunctor<TInstance, Args...>), alignof(DelegateFunctor<TInstance, Args...>));
 			DelegateFunctor<TInstance, Args...>* pFunctor = new(pMem) DelegateFunctor<TInstance, Args...>();
-			pFunctor->m_pInstance = in_pInst;
-			pFunctor->m_pMemFunc = in_pFunc;
-			pFunctor->m_PrevFunctor = m_pFunctor;
+			pFunctor->pInstance = in_pInst;
+			pFunctor->pMemFunc = in_pFunc;
+			pFunctor->PrevFunctor = m_pFunctor;
 			
 			m_pFunctor = pFunctor;
 		}
@@ -106,9 +106,9 @@ namespace csl::fnd
 			
 			while (pCurFunctor)
 			{
-				pNextFunctor = reinterpret_cast<DelegateFunctor<TInstance, Args...>*>(pCurFunctor->m_PrevFunctor);
+				pNextFunctor = reinterpret_cast<DelegateFunctor<TInstance, Args...>*>(pCurFunctor->PrevFunctor);
 
-				if (pCurFunctor->m_pMemFunc == in_pFunc && pCurFunctor->m_pInstance == in_pInst)
+				if (pCurFunctor->pMemFunc == in_pFunc && pCurFunctor->pInstance == in_pInst)
 				{
 					pCurFunctor->~DelegateFunctor();
 					m_Allocator.Free(pCurFunctor);
@@ -124,8 +124,8 @@ namespace csl::fnd
 		{
 			if (m_pFunctor)
 			{
-				if (m_pFunctor->m_PrevFunctor)
-					InvokeFunctorList(m_pFunctor->m_PrevFunctor, in_args...);
+				if (m_pFunctor->PrevFunctor)
+					InvokeFunctorList(m_pFunctor->PrevFunctor, in_args...);
 
 				m_pFunctor->Invoke(in_args...);
 			}
@@ -134,14 +134,14 @@ namespace csl::fnd
 		template<class T>
 		Delegate& operator+=(ut::Pair<T*, typename DelegateFunctor<T, Args...>::MemFunc> in_item)
 		{
-			Connect(in_item.key, in_item.x);
+			Connect(in_item.Key, in_item.X);
 			return *this;
 		}
 
 		template<class T>
 		Delegate& operator-=(ut::Pair<T*, typename DelegateFunctor<T, Args...>::MemFunc> in_item)
 		{
-			Remove(in_item.key, in_item.x);
+			Remove(in_item.Key, in_item.X);
 			return *this;
 		}
 

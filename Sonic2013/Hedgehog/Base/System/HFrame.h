@@ -13,6 +13,9 @@ namespace app::fnd
 
 	class HFrame : public ReferencedObject
 	{
+	public:
+		typedef uint8 FlagType;
+
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddChild, ASLR(0x0048E650), HFrame*, HFrame*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpAddHFrameListener, ASLR(0x0048E2E0), void* This, HFrameListener* pListener);
@@ -24,14 +27,12 @@ namespace app::fnd
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpResetFlag, ASLR(0x0048DCD0), void*, FlagType);
 
 	public:
-		typedef uint8 FlagType;
-		
 		csl::ut::LinkListNode Child;
 		HFrame* pParent;
 		HFrame* pFrame{ this };
 		int Unk2{};
 		FlagType Flags{};
-		csl::ut::LinkList<HFrame> Children{ &HFrame::m_Child };
+		csl::ut::LinkList<HFrame> Children{ &HFrame::Child };
 		csl::ut::InplaceMoveArray<HFrameListener*, 10> Listeners{ GetAllocator() };
 		math::CalculatedTransform Unk3;
 		math::CalculatedTransform Transform;
@@ -59,7 +60,7 @@ namespace app::fnd
 
 		csl::math::Vector3 GetLocalTranslation() const
 		{
-			return m_Transform.GetTranslation();
+			return Transform.GetTranslation();
 		}
 
 		void SetLocalTransform(const csl::math::Matrix34& in_rMatrix)
@@ -87,9 +88,9 @@ namespace app::fnd
 			Flags |= in_flag;
 		}
 
-		void ResetFlag(FlagType flag)
+		void ResetFlag(FlagType in_flag)
 		{
-			ms_fpResetFlag(this, flag);
+			ms_fpResetFlag(this, in_flag);
 		}
 
 		void SetFlag(FlagType in_flag, bool in_enable)

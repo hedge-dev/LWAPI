@@ -24,7 +24,7 @@ namespace app
 
         fnd::HFrame* GetCenterPositionFrame() const
         {
-            if (!Unk1.m_pParent)
+            if (!Unk1.pParent)
                 return &GetComponent<fnd::GOCTransform>()->Frame;
         
             return const_cast<fnd::HFrame*>(&Unk1);
@@ -104,7 +104,7 @@ namespace app
 
         bool ProcMsgPLGetHomingTargetInfo(xgame::MsgPLGetHomingTargetInfo& in_rMessage) const
         {
-            in_rMessage.CursorPosition = GetCenterPositionFrame()->m_Unk3.GetTranslation();
+            in_rMessage.CursorPosition = GetCenterPositionFrame()->Unk3.GetTranslation();
             in_rMessage.Flags.set(3);
 
             return true;

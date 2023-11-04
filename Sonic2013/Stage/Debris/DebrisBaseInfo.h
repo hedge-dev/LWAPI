@@ -16,7 +16,7 @@ namespace app::debris
 		float Unk7{};
 		float Unk8{};
 		INSERT_PADDING(8) {};
-		csl::math::Vector3 Unk14{};
+		csl::math::Vector3 Position{};
 		float Unk9{};
 		INSERT_PADDING(12) {};
 		float Unk10{};

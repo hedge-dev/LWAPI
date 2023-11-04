@@ -95,7 +95,7 @@ namespace app::xgame
 
 		const FxParameter* GetParameter(const size_t in_index) const
 		{
-			if (!m_pSceneData || i >= HH_COUNT_OF(m_pSceneData->items))
+			if (!m_pSceneData || in_index >= HH_COUNT_OF(m_pSceneData->items))
 				return nullptr;
 			
 			return &m_pSceneData->items[in_index];

@@ -8,7 +8,7 @@ namespace app
 		m_rpMode = in_pMode;
 		if (in_pMode)
 		{
-			in_pMode->m_pGame = this;
+			in_pMode->pGame = this;
 			in_pMode->InitializeGameMode(*this);
 			in_pMode->OnEnter(*this);
 		}

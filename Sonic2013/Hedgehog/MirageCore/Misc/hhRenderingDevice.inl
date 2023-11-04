@@ -15,7 +15,7 @@ namespace hh::mr
 
 	inline void CRenderingDevice::SetShader(const Extra::fx::SShaderPair& in_rPair)
 	{
-		SetShader(in_rPair.spVertexShader, in_pair.spPixelShader);
+		SetShader(in_rPair.spVertexShader, in_rPair.spPixelShader);
 	}
 
 	inline void CRenderingDevice::SetShaderFromPool(ShaderType in_type)

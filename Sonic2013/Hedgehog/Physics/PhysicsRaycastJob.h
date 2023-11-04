@@ -35,7 +35,7 @@ namespace app::game
 
 		void Add(const Vector3& in_rFrom, const Vector3& in_rTo, uint in_filter, uint in_a4, uint in_a5)
 		{
-			m_Commands.push_back({ in_rFrom, in_rTo, in_filter, in_a4, nullptr, in_a5 });
+			Commands.push_back({ in_rFrom, in_rTo, in_filter, in_a4, nullptr, in_a5 });
 		}
 
 		void DeallocateBuffer()

@@ -31,7 +31,7 @@ namespace csl::ut
 
 		size_t valueCast(TValue in_value) const
 		{
-			return (size_t)value;
+			return (size_t)in_value;
 		}
 		
 	public:
@@ -112,7 +112,7 @@ namespace csl::ut
 		iterator find(const TKey in_key) const
 		{
 			auto result = Find(keyCast(in_key));
-			return iterator(this, result.m_CurIdx);
+			return iterator(this, result.CurIdx);
 		}
 	};
 }

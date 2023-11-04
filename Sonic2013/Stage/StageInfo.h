@@ -2,7 +2,7 @@
 
 namespace app::StageInfo
 {
-	static std::pair<const char*, Game::EPhantomType> phantomMap[Game::EPhantomType::ePhantom_max] =
+	static std::pair<const char*, Game::EPhantomType> phantomMap[Game::EPhantomType::ePhantom_Max] =
 	{
 		{ "drill",		Game::EPhantomType::ePhantom_Drill },
 		{ "laser",		Game::EPhantomType::ePhantom_Laser },
@@ -47,10 +47,10 @@ namespace app::StageInfo
 		};
 
 		csl::fnd::IAllocator* pAllocator{};
-		csl::ut::ObjectMoveArray<SStageData*> Stages{ m_pAllocator };
-		csl::ut::ObjectMoveArray<WorldNode*> Worlds[2]{ {m_pAllocator}, {m_pAllocator} };
+		csl::ut::ObjectMoveArray<SStageData*> Stages{ pAllocator };
+		csl::ut::ObjectMoveArray<WorldNode*> Worlds[2]{ { pAllocator }, { pAllocator } };
 		csl::ut::FixedArray<SZoneInfo, 19> Zones{};
-		csl::ut::MoveArray<const char*> StageNames{ m_pAllocator };
+		csl::ut::MoveArray<const char*> StageNames{ pAllocator };
 
 		CStageInfo(csl::fnd::IAllocator* in_pAllocator) : pAllocator(in_pAllocator)
 		{

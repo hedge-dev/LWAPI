@@ -12,7 +12,7 @@ namespace csl
 
 			bool isInplace()
 			{
-				return this->m_capacity & csl::ut::SIGN_BIT;
+				return this->Capacity & csl::ut::SIGN_BIT;
 			}
 			
 		public:
@@ -67,7 +67,7 @@ namespace csl
 				// Free our old pBuffer
 				if (!isInplace())
 				{
-					p_allocator->Free(this->pBuffer);
+					m_pAllocator->Free(this->pBuffer);
 				}
 
 				// Assign our new pBuffer and set the new Capacity
@@ -193,7 +193,7 @@ namespace csl
 
 			size_t find(const T& in_rItem) const
 			{
-				for (size_t i = 0; i < this->m_length; i++)
+				for (size_t i = 0; i < this->Length; i++)
 				{
 					if (*this->get(i) == in_rItem)
 						return i;

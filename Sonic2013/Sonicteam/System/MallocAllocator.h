@@ -14,7 +14,7 @@ namespace csl::fnd
 		
 		void* Alloc(size_t in_size, int in_alignment) override
 		{
-			return _aligned_malloc(size, in_alignment);
+			return _aligned_malloc(in_size, in_alignment);
 		}
 
 		void Free(void* in_pLoc) override

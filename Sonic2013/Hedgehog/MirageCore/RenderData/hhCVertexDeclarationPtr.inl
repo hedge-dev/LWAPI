@@ -1,12 +1,12 @@
-#include "hhVertexDeclarationPtr.h"
+#include "hhCVertexDeclarationPtr.h"
 #pragma once
 
 namespace hh::mr
 {
 	inline CVertexDeclarationPtr::CVertexDeclarationPtr(const CVertexDeclarationPtr& in_rOther)
 	{
-		pDecl = in_rOther.m_pDecl;
-		pInfrastructure = in_rOther.m_pInfrastructure;
+		pDecl = in_rOther.pDecl;
+		pInfrastructure = in_rOther.pInfrastructure;
 
 		if (pInfrastructure)
 			pInfrastructure->AddRefVertexDeclaration(&pDecl);

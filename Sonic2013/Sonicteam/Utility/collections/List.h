@@ -17,7 +17,7 @@ namespace csl::ut
 
 	inline static void SetFirstObject(List* in_pList, void* in_pObj)
 	{
-		auto* pOtherNode = reinterpret_cast<List::Node*>(reinterpret_cast<char*>(in_pObj) + in_pList->m_NodeOffset);
+		auto* pOtherNode = reinterpret_cast<List::Node*>(reinterpret_cast<char*>(in_pObj) + in_pList->NodeOffset);
 		pOtherNode->pFirst = nullptr;
 		pOtherNode->pLast = nullptr;
 
@@ -52,7 +52,7 @@ namespace csl::ut
 		pOtherNode->pLast = nullptr;
 		pOtherNode->pFirst = prevObj;
 		reinterpret_cast<List::Node*>(reinterpret_cast<char*>(prevObj) + nodeOffset)->pLast = in_pObj;
-		in_pList->Root.m_pLast = in_pObj;
+		in_pList->Root.pLast = in_pObj;
 	}
 
 	inline static void List_Prepend(List* in_pList, void* in_pObj)

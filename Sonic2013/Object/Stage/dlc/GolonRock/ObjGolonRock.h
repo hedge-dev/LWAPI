@@ -174,7 +174,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcessMessage(fnd::Message& in_rMessage) override

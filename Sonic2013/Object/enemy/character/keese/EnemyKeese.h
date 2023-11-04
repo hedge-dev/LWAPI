@@ -68,7 +68,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000;
+				description.Unk2 |= 0x400000;
 
 				pVisualGoc->Setup(description);
 				pVisualGoc->SetLocalRotation({ Eigen::AngleAxisf(MATHF_PI, csl::math::Vector3::UnitZ()) });

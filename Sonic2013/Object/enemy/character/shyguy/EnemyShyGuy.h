@@ -52,8 +52,8 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000u;
-				description.zOffset = pParam->DepthOffset;
+				description.Unk2 |= 0x400000u;
+				description.ZOffset = pParam->DepthOffset;
 
 				pVisualModel->Setup(description);
 				pVisualModel->SetLocalScale(ms_Scale);
@@ -81,7 +81,7 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_eSphere;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
 				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
 				collisionInfo.Unk2 |= 1;
 				collisionInfo.Unk3 = 0x20000;

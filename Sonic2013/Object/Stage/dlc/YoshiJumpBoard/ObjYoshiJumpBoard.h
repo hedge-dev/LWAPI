@@ -153,7 +153,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo)
 		{
-			DispatchFSM(TiFsmBasicEvent<ObjYoshiJumpBoard>::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmBasicEvent<ObjYoshiJumpBoard>::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcMsgGetExternalMovePosition(xgame::MsgGetExternalMovePosition& in_rMessage)

@@ -4,15 +4,15 @@ namespace app::game
 {
 	class GOCAnimationScriptLayer : public GOCAnimationSingle
 	{
-	private:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B37F0), GOCAnimationScriptLayer*, const Description&);
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD756C));
-
 	public:
 		struct Description
 		{
 			const animation::AnimationResContainer* pContainer;
 		};
+
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B37F0), GOCAnimationScriptLayer*, const Description&);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD756C));
 
 	protected:
 		ut::RefPtr<animation::CharactorAnimationMultiLayer> m_rpLayerAnimation{};

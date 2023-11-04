@@ -11,6 +11,11 @@ namespace app
 
 	class GameMode : public fnd::ReferencedObject
 	{
+		enum FadeScreenType;
+		friend CGame;
+		friend CGameSequence;
+		inline static const fnd::GameServiceClass* ms_DefaultServices[] = { nullptr };
+
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDefaultGameLoop, ASLR(0x004AC9B0), GameMode*, const fnd::SUpdateInfo&);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpInitializeGameMode, ASLR(0x004ACAF0), GameMode*, CGame&);
@@ -18,11 +23,6 @@ namespace app
 		inline static FUNCTION_PTR(void, __stdcall, ms_fpBlackout, ASLR(0x004AC560), float, FadeScreenType);
 		inline static FUNCTION_PTR(void, __stdcall, ms_fpWhiteout, ASLR(0x004AC590), float, FadeScreenType);
 		inline static FUNCTION_PTR(void, __stdcall, ms_fpFadeIn, ASLR(0x004AC5C0), float, FadeScreenType);
-
-		enum FadeScreenType;
-		friend CGame;
-		friend CGameSequence;
-		inline static const fnd::GameServiceClass* ms_DefaultServices[] = { nullptr };
 
 	public:
 		CGame* pGame{};

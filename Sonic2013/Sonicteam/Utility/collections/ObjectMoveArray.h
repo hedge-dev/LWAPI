@@ -25,7 +25,7 @@ namespace csl::ut
 			if (in_unk)
 				in_capacity |= SIGN_BIT;
 			this->Capacity = in_capacity;
-			this->pAllocator = in_pAllocator;
+			this->m_pAllocator = in_pAllocator;
 
 			T* pEnd = (&static_cast<T*>(in_pBuffer)[in_length]);
 			T* pStart = static_cast<T*>(in_pBuffer);
@@ -55,7 +55,7 @@ namespace csl::ut
 				this->reserve(this->Length * 2);
 			}
 
-			memmove(&this->pBuffer[in_index + 1], &this->pBuffer[i], (this->size() - in_index) * sizeof(T));
+			memmove(&this->pBuffer[in_index + 1], &this->pBuffer[in_index], (this->size() - in_index) * sizeof(T));
 			new(&this->pBuffer[in_index]) T(in_rItem);
 		}
 

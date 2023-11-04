@@ -61,7 +61,7 @@ namespace app::animation
 
 		void SetSpeed(float in_speed, size_t in_layer)
 		{
-			auto* pClip = GetCurrentAnimationClip(layer);
+			auto* pClip = GetCurrentAnimationClip(in_layer);
 			if (!pClip)
 				return;
 

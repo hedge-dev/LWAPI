@@ -95,7 +95,7 @@ template <typename T>
 inline T* app::fnd::GOComponent::Create(GameObject& in_rObject)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
-	GOComponent* pComponent = T::staticClass()->initializer(GameObject::GetAllocator());
+	GOComponent* pComponent = T::staticClass()->pInitializer(GameObject::GetAllocator());
 
 	if (!pComponent)
 		return nullptr;
@@ -108,7 +108,7 @@ template <typename T>
 inline T* app::fnd::GOComponent::CreateSingle(GameObject& in_rObject)
 {
 	static_assert(std::is_base_of<app::fnd::GOComponent, T>(), "Type must be base of app::fnd::GOComponent");
-	GOComponent* pComponent = T::staticClass()->initializer(GameObject::GetAllocator());
+	GOComponent* pComponent = T::staticClass()->pInitializer(GameObject::GetAllocator());
 
 	if (!pComponent)
 		return nullptr;

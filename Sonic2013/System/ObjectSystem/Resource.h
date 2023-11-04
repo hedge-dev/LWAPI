@@ -28,7 +28,7 @@ namespace app::SetEd
 		CObjectProject* GetObjectProject(size_t in_index) const
 		{
 			if (in_index < ObjectProjects.size())
-				return ObjectProjects[i].get();
+				return ObjectProjects[in_index].get();
 
 			return { nullptr };
 		}

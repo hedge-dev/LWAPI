@@ -29,10 +29,10 @@ namespace csl::math
 	inline static const T& Clamp(const T& in_value, const T& in_min, const T& in_max)
 	{
 		if (in_value < in_min)
-			return min;
+			return in_min;
 
 		if (in_value > in_max)
-			return max;
+			return in_max;
 
 		return in_value;
 	}

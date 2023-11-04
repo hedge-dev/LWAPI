@@ -14,7 +14,7 @@ namespace app::animation
 	class AnimCallbackBridge : public AnimationCallback
 	{
 	public:
-		typedef void (T::*MemFunc)(CharactorAnimation* in_pAnimation, in_ETriggerValueType type, in_CallbackParam param);
+		typedef void (T::*MemFunc)(CharactorAnimation* in_pAnimation, ETriggerValueType in_type, CallbackParam in_param);
 		
 	protected:
 		T* m_pObj{};

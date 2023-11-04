@@ -8,7 +8,7 @@ namespace app::fnd
 		if (pCurrentAnimation)
 			DetachAnimation(pCurrentAnimation);
 
-		if (m_pModelNode)
+		if (pModelNode)
 			Cleanup();
 
 		Setup(in_rModel, in_rDescription);
@@ -34,7 +34,7 @@ namespace app::fnd
 	inline hh::gfx::AnimMorphTargetControl* GOCVisualModelImpl::SetMorphAnimation(GOCVisualModel* in_pModel, hh::gfx::res::ResAnimMorphTarget in_resource)
 	{
 		auto* pControl = hh::gfx::AnimMorphTargetControl::Create(in_pModel->GetAllocator(), in_resource);
-		m_pModelNode->SetAnimObject(pControl, 2);
+		pModelNode->SetAnimObject(pControl, 2);
 		return pControl;
 	}
 
@@ -52,7 +52,7 @@ namespace app::fnd
 
 	inline hh::gfx::AnimMorphTargetControl* GOCVisualModel::SetMorphAnimation(const MorphTargetDesc& in_rDesc)
 	{
-		return Impl.SetMorphAnimation(this, in_rDesc.animation);
+		return Impl.SetMorphAnimation(this, in_rDesc.Animation);
 	}
 
 	class GOCVisualModelImpl::Description : public GOCVisualModel::Description

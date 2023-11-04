@@ -152,7 +152,7 @@ namespace app::fnd
 #undef DEFINE_METADATA
 }
 
-#include "hhRflClass.h"
+#include "RflClass.h"
 
 inline size_t app::fnd::RflClassMember::GetSizeInBytes() const
 {

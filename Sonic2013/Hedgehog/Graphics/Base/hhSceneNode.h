@@ -25,7 +25,7 @@ namespace hh::gfx
 		// csl::ut::Children<hh::gfx::SceneNode, hh::gfx::SceneNode, csl::ut::ChildrenDetacher<hh::gfx::SceneNode>, csl::ut::MoveArray<hh::gfx::SceneNode *>>
 		struct
 		{
-			csl::ut::MoveArray<SceneNode*> m_Container{};
+			csl::ut::MoveArray<SceneNode*> Container{};
 			INSERT_PADDING(8) {};
 		} Children;
 		uint Flags{ 0x81F61 };
@@ -33,7 +33,7 @@ namespace hh::gfx
 
 		SceneNode(csl::fnd::IAllocator* in_pAllocator, bool in_a2) : GfxObject(in_pAllocator)
 		{
-			m_Children.m_Container = { in_pAllocator };
+			Children.Container = { in_pAllocator };
 			if (in_a2)
 				Flags |= 0x10000;
 

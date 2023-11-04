@@ -65,7 +65,7 @@ namespace app
 		{
 			if (LifeTime >= 0.0f)
 			{
-				LifeTime -= in_rUpdateInfo.deltaTime;
+				LifeTime -= in_rUpdateInfo.DeltaTime;
 				if (LifeTime <= 0.0f)
 				{
 					Kill();

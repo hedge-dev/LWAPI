@@ -8,14 +8,13 @@ namespace app::fnd
 		typedef char VisualType;
 		
 	public:
-		//Flag m_Flags{};
 		csl::ut::Bitset<Flag> Flags;
-		VisualType VisualType;
+		VisualType Visual;
 		
-		GOCVisual(VisualType in_type) : GOComponent(), VisualType(in_type)
+		GOCVisual(VisualType in_type) : GOComponent(), Visual(in_type)
 		{
 			ASSERT_OFFSETOF(GOCVisual, Flags, 0x3C);
-			ASSERT_OFFSETOF(GOCVisual, VisualType, 0x3D);
+			ASSERT_OFFSETOF(GOCVisual, Visual, 0x3D);
 		}
 
 		virtual void OnGOCVisualEvent(int, uint, void*) = 0;

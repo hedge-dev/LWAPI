@@ -67,7 +67,7 @@ namespace csl::fnd
 			}
 			
 			if (ms_ppInstance) delete ms_ppInstance;
-			ms_ppInstance = inst;
+			ms_ppInstance = in_pInstance;
 		}
 
 		static T* SwapInstance(T* in_pInstance)

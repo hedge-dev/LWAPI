@@ -111,8 +111,8 @@ namespace app
 				pColliderGoc->Setup({ ms_ShapeCount });
 
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
 				collisionInfo.Unk2 |= 1;
 				collisionInfo.Size = { pParam->CollisionWidth / 2.0f, pParam->CollisionHeight / 2.0f, pParam->CollisionDepth / 2.0f };
 				ObjUtil::SetupCollisionFilter(ObjUtil::EFilter::eFilter_Unk6, collisionInfo);
@@ -134,7 +134,7 @@ namespace app
 			InitFSM();
 		}
 
-		void RemoveCallback(GameDocument& in_rDocument) override
+		void RemoveCallback(GameDocument* in_pDocument) override
 		{
 			if (CameraId.Value != static_cast<CSetObjectID*>((void*)ASLR(0x00FEF2BC))->get())
 			{
@@ -153,7 +153,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcessMessage(fnd::Message& in_rMessage) override

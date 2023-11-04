@@ -119,7 +119,7 @@ namespace app::xgame
 					break;
 				}
 
-				if (pFileSystem->m_LoadFlags.test(0))
+				if (pFileSystem->LoadFlags.test(0))
 				{
 					size_t contentCount = Contents.size();
 
@@ -156,7 +156,7 @@ namespace app::xgame
 				size_t contentCount = Contents.size();
 				for (size_t i = 0; i < contentCount; i++)
 				{
-					if (pFileSystem->m_LoadFlags.test(0) && Contents[i].DlcType == 1 && Contents[i].IsPurchased)
+					if (pFileSystem->LoadFlags.test(0) && Contents[i].DlcType == 1 && Contents[i].IsPurchased)
 					{
 						char buffer[255]{};
 						csl::fnd::Snprintf(buffer, sizeof(buffer), "%s%04x/sonic2013_dlc_%04x.cpk", pContentPath, Contents[i].DlcIndex, Contents[i].DlcIndex);
@@ -187,7 +187,7 @@ namespace app::xgame
 
 							if (Contents[i].IsPurchased)
 							{
-								if (pFileSystem->m_LoadFlags.test(0))
+								if (pFileSystem->LoadFlags.test(0))
 									isBound = pFileSystem->GetDefaultBinder()->IsBind(Contents[i].Index);
 								else
 									Contents[i].IsBound = true;

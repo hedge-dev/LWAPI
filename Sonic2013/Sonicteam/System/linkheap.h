@@ -179,10 +179,10 @@ namespace csl::fnd
 
 				while (pAllocation)
 				{
-					out_rSnapshot.m_pProviders[idx].m_pHeap = pAllocation->m_pSource;
+					out_rSnapshot.pProviders[idx].pHeap = pAllocation->m_pSource;
 
-					out_rSnapshot.m_pAllocations[idx].m_Name = pAllocation->m_Name;
-					out_rSnapshot.m_pAllocations[idx].m_pBlock = pAllocation->m_pBlock;
+					out_rSnapshot.pAllocations[idx].Name = pAllocation->m_Name;
+					out_rSnapshot.pAllocations[idx].pBlock = pAllocation->m_pBlock;
 
 					idx++;
 					pAllocation = pAllocation->m_pNextAllocation;

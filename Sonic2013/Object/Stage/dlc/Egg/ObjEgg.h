@@ -203,7 +203,7 @@ namespace app
 
         void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
         {
-            DispatchFSM(TiFsmBasicEvent<ObjEgg>::CreateUpdate(in_rUpdateInfo.deltaTime));
+            DispatchFSM(TiFsmBasicEvent<ObjEgg>::CreateUpdate(in_rUpdateInfo.DeltaTime));
         }
 
         bool ProcMsgDlcChangeEggRotation(xgame::MsgDlcChangeEggRotation& in_rMessage)

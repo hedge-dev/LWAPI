@@ -237,7 +237,7 @@ namespace app
 		bool ProcMsgNotifyObjectEvent(xgame::MsgNotifyObjectEvent& in_rMessage)
 		{
 			if (in_rMessage.GetEventType() == 0)
-				in_rMessage.eventType = 0;
+				in_rMessage.EventType = 0;
 
 			return Activate(in_rMessage.GetEventType());
 		}

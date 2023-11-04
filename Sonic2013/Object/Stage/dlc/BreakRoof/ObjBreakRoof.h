@@ -36,7 +36,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_08 = 1;
+				description.Unk1 = 1;
 
 				pVisualModel->Setup(description);
 			}

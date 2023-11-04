@@ -28,8 +28,8 @@ namespace app::game
 
 		ColliShapeBase()
 		{
-			ASSERT_OFFSETOF(ColliShapeBase, Unk1, 176);
-			ASSERT_OFFSETOF(ColliShapeBase, Unk2, 180);
+			ASSERT_OFFSETOF(ColliShapeBase, pUnk1, 176);
+			ASSERT_OFFSETOF(ColliShapeBase, pUnk2, 180);
 			ASSERT_OFFSETOF(ColliShapeBase, Unk3, 184);
 		}
 

@@ -139,7 +139,7 @@
 #include "Stage/Common/PopupItem/ObjPopupItemBase.h"
 #include "Stage/Common/PopupItem/ObjPopupItem.h"
 #include "Stage/Common/PopupItem/ObjPopupItemCreate.h"
-#include "Stage/Common/Sticker/ObjStickerObjectCreate.h"
+#include "Stage/Common/Sticker/ObjStickerObjectCreater.h"
 
 #include "Stage/Common/Ring/ObjDroppedRing.h"
 #include "Stage/Common/Ring/ObjDroppedRingCreate.h"

@@ -10,8 +10,8 @@ namespace gindows
 
 	protected:
 		csl::ut::Bitset<uint> m_Flags{};
-		csl::ut::LinkList<Form> m_Forms{ &Form::m_FormsNode };
-		csl::ut::LinkList<Form> m_ActiveForms{ &Form::m_ActiveFormsNode };
+		csl::ut::LinkList<Form> m_Forms{ &Form::FormsNode };
+		csl::ut::LinkList<Form> m_ActiveForms{ &Form::ActiveFormsNode };
 		Control* m_pDesktop{};
 		Form* m_pActiveForm{};
 		INSERT_PADDING(8){};

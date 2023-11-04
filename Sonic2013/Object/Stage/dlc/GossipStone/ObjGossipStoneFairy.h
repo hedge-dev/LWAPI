@@ -35,7 +35,7 @@ namespace app
 
 			fnd::GOComponent::BeginSetup(*this);
 
-			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(in_pDocument);
+			auto* pInfo = ObjUtil::GetObjectInfo<ObjGossipStoneInfo>(*in_pDocument);
 
 			if (auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>())
 			{
@@ -61,7 +61,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			ElapsedTime += in_rUpdateInfo.deltaTime;
+			ElapsedTime += in_rUpdateInfo.DeltaTime;
 
 			int timeThird = (int)(ElapsedTime / 3.0f);
 			if (timeThird >= 3)

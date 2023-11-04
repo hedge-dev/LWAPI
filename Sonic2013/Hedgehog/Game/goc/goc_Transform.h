@@ -108,12 +108,12 @@ namespace app::fnd
 
 		void AddListener(HFrameListener* in_pListener) 
 		{
-			m_Frame.AddHFrameListener(in_pListener);
+			Frame.AddHFrameListener(in_pListener);
 		}
 
 		void RemoveListener(HFrameListener* in_pListener)
 		{
-			m_Frame.RemoveHFrameListener(in_pListener);
+			Frame.RemoveHFrameListener(in_pListener);
 		}
 
 		inline static GOComponentClass* staticClass()

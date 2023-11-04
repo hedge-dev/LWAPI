@@ -86,7 +86,7 @@ namespace app
 			}
 			case MoveType::eMoveType_RelativeTargetPoint:
 			{
-				if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->activeObject->GetDocument(), 0))
+				if (auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->pActiveObject->GetDocument(), 0))
 				{
 					target = { pPlayerInfo->Position + TargetPosition };
 					destination = { target - pContextParam->Position };
@@ -106,7 +106,7 @@ namespace app
 			{
 				target = { pContextParam->Position };
 
-				auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->activeObject->GetDocument(), 0);
+				auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->pActiveObject->GetDocument(), 0);
 				if (!pPlayerInfo)
 				{
 					destination = { TargetPosition };
@@ -142,7 +142,7 @@ namespace app
 			float scalar = fabs(acosf(csl::math::Clamp(destination.dot(leftVector), -1.0f, 1.0f)));
 			if (scalar > 0.000001f)
 			{
-				float angle = MATHF_PI * 4.0f * in_rUpdateInfo.deltaTime;
+				float angle = MATHF_PI * 4.0f * in_rUpdateInfo.DeltaTime;
 				if (angle >= scalar)
 				{
 					if (Type == MoveType::eMoveType_TargetPlayer)
@@ -168,8 +168,8 @@ namespace app
 					downVector = { -upVector * 2.0f };
 			}
 
-			pContextParam->Velocity = { destination * Speed + velocity + downVector * in_rUpdateInfo.deltaTime };
-			pContextParam->Position += csl::math::Vector3(pContextParam->Velocity * in_rUpdateInfo.deltaTime);
+			pContextParam->Velocity = { destination * Speed + velocity + downVector * in_rUpdateInfo.DeltaTime };
+			pContextParam->Position += csl::math::Vector3(pContextParam->Velocity * in_rUpdateInfo.DeltaTime);
 			TargetDirection = destination;
 
 			csl::math::Vector3 normalizedDir{ TargetDirection - upVector * TargetDirection.dot(upVector) };
@@ -193,7 +193,7 @@ namespace app
 				csl::math::Vector3 to{ pContextParam->Position - upVector * 0.5f };
 
 				game::PhysicsRaycastOutput output{};
-				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->activeObject->GetDocument(), from, to, 0xC996))
+				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->pActiveObject->GetDocument(), from, to, 0xC996))
 				{
 					if ((output.Attribute & 0x10) == 0)
 					{
@@ -218,7 +218,7 @@ namespace app
 				csl::math::Vector3 from{ pContextParam->Position + offsetPosition * (length + 0.1f) };
 
 				game::PhysicsRaycastOutput output{};
-				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->activeObject->GetDocument(), from, to, 0xC996)
+				if (ObjUtil::RaycastNearestCollision(&output, *pMovementGoc->pActiveObject->GetDocument(), from, to, 0xC996)
 					&& (output.Attribute & 0x10) == 0)
 				{
 					CurrentState = State::eState_Unk0;
@@ -303,7 +303,7 @@ namespace app
 
 			csl::math::Vector3 direction{ math::Vector3Rotate(pContextParam->Rotation, {csl::math::Vector3::UnitY()}) };
 
-			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->activeObject->GetDocument(), 0);
+			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*pMovementGoc->pActiveObject->GetDocument(), 0);
 			if (!pPlayerInfo)
 				return;
 

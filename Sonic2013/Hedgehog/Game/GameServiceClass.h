@@ -22,4 +22,12 @@ namespace app::fnd
 
 		[[nodiscard]] GameService* Construct(csl::fnd::IAllocator* in_pAllocator) const;
 	};
+
+	inline GameService* app::fnd::GameServiceClass::Construct(csl::fnd::IAllocator* in_pAllocator) const
+	{
+		GameService* pService = m_pInitializer(in_pAllocator);
+		pService->pClass = this;
+
+		return pService;
+	}
 }

@@ -66,7 +66,7 @@ namespace hh::ut
 		}
 
 		template<typename T>
-		T Get(size_t in_index, uint* in_pName = nullptr)
+		T Get(size_t in_index, uint* in_pA2 = nullptr)
 		{
 			return T{ GetResource(T::staticTypeInfo(), in_index, in_pA2) };
 		}

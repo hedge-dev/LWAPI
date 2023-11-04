@@ -19,7 +19,7 @@ namespace app
 		{
 			std::sort(Classes.begin(), Classes.end(), [](const CSetObjClass* c1, const CSetObjClass* c2) -> bool
 			{
-				return strcmp(c1->m_pName, c2->m_pName) >> 31;
+				return strcmp(c1->pName, c2->pName) >> 31;
 			});
 		}
 

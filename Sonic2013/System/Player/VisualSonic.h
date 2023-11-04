@@ -9,7 +9,7 @@ namespace app::Player
 		if (in_skeleton.IsValid())
 			description.Skeleton = in_skeleton;
 
-		description.field_0C = in_unk;
+		description.Unk1 = in_unk;
 
 		in_pVisualModelGoc->Setup(description);
 		in_pVisualModelGoc->SetLocalScale({ 0.9f, 0.9f, 0.9f });

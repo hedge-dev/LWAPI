@@ -159,7 +159,7 @@ namespace app
 			return in_rPackFile.Get<hh::gfx::res::ResSkeleton>(in_pName);
 		}
 
-		static hh::gfx::res::ResAnimSkeleton GetAnimationResource(const char* in_pName, hh::ut::PackFile& rPackFile)
+		static hh::gfx::res::ResAnimSkeleton GetAnimationResource(const char* in_pName, hh::ut::PackFile& in_rPackFile)
 		{
 			if (!in_rPackFile.IsValid())
 				return { nullptr };

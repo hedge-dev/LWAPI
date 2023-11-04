@@ -31,7 +31,7 @@ namespace app
             
             fnd::GOComponent::BeginSetup(*this);
 
-            auto* pInfo = ObjUtil::GetObjectInfo<ObjRotateLiftInfo>(*in_oDocument);
+            auto* pInfo = ObjUtil::GetObjectInfo<ObjRotateLiftInfo>(*in_pDocument);
             auto* pParam = GetAdapter()->GetData<SRotateLiftParam>();
             IsEventDriven = pParam->isEventDriven;
 

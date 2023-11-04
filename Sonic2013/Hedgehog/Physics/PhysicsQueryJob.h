@@ -10,8 +10,8 @@ namespace app::game
 			eType_Raycast
 		};
 
-		csl::ut::Enum<Type, char> Type{};
+		csl::ut::Enum<Type, char> QueryType{};
 
-		PhysicsQueryJob(Type in_type) : Type(in_type) {}
+		PhysicsQueryJob(Type in_type) : QueryType(in_type) {}
 	};
 }

@@ -79,7 +79,7 @@ namespace app
 			if (!pProject)
 				return { nullptr };
 			
-			return pProject->GetObjectByID(id);
+			return pProject->GetObjectByID(in_id);
 		}
 
 		void GetSetObjectFromUniqID(app::ut::RefPtr<CSetObject>& in_rOutObj, size_t in_id)
@@ -125,9 +125,9 @@ namespace app
 		{
 			if (BasePoints.size() <= in_unit)
 			{
-				BasePoints.resize(unit + 1);
+				BasePoints.resize(in_unit + 1);
 				size_t oldSize = Volumes.size();
-				Volumes.resize(unit + 1);
+				Volumes.resize(in_unit + 1);
 				if (oldSize)
 				{
 					for (size_t i = oldSize; i < Volumes.size(); i++)
@@ -137,8 +137,8 @@ namespace app
 				}
 			}
 			
-			BasePoints[unit] = in_rPos;
-			Volumes[unit].SetVolume({ in_rPos, RangeIn + 200 });
+			BasePoints[in_unit] = in_rPos;
+			Volumes[in_unit].SetVolume({ in_rPos, RangeIn + 200 });
 		}
 		
 		CSetObjectListener* CreateObjectAlways(CSetAdapter* in_pAdapter)
@@ -157,7 +157,7 @@ namespace app
 			if (Flags.test(2))
 				spawnFlags = -1;
 			
-			return CreateObjectImpl(pAdapter, pActivationMan, spawnFlags);
+			return CreateObjectImpl(in_pAdapter, pActivationMan, spawnFlags);
 		}
 		
 		CSetObjectListener* CreateObjectExtrinsic(CSetAdapter* in_pAdapter)

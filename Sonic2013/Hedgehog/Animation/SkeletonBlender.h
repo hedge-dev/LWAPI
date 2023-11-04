@@ -23,7 +23,7 @@ namespace app::animation
 
 		void BindAnimation(CharactorAnimation& in_rAnimation)
 		{
-			pAnimation = in_rAnimation;
+			pAnimation = &in_rAnimation;
 		}
 	};
 

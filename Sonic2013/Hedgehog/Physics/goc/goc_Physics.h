@@ -19,6 +19,7 @@ namespace app::game
 		fnd::HFrame* m_pFrame{};
 		CPhysicsWorld* m_pPhysicsWorld{};
 
+	public:
 		static fnd::GOComponentClass* staticClass()
 		{
 			return ms_pStaticClass;

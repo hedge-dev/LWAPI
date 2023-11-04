@@ -214,16 +214,16 @@ namespace app
 		{
 			if (Flags.test(FLAG_IS_DAMAGED))
 			{
-				Roll = SonicUSA::System::RadianMaskU(540.0f * (MATHF_PI / 180.f) * in_rUpdateInfo.deltaTime + Roll);
+				Roll = SonicUSA::System::RadianMaskU(540.0f * (MATHF_PI / 180.f) * in_rUpdateInfo.DeltaTime + Roll);
 			}
 			else
 			{
-				Roll = SonicUSA::System::RadianMaskU(720.0f * (MATHF_PI / 180.f) * in_rUpdateInfo.deltaTime + Roll);
+				Roll = SonicUSA::System::RadianMaskU(720.0f * (MATHF_PI / 180.f) * in_rUpdateInfo.DeltaTime + Roll);
 			}
 
 			GetComponent<fnd::GOCVisualModel>()->SetLocalRotationXYZ(Roll, 0.0f, 0.0f);
 
-			ElapsedTime += in_rUpdateInfo.deltaTime;
+			ElapsedTime += in_rUpdateInfo.DeltaTime;
 			if (ElapsedTime > LifeSpan || Flags.test(FLAG_IS_EXPLODING))
 			{
 				GetComponent<game::GOCSound>()->Play3D(ms_pSoundName, 0.0f);

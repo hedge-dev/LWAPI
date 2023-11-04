@@ -15,7 +15,7 @@ namespace app::xgame
 		
 		inline const static unsigned int MessageID = 0x5004;
 		
-		MsgPLGetHomingTargetInfo(const game::ColliShape* in_pTargetShape) : Message(MessageID), pTargetShape(in_pTargetShape), TargetShapeID(in_pTargetShape->m_ID)
+		MsgPLGetHomingTargetInfo(const game::ColliShape* in_pTargetShape) : Message(MessageID), pTargetShape(in_pTargetShape), TargetShapeID(in_pTargetShape->ID)
 		{
 			
 		}

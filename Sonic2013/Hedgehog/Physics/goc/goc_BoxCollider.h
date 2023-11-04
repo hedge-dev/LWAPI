@@ -7,8 +7,8 @@ namespace app::game
 	public:
 		GOCBoxColliderCinfo() : ColliBoxShapeCInfo()
 		{
-			m_MotionType = PhysicsMotionType::MotionType::eMotionType_Value2;
-			m_ShapeID = 0;
+			MotionType = PhysicsMotionType::MotionType::eMotionType_Value2;
+			ShapeID = 0;
 		}
 	};
 

@@ -26,7 +26,7 @@ namespace app::game
 	public:
 		GOCLauncher()
 		{
-			m_Flags = 2;
+			((fnd::GOComponent*)this)->Flags = 2;
 		}
 
 		const char* GetFamilyID() const override

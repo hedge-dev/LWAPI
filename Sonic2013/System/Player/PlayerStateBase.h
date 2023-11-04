@@ -641,9 +641,9 @@ namespace app::Player
 			}
 			case xgame::MsgTakeObject::EType::eType_PhantomBomb:
 			{
-				if (StateUtil::GetNowPhantomType(in_rStateGoc) == Game::EPhantomType::PHANTOM_BOMB)
+				if (StateUtil::GetNowPhantomType(in_rStateGoc) == Game::EPhantomType::ePhantom_Bomb)
 				{
-					xgame::MsgTakePixie msg{ Game::EPhantomType::PHANTOM_BOMB, 1.0f };
+					xgame::MsgTakePixie msg{ Game::EPhantomType::ePhantom_Bomb, 1.0f };
 					in_rStateGoc.ProcessMessageToCurrentState(msg);
 					in_rMessage.Taken = msg.Taken;
 
@@ -663,7 +663,7 @@ namespace app::Player
 				if (!pChangePhantomPlugin)
 					break;
 			
-				if (!pChangePhantomPlugin->ChangePhantomByItem(in_rStateGoc, Game::EPhantomType::PHANTOM_BOMB, csl::math::Clamp(in_rMessage.ItemLevel, 0u, 3u)))
+				if (!pChangePhantomPlugin->ChangePhantomByItem(in_rStateGoc, Game::EPhantomType::ePhantom_Bomb, csl::math::Clamp(in_rMessage.ItemLevel, 0u, 3u)))
 				{
 					CallErrSE(in_rStateGoc, isVariantValid);
 					break;
@@ -733,7 +733,7 @@ namespace app::Player
 
 		bool ProcMsgTakePixie(CStateGOC& in_rStateGoc, xgame::MsgTakePixie& in_rMessage)
 		{
-			if (StateUtil::GetNowPhantomType(in_rStateGoc) == Game::EPhantomType::PHANTOM_BOMB)
+			if (StateUtil::GetNowPhantomType(in_rStateGoc) == Game::EPhantomType::ePhantom_Bomb)
 				return true;
 			
 			TakePixie(in_rStateGoc, in_rMessage.Type, in_rMessage.ItemLevel);
@@ -924,7 +924,7 @@ namespace app::Player
 			if (!in_rStateGoc.GetBlackBoard()->GetPixieParameter()->TakePixie(in_type, in_itemLevel))
 				return;
 		
-			if (in_type == Game::EPhantomType::PHANTOM_BOMB)
+			if (in_type == Game::EPhantomType::ePhantom_Bomb)
 				return;
 		
 			xgame::MsgPLStockPhantom msg{ (Game::EUser)in_rStateGoc.GetToHudPlayerNumber(), in_type };
@@ -1415,7 +1415,7 @@ namespace app::Player
 		bool ProcMsgChangeDamageState(CStateGOC& in_rStateGoc, MsgChangeDamageState& in_rMessage)
 		{
 			DamageParameter damageParam{};
-			damageParam.Unk3 = in_rMessage.Unk1;
+			damageParam.Unk4 = in_rMessage.Unk1;
 			in_rStateGoc.AddStateContextParameter(damageParam);
 
 			if (!in_rMessage.pDamageMsg)

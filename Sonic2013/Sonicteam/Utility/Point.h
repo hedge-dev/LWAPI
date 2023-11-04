@@ -11,12 +11,12 @@ namespace csl::ut
 	public:
 		T GetX() const
 		{
-			return x;
+			return X;
 		}
 
 		T GetY() const
 		{
-			return y;
+			return Y;
 		}
 
 		Point2<T> operator +(const Point2<T>& in_rPoint2) const

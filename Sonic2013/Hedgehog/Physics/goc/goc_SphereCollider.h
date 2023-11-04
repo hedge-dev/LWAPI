@@ -9,8 +9,8 @@ namespace app::game
 
 		GOCSphereColliderCinfo() : ColliSphereShapeCInfo()
 		{
-			m_MotionType = PhysicsMotionType::MotionType::eMotionType_Value2;
-			m_ShapeID = 0;
+			MotionType = PhysicsMotionType::MotionType::eMotionType_Value2;
+			ShapeID = 0;
 		}
 	};
 

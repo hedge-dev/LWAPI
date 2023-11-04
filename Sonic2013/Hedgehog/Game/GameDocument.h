@@ -68,7 +68,7 @@ namespace app
 			"ENEMY", "PLAYER", "ATTACHED", "CAMERA", "HUD", "HUD_NONSTOP", "SYSTEM", "NONSTOP"
 		};
 
-	private:
+	public:
 		GameMode* pGameMode{};
 		size_t GameActorID{};
 		std::unique_ptr<CWorld> pWorld{};
@@ -89,7 +89,7 @@ namespace app
 
 		HH_FORCE_INLINE void UpdateGlobalTime(const fnd::SUpdateInfo& in_rUpdateInfo)
 		{
-			GlobalTime += info.DeltaTime;
+			GlobalTime += in_rUpdateInfo.DeltaTime;
 		}
 
 		HH_FORCE_INLINE GameMode* GetGameMode() const
@@ -141,7 +141,7 @@ namespace app
 			if (idx == -1)
 				return;
 
-			m_Listeners.remove(idx);
+			Listeners.remove(idx);
 		}
 		
 		void AddGameObject(GameObject* in_pObject)
@@ -183,6 +183,7 @@ namespace app
 }
 
 #include "GameService.h"
+#include "GameServiceClass.h"
 
 inline app::fnd::GameService* app::GameDocument::CreateService(const fnd::GameServiceClass& in_rClass, csl::fnd::IAllocator* in_pAllocator)
 {
@@ -205,7 +206,7 @@ inline app::fnd::GameService* app::GameDocument::GetServiceByClass(const app::fn
 
 	for (ppBegin; (*ppBegin)->pClass != &in_rClass;)
 	{
-		if (++ppBegin == m_Services.end())
+		if (++ppBegin == Services.end())
 			return { nullptr };
 	}
 

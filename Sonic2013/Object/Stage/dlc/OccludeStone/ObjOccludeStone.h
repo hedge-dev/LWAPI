@@ -52,7 +52,7 @@ namespace app
 
 				game::ColliBoxShapeCInfo collisionInfo{};
 				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
-				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
 				collisionInfo.Unk2 |= 1;
 				collisionInfo.Size = ms_CollisionSize;
 				ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Default, collisionInfo);
@@ -93,28 +93,28 @@ namespace app
 		bool ProcMsgDamage(xgame::MsgDamage& in_rMessage)
 		{
 			bool damageByObject{};
-			if (in_rMessage.DefensePower == 3 && in_rMessage.m_SenderType == 3)
+			if (in_rMessage.DefensePower == 3 && in_rMessage.SenderType == 3)
 				damageByObject = true;
 
 			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 
-			if ((in_rMessage.m_Bonus.m_Unk1 != 3 || !pPlayerInfo || pPlayerInfo->PixieNo != Game::EPhantomType::PHANTOM_BOMB) && !damageByObject)
+			if ((in_rMessage.Bonus.Unk1 != 3 || !pPlayerInfo || pPlayerInfo->PixieNo != Game::EPhantomType::ePhantom_Bomb) && !damageByObject)
 				return true;
 
 			auto* pInfo = ObjUtil::GetObjectInfo<ObjOccludeStoneInfo>(*GetDocument());
-			auto& transform = GetComponent<fnd::GOCTransform>()->m_Frame.m_Unk3;
+			auto& transform = GetComponent<fnd::GOCTransform>()->Frame.Unk3;
 			csl::math::Vector3 direction = math::Vector3Rotate(transform.GetRotationQuaternion(), { csl::math::Vector3::UnitY() });
 
 			debris::SRandomSpaceDebrisInfo debrisInfo{};
-			debrisInfo.Transform.m_Position = { transform.GetTranslation() + (direction * 45.0f * 0.5f) };
+			debrisInfo.Transform.Position = { transform.GetTranslation() + (direction * 45.0f * 0.5f) };
 			debrisInfo.Transform.SetFlag(1);
-			debrisInfo.Transform.m_Rotation = transform.GetRotationQuaternion();
+			debrisInfo.Transform.Rotation = transform.GetRotationQuaternion();
 			debrisInfo.Transform.SetFlag(1);
 			debrisInfo.Unk1 = 400.0f;
 			debrisInfo.Unk2 = 2.0f;
 			debrisInfo.Unk3 = 0.5f;
 			debrisInfo.Unk4.set(0);
-			debrisInfo.Unk5 = in_rMessage.m_Unk2;
+			debrisInfo.Unk5 = in_rMessage.Unk2;
 			debrisInfo.Unk6 = direction;
 			debrisInfo.Unk7 = 2.0f;
 			debrisInfo.Unk8 = 1.0f;

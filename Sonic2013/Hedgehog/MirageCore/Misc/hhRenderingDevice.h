@@ -114,13 +114,13 @@ namespace hh::mr
 		template<typename T>
 		void SetPixelShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData)
 		{
-			SetPixelShaderParameter(in_rName, in_rData, 0, 1, m_pCurrentPixelShaderData);
+			SetPixelShaderParameter(in_rName, in_rData, 0, 1, pCurrentPixelShaderData);
 		}
 
 		template<typename T>
 		void SetVertexShaderParameter(const base::CStringSymbol& in_rName, const T& in_rData)
 		{
-			SetVertexShaderParameter(in_rName, in_rData, 0, 1, m_pCurrentVertexShaderData);
+			SetVertexShaderParameter(in_rName, in_rData, 0, 1, pCurrentVertexShaderData);
 		}
 	};
 }

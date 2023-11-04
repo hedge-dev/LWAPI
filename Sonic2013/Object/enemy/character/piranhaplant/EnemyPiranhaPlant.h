@@ -78,7 +78,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000u;
+				description.Unk2 |= 0x400000u;
 				description.pParent = GetCenterPositionFrame();
 
 				pVisualModel->Setup(description);

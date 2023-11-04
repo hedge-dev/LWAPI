@@ -74,7 +74,7 @@ namespace app::game
 			else if (in_event)
 			{
 				if (in_event == 1)
-					Flags.set(0, true);
+					((fnd::GOComponent*)this)->Flags.set(0, true);
 			}
 			else
 			{
@@ -137,16 +137,16 @@ namespace app::game
 		void SetTransform(const UpdateOutput& in_rOutput)
 		{
 			if ((Flags & 1) != false)
-				pTransform->SetLocalTranslation(in_rOutput.m_Position);
+				pTransform->SetLocalTranslation(in_rOutput.Position);
 			
 			if ((Flags & 2) != false)
-				pTransform->SetLocalRotation(in_rOutput.m_Rotation);
+				pTransform->SetLocalRotation(in_rOutput.Rotation);
 		}
 
 		void RegisterTransform(GameObject& in_rObject)
 		{
 			pTransform = in_rObject.GetComponent<fnd::GOCTransform>();
-			Transform = pTransform->m_Transform;
+			Transform = pTransform->Transform;
 		}
 
 		void ResetTransformForDebug()
@@ -199,7 +199,7 @@ namespace app::game
 	{
 		inline float GetGlobalTime(const GOCMotor& in_rMotor)
 		{
-			return in_rMotor.GetGameObject()->GetDocument()->m_GlobalTime;
+			return in_rMotor.GetGameObject()->GetDocument()->GlobalTime;
 		}
 	}
 }

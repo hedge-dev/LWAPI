@@ -16,6 +16,6 @@ namespace hh::base
 
 	inline void InitializeWorkerThread()
 	{
-		ms_Settings.m_InitWorkerThreadCallback();
+		ms_Settings.pInitWorkerThreadCallback();
 	}
 }

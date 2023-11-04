@@ -23,9 +23,9 @@ namespace app
 		csl::ut::VariableString m_Name{ GetAllocator() };
 		csl::ut::InplaceMoveArray<fnd::Property, 2> m_Properties{ GetAllocator() };
 		unsigned int m_ComponentFlags{};
-		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ &fnd::GOComponent::visualComponentNode };
-		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ &fnd::GOComponent::physicsComponentNode };
-		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ &fnd::GOComponent::audibleComponentNode };
+		csl::ut::LinkList<fnd::GOComponent> m_VisualComponents{ &fnd::GOComponent::VisualComponentNode};
+		csl::ut::LinkList<fnd::GOComponent> m_PhysicsComponents{ &fnd::GOComponent::PhysicsComponentNode };
+		csl::ut::LinkList<fnd::GOComponent> m_AudibleComponents{ &fnd::GOComponent::AudibleComponentNode };
 
 		static void UpdateComponents(csl::ut::LinkList<fnd::GOComponent>& in_rComponents, const fnd::SUpdateInfo& in_rUpdateInfo, fnd::UpdatingPhase in_phase)
 		{
@@ -111,7 +111,7 @@ namespace app
 
 				auto* pMessage = static_cast<fnd::Message*>(in_pData);
 
-				if (m_AllowedMessageFlags & pMessage->Mask)
+				if (AllowedMessageFlags & pMessage->Mask)
 				{
 					for (auto** it = m_Components.begin(); it != m_Components.end(); it++)
 					{
@@ -201,7 +201,7 @@ namespace app
 			m_Components.push_back(in_pComponent);
 			in_pComponent->AddRef();
 			in_pComponent->SetGameObject(this);
-			m_ComponentFlags |= in_pComponent->componentStats;
+			m_ComponentFlags |= in_pComponent->ComponentStats;
 
 			return true;
 		}
@@ -221,7 +221,7 @@ namespace app
 		template<typename T>
 		T* GetComponent() const
 		{
-			return (T*)GetComponent(T::staticClass()->familyID);
+			return (T*)GetComponent(T::staticClass()->pFamilyID);
 		}
 		
 		const csl::ut::InplaceMoveArray<fnd::GOComponent*, 8>& GetComponents() const
@@ -266,7 +266,7 @@ namespace app
 
 		bool SendMessageImmToGameObject(GameObject* in_pObject, fnd::Message& in_rMessage)
 		{
-			return SendMessageImm(in_pObject->m_ActorID, in_rMessage);
+			return SendMessageImm(in_pObject->ActorID, in_rMessage);
 		}
 		
 		bool HasProperty(uint in_key) const
@@ -296,7 +296,7 @@ namespace app
 				}
 			}
 			
-			AddProperty(kin_keyey, in_value);
+			AddProperty(in_key, in_value);
 		}
 
 		fnd::PropertyValue GetProperty(uint in_key) const

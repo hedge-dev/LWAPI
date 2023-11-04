@@ -92,7 +92,7 @@ namespace csl::fnd
             return -1;
     	
         va_list args;
-        va_start(args, pFormat);
+        va_start(args, in_pFormat);
 
         int result = vsnprintf_s(in_pBuf, in_bufSize, -1, in_pFormat, args);
     	
@@ -102,7 +102,7 @@ namespace csl::fnd
     }
 	
 	// This is copied from optimised code
-	static size_t StrLcpy(char* pDestBuf, const char* in_pSrc, size_t in_len)
+	static size_t StrLcpy(char* in_pDestBuf, const char* in_pSrc, size_t in_len)
 	{
         char* pCurChar = in_pDestBuf;
         size_t bytesReplaced = 0;
@@ -118,7 +118,7 @@ namespace csl::fnd
                 *pCurChar = srcChar;
                 srcChar = (pCurChar++)[in_pSrc - in_pDestBuf + 1];
                 ++bytesReplaced;
-            } while (srcChar && bytesReplaced < len - 1);
+            } while (srcChar && bytesReplaced < in_len - 1);
             *pCurChar = 0;
         }
         return bytesReplaced;

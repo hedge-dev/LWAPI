@@ -49,6 +49,12 @@ namespace app::game
 	
 	class GOCAnimationSimple : public GOCAnimationSingle
 	{
+	public:
+		struct Description
+		{
+			size_t AnimCount{};
+		};
+
 	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCleaup, ASLR(0x004B3CC0), GOCAnimationSimple*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004B3C80), GOCAnimationSimple*, const Description&);
@@ -56,12 +62,6 @@ namespace app::game
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetAnimation, ASLR(0x004B3A80), GOCAnimationSimple*, const char*);
 		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7534));
 
-	public:
-		struct Description
-		{
-			size_t AnimCount{};
-		};
-		
 	protected:
 		csl::ut::ObjectMoveArray<AnimationControlHH> m_Controls{ GetAllocator() };
 		AnimationControlBase* m_pCurrentAnimation{};
@@ -100,7 +100,7 @@ namespace app::game
 
 		void SetAnimation(const char* in_pName)
 		{
-			if (!m_pModel)
+			if (!pModel)
 				return;
 
 			auto* pAnim = FindAnimation(in_pName);
@@ -109,10 +109,10 @@ namespace app::game
 				return;
 
 			if (m_pCurrentAnimation)
-				m_pCurrentAnimation->Detach(m_pBlender);
+				m_pCurrentAnimation->Detach(pBlender);
 
 			m_pCurrentAnimation = pAnim;
-			pAnim->Attach(m_pBlender);
+			pAnim->Attach(pBlender);
 			pAnim->SetSpeed(1);
 			pAnim->SetFrame(0);
 		}

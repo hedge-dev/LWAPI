@@ -43,7 +43,7 @@ namespace app::animation
 
 			CallbackExecutor.Setup(this, in_rContainer.Data.pFile->TriggerCount);
 			NodeManager.Setup(this, in_rContainer.Data.pFile->pAnimations->SimpleAnimations.Count, 
-				in_container.Data.pFile->pAnimations->ComplexAnimations.Count);
+				in_rContainer.Data.pFile->pAnimations->ComplexAnimations.Count);
 			NodeManager.ResisterAnimations(in_rContainer.Data);
 			SetupSub(in_rContainer);
 
@@ -53,12 +53,12 @@ namespace app::animation
 
 		bool Extend(const AnimationResContainer& in_rContainer)
 		{
-			if (!in_rContainer.m_Data.m_pFile || !Initialized)
+			if (!in_rContainer.Data.pFile || !Initialized)
 				return false;
 
 			CallbackExecutor.Extend(in_rContainer.Data.pFile->TriggerCount);
 			auto token = NodeManager.SetupExtend(in_rContainer.Data.pFile->pAnimations->SimpleAnimations.Count,
-				rContainer.Data.pFile->pAnimations->ComplexAnimations.Count);
+				in_rContainer.Data.pFile->pAnimations->ComplexAnimations.Count);
 			NodeManager.ResisterAnimationsExtend(in_rContainer.Data, token);
 
 			// Just in case someone tries to check (game doesn't)
@@ -132,12 +132,12 @@ namespace app::animation
 
 		void RegisterCallback(int in_id, AnimationCallback* in_pCallback)
 		{
-			m_CallbackExecutor.RegisterCallback(in_id, in_pCallback);
+			CallbackExecutor.RegisterCallback(in_id, in_pCallback);
 		}
 
 		void UnregisterCallback(int in_id)
 		{
-			m_CallbackExecutor.UnegisterCallback(in_id);
+			CallbackExecutor.UnegisterCallback(in_id);
 		}
 		
 		static bool SetGlobalWeight(const AnimationClip& in_rClip, const char* in_pName, float in_weight)

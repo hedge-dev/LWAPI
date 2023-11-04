@@ -52,7 +52,7 @@ namespace app
 		}
 
 	protected:
-		void AddCallback(GameDocument& in_rDocument) override;
+		void AddCallback(GameDocument* in_pDocument) override;
 
 		bool ProcessMessage(fnd::Message& in_rMessage) override
 		{
@@ -74,8 +74,8 @@ namespace app
 			if (PopEggNum <= 1 || PopEggParameter.Unk4 || DamageMotor.ElapsedTime <= DamageMotor.Unk3 * 0.25f)
 				return;
 
-			csl::math::Quaternion frameRot = Frame.m_Unk3.m_Mtx.GetRotation();
-			csl::math::Vector3 framePos = Frame.m_Unk3.m_Mtx.GetTransVector();
+			csl::math::Quaternion frameRot = Frame.Unk3.Mtx.GetRotation();
+			csl::math::Vector3 framePos = Frame.Unk3.Mtx.GetTransVector();
 			
 			csl::math::Vector3 directionOffset{ math::Vector3Rotate(frameRot, PopEggParameter.Direction) };
 			csl::math::Vector3 verticalOffset{ math::Vector3Rotate(frameRot, { 0.0f, 1.0f, 0.0f }) };
@@ -84,7 +84,7 @@ namespace app
 
 			if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 			{
-				csl::math::Quaternion objectRot = pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+				csl::math::Quaternion objectRot = pTransform->Frame.Unk3.GetRotationQuaternion();
 				float random = floorf(SonicUSA::System::Random::GetInstance()->genrand_float32() * 100.0f);
 
 				size_t limit{};
@@ -147,9 +147,9 @@ namespace app
 		out_pOutput->Unk4 = 0;
 	}
 
-	inline void ObjEggBlock::AddCallback(app::GameDocument& in_rDocument)
+	inline void ObjEggBlock::AddCallback(app::GameDocument* in_pDocument)
 	{
-		auto* eggManager = in_rDocument.GetService<EggManager>();
+		auto* eggManager = in_pDocument->GetService<EggManager>();
 		
 		fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 		fnd::GOComponent::Create<game::GOCCollider>(*this);
@@ -166,15 +166,15 @@ namespace app
 		fnd::GOComponent::BeginSetup(*this);
 
 		if (auto* pTransform = GetComponent<fnd::GOCTransform>())
-			pTransform->m_Frame.AddChild(&Frame);
+			pTransform->Frame.AddChild(&Frame);
 
-		auto* pInfo = ObjUtil::GetObjectInfo<ObjEggBlockInfo>(in_rDocument);
+		auto* pInfo = ObjUtil::GetObjectInfo<ObjEggBlockInfo>(*in_pDocument);
 
 		if (auto* pVisualModel = GetComponent<fnd::GOCVisualModel>())
 		{
 			fnd::GOCVisualModel::Description description{};
-			description.m_Model = pInfo->Model;
-			description.m_pParent = &Frame;
+			description.Model = pInfo->Model;
+			description.pParent = &Frame;
 
 			pVisualModel->Setup(description);
 			pVisualModel->SetLocalTranslation(ms_PositionOffset);
@@ -184,26 +184,26 @@ namespace app
 		{
 			pCollider->Setup({ ms_ShapeCount });
 
-			for (size_t i = 0; i < pCollider->m_Shapes.capacity(); i++)
+			for (size_t i = 0; i < pCollider->Shapes.capacity(); i++)
 			{
 				game::ColliBoxShapeCInfo collisionInfo{};
-				collisionInfo.m_ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Box;
-				collisionInfo.m_MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
-				collisionInfo.m_ShapeID = i;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Box;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
+				collisionInfo.ShapeID = i;
 
-				collisionInfo.m_Unk2 |= 1;
-				if (collisionInfo.m_ShapeID == 2)
+				collisionInfo.Unk2 |= 1;
+				if (collisionInfo.ShapeID == 2)
 				{
-					collisionInfo.m_Flags = 4;
-					collisionInfo.m_Unk2 &= ~1;
-					collisionInfo.m_Unk2 |= 0x100;
-					collisionInfo.m_Unk3 = 0x4003;
+					collisionInfo.Flags = 4;
+					collisionInfo.Unk2 &= ~1;
+					collisionInfo.Unk2 |= 0x100;
+					collisionInfo.Unk3 = 0x4003;
 				}
 
-				collisionInfo.m_Size = ms_CollisionSizes[i];
+				collisionInfo.Size = ms_CollisionSizes[i];
 				collisionInfo.SetLocalPosition({ ms_CollisionOffsets[i] });
 
-				if (collisionInfo.m_ShapeID != 2)
+				if (collisionInfo.ShapeID != 2)
 					ObjUtil::SetupCollisionFilter(ObjUtil::eFilter_Default, collisionInfo);
 
 				pCollider->CreateShape(collisionInfo);
@@ -216,7 +216,7 @@ namespace app
 
 		if (auto* pTransform = GetComponent<fnd::GOCTransform>())
 		{
-			csl::math::Matrix34 trsMatrix = pTransform->m_Transform.GetTransformMatrix();
+			csl::math::Matrix34 trsMatrix = pTransform->Transform.GetTransformMatrix();
 			csl::math::Vector3 yAxis = { trsMatrix.GetColumn(1) };
 			
 			game::PathRaycastInput rayInput{};
@@ -226,7 +226,7 @@ namespace app
 			rayInput.Unk1 = 1;
 			rayInput.Unk2 = 1;
 
-			if (auto* pPathManager = in_rDocument.GetService<game::PathManager>())
+			if (auto* pPathManager = in_pDocument->GetService<game::PathManager>())
 			{
 				if (pPathManager->CastRay(rayInput, &rayOutput))
 				{
@@ -247,7 +247,7 @@ namespace app
 		{
 		case EggBlockState::eEggBlockState_Idle:
 		{
-			IdleMotor.ElapsedTime += in_rUpdateInfo.deltaTime;
+			IdleMotor.ElapsedTime += in_rUpdateInfo.DeltaTime;
 
 			csl::math::Quaternion rotation{ Eigen::AngleAxisf(angle, csl::math::Vector3::UnitZ()) };
 			Frame.SetLocalRotation(rotation);
@@ -271,7 +271,7 @@ namespace app
 				InitMotorParam(1.8f, 0.0f, 8.0f, &IdleMotor);
 			}
 
-			DamageMotor.ElapsedTime += in_rUpdateInfo.deltaTime;
+			DamageMotor.ElapsedTime += in_rUpdateInfo.DeltaTime;
 
 			angle = csl::math::Lerp(angle, DamageMotor.Unk5 * scalar, csl::math::Clamp(DamageMotor.ElapsedTime / ((DamageMotor.Unk3 * 0.5f) * 0.1f), 0.0f, 1.0f));
 			
@@ -301,7 +301,7 @@ namespace app
 		if (State == EggBlockState::eEggBlockState_Damage)
 			return true;
 	
-		auto* pShape = in_rMessage.m_SenderShape.Get();
+		auto* pShape = in_rMessage.SenderShape.Get();
 		if (!pShape)
 			return true;
 
@@ -313,7 +313,7 @@ namespace app
 		if (!pPlayerInfo)
 			return true;
 
-		csl::math::Matrix34 objectMtx = pTransform->m_Frame.m_Unk3.m_Mtx;
+		csl::math::Matrix34 objectMtx = pTransform->Frame.Unk3.Mtx;
 		csl::math::Matrix34Inverse(objectMtx, &objectMtx);
 
 		csl::math::Vector3 localPosition{ objectMtx * csl::math::Vector4(pPlayerInfo->Unk15, 1.0f) };
@@ -332,7 +332,7 @@ namespace app
 			if (auto* pSound = GetComponent<game::GOCSound>())
 				pSound->Play(ms_pHitSoundName, 0.0f);
 
-			in_rMessage.SetReply(pTransform->m_Frame.m_Unk3.GetTranslation(), false);
+			in_rMessage.SetReply(pTransform->Frame.Unk3.GetTranslation(), false);
 
 			State = EggBlockState::eEggBlockState_Damage;
 		}
@@ -359,7 +359,7 @@ namespace app
 			if (auto* pSound = GetComponent<game::GOCSound>())
 				pSound->Play(ms_pEggAppearSoundName, 0.0f);
 
-			in_rMessage.SetReply(pTransform->m_Frame.m_Unk3.GetTranslation(), false);
+			in_rMessage.SetReply(pTransform->Frame.Unk3.GetTranslation(), false);
 
 			State = EggBlockState::eEggBlockState_Damage;
 		}

@@ -21,7 +21,7 @@ namespace app::ObjCrystalFloorBaseUtil
 		debrisInfo.Unk10 = 0.0f;
 		debrisInfo.Unk11 = 20.0f;
 		debrisInfo.Unk4.set(1);
-		debrisInfo.field_80 = debrisInfo.Transform.Position;
+		debrisInfo.Position = debrisInfo.Transform.Position;
 		debrisInfo.Unk9 = 1.0f;
 		debrisInfo.SetModelRes(in_rDebris, 24);
 		debrisInfo.Unk14 = 3;
@@ -50,7 +50,7 @@ namespace app::ObjCrystalFloorBaseUtil
 		debrisInfo.Unk10 = 0.0f;
 		debrisInfo.Unk11 = 5.0f;
 		debrisInfo.Unk4.set(1);
-		debrisInfo.field_80 = debrisInfo.Transform.Position;
+		debrisInfo.Position = debrisInfo.Transform.Position;
 		debrisInfo.Unk9 = 1.0f;
 		debrisInfo.SetModelRes(in_rDebris, 24);
 		debrisInfo.Unk14 = 3;

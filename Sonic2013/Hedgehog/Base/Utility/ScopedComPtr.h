@@ -1,6 +1,6 @@
 #pragma once
 
-namespace app::ut
+namespace hh::ut
 {
 	template<typename T>
 	class RefCountStrategyBasic

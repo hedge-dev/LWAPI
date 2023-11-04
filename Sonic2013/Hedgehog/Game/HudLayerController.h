@@ -76,7 +76,7 @@ namespace app::game
 		HudLayerController(csl::fnd::IAllocator* in_pAllocator, SurfRide::ReferenceCount<SurfRide::Layer> in_rcLayer, byte in_controllerNo)
 			: rcLayer(in_rcLayer)
 			, ControllerNo(in_controllerNo)
-			, m_AnimationInfo(in_pAllocator)
+			, AnimationInfo(in_pAllocator)
 		{
 
 		}
@@ -128,7 +128,7 @@ namespace app::game
 
 		void PlayReservedAnimation()
 		{
-			if (m_AnimationInfo.empty())
+			if (AnimationInfo.empty())
 				return;
 		
 			Unk2 = 0;
@@ -142,7 +142,7 @@ namespace app::game
 
 		bool IsEndReservedAnimation()
 		{
-			return m_Unk2 < 0;
+			return Unk2 < 0;
 		}
 
 		void ClearReservedAnimation()

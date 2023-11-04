@@ -158,7 +158,7 @@ namespace app
 
 		void ChangeState(TiFsmState_t in_state)
 		{
-			m_NextState = in_state;
+			NextState = in_state;
 		}
 
 		template<TiFsmHookState_t ExternalState>

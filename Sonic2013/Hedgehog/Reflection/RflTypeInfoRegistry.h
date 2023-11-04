@@ -24,7 +24,7 @@ namespace app::fnd
 		
 		void RegisterTypeInfo(const RflTypeInfo* in_pInfo)
 		{
-			m_Types.insert(pInfo->GetName(), in_pInfo);
+			m_Types.insert(in_pInfo->GetName(), in_pInfo);
 		}
 
 		/// <summary>

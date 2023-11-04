@@ -24,7 +24,7 @@ namespace csl::ut
 				m_pAllocator->Free(reinterpret_cast<char*>(reinterpret_cast<size_t>(m_pStr) - 1));
 
 			m_pAllocator = in_pAllocator;
-			if (!pStr)
+			if (!in_pStr)
 			{
 				m_pStr = nullptr;
 				return;

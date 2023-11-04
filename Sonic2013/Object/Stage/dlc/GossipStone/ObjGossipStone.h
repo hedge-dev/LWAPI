@@ -176,7 +176,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmEvent_t::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool OnSnapshot()
@@ -234,7 +234,7 @@ namespace app
 				{
 					auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 
-					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
+					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::ePhantom_Bomb)
 						ChangeState(&ObjGossipStone::StateCountdown);
 					else
 						ChangeState(&ObjGossipStone::StateShake);
@@ -301,7 +301,7 @@ namespace app
 					xgame::MsgDamage msg = reinterpret_cast<xgame::MsgDamage&>(in_rEvent.getMessage());
 					auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetDocument(), 0);
 
-					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::PHANTOM_BOMB)
+					if (reinterpret_cast<xgame::MsgDamage&>(msg).Bonus.Unk1 == 3 && pPlayerInfo && pPlayerInfo->PixieNo == Game::EPhantomType::ePhantom_Bomb)
 					{
 						IsDamaged = true;
 					}

@@ -260,7 +260,7 @@ namespace app
 				return;
 
 			float length = Path.GetLength();
-			float position = MovementSpeed * in_rUpdateInfo.deltaTime + Path.Distance;
+			float position = MovementSpeed * in_rUpdateInfo.DeltaTime + Path.Distance;
 			if (position >= length || position >= EndDistance)
 			{
 				SoundHandle.StopImm();
@@ -284,7 +284,7 @@ namespace app
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
 
 			pTransform->SetLocalTranslation(point);
-			pTransform->SetLocalRotation({ pTransform->GetLocalRotation().slerp(10.0f * in_rUpdateInfo.deltaTime, csl::math::Quaternion(rotationMatrix)) });
+			pTransform->SetLocalRotation({ pTransform->GetLocalRotation().slerp(10.0f * in_rUpdateInfo.DeltaTime, csl::math::Quaternion(rotationMatrix)) });
 		}
 
 		void AnimationChangeCallback(animation::CharactorAnimation* in_pAnimation, animation::ETriggerValueType in_triggerType, animation::CallbackParam in_param)

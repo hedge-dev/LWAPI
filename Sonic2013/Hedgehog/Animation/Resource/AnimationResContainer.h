@@ -55,9 +55,6 @@ namespace app
 
 		class AnimationResContainer
 		{
-		private:
-			inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadFromBuffer, ASLR(0x00412CA0), AnimationResContainer*, LoadInfo&, hh::ut::PackFile);
-
 		public:
 			struct ResData
 			{
@@ -79,7 +76,11 @@ namespace app
 				hh::gfx::res::ResSkeleton Skeleton{};
 				csl::ut::MoveArray<MirrorBindData>* pMirrorData{};
 			};
-			
+
+		private:
+			inline static FUNCTION_PTR(void, __thiscall, ms_fpLoadFromBuffer, ASLR(0x00412CA0), AnimationResContainer*, LoadInfo&, hh::ut::PackFile);
+
+		public:			
 			csl::fnd::IAllocator* pAllocator{};
 			ResData Data;
 			ut::RefPtr<AnimationXMLLoader> rpXmlLoader;
@@ -90,7 +91,7 @@ namespace app
 				if (rpXmlLoader)
 					return;
 
-				rpXmlLoader = new(m_pAllocator) AnimationXMLLoader();
+				rpXmlLoader = new(pAllocator) AnimationXMLLoader();
 			}
 
 			void* CreateBuffer(size_t in_size)
@@ -115,7 +116,7 @@ namespace app
 			}
 
 		public:
-			AnimationResContainer(csl::fnd::IAllocator& in_rAllocator) : m_pAllocator(&in_rAllocator), m_Data(in_rAllocator)
+			AnimationResContainer(csl::fnd::IAllocator& in_rAllocator) : pAllocator(&in_rAllocator), Data(in_rAllocator)
 			{
 				
 			}

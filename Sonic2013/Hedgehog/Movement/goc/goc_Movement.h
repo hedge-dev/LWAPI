@@ -46,8 +46,8 @@ namespace app::game
             {
                 if (auto* pTransform = in_rObject.GetComponent<fnd::GOCTransform>())
                 {
-                    ContextParameter.Position = pTransform->m_Frame.m_Unk3.GetTranslation();
-                    ContextParameter.Rotation = pTransform->m_Frame.m_Unk3.GetRotationQuaternion();
+                    ContextParameter.Position = pTransform->Frame.Unk3.GetTranslation();
+                    ContextParameter.Rotation = pTransform->Frame.Unk3.GetRotationQuaternion();
                     Flags.set(2);
                 }
 

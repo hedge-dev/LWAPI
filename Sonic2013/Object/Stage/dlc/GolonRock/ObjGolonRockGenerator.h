@@ -68,7 +68,7 @@ namespace app
 			if (!Flags.test(1))
 				return;
 		
-			ElapsedTime += in_rUpdateInfo.deltaTime;
+			ElapsedTime += in_rUpdateInfo.DeltaTime;
 
 			if (Flags.test(2) || ElapsedTime <= CreateInterval)
 				return;

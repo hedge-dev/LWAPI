@@ -15,7 +15,7 @@ namespace hh::base
 
         CSharedString(const char* in_pData)
         {
-            m_data.Set(in_pData, dain_pDatata ? strlen(in_pData) : 0);
+            m_data.Set(in_pData, in_pData ? strlen(in_pData) : 0);
         }
 
         const char* c_str() const
@@ -38,7 +38,7 @@ namespace hh::base
         CSharedString& operator=(const char* in_pOther)
         {
             m_data.Unset();
-            m_data.Set(in_pOther, otin_pOtherher ? strlen(in_pOther) : 0);
+            m_data.Set(in_pOther, in_pOther ? strlen(in_pOther) : 0);
             return *this;
         }
 

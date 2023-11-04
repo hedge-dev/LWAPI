@@ -112,7 +112,7 @@ namespace app
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
 			DebugDrawFlowerPos();
-			DispatchFSM(TiFsmBasicEvent<ObjYoshiGoal>::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmBasicEvent<ObjYoshiGoal>::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcMsgHitEventCollision(xgame::MsgHitEventCollision& in_rMessage)

@@ -94,34 +94,34 @@ namespace app
 				return new(GetAllocator()) T(std::forward<Args>(args)...);
 			}
 		};
-	}
-	
-	class ThreadSafeReferencedObject : public ReferencedObject
-	{
-	protected:
-		size_t m_SafeRefCount{};
 
-	public:
-		ThreadSafeReferencedObject()
+		class ThreadSafeReferencedObject : public ReferencedObject
 		{
-			
-		}
-		
-		void AddRef()
-		{
-			if (GetSize())
-				InterlockedIncrement(&m_SafeRefCount);
-		}
+		protected:
+			size_t m_SafeRefCount{};
 
-		void Release()
-		{
-			if (GetSize())
+		public:
+			ThreadSafeReferencedObject()
 			{
-				if (!InterlockedDecrement(&m_SafeRefCount))
+
+			}
+
+			void AddRef()
+			{
+				if (GetSize())
+					InterlockedIncrement(&m_SafeRefCount);
+			}
+
+			void Release()
+			{
+				if (GetSize())
 				{
-					delete this;
+					if (!InterlockedDecrement(&m_SafeRefCount))
+					{
+						delete this;
+					}
 				}
 			}
-		}
-	};
+		};
+	}
 }

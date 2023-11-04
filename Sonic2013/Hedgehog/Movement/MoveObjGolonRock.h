@@ -85,7 +85,7 @@ namespace app::game
 			{
 			case Mode::eMode_Shoot:
 			{
-				ElapsedTime += in_rUpdateInfo.deltaTime;
+				ElapsedTime += in_rUpdateInfo.DeltaTime;
 
 				float scalar = -(YOffset * 2.0f / PopupTime * ElapsedTime - OffsetMagnitude);
 				if (ElapsedTime <= PopupTime)
@@ -102,7 +102,7 @@ namespace app::game
 
 				if (RollWaitTime >= 0.0f)
 				{
-					RollWaitTime -= in_rUpdateInfo.deltaTime;
+					RollWaitTime -= in_rUpdateInfo.DeltaTime;
 					break;
 				}
 
@@ -127,15 +127,15 @@ namespace app::game
 			}
 			case Mode::eMode_Move:
 			{
-				csl::math::Vector3 rotationDir{ UpdateRotDirPathToPos(in_rUpdateInfo.deltaTime) };
-				pContextParam->Position = { UpdateMovePathPos(in_rUpdateInfo.deltaTime) + rotationDir * OffsetMagnitude };
+				csl::math::Vector3 rotationDir{ UpdateRotDirPathToPos(in_rUpdateInfo.DeltaTime) };
+				pContextParam->Position = { UpdateMovePathPos(in_rUpdateInfo.DeltaTime) + rotationDir * OffsetMagnitude };
 				pContextParam->Rotation = { math::Matrix34OrthonormalDirection(PathEvaluator.GetTangent(PathEvaluator.Distance), { -rotationDir }) };
 
-				Direction = { (OffsetMagnitude + YOffset) * Unk3, 0.0f, Speed * in_rUpdateInfo.deltaTime };
+				Direction = { (OffsetMagnitude + YOffset) * Unk3, 0.0f, Speed * in_rUpdateInfo.DeltaTime };
 
-				UpdateLocalRotRad(in_rUpdateInfo.deltaTime);
+				UpdateLocalRotRad(in_rUpdateInfo.DeltaTime);
 
-				if (!IsCheckFall || !CheckFall(rotationDir, in_rUpdateInfo.deltaTime))
+				if (!IsCheckFall || !CheckFall(rotationDir, in_rUpdateInfo.DeltaTime))
 				{
 					if (IsPassOverPlayer() && pOwner && PassPlayerMemFunc)
 						(pOwner->*PassPlayerMemFunc)();
@@ -150,13 +150,13 @@ namespace app::game
 			}
 			case Mode::eMode_Fall:
 			{
-				csl::math::Vector3 gravityDir{ GetOwnerMovement()->activeObject->GetComponent<game::GOCGravity>()->GetGravityDirection() };
-				pContextParam->Velocity += csl::math::Vector3(gravityDir * Unk5 * in_rUpdateInfo.deltaTime);
-				pContextParam->Position += csl::math::Vector3(pContextParam->Velocity * in_rUpdateInfo.deltaTime);
+				csl::math::Vector3 gravityDir{ GetOwnerMovement()->pActiveObject->GetComponent<game::GOCGravity>()->GetGravityDirection() };
+				pContextParam->Velocity += csl::math::Vector3(gravityDir * Unk5 * in_rUpdateInfo.DeltaTime);
+				pContextParam->Position += csl::math::Vector3(pContextParam->Velocity * in_rUpdateInfo.DeltaTime);
 
-				UpdateLocalRotRad(in_rUpdateInfo.deltaTime);
+				UpdateLocalRotRad(in_rUpdateInfo.DeltaTime);
 
-				ElapsedTime += in_rUpdateInfo.deltaTime;
+				ElapsedTime += in_rUpdateInfo.DeltaTime;
 				if (ElapsedTime <= Unk6)
 					break;
 
@@ -211,7 +211,7 @@ namespace app::game
 			if (!Unk4)
 				return math::Vector3Rotate({ Eigen::AngleAxisf(Unk8, tangent) }, normal);
 		
-			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetOwnerMovement()->activeObject->GetDocument(), 0);
+			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetOwnerMovement()->pActiveObject->GetDocument(), 0);
 			if (!pPlayerInfo)
 				return { csl::math::Vector3::UnitY() };
 
@@ -333,7 +333,7 @@ namespace app::game
 
 		bool IsPassOverPlayer() const
 		{
-			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetOwnerMovement()->activeObject->GetDocument(), 0);
+			auto* pPlayerInfo = ObjUtil::GetPlayerInformation(*GetOwnerMovement()->pActiveObject->GetDocument(), 0);
 			if (!pPlayerInfo)
 				return false;
 
@@ -370,7 +370,7 @@ namespace app::game
 			PassPlayerMemFunc = in_rSetupParam.PassPlayerMemFunc;
 			pOwner = in_rSetupParam.pOwner;
 
-			auto* pDocument = GetOwnerMovement()->activeObject->GetDocument();
+			auto* pDocument = GetOwnerMovement()->pActiveObject->GetDocument();
 			pPhysicsWorld = pDocument->GetService<CPhysicsWorld>();
 			rpRaycastJob = new(pOwner->GetAllocator()) PhysicsRaycastJob();
 			

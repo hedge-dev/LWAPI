@@ -8,8 +8,8 @@ namespace app::dbg
 		FormObject(const char* in_pName) : Form()
 		{
 			SetName(in_pName);
-			OnExecute += csl::ut::MakePair(this, &FormObject::Update);
-			OnRender += csl::ut::MakePair(this, &FormObject::Draw);
+			m_OnExecute += csl::ut::MakePair(this, &FormObject::Update);
+			m_OnRender += csl::ut::MakePair(this, &FormObject::Draw);
 		}
 
 		virtual void Update(gindows::Object* in_pSender, gindows::ExecuteEventArgs& in_rArgs)

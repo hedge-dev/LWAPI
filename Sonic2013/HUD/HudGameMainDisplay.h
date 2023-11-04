@@ -139,7 +139,7 @@ namespace app::HUD
 			, IsTimeTrial(in_unk4)
 		{
 			SetObjectCategory(12);
-			Flags.Set(0, (char)csl::fnd::Singleton<DisplaySwitch>::GetInstance()->m_State == 1);
+			Flags.Set(0, (char)csl::fnd::Singleton<DisplaySwitch>::GetInstance()->State == 1);
 
 			if (auto* pStageData = StageInfo::CStageInfo::GetInstance()->GetStageData(StageName.c_str()))
 			{

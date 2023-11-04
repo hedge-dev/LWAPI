@@ -119,9 +119,9 @@ namespace app
 			auto* pTransform = GetComponent<fnd::GOCTransform>();
 			auto objectPos = pTransform->Transform.Position;
 
-			Unk3 = csl::math::Min<float>(60.0f * in_rUpdateInfo.deltaTime + Unk3, 60.0f);
+			Unk3 = csl::math::Min<float>(60.0f * in_rUpdateInfo.DeltaTime + Unk3, 60.0f);
 			auto distance = static_cast<csl::math::Vector3>(pPlayerInfo->Unk15 - objectPos);
-			distance *= (Unk3 * in_rUpdateInfo.deltaTime);
+			distance *= (Unk3 * in_rUpdateInfo.DeltaTime);
 
 			pTransform->SetLocalTranslation(static_cast<csl::math::Vector3>(distance + objectPos));
 		}
@@ -145,7 +145,7 @@ namespace app
 
 			if (auto* pSound = GetComponent<game::GOCSound>()) pSound->Play(ms_SoundName, 0.0f);
 
-			ObjUtil::AddScorePlayerAction(*this, ms_ScoreName, ObjUtil::GetPlayerNo(*this->pOwnerDocument, in_rMessage.Sender));
+			ObjUtil::AddScorePlayerAction(*this, ms_ScoreName, ObjUtil::GetPlayerNo(*this->GetDocument(), in_rMessage.Sender));
 
 			Kill();
 

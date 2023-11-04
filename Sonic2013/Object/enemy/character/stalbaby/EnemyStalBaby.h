@@ -74,7 +74,7 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				description.Model = pInfo->Model;
 				description.Skeleton = pInfo->Skeleton;
-				description.field_0C |= 0x400000;
+				description.Unk2 |= 0x400000;
 
 				pVisualGoc->Setup(description);
 				pVisualGoc->SetVisible(false);
@@ -202,7 +202,7 @@ namespace app
 		
 			if (!pMovementController->IsOnGround())
 			{
-				ElapsedTime += in_rUpdateInfo.deltaTime;
+				ElapsedTime += in_rUpdateInfo.DeltaTime;
 				if (ElapsedTime < 1.0f)
 					return;
 			

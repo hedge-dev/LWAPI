@@ -25,7 +25,7 @@ namespace app::game
 
 		void SetLocalRotation(const csl::math::Quaternion& in_rRotation)
 		{
-			Rotation = rRot;
+			Rotation = in_rRotation;
 			Unk1 |= 2;
 		}
 	};

@@ -44,9 +44,9 @@ namespace csl::ut
 
 				++m_Count;
 				oldNext = in_iter.pCurNode->pNext;
-				in_pNode->pPrev = iter.pCurNode;
+				in_pNode->pPrev = in_iter.pCurNode;
 				in_pNode->pNext = oldNext;
-				iter.pCurNode->pNext = in_pNode;
+				in_iter.pCurNode->pNext = in_pNode;
 				oldNext->pPrev = in_pNode;
 			}
 

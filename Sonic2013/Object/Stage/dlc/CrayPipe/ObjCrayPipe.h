@@ -65,7 +65,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmBasicEvent<ObjCrayPipe>::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmBasicEvent<ObjCrayPipe>::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcMsgGetExternalMovePosition(xgame::MsgGetExternalMovePosition& in_rMessage)
@@ -324,7 +324,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			DispatchFSM(TiFsmBasicEvent<ObjCrayPipeExit>::CreateUpdate(in_rUpdateInfo.deltaTime));
+			DispatchFSM(TiFsmBasicEvent<ObjCrayPipeExit>::CreateUpdate(in_rUpdateInfo.DeltaTime));
 		}
 
 		bool ProcMsgGetExternalMovePosition(xgame::MsgGetExternalMovePosition& in_rMessage)

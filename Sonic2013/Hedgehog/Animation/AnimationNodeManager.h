@@ -20,8 +20,8 @@ namespace app::animation
 		csl::fnd::IAllocator* pAllocator{};
 		csl::ut::ObjectMoveArray<ut::RefPtr<ExternalAnimtion>> ExternalAnimations;
 		
-		AnimationNodeManager(csl::fnd::IAllocator& in_rAlloc) : m_Animations(&in_rAlloc), m_SimpleAnimations(&in_rAlloc),
-			m_ComplexAnimations(&in_rAlloc), m_ExternalAnimations(&in_rAlloc)
+		AnimationNodeManager(csl::fnd::IAllocator& in_rAlloc) : Animations(&in_rAlloc), SimpleAnimations(&in_rAlloc),
+			ComplexAnimations(&in_rAlloc), ExternalAnimations(&in_rAlloc)
 		{
 			pAllocator = &in_rAlloc;
 		}
@@ -42,7 +42,7 @@ namespace app::animation
 				anim.ProcEvent(AnimationNode::eEvent_AttachExternal);
 			}
 
-			m_ComplexAnimations.resize(in_complexCount);
+			ComplexAnimations.resize(in_complexCount);
 			for (auto& anim : ComplexAnimations)
 			{
 				anim.pOwner = pOwner;
@@ -77,7 +77,7 @@ namespace app::animation
 			for (size_t i = 0; i < token.SimpleStartIdx; i++)
 				Animations.insert(SimpleAnimations[i].GetAnimationDef()->pName, &SimpleAnimations[i]);
 
-			for (size_t i = 0; i < token.m_ComplexStartIdx; i++)
+			for (size_t i = 0; i < token.ComplexStartIdx; i++)
 				Animations.insert(ComplexAnimations[i].GetAnimationDef()->pName, &ComplexAnimations[i]);
 
 			return token;
@@ -95,8 +95,8 @@ namespace app::animation
 			size_t cmplxOff{};
 			for (size_t i = 0; i < anims->ComplexAnimations.Count; ++i)
 			{
-				ComplexAnimations[i].Setup(*pAllocator, anims->m_ComplexAnimations.pAnimations[i], in_rData.ComplexAnimations, cmplxOff);
-				Animations.insert(anims->m_ComplexAnimations.pAnimations[i].pName, &ComplexAnimations[i]);
+				ComplexAnimations[i].Setup(*pAllocator, anims->ComplexAnimations.pAnimations[i], in_rData.ComplexAnimations, cmplxOff);
+				Animations.insert(anims->ComplexAnimations.pAnimations[i].pName, &ComplexAnimations[i]);
 
 				cmplxOff += anims->ComplexAnimations.pAnimations[i].Animations.Count;
 			}
@@ -149,7 +149,7 @@ namespace app::animation
 		void SetExternal(ExternalAnimtion* in_pAnim)
 		{
 			ut::RefPtr rpAnim = in_pAnim;
-			m_ExternalAnimations.push_back(rpAnim);
+			ExternalAnimations.push_back(rpAnim);
 
 			auto* pClip = in_pAnim->GetSimpleAnimation();
 			pClip->pManager = this;
@@ -159,8 +159,8 @@ namespace app::animation
 		
 		AnimationClip* GetAnimationClip(const char* in_pName) const
 		{
-			const auto result = m_Animations.find(in_pName);
-			if (result == m_Animations.end())
+			const auto result = Animations.find(in_pName);
+			if (result == Animations.end())
 				return nullptr;
 
 			return result;

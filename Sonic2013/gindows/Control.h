@@ -53,6 +53,7 @@ namespace gindows
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetDock, ASLR(0x00971700), Control* pControl, ControlDock dock);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetFont, ASLR(0x0096FE80), Control* pControl, uint font);
 
+	protected:
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnDestroy;
 		csl::fnd::Delegate<void(Object*, ExecuteEventArgs&), DelegateAllocator> m_OnExecute; // ExecuteEventArgs
 		csl::fnd::Delegate<void(Object*, RenderEventArgs&), DelegateAllocator> m_OnRender; // RenderEventArgs
@@ -72,7 +73,6 @@ namespace gindows
 		csl::fnd::Delegate<void(Object*, KeyPressEventArgs&), DelegateAllocator> m_OnKeyPress; // KeyPressEventArgs
 		csl::fnd::Delegate<void(Object*, EventArgs&), DelegateAllocator> m_OnFont;
 		
-	protected:
 		csl::ut::Bitset<uint> m_Flags{};
 		Desktop* m_pDesktop{};
 		INSERT_PADDING(12){}; //std::list<gindows::Control>

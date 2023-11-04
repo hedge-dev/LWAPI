@@ -26,7 +26,7 @@ namespace app::fnd
 		
 		void RegisterClass(const RflClass* in_pClass)
 		{
-			m_Classes.insert(pClass->GetName(), in_pClass);
+			m_Classes.insert(in_pClass->GetName(), in_pClass);
 		}
 
 		/// <summary>

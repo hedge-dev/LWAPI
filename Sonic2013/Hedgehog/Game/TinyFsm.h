@@ -67,7 +67,7 @@ namespace app
 
 		State_t Leave(const State_t& in_rState)
 		{
-			return Trigger(in_statin_rStatee, { TiFSM_SIGNAL_LEAVE });
+			return Trigger(in_rState, { TiFSM_SIGNAL_LEAVE });
 		}
 
 		void InitCurrentState()

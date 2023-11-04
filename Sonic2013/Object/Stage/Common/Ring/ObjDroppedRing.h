@@ -62,7 +62,7 @@ namespace app
 		}
 
 	public:
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 			fnd::GOComponent::Create<game::GOCEffect>(*this);
@@ -81,12 +81,12 @@ namespace app
 				fnd::GOCVisualModel::Description description{};
 				if (Flags.test(FLAG_IS_YOSHI_LEVEL))
 				{
-					if (auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiCoinInfo>(in_rDocument))
+					if (auto* pInfo = ObjUtil::GetObjectInfo<ObjYoshiCoinInfo>(*in_pDocument))
 						description.Model = pInfo->Model;
 				}
 				else
 				{
-					if (auto* pInfo = ObjUtil::GetObjectInfo<CSharedObjInfo>(in_rDocument))
+					if (auto* pInfo = ObjUtil::GetObjectInfo<CSharedObjInfo>(*in_pDocument))
 						description.Model = pInfo->RingModel;
 				}
 
@@ -99,8 +99,8 @@ namespace app
 			{
 				pCollider->Setup({ ms_ShapeCount });
 				game::ColliSphereShapeCInfo collisionInfo{};
-				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::ShapeType_Sphere;
-				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::MotionType_VALUE2;
+				collisionInfo.ShapeType = game::CollisionShapeType::ShapeType::eShapeType_Sphere;
+				collisionInfo.MotionType = game::PhysicsMotionType::MotionType::eMotionType_Value2;
 				collisionInfo.Unk2 = 1;
 				collisionInfo.ShapeID = 0;
 				collisionInfo.Radius = ms_CollisionRadius;
@@ -183,7 +183,7 @@ namespace app
 			
 			fnd::GOComponent::EndSetup(*this);
 
-			pRingManager = in_rDocument.GetService<Gimmick::CRingManager>();
+			pRingManager = in_pDocument->GetService<Gimmick::CRingManager>();
 			LifeSpan = pUniqueInfo->LifeSpan;
 
 			pUniqueInfo = NULL;
@@ -309,7 +309,7 @@ namespace app
 
 		void Update(const fnd::SUpdateInfo& in_rUpdateInfo) override
 		{
-			ElapsedTime += in_rUpdateInfo.deltaTime;
+			ElapsedTime += in_rUpdateInfo.DeltaTime;
 			if (ElapsedTime >= LifeSpan * 5.0f)
 			{
 				Kill();
@@ -364,7 +364,7 @@ namespace app
 			if (!Flags.test(7))
 				JudgeEnableCollision();
 		
-			BlinkRing(in_rUpdateInfo.frame);
+			BlinkRing(in_rUpdateInfo.Frame);
 			UpdateModelRotation();
 		}
 

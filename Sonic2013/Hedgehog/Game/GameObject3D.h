@@ -49,7 +49,7 @@ namespace app
 			else if (in_rMessage.IsOfType<xgame::MsgDeactivate>())
 			{
 				auto& msgDeactivate = reinterpret_cast<xgame::MsgDeactivate&>(in_rMessage);
-				msgDeactivate.m_Handled = true;
+				msgDeactivate.Handled = true;
 				Kill();
 				return true;
 			}

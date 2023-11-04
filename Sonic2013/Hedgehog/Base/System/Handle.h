@@ -54,7 +54,7 @@ namespace app::fnd
 			if (!IsValid())
 				return false;
 
-			return m_Handle == in_pObj->Handle;
+			return m_Handle == in_pObj->m_Handle;
 		}
 
 		bool operator!=(const RefByHandleObject* in_pObj)

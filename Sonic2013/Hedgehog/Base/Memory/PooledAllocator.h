@@ -27,7 +27,7 @@ namespace app::fnd
 		void Initialize(csl::fnd::IAllocator* in_pAllocator, size_t in_bufferSize, const PoolInfo* in_pPools, size_t in_poolCount)
 		{
 			pBufferAllocator = in_pAllocator;
-			pBuffer = m_pBufferAllocator->Alloc(in_bufferSize, 16);
+			pBuffer = pBufferAllocator->Alloc(in_bufferSize, 16);
 			PoolCount = in_poolCount;
 			void* pNewBuffer = pBuffer;
 

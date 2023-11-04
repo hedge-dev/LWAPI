@@ -37,7 +37,7 @@ namespace app::game
 
 		void Add(GOCAnimation* in_pAnim)
 		{
-			pAnim->AddRef();
+			in_pAnim->AddRef();
 			m_Animations.push_back(in_pAnim);
 		}
 

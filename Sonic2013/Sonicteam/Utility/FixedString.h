@@ -58,7 +58,7 @@ namespace csl::ut
 			return !strcmp(in_rLhs.c_str(), in_pRhs);
 		}
 
-		friend bool operator!=(const FixedString<Len>& lhs, const char* in_pRhs)
+		friend bool operator!=(const FixedString<Len>& in_rLhs, const char* in_pRhs)
 		{
 			return strcmp(in_rLhs.c_str(), in_pRhs);
 		}

@@ -217,7 +217,7 @@ namespace app
 
                 if (!csl::math::Vector3NearZero(direction))
                 {
-                    csl::math::Quaternion rotation{ Eigen::AngleAxisf(EnemyBlowOffRotationAngle * in_rUpdateInfo.deltaTime, direction) };
+                    csl::math::Quaternion rotation{ Eigen::AngleAxisf(EnemyBlowOffRotationAngle * in_rUpdateInfo.DeltaTime, direction) };
 
                     auto* pVisualModel = GetComponent<fnd::GOCVisualModel>();
                     if (!pVisualModel)
@@ -240,7 +240,7 @@ namespace app
             }
 
             if (LifeSpan > 0.0f)
-                LifeSpan -= in_rUpdateInfo.deltaTime;
+                LifeSpan -= in_rUpdateInfo.DeltaTime;
             
             if (LifeSpan <= 0.0f && !Target.IsValid())
                 OnDead(false);

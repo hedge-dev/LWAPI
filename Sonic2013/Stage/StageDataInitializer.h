@@ -65,13 +65,13 @@ namespace app
 		float Fov{ 45 };
 
 		StageDataInitializer(const Cinfo& in_info) :
-			m_pStage(in_info.pStage), m_pDocument(in_info.pDocument),
-			m_StageName(pStage->Name),
-			m_StageDirectory(pStage->Directory),
-			m_DataDirectory(findFileName(StageDirectory)),
-			m_pTerrainMan(pDocument->GetService<TerrainManager>()),
-			m_pSetObjMan(pDocument->GetService<CSetObjectManager>()),
-			m_pSceneParams(pDocument->GetService<xgame::SceneParameters>()) {  }
+			pStage(in_info.pStage), pDocument(in_info.pDocument),
+			StageName(pStage->Name),
+			StageDirectory(pStage->Directory),
+			DataDirectory(findFileName(StageDirectory)),
+			pTerrainMan(pDocument->GetService<TerrainManager>()),
+			pSetObjMan(pDocument->GetService<CSetObjectManager>()),
+			pSceneParams(pDocument->GetService<xgame::SceneParameters>()) {  }
 
 		void BeginLoad()
 		{

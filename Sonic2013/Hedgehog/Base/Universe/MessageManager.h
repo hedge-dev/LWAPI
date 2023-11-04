@@ -36,7 +36,7 @@ namespace app::fnd
 				Messages.push_back(pMessage);
 		}
 
-		const csl::ut::PointerMap<size_t, CActor*>& Actors() const
+		const csl::ut::PointerMap<size_t, CActor*>& GetActors() const
 		{
 			return Actors;
 		}
@@ -59,7 +59,7 @@ namespace app::fnd
 	};
 }
 
-#include "hhActor.h"
+#include "Actor.h"
 inline void app::fnd::MessageManager::Add(CActor* in_pActor)
 {
 	if (!in_pActor)
@@ -67,7 +67,7 @@ inline void app::fnd::MessageManager::Add(CActor* in_pActor)
 
 	in_pActor->ActorID = GenerateID();
 	in_pActor->pMessageManager = this;
-	Actors.insert(actor->ActorID, actor);
+	Actors.insert(in_pActor->ActorID, in_pActor);
 }
 
 
