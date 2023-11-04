@@ -17,14 +17,14 @@ namespace gindows
 	class DelegateAllocator
 	{
 	public:
-		void* Alloc(size_t size, int alignment)
+		void* Alloc(size_t in_size, int in_alignment)
 		{
-			return GetMemoryAllocator()->Alloc(size, alignment);
+			return GetMemoryAllocator()->Alloc(in_size, in_alignment);
 		}
 
-		void Free(void* loc)
+		void Free(void* in_pLoc)
 		{
-			return GetMemoryAllocator()->Free(loc);
+			return GetMemoryAllocator()->Free(in_pLoc);
 		}
 	};
 	

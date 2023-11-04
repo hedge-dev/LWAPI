@@ -6,42 +6,42 @@ namespace gindows
 	
 	struct EventArgs
 	{
-		void* m_Unk1{}; // Sender?
-		bool m_Handled{};
+		void* Unk1{}; // Sender?
+		bool Handled{};
 	};
 
 	struct MouseEventArgs : EventArgs
 	{
-		short m_Button{};
+		short Button{};
 	};
 
 	struct KeyEventArgs : EventArgs
 	{
-		ushort m_KeyCode{};
-		char m_ProcessCount;
+		ushort KeyCode{};
+		char ProcessCount;
 		INSERT_PADDING(1);
-		char m_AltDown;
-		char m_ShiftDown;
-		char m_CtrlDown;
+		char AltDown;
+		char ShiftDown;
+		char CtrlDown;
 
 		KeyEventArgs()
 		{
-			ASSERT_OFFSETOF(KeyEventArgs, m_ShiftDown, 0xD);
+			ASSERT_OFFSETOF(KeyEventArgs, ShiftDown, 0xD);
 		}
 	};
 
 	struct KeyPressEventArgs : EventArgs
 	{
-		char m_Key{};
+		char Key{};
 	};
 
 	struct ExecuteEventArgs : EventArgs
 	{
-		float m_Delta;
+		float Delta;
 	};
 	
 	struct RenderEventArgs : EventArgs
 	{
-		Canvas* m_pRenderCanvas;
+		Canvas* pRenderCanvas;
 	};
 }

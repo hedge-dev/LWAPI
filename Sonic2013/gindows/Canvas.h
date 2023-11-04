@@ -25,7 +25,6 @@ namespace gindows
 	};
 }
 
-
 #include "Manager.h"
 inline gindows::Canvas::Canvas()
 {

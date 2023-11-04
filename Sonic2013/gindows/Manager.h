@@ -8,8 +8,8 @@ namespace gindows
 	class Manager : public Object, csl::ut::NonCopyable
 	{
 	private:
-		inline static Manager** ms_ppInstance = reinterpret_cast<Manager**>(ASLR(0x00FF00A4));
 		inline static FUNCTION_PTR(void, __cdecl, ms_fpInitialize, ASLR(0x0096EE00));
+		inline static Manager** ms_ppInstance = reinterpret_cast<Manager**>(ASLR(0x00FF00A4));
 		
 	protected:
 		ManagerImpl* m_pImpl{};
@@ -86,43 +86,43 @@ namespace gindows
 			return m_pImpl->GetFocusControl();
 		}
 		
-		[[nodiscard]] Control* FindControl(const csl::ut::Point2<int>& point)
+		[[nodiscard]] Control* FindControl(const csl::ut::Point2<int>& in_rPoint)
 		{
-			return GetDesktop()->FindControl(point);
+			return GetDesktop()->FindControl(in_rPoint);
 		}
 		
-		void SetFont(uint id, device::Font* pFont) const
+		void SetFont(uint in_id, device::Font* in_pFont) const
 		{
-			m_pImpl->SetFont(id, pFont);
+			m_pImpl->SetFont(in_id, in_pFont);
 		}
 
-		void SetGraphics(device::Graphics* pGraphics) const
+		void SetGraphics(device::Graphics* in_pGraphics) const
 		{
-			m_pImpl->SetGraphics(pGraphics);
+			m_pImpl->SetGraphics(in_pGraphics);
 		}
 
-		void SetMouse(device::Mouse* pMouse) const
+		void SetMouse(device::Mouse* in_pMouse) const
 		{
-			m_pImpl->SetMouse(pMouse);
+			m_pImpl->SetMouse(in_pMouse);
 		}
 		
-		void SetDefaultFontIndex(size_t idx) const
+		void SetDefaultFontIndex(size_t in_idx) const
 		{
-			m_pImpl->SetDefaultFontIndex(idx);
+			m_pImpl->SetDefaultFontIndex(in_idx);
 		}
 
-		void SetFocusControl(Control* pControl)
+		void SetFocusControl(Control* in_pControl)
 		{
-			if (GetFocusControl() == pControl)
+			if (GetFocusControl() == in_pControl)
 				return;
 			
-			if (!pControl)
+			if (!in_pControl)
 			{
 				if (GetFocusControl())
 				{
 					GetFocusControl()->OnLostFocus();
 				}
-				m_pImpl->SetFocusControl(pControl);
+				m_pImpl->SetFocusControl(in_pControl);
 				
 				return;
 			}
@@ -132,8 +132,8 @@ namespace gindows
 				GetFocusControl()->OnLostFocus();
 			}
 			
-			m_pImpl->SetFocusControl(pControl);
-			pControl->OnGotFocus();
+			m_pImpl->SetFocusControl(in_pControl);
+			in_pControl->OnGotFocus();
 		}
 		
 		void Render()
@@ -147,10 +147,10 @@ namespace gindows
 			GetGraphicsPointer()->EndDraw();
 		}
 
-		void Execute(float delta)
+		void Execute(float in_delta)
 		{
-			GetDesktop()->OnExecute(delta);
-			m_pImpl->Execute(delta);
+			GetDesktop()->OnExecute(in_delta);
+			m_pImpl->Execute(in_delta);
 		}
 	};
 }

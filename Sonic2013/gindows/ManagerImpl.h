@@ -80,43 +80,43 @@ namespace gindows
 			return m_pControlBelowMouse;
 		}
 		
-		void SetFont(size_t idx, Font* pFont)
+		void SetFont(size_t in_idx, Font* in_pFont)
 		{
-			if (idx > _countof(m_pFonts))
+			if (in_idx > _countof(m_pFonts))
 				return;
 
-			m_pFonts[idx] = pFont;
+			m_pFonts[in_idx] = in_pFont;
 			
 			if (!m_pDefaultFont)
-				m_pDefaultFont = pFont;
+				m_pDefaultFont = in_pFont;
 		}
 
-		void SetDefaultFontIndex(size_t idx)
+		void SetDefaultFontIndex(size_t in_idx)
 		{
-			if (idx > _countof(m_pFonts))
+			if (in_idx > _countof(m_pFonts))
 				return;
 
-			m_pDefaultFont = m_pFonts[idx];
+			m_pDefaultFont = m_pFonts[in_idx];
 		}
 		
-		void SetGraphics(Graphics* pGraphics)
+		void SetGraphics(Graphics* in_pGraphics)
 		{
-			m_pGraphics = pGraphics;
+			m_pGraphics = in_pGraphics;
 		}
 
-		void SetMouse(Mouse* pMouse)
+		void SetMouse(Mouse* in_pMouse)
 		{
-			m_pMouse = pMouse;
+			m_pMouse = in_pMouse;
 		}
 
-		void SetFocusControl(Control* pControl)
+		void SetFocusControl(Control* in_pControl)
 		{
-			m_pFocusedControl = pControl;
+			m_pFocusedControl = in_pControl;
 		}
 
-		void Execute(float delta)
+		void Execute(float in_delta)
 		{
-			m_TimeElapsed += delta;
+			m_TimeElapsed += in_delta;
 		}
 	};
 }

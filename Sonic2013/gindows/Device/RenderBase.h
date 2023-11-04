@@ -8,7 +8,7 @@ namespace gindows::device
 		RenderState* m_pRenderState{};
 
 	public:
-		RenderBase(RenderState* pRenderState) : m_pRenderState(pRenderState)
+		RenderBase(RenderState* in_pRenderState) : m_pRenderState(in_pRenderState)
 		{
 			
 		}

@@ -4,12 +4,15 @@ namespace gindows
 {	
 	class Keyboard : public Object
 	{
+	private:
+		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x0097A410), Keyboard*);
+
 	protected:
 		struct KeyboardStatus
 		{
-			bool m_DownKeys[256]{};
-			bool m_UpKeys[256]{};
-			uint m_Unk1; // Handled? Finished?
+			bool DownKeys[256]{};
+			bool UpKeys[256]{};
+			uint Unk1; // Handled? Finished?
 		};
 		
 		bool m_KeyStates[256]{};
@@ -21,10 +24,7 @@ namespace gindows
 		size_t m_KeyUpCount{};
 		ushort m_UpKeys[8]{};
 
-		virtual void UpdateImpl(KeyboardStatus& status) = 0;
-
-	public:
-		inline static FUNCTION_PTR(void, __thiscall, ms_fpUpdate, ASLR(0x0097A410), Keyboard* pThis);
+		virtual void UpdateImpl(KeyboardStatus& in_rStatus) = 0;
 		
 		void Update()
 		{
