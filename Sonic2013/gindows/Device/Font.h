@@ -5,7 +5,7 @@ namespace gindows::device
 	class Font : public RenderBase
 	{
 	public:
-		Font(RenderState* pRenderState) : RenderBase(pRenderState)
+		Font(RenderState* in_pRenderState) : RenderBase(in_pRenderState)
 		{
 			
 		}
