@@ -18,20 +18,20 @@ namespace app::game
 			SetObjectCategory(8);
 		}
 
-		void AddCallback(GameDocument& in_rDocument) override
+		void AddCallback(GameDocument* in_pDocument) override
 		{
 			fnd::GOComponent::Create<fnd::GOCVisualModel>(*this);
 
 			fnd::GOComponent::BeginSetup(*this);
 
 			auto* pTransformGoc = GetComponent<fnd::GOCTransform>();
-			pTransformGoc->SetLocalTranslation(pCreateInfo->pVisualGoc->m_pFrame->m_Unk3.GetTranslation());
-			pTransformGoc->SetLocalRotation(pCreateInfo->pVisualGoc->m_pFrame->m_Unk3.GetRotationQuaternion());
+			pTransformGoc->SetLocalTranslation(pCreateInfo->pVisualGoc->pFrame->Unk3.GetTranslation());
+			pTransformGoc->SetLocalRotation(pCreateInfo->pVisualGoc->pFrame->Unk3.GetRotationQuaternion());
 
 			auto* pVisualGoc = GetComponent<fnd::GOCVisualModel>();
 			fnd::GOCVisualModel::Description description{};
-			description.m_Model = pCreateInfo->pVisualGoc->GetModelResource();
-			description.m_Skeleton = pCreateInfo->pVisualGoc->GetSkeletonResource();
+			description.Model = pCreateInfo->pVisualGoc->GetModelResource();
+			description.Skeleton = pCreateInfo->pVisualGoc->GetSkeletonResource();
 
 			pVisualGoc->Setup(description);
 
@@ -43,7 +43,7 @@ namespace app::game
 			color[2] = pCreateInfo->MaterialColor.z();
 			pVisualGoc->SetMaterialColor(color);
 
-			pVisualGoc->SetLocalScale(pCreateInfo->pVisualGoc->m_Transform.m_Scale);
+			pVisualGoc->SetLocalScale(pCreateInfo->pVisualGoc->Transform.Scale);
 
 			fnd::GOComponent::EndSetup(*this);
 

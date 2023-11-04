@@ -26,17 +26,8 @@ namespace app::game
 				Unk2 = in_unk2;
 			}
 		};
-
-		int m_Unk1{};
-		csl::ut::ObjectMoveArray<SurfRide::ReferenceCount<SurfRide::Project>> rcProjects{};
-		csl::ut::MoveArray<game::HudLayerController*> m_LayerControllers{};
-		ut::RefPtr<gfx::Renderable> pRenderable{}; // boost::intrusive_ptr<gfx::Renderable>
-		csl::ut::Bitset<char> m_Unk2{};
-		int m_Unk3{};
-
-	public:
-		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7710));
-		inline static const char* ms_pGOCHudFamilyID = (const char*)ASLR(0x00D64334);
+		
+	private:
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpCtor, ASLR(0x004B1D30), GOCHud*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpDtor, ASLR(0x004C0220), GOCHud*);
 		inline static FUNCTION_PTR(void, __thiscall, ms_fpSetup, ASLR(0x004BFF90), GOCHud*, const Description&);
@@ -44,6 +35,16 @@ namespace app::game
 		inline static FUNCTION_PTR(HudLayerController*, __thiscall, f_CreateLayerController, ASLR(0x004BFD70), GOCHud*, int*, const char*, int);
 		inline static FUNCTION_PTR(HudLayerController*, __thiscall, ms_fpCreateLayerController, ASLR(0x004BFEB0), GOCHud*, SurfRide::ReferenceCount<SurfRide::Project>, const char*, const char*, byte);
 		inline static FUNCTION_PTR(HudLayerController*, __thiscall, ms_fpGetLayerController, ASLR(0x004BF8E0), GOCHud*, byte);
+		inline static fnd::GOComponentClass* ms_pStaticClass = reinterpret_cast<fnd::GOComponentClass*>(ASLR(0x00FD7710));
+		inline static const char* ms_pGOCHudFamilyID = (const char*)ASLR(0x00D64334);
+
+	public:
+		int Unk1{};
+		csl::ut::ObjectMoveArray<SurfRide::ReferenceCount<SurfRide::Project>> rcProjects{};
+		csl::ut::MoveArray<game::HudLayerController*> LayerControllers{};
+		ut::RefPtr<gfx::Renderable> pRenderable{}; // boost::intrusive_ptr<gfx::Renderable>
+		csl::ut::Bitset<char> Unk2{};
+		int Unk3{};
 
 		GOCHud() : fnd::GOComponent()
 		{
@@ -60,9 +61,9 @@ namespace app::game
 			return ms_pStaticClass;
 		}
 
-		inline static GOComponent* Initialize(csl::fnd::IAllocator* allocator)
+		inline static GOComponent* Initialize(csl::fnd::IAllocator* in_pAllocator)
 		{
-			return new(allocator) GOCHud();
+			return new(in_pAllocator) GOCHud();
 		}
 
 		void Setup(const Description& in_description)
