@@ -136,7 +136,7 @@ namespace app
 		float Unk27{}; // xgame::SoftResetChecker
 		float Unk28{};
 		GameObjectHandle<ObjColorParamChanger> ColorParamChanger{};
-		int Unk29{ 3 };
+		int NumHearts{ 3 };
 		int MaxNumHearts{ 3 }; // TODO: Is this actually meaning of the value?
 		int Unk31{ 3 };
 
