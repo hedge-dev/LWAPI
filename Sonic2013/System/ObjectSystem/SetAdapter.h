@@ -76,12 +76,12 @@ namespace app
 
 		const csl::math::Vector3& GetPosition() const
 		{
-			return m_pObject.GetUnit(m_pObject.ref().Class.ref().Unk1).GetPosition();
+			return m_pObject.GetUnit(m_pActor->GetUnitNum()).GetPosition();
 		}
 
 		const csl::math::Quaternion& GetRotation() const
 		{
-			csl::math::Quaternion q = SetEd::CalcRotationByAngle(m_pObject.GetUnit(m_pObject.ref().Class.ref().Unk1).GetRotation());
+			csl::math::Quaternion q = SetEd::CalcRotationByAngle(m_pObject.GetUnit(m_pActor->GetUnitNum()).GetRotation());
 			return q;
 		}
 		
