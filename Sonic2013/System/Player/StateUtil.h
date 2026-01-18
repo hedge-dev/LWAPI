@@ -248,7 +248,7 @@ namespace app::Player::StateUtil
 				phantomMsg.Type = missionType;
 				phantomMsg.Unk1 = in_ringCount;
 
-				in_rStateGoc.SendMessageToGame(msg);
+				in_rStateGoc.SendMessageToGame(phantomMsg);
 			}
 		}
 	}
