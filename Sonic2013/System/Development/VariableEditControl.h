@@ -37,13 +37,13 @@ namespace app::dev
 	protected:
 		S13VariableEditControl(bool in_skipFp)
 		{
-			m_Name._Mypad |= 2;
+			m_Name._Alloc._Mypad |= 2;
 		}
 
 	public:
 		~S13VariableEditControl()
 		{
-			if (!(m_Name._Mypad & 2))
+			if (!(m_Name._Alloc._Mypad & 2))
 				ms_fpVftable->fpDtor(this, 0);
 		}
 

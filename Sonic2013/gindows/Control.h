@@ -106,15 +106,15 @@ namespace gindows
 	protected:
 		Control(bool skipFp)
 		{
-			m_Name._Mypad = 0;
+			m_Name._Alloc._Mypad = 0;
 			new (&m_Name) std::dummy::string();
-			m_Name._Mypad |= true;
+			m_Name._Alloc._Mypad |= true;
 		}
 
 	public:
 		~Control()
 		{
-			if (!(m_Name._Mypad & 1))
+			if (!(m_Name._Alloc._Mypad & 1))
 				ms_fpVftable->fpDtor(this, 0);
 		}
 		

@@ -505,7 +505,7 @@ namespace csl::math
 			return false;
 		}
 
-		static Plane& FromPointNormal(const Vector3& in_rPoint, const Vector3& in_rNormal)
+		static Plane FromPointNormal(const Vector3& in_rPoint, const Vector3& in_rNormal)
 		{
 			Plane plane{};
 			plane.Normal = in_rNormal;
@@ -650,7 +650,7 @@ namespace app::math
 		return csl::math::Vector3(rotMtx * in_rDir);
 	}
 
-	inline csl::math::Matrix34& Matrix34OrthonormalDirection(const csl::math::Vector3& in_rU, const csl::math::Vector3& in_rV)
+	inline csl::math::Matrix34 Matrix34OrthonormalDirection(const csl::math::Vector3& in_rU, const csl::math::Vector3& in_rV)
 	{
 		csl::math::Vector3 cross{ in_rV.cross(in_rU)};
 		if (!math::Vector3Normalize(cross, &cross))

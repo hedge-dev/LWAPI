@@ -18,19 +18,22 @@ namespace gindows
 
 		using size_type = size_t;
 		using difference_type = ptrdiff_t;
-		
-		_Ty* allocate(size_t in_num)
+
+		// Doesn't actually exist, added to make use of space that will be taken either way
+		char _Mypad{};
+
+		_Ty* allocate(size_t num)
 		{
-			if (!in_num)
+			if (!num)
 				return nullptr;
 
 			auto* pAlloc = GetMemoryAllocator();
-			return reinterpret_cast<_Ty*>(pAlloc->Alloc(sizeof(_Ty) * in_num, alignof(_Ty)));
+			return reinterpret_cast<_Ty*>(pAlloc->Alloc(sizeof(_Ty) * num, alignof(_Ty)));
 		}
 
-		void deallocate(_Ty* in_pPtr, size_t in_num)
+		void deallocate(_Ty* ptr, size_t num)
 		{
-			GetMemoryAllocator()->Free(in_pPtr);
+			GetMemoryAllocator()->Free(ptr);
 		}
 	};
 }
