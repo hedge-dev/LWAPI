@@ -579,18 +579,20 @@
 #include "lua/lua.h"
 
 #ifdef _WIN32
-	#ifdef _DEBUG
-		#if defined(_MT) && defined(_DLL)
-			#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-mt.lib")
+	#ifdef LWAPI_STATIC_LUA
+		#ifdef _DEBUG
+			#if defined(_MT) && defined(_DLL)
+				#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-md.lib")
+			#else
+				#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-mt.lib")
+			#endif
 		#else
-			#pragma comment(lib, __FILE__"/../lua/libs/lua-debug-md.lib")
+			#if defined(_MT) && defined(_DLL)
+				#pragma comment(lib, __FILE__"/../lua/libs/lua-release-md.lib")
+			#else
+				#pragma comment(lib, __FILE__"/../lua/libs/lua-release-mt.lib")
+			#endif
 		#endif
-	#else
-		#if defined(_MT) && defined(_DLL)
-			#pragma comment(lib, __FILE__"/../lua/libs/lua-release-mt.lib")
-		#else
-			#pragma comment(lib, __FILE__"/../lua/libs/lua-release-md.lib")
-		#endif
+		#pragma comment(lib, __FILE__"/../lua/libs/s13lua.lib")
 	#endif
-	#pragma comment(lib, __FILE__"/../lua/libs/s13lua.lib")
 #endif

@@ -39,14 +39,21 @@ namespace app::game
 
 		~LuaScript()
 		{
+#ifndef LWAPI_STATIC_LUA
+			ms_fpDtor(this);
+#else
 			if (m_pState)
 			{
 				lua_close(m_pState);
 			}
+#endif
 		}
 		
 		void Load(const char* in_pBuf, size_t in_bufSize)
 		{
+#ifndef LWAPI_STATIC_LUA
+			ms_fpLoad(this, in_pBuf, in_bufSize);
+#else
 			if (m_pState == nullptr || luaL_loadbuffer(m_pState, in_pBuf, in_bufSize, nullptr))
 			{
 				return;
@@ -54,6 +61,7 @@ namespace app::game
 
 			lua_pcall(m_pState, 0, 0, 0);
 			m_Top = lua_gettop(m_pState);
+#endif
 		}
 
 		bool OpenNode(const char* in_pName)
